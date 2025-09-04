@@ -11,6 +11,7 @@
     :root {
       --primary: #003087;
       --primary-hover: #002060;
+      --primary-light: #e3edfb;
       --bg1: #f7f9fc;
       --bg2: #e9eff6;
       --text: #2b2b2b;
@@ -23,54 +24,56 @@
       --soft-whatsapp-border: #b9eac7;
       --soft-black-border: #d1d1d1;
     }
-
     body {
       font-family: 'Open Sans', sans-serif;
       background: linear-gradient(90deg, var(--bg1), var(--bg2));
       color: var(--text);
+      width: 92%;
       max-width: 1200px;
       margin: 0 auto;
       padding: 28px 24px 48px;
     }
-
     header {
-      text-align: center;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      align-items: center;
+      justify-items: center;
       margin-bottom: 10px;
     }
-
     header h1 {
       font-weight: 700;
       font-size: 2.4rem;
       color: var(--primary);
       margin: 0;
+      text-align: center;
     }
-
-    .tagline {
+    header .tagline {
       color: var(--muted);
       font-weight: 600;
+      text-align: center;
       margin-bottom: 6px;
     }
-
     #timeDateTime {
+      text-align: center;
       color: var(--muted);
       margin-bottom: 8px;
     }
-
     .contact {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
+      align-items: center;
       justify-content: center;
-      margin: 10px 0;
+      margin: 10px 0 0 0;
       font-weight: 600;
     }
-
     .contact a {
       text-decoration: none;
+      font-weight: 600;
       font-size: 1rem;
     }
-
-    .chip {
+    .contact .chip {
       display: inline-flex;
       gap: 8px;
       align-items: center;
@@ -78,70 +81,64 @@
       border-radius: 999px;
       background: var(--card);
       box-shadow: 0 2px 8px rgba(0,0,0,.06);
-      border: 1px solid rgb(220,230,246);
-      transition: all .18s;
+      border: 1px solid rgb(220, 230, 246);
+      transition: background .18s, border-color .18s, color .18s;
     }
-
-    .chip i { width: 18px; text-align: center; }
-
+    .contact .chip i { width: 18px; text-align: center; }
     .phone-chip {
-      background: var(--soft-black);
-      color: #222;
-      border: 1px solid var(--soft-black-border);
+      background: var(--soft-black) !important;
+      color: #222 !important;
+      border: 1px solid var(--soft-black-border) !important;
     }
-    .phone-chip i, .phone-chip strong { color: #444; }
-
+    .phone-chip i, .phone-chip strong { color: #444 !important; }
     .whatsapp-chip {
-      background: var(--soft-whatsapp);
-      color: #229e59;
-      border: 1px solid var(--soft-whatsapp-border);
+      background: var(--soft-whatsapp) !important;
+      color: #229e59 !important;
+      border: 1px solid var(--soft-whatsapp-border) !important;
     }
-    .whatsapp-chip i { color: #229e59; }
-
+    .whatsapp-chip i { color: #229e59 !important; }
     .facebook-chip {
-      background: var(--soft-facebook);
-      color: #1877f3;
-      border: 1px solid var(--soft-facebook-border);
+      background: var(--soft-facebook) !important;
+      color: #1877f3 !important;
+      border: 1px solid var(--soft-facebook-border) !important;
     }
-    .facebook-chip i { color: #1877f3; }
+    .facebook-chip i { color: #1877f3 !important; }
 
     .container-main {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 0;
       margin-top: 10px;
       justify-content: space-between;
+      align-items: stretch;
     }
-
     .form-section, .result-section {
       flex: 1 1 340px;
+      min-width: 340px;
+      max-width: 540px;
       background: var(--card);
       border: 1px solid rgba(0,48,135,.15);
       box-shadow: 0 4px 16px rgba(0,0,0,.06);
       border-radius: 16px;
-      padding: 28px 26px 32px;
+      padding: 28px 26px 32px 26px;
+      margin-bottom: 0;
       display: flex;
       flex-direction: column;
       min-height: 680px;
+      position: relative;
+      z-index: 1;
     }
-
-    .form-section-title, .result-section-title {
-      text-align: center;
-      font-weight: 700;
-      margin-bottom: 12px;
-      color: var(--primary);
-      font-size: 1.15rem;
+    .form-section-title {
+      text-align:center;
+      font-weight:700;
+      margin-bottom:12px;
+      color:var(--primary);
+      font-size:1.15rem;
     }
-
-    label {
-      display: block;
-      margin-top: 14px;
-      font-weight: 700;
-      font-size: 0.98rem;
-    }
-
+    label { display: block; margin-top: 14px; font-weight: 700; font-size: 0.98rem; }
     input, select {
       width: 100%;
+      box-sizing: border-box;
       padding: 12px;
       margin-top: 6px;
       border: 1px solid var(--primary);
@@ -150,20 +147,21 @@
       background: #fff;
       box-shadow: 0 2px 4px rgba(0,0,0,.05);
       transition: border-color .15s;
+      min-width: 0;
+      display: block;
     }
-
     select {
       appearance: none;
-      background: #fff url("data:image/svg+xml,<svg width='14' height='14' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M6 8l4 4 4-4' stroke='%23003087' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center/16px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background: #fff url("data:image/svg+xml;charset=UTF-8,<svg width='14' height='14' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M6 8l4 4 4-4' stroke='%23003087' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center/16px 16px;
     }
-
     .btn-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       margin-top: 18px;
     }
-
     .blue-btn {
       flex: 1 1 180px;
       padding: 12px;
@@ -174,71 +172,143 @@
       color: #fff;
       background: var(--primary);
       box-shadow: 0 2px 8px rgba(0,0,0,.08);
+      transition: background .18s;
       font-weight: 700;
       height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background .18s;
     }
-
-    .blue-btn:hover { background: var(--primary-hover); }
-
-    #downloadBtn { display: none; }
-
+    .blue-btn:hover {
+      background: var(--primary-hover);
+    }
+    #downloadBtn {
+      display: none;
+      flex: 1 1 180px;
+      height: 44px;
+      margin-top: 18px;
+    }
+    .result-section-title {
+      font-weight:700;
+      margin-bottom:10px;
+      color:var(--primary);
+      font-size:1.12rem;
+    }
+    #result { margin-top: 0; }
     table { width: 100%; border-collapse: collapse; }
     thead th { background: var(--primary); color: #fff; padding: 10px; text-align: left; }
     tbody td { padding: 9px 10px; border-bottom: 1px solid rgba(0,48,135,.15); }
     tfoot td { padding: 10px; font-weight: 700; background: #f0f4fa; }
-
-    #pieChart { display: none; margin: 20px auto 0; max-width: 100%; }
-
+    #pieChart {
+      display: none;
+      margin: 20px auto 0 auto;
+      max-width: 100%;
+      background: transparent;
+    }
     #rateCornerWidget {
       position: fixed;
       right: 22px;
       bottom: 22px;
       z-index: 99;
       background: #fff;
-      border: 2px solid var(--primary);
+      border: 2px solid #003087;
       border-radius: 12px;
       box-shadow: 0 4px 16px rgba(0,48,135,0.11);
       padding: 13px 22px;
-      color: var(--primary);
+      color: #003087;
+      font-family: 'Open Sans', sans-serif;
       font-weight: 700;
       font-size: 1.07rem;
+      letter-spacing: .02em;
       min-width: 190px;
       text-align: center;
-      display: none;
     }
-
     #rateCornerWidget .rate-source {
       display: block;
       font-size: 0.81rem;
-      color: var(--muted);
+      color: #5b5b5b;
       font-weight: 400;
       margin-top: 3px;
     }
-
     footer {
       text-align: center;
+      width: 100%;
       margin-top: 26px;
       color: #555;
       font-size: 0.92rem;
-      padding-top: 14px;
+      padding: 14px 0 0 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-
+    @media (max-width: 1200px) {
+      .form-section, .result-section {
+        max-width: 100%;
+        min-width: 100%;
+      }
+      .container-main { flex-direction: column; }
+    }
+    @media (max-width: 900px) {
+      .form-section, .result-section {
+        max-width: 100%;
+        min-width: 100%;
+      }
+      .container-main { flex-direction: column; }
+    }
     @media (max-width: 640px) {
       header h1 { font-size: 1.9rem; }
       .form-section, .result-section {
         padding: 10px 3vw;
         min-height: 600px;
         width: 96vw;
-        margin: auto;
+        max-width: 98vw;
+        margin-left: auto;
+        margin-right: auto;
+        position: static;
       }
-      .contact { gap: 8px; }
-      .chip { font-size: 0.92rem; padding: 7px 4px; }
-      #pieChart { max-width: 95vw; }
-      .btn-row { gap: 8px; margin-top: 16px; }
+      .container-main {
+        flex-direction: column !important;
+        gap: 0 !important;
+        align-items: stretch !important;
+      }
+      .contact {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 8px !important;
+        margin-top: 8px !important;
+        width: 100vw;
+        max-width: 100vw;
+      }
+      .contact a {
+        flex: 1 1 100px !important;
+        min-width: 90px;
+        justify-content: center;
+        align-items: center;
+      }
+      .contact .chip {
+        min-width: 90px;
+        justify-content: center;
+        font-size: 0.92rem;
+        padding: 7px 4px;
+      }
+      .result-section {
+        margin-top: 0 !important;
+      }
+      #pieChart {
+        max-width: 95vw;
+      }
+      .btn-row {
+        flex-direction: row;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      #downloadBtn {
+        font-size: 0.93rem;
+        margin-top: 16px;
+      }
     }
   </style>
 </head>
@@ -248,22 +318,24 @@
     <div class="tagline">Your trusted Japanese automobile partner</div>
     <div id="timeDateTime"></div>
   </header>
-
-  <div class="contact">
-    <a class="chip phone-chip" href="tel:0769447740"><i class="fas fa-phone"></i> <strong>0769447740</strong></a>
-    <a class="chip whatsapp-chip" href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-    <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank" rel="noopener"><i class="fab fa-facebook"></i> Facebook</a>
+  <div class="contact" id="contact-row">
+    <a class="chip phone-chip" href="tel:0769447740">
+      <i class="fas fa-phone"></i> <strong>0769447740</strong>
+    </a>
+    <a class="chip whatsapp-chip" href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">
+      <i class="fab fa-whatsapp"></i> WhatsApp
+    </a>
+    <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank" rel="noopener">
+      <i class="fab fa-facebook"></i> Facebook
+    </a>
   </div>
-
   <div class="container-main">
     <div class="form-section">
       <div class="form-section-title">Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)</div>
       <label for="cifJPY">CIF Value (JPY):</label>
       <input type="number" id="cifJPY" required min="0" step="any" />
-
       <label for="exchangeRate">Exchange Rate (JPY to LKR, e.g., 2.1):</label>
       <input type="number" id="exchangeRate" required min="0" step="any" placeholder="2.1" />
-
       <label for="vehicleType">Vehicle Type:</label>
       <select id="vehicleType" required>
         <option value="">Select Vehicle Type</option>
@@ -277,85 +349,104 @@
         <option value="esmart_petrol">e-SMART Hybrid (Petrol Generator)</option>
         <option value="esmart_diesel">e-SMART Hybrid (Diesel Generator)</option>
       </select>
-
-      <label for="capacity">Engine Capacity (cc or kW):</label>
+      <label for="capacity">Engine Capacity (cc for Petrol/Diesel/Hybrids, kW for Electric/Plug-in/e-SMART):</label>
       <input type="number" id="capacity" required min="0" step="any" />
-
       <label for="age">Vehicle Age:</label>
       <select id="age" required>
         <option value="">Select Age</option>
         <option value="1">Not more than 1 year old</option>
         <option value="2">More than 1 year but not more than 3 years old</option>
       </select>
-
       <div class="btn-row">
-        <button type="button" class="blue-btn" id="calculateBtn" onclick="calculateTax()">Calculate Tax</button>
-        <button type="button" class="blue-btn" id="resetBtn" onclick="resetForm()">Reset</button>
+        <button class="blue-btn" id="calculateBtn" onclick="calculateTax()">Calculate Tax</button>
+        <button class="blue-btn" id="resetBtn" onclick="resetForm()">Reset</button>
       </div>
     </div>
-
     <div class="result-section">
       <div class="result-section-title">Calculation Result</div>
       <div id="result"></div>
       <div class="btn-row">
-        <button type="button" id="downloadBtn" class="blue-btn" onclick="downloadPDF()">Save as PDF</button>
+        <button id="downloadBtn" class="blue-btn" onclick="downloadPDF()">Save as PDF</button>
       </div>
       <canvas id="pieChart" width="360" height="180"></canvas>
     </div>
   </div>
-
   <footer>© 2025 Amarasinghe Prime Enterprises™</footer>
-  <div id="rateCornerWidget"><span id="rateCornerText"></span></div>
-
+  <div id="rateCornerWidget" style="display:none;">
+    <span id="rateCornerText"></span>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script>
     let resultData = null;
-
     function updateDateTime() {
-      document.getElementById('timeDateTime').textContent = `Time: ${new Date().toLocaleString('en-GB', {timeZone: 'Asia/Colombo'})}`;
+      const el = document.getElementById('timeDateTime');
+      el.textContent = `Time: ${new Date().toLocaleString('en-GB', {timeZone: 'Asia/Colombo'})}`;
     }
     setInterval(updateDateTime, 1000);
     updateDateTime();
 
-    async function fetchRate(updateField = true) {
-      const url = 'https://api.exchangerate.host/latest?base=JPY&symbols=LKR';
+    async function fetchJPYtoLKR() {
+      const rateElId = 'cbslRate';
+      let rateEl = document.getElementById(rateElId);
+      if (!rateEl) {
+        rateEl = document.createElement('div');
+        rateEl.id = rateElId;
+        rateEl.style.textAlign = 'center';
+        rateEl.style.marginTop = '8px';
+        rateEl.style.color = 'var(--muted)';
+        document.querySelector('.form-section').insertBefore(rateEl, document.getElementById('cifJPY').parentNode);
+      }
       try {
-        const resp = await fetch(url);
-        if (!resp.ok) throw new Error();
-        const data = await resp.json();
-        const rate = data?.rates?.LKR;
-        if (!rate) throw new Error();
-
-        if (updateField && !document.getElementById('exchangeRate').value) {
-          document.getElementById('exchangeRate').value = rate.toFixed(6);
+        const resp = await fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR');
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.rates && data.rates.LKR) {
+            const rate = data.rates.LKR;
+            rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate (live): 1 JPY = ${rate.toFixed(6)} LKR</div><div style="font-size:0.9em;color:var(--muted)">Source: exchangerate.host</div>`;
+            const exField = document.getElementById('exchangeRate');
+            if (exField && !exField.value) exField.value = rate.toFixed(6);
+            return;
+          }
         }
+      } catch (e) {}
+      rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate: N/A</div><div style="font-size:0.9em;color:var(--muted)">Could not fetch live rate. Enter manually.</div>`;
+    }
+    fetchJPYtoLKR();
 
-        document.getElementById('rateCornerText').innerHTML = `
-          <span>Central Bank Rate</span><br>
-          <span style="font-size:1.18em;">1 JPY = <span style="color:#0056b3;">${rate.toFixed(6)}</span> LKR</span>
-          <span class="rate-source">Source: exchangerate.host</span>
-        `;
-        document.getElementById('rateCornerWidget').style.display = 'block';
-      } catch {
-        document.getElementById('rateCornerText').innerHTML = `
-          <span>Central Bank Rate</span><br>
-          <span style="color:#b00;">N/A</span>
-          <span class="rate-source">Source: exchangerate.host</span>
-        `;
-        document.getElementById('rateCornerWidget').style.display = 'block';
+    async function updateCornerRate() {
+      const widget = document.getElementById('rateCornerWidget');
+      const txt = document.getElementById('rateCornerText');
+      try {
+        const resp = await fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR');
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.rates && data.rates.LKR) {
+            const rate = data.rates.LKR;
+            txt.innerHTML = `
+              <span>Central Bank Rate</span><br>
+              <span style="font-size:1.18em;">1 JPY = <span style="color:#0056b3;">${rate.toFixed(6)}</span> LKR</span>
+              <span class="rate-source">Source: exchangerate.host</span>
+            `;
+            widget.style.display = 'block';
+            return;
+          }
+        }
+        txt.innerHTML = `<span>Central Bank Rate</span><br><span style="color:#b00;">N/A</span>
+          <span class="rate-source">Source: exchangerate.host</span>`;
+        widget.style.display = 'block';
+      } catch(e) {
+        txt.innerHTML = `<span>Central Bank Rate</span><br><span style="color:#b00;">N/A</span>
+          <span class="rate-source">Source: exchangerate.host</span>`;
+        widget.style.display = 'block';
       }
     }
-    fetchRate();
-    setInterval(fetchRate, 60000);
+    updateCornerRate();
+    setInterval(updateCornerRate, 60000);
 
-    function fmt(val, decimals = 2) {
+    function fmt(val, decimals=2) {
       return Number(val).toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
-    }
-
-    function createRow(name, value, percentStr) {
-      return `<tr><td>${name}</td><td style='text-align:right'>${fmt(value)}</td><td style='text-align:right'>${percentStr}%</td></tr>`;
     }
 
     function calculateTax() {
@@ -493,6 +584,40 @@
       document.getElementById('downloadBtn').style.display = 'block';
     }
 
+    function pdfContactRow(doc, pageW, y) {
+      // Button arrangement: Phone | WhatsApp | Facebook
+      // Now more visually professional, uses icons and brand colors
+      const chipH = 28, chipPad = 16, chipGap = 18, chipFont = 12;
+      const phoneW = 120, whatsappW = 105, facebookW = 105;
+      const rowW = phoneW + whatsappW + facebookW + chipGap * 2;
+      const leftX = pageW / 2 - rowW / 2;
+      // Phone
+      doc.setFillColor(244,244,244);
+      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'F');
+      doc.setDrawColor(209,209,209);
+      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'S');
+      doc.setFontSize(chipFont);
+      doc.setTextColor(68,68,68);
+      doc.textWithLink('☎ 0769447740', leftX + chipPad, y + chipH/2+6, {url:'tel:0769447740'});
+      // WhatsApp
+      doc.setFillColor(230,247,236);
+      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'F');
+      doc.setDrawColor(185,234,199);
+      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'S');
+      doc.setTextColor(34,158,89);
+      doc.textWithLink('✆ WhatsApp', leftX+phoneW+chipGap+chipPad, y + chipH/2+6, {url:'https://wa.me/message/XSPMWKK4BGVAM1'});
+      // Facebook
+      doc.setFillColor(227,237,251);
+      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'F');
+      doc.setDrawColor(182,210,247);
+      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'S');
+      doc.setTextColor(24,119,243);
+      doc.textWithLink('f Facebook', leftX+phoneW+chipGap+whatsappW+chipGap+chipPad, y + chipH/2+6, {url:'https://www.facebook.com/share/17Ww1VkV2S/'});
+    }
+
+    function createRow(name, value, percentStr) {
+      return `<tr><td>${name}</td><td style='text-align:right'>${fmt(value)}</td><td style='text-align:right'>${percentStr}%</td></tr>`;
+    }
     function resetForm() {
       document.getElementById('cifJPY').value = '';
       document.getElementById('exchangeRate').value = '';
@@ -546,36 +671,6 @@
         }
       });
     }
-    function pdfContactRow(doc, pageW, y) {
-      // Button arrangement: Phone | WhatsApp | Facebook
-      // Now more visually professional, uses icons and brand colors
-      const chipH = 28, chipPad = 16, chipGap = 18, chipFont = 12;
-      const phoneW = 120, whatsappW = 105, facebookW = 105;
-      const rowW = phoneW + whatsappW + facebookW + chipGap * 2;
-      const leftX = pageW / 2 - rowW / 2;
-      // Phone
-      doc.setFillColor(244,244,244);
-      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'F');
-      doc.setDrawColor(209,209,209);
-      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'S');
-      doc.setFontSize(chipFont);
-      doc.setTextColor(68,68,68);
-      doc.textWithLink('☎ 0769447740', leftX + chipPad, y + chipH/2+6, {url:'tel:0769447740'});
-      // WhatsApp
-      doc.setFillColor(230,247,236);
-      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'F');
-      doc.setDrawColor(185,234,199);
-      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'S');
-      doc.setTextColor(34,158,89);
-      doc.textWithLink('✆ WhatsApp', leftX+phoneW+chipGap+chipPad, y + chipH/2+6, {url:'https://wa.me/message/XSPMWKK4BGVAM1'});
-      // Facebook
-      doc.setFillColor(227,237,251);
-      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'F');
-      doc.setDrawColor(182,210,247);
-      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'S');
-      doc.setTextColor(24,119,243);
-      doc.textWithLink('f Facebook', leftX+phoneW+chipGap+whatsappW+chipGap+chipPad, y + chipH/2+6, {url:'https://www.facebook.com/share/17Ww1VkV2S/'});
-    }
     function downloadPDF() {
       if (!resultData) { alert('Please calculate the tax first.'); return; }
       const { jsPDF } = window.jspdf;
@@ -587,4 +682,110 @@
       doc.setTextColor(0,48,135);
       doc.text('Amarasinghe Prime Enterprises', pageW/2, y, {align:"center"});
       y += 22;
-      doc.setFont
+      doc.setFontSize(13);
+      doc.setTextColor(91);
+      doc.text('Your trusted Japanese automobile partner', pageW/2, y, {align:"center"});
+      y += 18;
+      doc.setFontSize(11);
+      doc.setTextColor(120);
+      doc.text(`Time: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`, pageW/2, y, {align:"center"});
+      y += 25;
+      // Contact row chips
+      pdfContactRow(doc, pageW, y);
+      y += 38;
+      doc.setDrawColor(230); doc.setLineWidth(0.8); doc.line(60, y, pageW-60, y); y += 13;
+      doc.setFontSize(14); doc.setTextColor(0,48,135);
+      doc.text('Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)', 60, y);
+      y += 18;
+      const unit = (resultData.type.includes('electric') || resultData.type.includes('plugin') || resultData.type.includes('esmart')) ? 'kW' : 'cc';
+      const inputRows = [
+        ['CIF (JPY)', fmt(resultData.cifJPY)],
+        ['Exchange Rate (JPY→LKR)', fmt(resultData.exchangeRate,6)],
+        ['CIF (LKR)', fmt(resultData.cif)],
+        ['Vehicle Type', resultData.type.replace('_',' ').toUpperCase()],
+        ['Capacity', `${fmt(resultData.capacity)} ${unit}`],
+        ['Age', resultData.age === '1' ? '≤1 year' : '>1–3 years']
+      ];
+      doc.autoTable({
+        startY: y,
+        head: [['Item','Value']],
+        body: inputRows,
+        theme: 'grid',
+        headStyles: {
+          fillColor: [0,48,135],
+          textColor: [255,255,255],
+          fontStyle: 'bold',
+          fontSize: 12,
+          halign: 'left',
+          valign: 'middle',
+          lineWidth: 0.5,
+          lineColor: [0,48,135]
+        },
+        bodyStyles: {
+          fontStyle: 'normal',
+          fontSize: 11,
+          textColor: [40,40,40],
+          fillColor: [255,255,255],
+          halign: 'left',
+          valign: 'middle'
+        },
+        alternateRowStyles: {
+          fillColor: [240,244,250]
+        },
+        tableLineColor: [220,220,220],
+        tableLineWidth: 0.4,
+        margin: { left: 60, right: 60 }
+      });
+      y = doc.lastAutoTable.finalY + 24;
+      doc.setFontSize(13); doc.setTextColor(0,48,135);
+      doc.text('Calculation Result', 60, y);
+      y += 10;
+      const pct = (v) => (resultData.total > 0 ? ((v/resultData.total)*100).toFixed(2) + '%' : '0.00%');
+      const costRows = [
+        ['CIF', fmt(resultData.cif), pct(resultData.cif)],
+        ['CID', fmt(resultData.cid), pct(resultData.cid)],
+        ['Surcharge', fmt(resultData.surcharge), pct(resultData.surcharge)],
+        ['Excise Duty', fmt(resultData.excise), pct(resultData.excise)],
+        ['Luxury Tax', fmt(resultData.luxuryTax), pct(resultData.luxuryTax)],
+        ['VAT', fmt(resultData.vat), pct(resultData.vat)],
+      ];
+      doc.autoTable({
+        startY: y,
+        head: [['Item','Value (LKR)','% of Total']],
+        body: costRows,
+        theme: 'grid',
+        headStyles: {
+          fillColor: [0,48,135],
+          textColor: [255,255,255],
+          fontStyle: 'bold',
+          fontSize: 12,
+          halign: 'left',
+          valign: 'middle',
+          lineWidth: 0.5,
+          lineColor: [0,48,135]
+        },
+        bodyStyles: {
+          fontStyle: 'normal',
+          fontSize: 11,
+          textColor: [40,40,40],
+          fillColor: [255,255,255],
+          halign: 'left',
+          valign: 'middle'
+        },
+        alternateRowStyles: {
+          fillColor: [240,244,250]
+        },
+        tableLineColor: [220,220,220],
+        tableLineWidth: 0.4,
+        margin: { left: 60, right: 60 },
+        foot: [['TOTAL', fmt(resultData.total), '100.00%']],
+        footStyles: { fillColor: [240,244,250], textColor: [0,0,0], fontStyle: 'bold' }
+      });
+      y = doc.lastAutoTable.finalY + 30;
+      doc.setFontSize(10); doc.setTextColor(100);
+      doc.text('© 2025 Amarasinghe Prime Enterprises™', pageW/2, y, {align:"center"});
+      doc.save('Vehicle_Tax_Calculation.pdf');
+    }
+  </script>
+</body>
+</html>
