@@ -216,20 +216,6 @@
             justify-content: center;
             align-items: center;
         }
-        @media (max-width: 1200px) {
-            .form-section, .result-section {
-                max-width: 100%;
-                min-width: 100%;
-            }
-            .container-main { flex-direction: column; }
-        }
-        @media (max-width: 900px) {
-            .form-section, .result-section {
-                max-width: 100%;
-                min-width: 100%;
-            }
-            .container-main { flex-direction: column; }
-        }
         @media (max-width: 640px) {
             header h1 { font-size: 1.9rem; }
             .form-section, .result-section {
@@ -247,27 +233,27 @@
                 align-items: stretch !important;
             }
             .contact {
-                flex-direction: row !important;
-                flex-wrap: wrap !important;
+                flex-direction: column !important;
                 gap: 8px !important;
                 justify-content: center !important;
                 align-items: center !important;
                 margin-bottom: 8px !important;
                 margin-top: 8px !important;
-                width: 100vw;
-                max-width: 100vw;
+                width: 100%;
+                max-width: 100%;
             }
             .contact a {
-                flex: 1 1 100px !important;
-                min-width: 90px;
+                flex: 1 1 90% !important;
+                min-width: 90%;
+                max-width: 90%;
                 justify-content: center;
                 align-items: center;
             }
             .contact .chip {
-                min-width: 90px;
+                width: 100%;
                 justify-content: center;
                 font-size: 0.92rem;
-                padding: 7px 4px;
+                padding: 10px 4px;
             }
             .result-section {
                 margin-top: 0 !important;
@@ -413,7 +399,6 @@
                 'diesel_hybrid': 0.9, 'petrol_plugin': 0.8, 'diesel_plugin': 0.9,
                 'electric': 0.6, 'esmart_petrol': 0.6, 'esmart_diesel': 0.6
             };
-
             let threshold = thresholds[type];
             let luxuryRate = luxuryRates[type];
 
@@ -469,11 +454,12 @@
             let luxuryTax = (cif > threshold) ? (cif - threshold) * luxuryRate : 0;
             let vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
             let vat = vatBase * 0.18;
-            let total = cif + cid + surcharge + excise + luxuryTax + vat;
+            let totalTax = cid + surcharge + excise + luxuryTax + vat;
+            let total = cif + totalTax;
 
             resultData = {
                 cifJPY, exchangeRate, cif, type, capacity, age,
-                cid, surcharge, excise, luxuryTax, vat, total
+                cid, surcharge, excise, luxuryTax, vat, totalTax, total
             };
 
             const unit = (type.includes('electric') || type.includes('plugin') || type.includes('esmart')) ? 'kW' : 'cc';
@@ -522,11 +508,7 @@
             document.getElementById('result').innerHTML = inputsTable + breakdownTable;
             showPieChart([
                 { label: 'CIF', value: cif },
-                { label: 'CID', value: cid },
-                { label: 'Surcharge', value: surcharge },
-                { label: 'Excise Duty', value: excise },
-                { label: 'Luxury Tax', value: luxuryTax },
-                { label: 'VAT', value: vat }
+                { label: 'Total Tax', value: totalTax }
             ], total);
             document.getElementById('result').style.display = 'block';
             document.getElementById('downloadBtn').style.display = 'block';
@@ -547,8 +529,7 @@
             doc.setFontSize(chipFont);
             doc.setTextColor(68,68,68);
             doc.text('0769447740', leftX + phoneW / 2, y + chipH/2 + chipFont/3.5, {align:"center"});
-            doc.setFont('helvetica', 'normal');
-            doc.text('📞', leftX + 20, y + chipH/2 + chipFont/3.5, {align:"center"});
+            doc.link(leftX, y, phoneW, chipH, {url: 'tel:0769447740'});
 
             // WhatsApp
             doc.setFillColor(230,247,236);
@@ -558,8 +539,7 @@
             doc.setTextColor(34,158,89);
             doc.setFont('helvetica', 'bold');
             doc.text('WhatsApp', leftX + phoneW + chipGap + whatsappW / 2, y + chipH/2 + chipFont/3.5, {align:"center"});
-            doc.setFont('helvetica', 'normal');
-            doc.text('✆', leftX + phoneW + chipGap + 18, y + chipH/2 + chipFont/3.5, {align:"center"});
+            doc.link(leftX+phoneW+chipGap, y, whatsappW, chipH, {url: 'https://wa.me/message/XSPMWKK4BGVAM1'});
 
             // Facebook
             doc.setFillColor(227,237,251);
@@ -569,8 +549,7 @@
             doc.setTextColor(24,119,243);
             doc.setFont('helvetica', 'bold');
             doc.text('Facebook', leftX+phoneW+chipGap+whatsappW+chipGap + facebookW/2, y + chipH/2 + chipFont/3.5, {align:"center"});
-            doc.setFont('helvetica', 'normal');
-            doc.text('f', leftX+phoneW+chipGap+whatsappW+chipGap + 18, y + chipH/2 + chipFont/3.5, {align:"center"});
+            doc.link(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, {url: 'https://www.facebook.com/share/17Ww1VkV2S/'});
         }
 
         function createRow(name, value, percentStr) {
@@ -638,52 +617,48 @@
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(26);
-            doc.setTextColor(0,48,135); // primary color
+            doc.setTextColor(0,48,135);
             doc.text('Amarasinghe Prime Enterprises', pageW/2, y, {align:"center"});
             y += 26;
             doc.setFontSize(13);
-            doc.setTextColor(91,91,91); // muted color
+            doc.setTextColor(91,91,91);
             doc.text('Your trusted Japanese automobile partner', pageW/2, y, {align:"center"});
             y += 20;
             doc.setFontSize(11);
-            doc.setTextColor(120,120,120); // slightly darker muted
-            doc.text(`Time: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`, pageW/2, y, {align:"center"});
-            y += 35;
+            doc.setTextColor(120,120,120);
+            const combinedDateTime = `Generated: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`;
+            doc.text(combinedDateTime, pageW/2, y, {align:"center"});
+            y += 30;
 
             pdfContactRow(doc, pageW, y);
-            y += 45;
+            y += 40;
 
-            doc.setDrawColor(230,230,230); doc.setLineWidth(0.8); doc.line(60, y, pageW-60, y); y += 13;
-
-            doc.setFontSize(14);
-            doc.setTextColor(0,48,135); // primary color
-            doc.text('Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)', 60, y);
+            doc.setFontSize(16);
+            doc.setTextColor(0,48,135);
+            doc.text('Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)', pageW/2, y, {align:"center"});
             y += 18;
 
             const unit = (resultData.type.includes('electric') || resultData.type.includes('plugin') || resultData.type.includes('esmart')) ? 'kW' : 'cc';
             const inputRows = [
-                ['CIF (JPY)', fmt(resultData.cifJPY)],
-                ['Exchange Rate (JPY→LKR)', fmt(resultData.exchangeRate,6)],
-                ['CIF (LKR)', fmt(resultData.cif)],
-                ['Vehicle Type', resultData.type.replace('_',' ').toUpperCase()],
-                ['Engine/ Motor Capacity', `${fmt(resultData.capacity)} ${unit}`],
-                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years']
+                ['CIF Value in foreign currency', fmt(resultData.cifJPY)],
+                ['Exchange Rate', fmt(resultData.exchangeRate,6)],
+                ['Fuel Type', resultData.type.replace('_',' ').toUpperCase()],
+                ['Engine Capacity (CC) | Motor Power (Kw)', `${fmt(resultData.capacity)} ${unit}`]
             ];
-
             doc.autoTable({
                 startY: y,
-                head: [['Item','Value']],
+                head: [['Input Parameter','Value']],
                 body: inputRows,
                 theme: 'grid',
                 headStyles: {
-                    fillColor: [0,48,135], // primary color
+                    fillColor: [0,48,135],
                     textColor: [255,255,255],
                     fontStyle: 'bold',
                     fontSize: 12,
                     halign: 'left',
                     valign: 'middle',
                     lineWidth: 0.5,
-                    lineColor: [0,48,135] // primary color
+                    lineColor: [0,48,135]
                 },
                 bodyStyles: {
                     fontStyle: 'normal',
@@ -693,9 +668,7 @@
                     halign: 'left',
                     valign: 'middle'
                 },
-                alternateRowStyles: {
-                    fillColor: [240,244,250] // light grey from css
-                },
+                alternateRowStyles: { fillColor: [240,244,250] },
                 tableLineColor: [220,220,220],
                 tableLineWidth: 0.4,
                 margin: { left: 60, right: 60 }
@@ -704,34 +677,37 @@
             y = doc.lastAutoTable.finalY + 24;
 
             doc.setFontSize(13);
-            doc.setTextColor(0,48,135); // primary color
+            doc.setTextColor(0,48,135);
             doc.text('Calculation Result', 60, y);
             y += 10;
 
-            const pct = (v) => (resultData.total > 0 ? ((v/resultData.total)*100).toFixed(2) + '%' : '0.00%');
-            const costRows = [
-                ['CIF', fmt(resultData.cif), pct(resultData.cif)],
-                ['CID', fmt(resultData.cid), pct(resultData.cid)],
-                ['Surcharge', fmt(resultData.surcharge), pct(resultData.surcharge)],
-                ['Excise Duty', fmt(resultData.excise), pct(resultData.excise)],
-                ['Luxury Tax', fmt(resultData.luxuryTax), pct(resultData.luxuryTax)],
-                ['VAT', fmt(resultData.vat), pct(resultData.vat)],
+            const taxBreakdown = [
+                {id: '1.0', name: 'CID - Custom Import Duty', base: resultData.cif, rate: '20%', amount: resultData.cid},
+                {id: '2.0', name: 'Surcharge', base: resultData.cid, rate: '50%', amount: resultData.surcharge},
+                {id: '3.0', name: 'Excise Duty', base: resultData.capacity, rate: '', amount: resultData.excise},
+                {id: '4.0', name: 'Luxury Tax', base: resultData.cif, rate: '', amount: resultData.luxuryTax},
+                {id: '5.0', name: 'VAT', base: (resultData.cif * 1.1) + resultData.cid + resultData.surcharge + resultData.excise + resultData.luxuryTax, rate: '18%', amount: resultData.vat}
             ];
+
+            const breakdownRows = taxBreakdown.map(tax => [
+                tax.name,
+                fmt(tax.amount)
+            ]);
 
             doc.autoTable({
                 startY: y,
-                head: [['Item','Value (LKR)','% of Total']],
-                body: costRows,
+                head: [['Tax Type', 'Amount in LKR']],
+                body: breakdownRows,
                 theme: 'grid',
                 headStyles: {
-                    fillColor: [0,48,135], // primary color
+                    fillColor: [0,48,135],
                     textColor: [255,255,255],
                     fontStyle: 'bold',
                     fontSize: 12,
                     halign: 'left',
                     valign: 'middle',
                     lineWidth: 0.5,
-                    lineColor: [0,48,135] // primary color
+                    lineColor: [0,48,135]
                 },
                 bodyStyles: {
                     fontStyle: 'normal',
@@ -741,21 +717,57 @@
                     halign: 'left',
                     valign: 'middle'
                 },
-                alternateRowStyles: {
-                    fillColor: [240,244,250] // light grey from css
-                },
+                alternateRowStyles: { fillColor: [240,244,250] },
                 tableLineColor: [220,220,220],
                 tableLineWidth: 0.4,
-                margin: { left: 60, right: 60 },
-                foot: [['TOTAL', fmt(resultData.total), '100.00%']],
-                footStyles: { fillColor: [240,244,250], textColor: [0,0,0], fontStyle: 'bold' }
+                margin: { left: 60, right: 60 }
+            });
+
+            y = doc.lastAutoTable.finalY + 24;
+
+            const summaryRows = [
+                ['CIF', 'Total Tax', 'Total Value'],
+                [fmt(resultData.cif), fmt(resultData.totalTax), fmt(resultData.total)]
+            ];
+
+            doc.autoTable({
+                startY: y,
+                head: summaryRows.slice(0,1),
+                body: summaryRows.slice(1),
+                theme: 'grid',
+                headStyles: {
+                    fillColor: [0,48,135],
+                    textColor: [255,255,255],
+                    fontStyle: 'bold',
+                    fontSize: 12,
+                    halign: 'left',
+                    valign: 'middle',
+                    lineWidth: 0.5,
+                    lineColor: [0,48,135]
+                },
+                bodyStyles: {
+                    fontStyle: 'normal',
+                    fontSize: 11,
+                    textColor: [40,40,40],
+                    fillColor: [255,255,255],
+                    halign: 'left',
+                    valign: 'middle'
+                },
+                alternateRowStyles: { fillColor: [240,244,250] },
+                tableLineColor: [220,220,220],
+                tableLineWidth: 0.4,
+                margin: { left: 60, right: 60 }
             });
 
             y = doc.lastAutoTable.finalY + 30;
 
             doc.setFontSize(10);
-            doc.setTextColor(100,100,100); // slightly darker muted
-            doc.text('© 2025 Amarasinghe Prime Enterprises™', pageW/2, y, {align:"center"});
+            doc.setTextColor(100,100,100);
+            const disclaimerText = "Disclaimer: This is a guide based on current Sri Lankan tax laws for vehicles under HS codes under 8703.xx.xx. We are not responsible for future changes in regulations.";
+            const disclaimerLines = doc.splitTextToSize(disclaimerText, pageW - 120);
+            doc.text(disclaimerLines, pageW/2, y, {align:"center"});
+            y += doc.getTextDimensions(disclaimerLines).h + 10;
+            doc.text('© 2025 Amarasinghe Prime Enterprises™', pageW/2, doc.internal.pageSize.height - 20, {align:"center"});
 
             doc.save('Vehicle_Tax_Calculation.pdf');
         }
