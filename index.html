@@ -354,7 +354,10 @@
       return Number(val).toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
     }
 
-    // --- Tax calculation logic --- (unchanged for accuracy)
+    function createRow(name, value, percentStr) {
+      return `<tr><td>${name}</td><td style='text-align:right'>${fmt(value)}</td><td style='text-align:right'>${percentStr}%</td></tr>`;
+    }
+
     function calculateTax() {
       let cifJPY = parseFloat(document.getElementById('cifJPY').value);
       let exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
@@ -365,9 +368,223 @@
         alert('Please fill in all fields with valid numbers.');
         return;
       }
-      // ... (calculation code kept same as original for correctness)
-      // Result rendering + chart + PDF kept as original
+      let cif = cifJPY * exchangeRate;
+      let thresholds = {
+        'petrol': 5000000, 'diesel': 5000000, 'petrol_hybrid': 5500000,
+        'diesel_hybrid': 5500000, 'petrol_plugin': 5500000, 'diesel_plugin': 5500000,
+        'electric': 6000000, 'esmart_petrol': 6000000, 'esmart_diesel': 6000000
+      };
+      let luxuryRates = {
+        'petrol': 1.0, 'diesel': 1.2, 'petrol_hybrid': 0.8,
+        'diesel_hybrid': 0.9, 'petrol_plugin': 0.8, 'diesel_plugin': 0.9,
+        'electric': 0.6, 'esmart_petrol': 0.6, 'esmart_diesel': 0.6
+      };
+      let threshold = thresholds[type];
+      let luxuryRate = luxuryRates[type];
+      let cid = cif * 0.2;
+      let surcharge = cid * 0.5;
+      let excise = 0;
+      if (type === 'petrol' || type === 'petrol_hybrid') {
+        if (capacity < 300) excise = 482900;
+        else if (capacity < 1000) excise = Math.max(1992000, capacity * 2450);
+        else if (capacity <= 1300) excise = capacity * 3850;
+        else if (capacity <= 1500) excise = capacity * 4450;
+        else if (capacity <= 1600) excise = capacity * 5150;
+        else if (capacity <= 1800) excise = capacity * 6400;
+        else if (capacity <= 2000) excise = capacity * 7700;
+        else if (capacity <= 2500) excise = capacity * 8450;
+        else if (capacity <= 2750) excise = capacity * 9650;
+        else if (capacity <= 3000) excise = capacity * 10850;
+        else if (capacity <= 4000) excise = capacity * 12050;
+        else excise = capacity * 13300;
+      } else if (type === 'diesel' || type === 'diesel_hybrid') {
+        if (capacity < 1500) excise = capacity * 5550;
+        else if (capacity <= 1600) excise = capacity * 6950;
+        else if (capacity <= 1800) excise = capacity * 8300;
+        else if (capacity <= 2000) excise = capacity * 9650;
+        else if (capacity <= 2500) excise = capacity * 9650;
+        else if (capacity <= 2750) excise = capacity * 12050;
+        else if (capacity <= 3000) excise = capacity * 13550;
+        else if (capacity <= 4000) excise = capacity * 12050;
+        else excise = capacity * 13300;
+      } else if (type === 'electric' || type === 'petrol_plugin' || type === 'diesel_plugin') {
+        let rate1, rate2;
+        if (capacity <= 50) { rate1 = 18100; rate2 = 36200; }
+        else if (capacity <= 100) { rate1 = 24100; rate2 = 36200; }
+        else if (capacity <= 200) { rate1 = 36200; rate2 = 60400; }
+        else { rate1 = 96600; rate2 = 132800; }
+        excise = (age === '1') ? rate1 * capacity : rate2 * capacity;
+      } else if (type === 'esmart_petrol') {
+        let rate1, rate2;
+        if (capacity <= 50) { rate1 = 43440; rate2 = 30770; }
+        else if (capacity <= 100) { rate1 = 43440; rate2 = 40970; }
+        else if (capacity <= 200) { rate1 = 63420; rate2 = 41630; }
+        else { rate1 = 139440; rate2 = 111090; }
+        excise = (age === '1') ? rate1 * capacity : rate2 * capacity;
+      } else if (type === 'esmart_diesel') {
+        let rate1, rate2;
+        if (capacity <= 50) { rate1 = 52130; rate2 = 36920; }
+        else if (capacity <= 100) { rate1 = 52130; rate2 = 49160; }
+        else if (capacity <= 200) { rate1 = 76100; rate2 = 49960; }
+        else { rate1 = 167330; rate2 = 133310; }
+        excise = (age === '1') ? rate1 * capacity : rate2 * capacity;
+      }
+      let luxuryTax = (cif > threshold) ? (cif - threshold) * luxuryRate : 0;
+      let vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
+      let vat = vatBase * 0.18;
+      let total = cif + cid + surcharge + excise + luxuryTax + vat;
+      resultData = {
+        cifJPY, exchangeRate, cif, type, capacity, age,
+        cid, surcharge, excise, luxuryTax, vat, total
+      };
+      const unit = (type.includes('electric') || type.includes('plugin') || type.includes('esmart')) ? 'kW' : 'cc';
+      const inputsTable = `
+        <div style="font-weight:700;margin-bottom:6px;color:var(--primary)">Inputs</div>
+        <table>
+          <thead><tr><th>Item</th><th style="text-align:right">Value</th></tr></thead>
+          <tbody>
+            <tr><td>CIF (JPY)</td><td style="text-align:right">${fmt(cifJPY)}</td></tr>
+            <tr><td>Exchange Rate (JPY→LKR)</td><td style="text-align:right">${fmt(exchangeRate,6)}</td></tr>
+            <tr><td>CIF (LKR)</td><td style="text-align:right">${fmt(cif)}</td></tr>
+            <tr><td>Vehicle Type</td><td style="text-align:right">${type.replace('_',' ').toUpperCase()}</td></tr>
+            <tr><td>Capacity</td><td style="text-align:right">${fmt(capacity)} ${unit}</td></tr>
+            <tr><td>Age</td><td style="text-align:right">${age === '1' ? '≤1 year' : '>1–3 years'}</td></tr>
+          </tbody>
+        </table>
+      `;
+      const pct = (val) => (total > 0 ? ((val/total)*100).toFixed(2) : '0.00');
+      const breakdownTable = `
+        <div style="font-weight:700;margin:18px 0 6px 0;color:var(--primary)">Cost Breakdown</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th style="text-align:right">Value (LKR)</th>
+              <th style="text-align:right">% of Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${createRow('CIF', cif, pct(cif))}
+            ${createRow('CID', cid, pct(cid))}
+            ${createRow('Surcharge', surcharge, pct(surcharge))}
+            ${createRow('Excise Duty', excise, pct(excise))}
+            ${createRow('Luxury Tax', luxuryTax, pct(luxuryTax))}
+            ${createRow('VAT', vat, pct(vat))}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Total Import Cost</td>
+              <td style="text-align:right">${fmt(total)}</td>
+              <td style="text-align:right">100.00%</td>
+            </tr>
+          </tfoot>
+        </table>
+      `;
+      document.getElementById('result').innerHTML = inputsTable + breakdownTable;
+      showPieChart([
+        { label: 'CIF', value: cif },
+        { label: 'CID', value: cid },
+        { label: 'Surcharge', value: surcharge },
+        { label: 'Excise Duty', value: excise },
+        { label: 'Luxury Tax', value: luxuryTax },
+        { label: 'VAT', value: vat }
+      ], total);
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('downloadBtn').style.display = 'block';
     }
-  </script>
-</body>
-</html>
+
+    function resetForm() {
+      document.getElementById('cifJPY').value = '';
+      document.getElementById('exchangeRate').value = '';
+      document.getElementById('vehicleType').value = '';
+      document.getElementById('capacity').value = '';
+      document.getElementById('age').value = '';
+      document.getElementById('result').innerHTML = '';
+      document.getElementById('result').style.display = 'none';
+      document.getElementById('downloadBtn').style.display = 'none';
+      resultData = null;
+      document.getElementById('pieChart').style.display = 'none';
+      if (window.pieChartInstance) window.pieChartInstance.destroy();
+    }
+    function showPieChart(items, total) {
+      const labels = items.map(i => i.label);
+      const values = items.map(i => i.value);
+      const colors = [
+        "#7ea1e7", "#cfe2fa", "#98e4bb", "#ffe395", "#b6b6b6", "#f9c4c4"
+      ];
+      const canvas = document.getElementById('pieChart');
+      canvas.style.display = "block";
+      if (window.pieChartInstance) window.pieChartInstance.destroy();
+      window.pieChartInstance = new Chart(canvas, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: values,
+            backgroundColor: colors,
+            borderWidth: 2,
+            borderColor: "#fff"
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+              labels: { color: '#003087', font: { size: 13, weight: 600 } }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  const pct = ((ctx.parsed / total) * 100).toFixed(2);
+                  return `${ctx.label}: ${fmt(ctx.parsed)} (${pct}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    function pdfContactRow(doc, pageW, y) {
+      // Button arrangement: Phone | WhatsApp | Facebook
+      // Now more visually professional, uses icons and brand colors
+      const chipH = 28, chipPad = 16, chipGap = 18, chipFont = 12;
+      const phoneW = 120, whatsappW = 105, facebookW = 105;
+      const rowW = phoneW + whatsappW + facebookW + chipGap * 2;
+      const leftX = pageW / 2 - rowW / 2;
+      // Phone
+      doc.setFillColor(244,244,244);
+      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'F');
+      doc.setDrawColor(209,209,209);
+      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'S');
+      doc.setFontSize(chipFont);
+      doc.setTextColor(68,68,68);
+      doc.textWithLink('☎ 0769447740', leftX + chipPad, y + chipH/2+6, {url:'tel:0769447740'});
+      // WhatsApp
+      doc.setFillColor(230,247,236);
+      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'F');
+      doc.setDrawColor(185,234,199);
+      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'S');
+      doc.setTextColor(34,158,89);
+      doc.textWithLink('✆ WhatsApp', leftX+phoneW+chipGap+chipPad, y + chipH/2+6, {url:'https://wa.me/message/XSPMWKK4BGVAM1'});
+      // Facebook
+      doc.setFillColor(227,237,251);
+      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'F');
+      doc.setDrawColor(182,210,247);
+      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'S');
+      doc.setTextColor(24,119,243);
+      doc.textWithLink('f Facebook', leftX+phoneW+chipGap+whatsappW+chipGap+chipPad, y + chipH/2+6, {url:'https://www.facebook.com/share/17Ww1VkV2S/'});
+    }
+    function downloadPDF() {
+      if (!resultData) { alert('Please calculate the tax first.'); return; }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({unit:'pt', format:'a4'});
+      const pageW = doc.internal.pageSize.width;
+      let y = 40;
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(26);
+      doc.setTextColor(0,48,135);
+      doc.text('Amarasinghe Prime Enterprises', pageW/2, y, {align:"center"});
+      y += 22;
+      doc.setFont
