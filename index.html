@@ -125,6 +125,8 @@
       display: flex;
       flex-direction: column;
       min-height: 680px;
+      position: relative;
+      z-index: 1;
     }
     .form-section-title {
       text-align:center;
@@ -246,10 +248,65 @@
       }
       .container-main { flex-direction: column; }
     }
+    @media (max-width: 900px) {
+      .form-section, .result-section {
+        max-width: 100%;
+        min-width: 100%;
+      }
+      .container-main { flex-direction: column; }
+    }
     @media (max-width: 640px) {
       header h1 { font-size: 1.9rem; }
-      .form-section, .result-section { padding: 10px 7px; min-height: 440px; }
-      #downloadBtn { font-size: 0.93rem; }
+      .form-section, .result-section {
+        padding: 10px 3vw;
+        min-height: 600px;
+        width: 96vw;
+        max-width: 98vw;
+        margin-left: auto;
+        margin-right: auto;
+        position: static;
+      }
+      .container-main {
+        flex-direction: column !important;
+        gap: 0 !important;
+        align-items: stretch !important;
+      }
+      .contact {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-bottom: 8px !important;
+        margin-top: 8px !important;
+      }
+      .contact a {
+        flex: 1 1 100px !important;
+        min-width: 90px;
+        justify-content: center;
+        align-items: center;
+      }
+      .contact .chip {
+        min-width: 90px;
+        justify-content: center;
+        font-size: 0.92rem;
+        padding: 7px 4px;
+      }
+      .result-section {
+        margin-top: 0 !important;
+      }
+      #pieChart {
+        max-width: 95vw;
+      }
+      .btn-row {
+        flex-direction: row;
+        gap: 8px;
+        margin-top: 16px;
+      }
+      #downloadBtn {
+        font-size: 0.93rem;
+        margin-top: 16px;
+      }
     }
   </style>
 </head>
