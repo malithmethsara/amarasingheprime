@@ -299,8 +299,8 @@
             <div class="form-section-title">Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)</div>
             <label for="cifJPY">CIF Value (JPY):</label>
             <input type="number" id="cifJPY" required min="0" step="any" />
-            <label for="exchangeRate">Exchange Rate (JPY to LKR, e.g., 2.1):</label>
-            <input type="number" id="exchangeRate" required min="0" step="any" placeholder="2.1" />
+            <label for="exchangeRate">Exchange Rate (JPY/LKR, e.g-2.1):</label>
+            <input type="number" id="exchangeRate" required min="0" step="any" />
             <label for="vehicleType">Vehicle Type:</label>
             <select id="vehicleType" required>
                 <option value="">Select Vehicle Type</option>
@@ -368,8 +368,6 @@
                     if (data && data.rates && data.rates.LKR) {
                         const rate = data.rates.LKR;
                         rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate (live): 1 JPY = ${rate.toFixed(6)} LKR</div><div style="font-size:0.9em;color:var(--muted)">Source: exchangerate.host</div>`;
-                        const exField = document.getElementById('exchangeRate');
-                        if (exField && !exField.value) exField.value = rate.toFixed(6);
                         return;
                     }
                 }
@@ -641,10 +639,10 @@
             doc.setTextColor(120,120,120);
             const combinedDateTime = `Generated: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`;
             doc.text(combinedDateTime, pageW/2, y, {align:"center"});
-            y += 30;
+            y += 20; // Reduced spacing here
 
             pdfContactRow(doc, pageW, y);
-            y += 45; // Adjusted spacing for better layout
+            y += 40; // Reduced spacing here
 
             doc.setFontSize(16);
             doc.setTextColor(0,48,135);
@@ -776,7 +774,7 @@
 
             doc.setFontSize(8);
             doc.setTextColor(100,100,100);
-            const disclaimerText = "Disclaimer: This is a guide based on current Sri Lankan tax laws for vehicles under HS codes under 8703.xx.xx. We are not responsible for future changes in regulations.";
+            const disclaimerText = "Disclaimer: This is a guide based on current Sri Lankan tax laws for vehicles under HS codes under 8703.xx.xx. We are not responsible for future changes in tax laws, policies, or other related matters that may affect the accuracy or applicability of this information.";
             const disclaimerLines = doc.splitTextToSize(disclaimerText, pageW - 120);
             doc.text(disclaimerLines, pageW/2, y, {align:"center"});
             y += doc.getTextDimensions(disclaimerLines).h + 10;
