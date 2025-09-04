@@ -639,7 +639,7 @@
             doc.setTextColor(120,120,120);
             const combinedDateTime = `Generated: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`;
             doc.text(combinedDateTime, pageW/2, y, {align:"center"});
-            y += 30;
+            y += 20;
             pdfContactRow(doc, pageW, y);
             y += 50;
             doc.setFontSize(16);
