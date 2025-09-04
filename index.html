@@ -639,9 +639,9 @@
             doc.setTextColor(120,120,120);
             const combinedDateTime = `Generated: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`;
             doc.text(combinedDateTime, pageW/2, y, {align:"center"});
-            y += 40;
+            y += 30;
             pdfContactRow(doc, pageW, y);
-            y += 40;
+            y += 50;
             doc.setFontSize(16);
             doc.setTextColor(0,48,135);
             doc.text('Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)', pageW/2, y, {align:"center"});
