@@ -639,10 +639,10 @@
             doc.setTextColor(120,120,120);
             const combinedDateTime = `Generated: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`;
             doc.text(combinedDateTime, pageW/2, y, {align:"center"});
-            y += 20; // Reduced spacing here
+            y += 30; // Adjusted spacing to reach midway point
 
             pdfContactRow(doc, pageW, y);
-            y += 40; // Reduced spacing here
+            y += 30; // Adjusted spacing after buttons to maintain title position
 
             doc.setFontSize(16);
             doc.setTextColor(0,48,135);
