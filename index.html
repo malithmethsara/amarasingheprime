@@ -517,6 +517,11 @@
             ], total);
             document.getElementById('result').style.display = 'block';
             document.getElementById('downloadBtn').style.display = 'block';
+
+            // Auto-scroll to results on mobile devices
+            if (window.innerWidth <= 640) {
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         function pdfContactRow(doc, pageW, y) {
@@ -639,7 +644,7 @@
             y += 30;
 
             pdfContactRow(doc, pageW, y);
-            y += 40;
+            y += 45; // Adjusted spacing for better layout
 
             doc.setFontSize(16);
             doc.setTextColor(0,48,135);
