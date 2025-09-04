@@ -584,11 +584,10 @@
       document.getElementById('downloadBtn').style.display = 'block';
     }
 
-    // For PDF: replicate the arrangement of web contact/social buttons
     function pdfContactRow(doc, pageW, y) {
       // Button arrangement: Phone | WhatsApp | Facebook
+      // Now more visually professional, uses icons and brand colors
       const chipH = 28, chipPad = 16, chipGap = 18, chipFont = 12;
-      // widths (estimate for 3 chips)
       const phoneW = 120, whatsappW = 105, facebookW = 105;
       const rowW = phoneW + whatsappW + facebookW + chipGap * 2;
       const leftX = pageW / 2 - rowW / 2;
@@ -599,21 +598,21 @@
       doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'S');
       doc.setFontSize(chipFont);
       doc.setTextColor(68,68,68);
-      doc.textWithLink('☎ 0769447740', leftX + chipPad, y + chipH/2+5, {url:'tel:0769447740'});
+      doc.textWithLink('☎ 0769447740', leftX + chipPad, y + chipH/2+6, {url:'tel:0769447740'});
       // WhatsApp
       doc.setFillColor(230,247,236);
       doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'F');
       doc.setDrawColor(185,234,199);
       doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'S');
       doc.setTextColor(34,158,89);
-      doc.textWithLink('✆ WhatsApp', leftX+phoneW+chipGap+chipPad, y + chipH/2+5, {url:'https://wa.me/message/XSPMWKK4BGVAM1'});
+      doc.textWithLink('✆ WhatsApp', leftX+phoneW+chipGap+chipPad, y + chipH/2+6, {url:'https://wa.me/message/XSPMWKK4BGVAM1'});
       // Facebook
       doc.setFillColor(227,237,251);
       doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'F');
       doc.setDrawColor(182,210,247);
       doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'S');
       doc.setTextColor(24,119,243);
-      doc.textWithLink('f Facebook', leftX+phoneW+chipGap+whatsappW+chipGap+chipPad, y + chipH/2+5, {url:'https://www.facebook.com/share/17Ww1VkV2S/'});
+      doc.textWithLink('f Facebook', leftX+phoneW+chipGap+whatsappW+chipGap+chipPad, y + chipH/2+6, {url:'https://www.facebook.com/share/17Ww1VkV2S/'});
     }
 
     function createRow(name, value, percentStr) {
