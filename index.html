@@ -279,6 +279,8 @@
         align-items: center !important;
         margin-bottom: 8px !important;
         margin-top: 8px !important;
+        width: 100vw;
+        max-width: 100vw;
       }
       .contact a {
         flex: 1 1 100px !important;
@@ -316,7 +318,7 @@
     <div class="tagline">Your trusted Japanese automobile partner</div>
     <div id="timeDateTime"></div>
   </header>
-  <div class="contact">
+  <div class="contact" id="contact-row">
     <a class="chip phone-chip" href="tel:0769447740">
       <i class="fas fa-phone"></i> <strong>0769447740</strong>
     </a>
@@ -581,6 +583,39 @@
       document.getElementById('result').style.display = 'block';
       document.getElementById('downloadBtn').style.display = 'block';
     }
+
+    // For PDF: replicate the arrangement of web contact/social buttons
+    function pdfContactRow(doc, pageW, y) {
+      // Button arrangement: Phone | WhatsApp | Facebook
+      const chipH = 28, chipPad = 16, chipGap = 18, chipFont = 12;
+      // widths (estimate for 3 chips)
+      const phoneW = 120, whatsappW = 105, facebookW = 105;
+      const rowW = phoneW + whatsappW + facebookW + chipGap * 2;
+      const leftX = pageW / 2 - rowW / 2;
+      // Phone
+      doc.setFillColor(244,244,244);
+      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'F');
+      doc.setDrawColor(209,209,209);
+      doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'S');
+      doc.setFontSize(chipFont);
+      doc.setTextColor(68,68,68);
+      doc.textWithLink('☎ 0769447740', leftX + chipPad, y + chipH/2+5, {url:'tel:0769447740'});
+      // WhatsApp
+      doc.setFillColor(230,247,236);
+      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'F');
+      doc.setDrawColor(185,234,199);
+      doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'S');
+      doc.setTextColor(34,158,89);
+      doc.textWithLink('✆ WhatsApp', leftX+phoneW+chipGap+chipPad, y + chipH/2+5, {url:'https://wa.me/message/XSPMWKK4BGVAM1'});
+      // Facebook
+      doc.setFillColor(227,237,251);
+      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'F');
+      doc.setDrawColor(182,210,247);
+      doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'S');
+      doc.setTextColor(24,119,243);
+      doc.textWithLink('f Facebook', leftX+phoneW+chipGap+whatsappW+chipGap+chipPad, y + chipH/2+5, {url:'https://www.facebook.com/share/17Ww1VkV2S/'});
+    }
+
     function createRow(name, value, percentStr) {
       return `<tr><td>${name}</td><td style='text-align:right'>${fmt(value)}</td><td style='text-align:right'>${percentStr}%</td></tr>`;
     }
@@ -654,16 +689,11 @@
       y += 18;
       doc.setFontSize(11);
       doc.setTextColor(120);
-      doc.text(`Time: ${new Date().toLocaleString('en-GB', {timeZone: 'Asia/Colombo'})}`, pageW/2, y, {align:"center"});
+      doc.text(`Time: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`, pageW/2, y, {align:"center"});
       y += 25;
-      doc.setFontSize(11);
-      doc.setTextColor(68,68,68);
-      doc.textWithLink('☎ 0769447740', pageW/2-130, y, {url:'tel:0769447740'});
-      doc.setTextColor(34,158,89);
-      doc.textWithLink('✆ WhatsApp', pageW/2, y, {url:'https://wa.me/message/XSPMWKK4BGVAM1'});
-      doc.setTextColor(126,161,231);
-      doc.textWithLink('f Facebook', pageW/2+110, y, {url:'https://www.facebook.com/share/17Ww1VkV2S/'});
-      y += 32;
+      // Contact row chips
+      pdfContactRow(doc, pageW, y);
+      y += 38;
       doc.setDrawColor(230); doc.setLineWidth(0.8); doc.line(60, y, pageW-60, y); y += 13;
       doc.setFontSize(14); doc.setTextColor(0,48,135);
       doc.text('Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)', 60, y);
@@ -682,12 +712,29 @@
         head: [['Item','Value']],
         body: inputRows,
         theme: 'grid',
-        headStyles: { fillColor: [0,48,135] },
-        styles: { halign: 'left' },
-        columnStyles: {1: { halign: 'right', cellWidth: 120 }},
-        tableLineColor: [230,230,255],
-        tableLineWidth: 0.25,
-        alternateRowStyles: { fillColor: [247,249,252] },
+        headStyles: {
+          fillColor: [0,48,135],
+          textColor: [255,255,255],
+          fontStyle: 'bold',
+          fontSize: 12,
+          halign: 'left',
+          valign: 'middle',
+          lineWidth: 0.5,
+          lineColor: [0,48,135]
+        },
+        bodyStyles: {
+          fontStyle: 'normal',
+          fontSize: 11,
+          textColor: [40,40,40],
+          fillColor: [255,255,255],
+          halign: 'left',
+          valign: 'middle'
+        },
+        alternateRowStyles: {
+          fillColor: [240,244,250]
+        },
+        tableLineColor: [220,220,220],
+        tableLineWidth: 0.4,
         margin: { left: 60, right: 60 }
       });
       y = doc.lastAutoTable.finalY + 24;
@@ -708,12 +755,29 @@
         head: [['Item','Value (LKR)','% of Total']],
         body: costRows,
         theme: 'grid',
-        headStyles: { fillColor: [0,48,135] },
-        styles: { fontSize: 11, cellPadding: 6 },
-        columnStyles: {1: { halign: 'right', cellWidth: 120 }, 2: { halign: 'right', cellWidth: 70 }},
-        tableLineColor: [230,230,255],
-        tableLineWidth: 0.25,
-        alternateRowStyles: { fillColor: [247,249,252] },
+        headStyles: {
+          fillColor: [0,48,135],
+          textColor: [255,255,255],
+          fontStyle: 'bold',
+          fontSize: 12,
+          halign: 'left',
+          valign: 'middle',
+          lineWidth: 0.5,
+          lineColor: [0,48,135]
+        },
+        bodyStyles: {
+          fontStyle: 'normal',
+          fontSize: 11,
+          textColor: [40,40,40],
+          fillColor: [255,255,255],
+          halign: 'left',
+          valign: 'middle'
+        },
+        alternateRowStyles: {
+          fillColor: [240,244,250]
+        },
+        tableLineColor: [220,220,220],
+        tableLineWidth: 0.4,
         margin: { left: 60, right: 60 },
         foot: [['TOTAL', fmt(resultData.total), '100.00%']],
         footStyles: { fillColor: [240,244,250], textColor: [0,0,0], fontStyle: 'bold' }
