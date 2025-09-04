@@ -217,19 +217,23 @@
             align-items: center;
         }
         @media (max-width: 640px) {
+            body {
+                width: 100%;
+                padding: 28px 2% 48px;
+            }
             header h1 { font-size: 1.9rem; }
             .form-section, .result-section {
-                padding: 10px 3vw;
-                min-height: 600px;
-                width: 96vw;
-                max-width: 98vw;
-                margin-left: auto;
-                margin-right: auto;
+                padding: 20px 4%;
+                min-height: auto;
+                width: 92%;
+                max-width: 100%;
+                margin: 0 auto;
                 position: static;
+                box-sizing: border-box;
             }
             .container-main {
                 flex-direction: column !important;
-                gap: 0 !important;
+                gap: 16px !important;
                 align-items: stretch !important;
             }
             .contact {
@@ -338,10 +342,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script>
         let resultData = null;
-        const fixedCosts = {
-            'VEL': 15000,
-            'COM_Exm_Seal': 1750
-        };
 
         function updateDateTime() {
             const el = document.getElementById('timeDateTime');
@@ -459,7 +459,7 @@
             let luxuryTax = (cif > threshold) ? (cif - threshold) * luxuryRate : 0;
             let vatBase = cif + cid + surcharge + excise + luxuryTax;
             let vat = vatBase * 0.18;
-            let totalTax = cid + surcharge + excise + luxuryTax + vat + fixedCosts.VEL + fixedCosts.COM_Exm_Seal;
+            let totalTax = cid + surcharge + excise + luxuryTax + vat;
             let total = cif + totalTax;
 
             resultData = {
@@ -500,8 +500,6 @@
                         ${createRow('Excise Duty', excise, pct(excise))}
                         ${createRow('Luxury Tax', luxuryTax, pct(luxuryTax))}
                         ${createRow('VAT', vat, pct(vat))}
-                        ${createRow('VEL', fixedCosts.VEL, pct(fixedCosts.VEL))}
-                        ${createRow('COM/Exm/Seal', fixedCosts.COM_Exm_Seal, pct(fixedCosts.COM_Exm_Seal))}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -576,7 +574,10 @@
             if (window.pieChartInstance) window.pieChartInstance.destroy();
         }
         function showPieChart(items, total) {
-            const labels = items.map(i => i.label);
+            const labels = items.map(i => {
+                const pct = ((i.value / total) * 100).toFixed(2);
+                return `${i.label} (${pct}%)`;
+            });
             const values = items.map(i => i.value);
             const colors = [
                 "#7ea1e7", "#cfe2fa", "#98e4bb", "#ffe395", "#b6b6b6", "#f9c4c4"
@@ -693,9 +694,7 @@
                 {id: '2.0', name: 'Surcharge', base: resultData.cid, rate: '50%', amount: resultData.surcharge},
                 {id: '3.0', name: 'Excise Duty', base: resultData.capacity, rate: '', amount: resultData.excise},
                 {id: '4.0', name: 'Luxury Tax', base: resultData.cif, rate: '', amount: resultData.luxuryTax},
-                {id: '5.0', name: 'VAT', base: resultData.cif + resultData.cid + resultData.surcharge + resultData.excise + resultData.luxuryTax, rate: '18%', amount: resultData.vat},
-                {id: '6.0', name: 'VEL (Fixed cost)', amount: fixedCosts.VEL},
-                {id: '7.0', name: 'COM/Exm/Seal (Fixed cost)', amount: fixedCosts.COM_Exm_Seal}
+                {id: '5.0', name: 'VAT', base: resultData.cif + resultData.cid + resultData.surcharge + resultData.excise + resultData.luxuryTax, rate: '18%', amount: resultData.vat}
             ];
 
             const breakdownRows = taxBreakdown.map(tax => [
@@ -770,7 +769,7 @@
 
             y = doc.lastAutoTable.finalY + 30;
 
-            doc.setFontSize(10);
+            doc.setFontSize(8);
             doc.setTextColor(100,100,100);
             const disclaimerText = "Disclaimer: This is a guide based on current Sri Lankan tax laws for vehicles under HS codes under 8703.xx.xx. We are not responsible for future changes in regulations.";
             const disclaimerLines = doc.splitTextToSize(disclaimerText, pageW - 120);
