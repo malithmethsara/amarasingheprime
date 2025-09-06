@@ -227,7 +227,7 @@
             align-items: center;
         }
         /* New section styling */
-        .faq-section {
+        .faq-section, .info-section, .disclaimer-section {
             background: var(--card);
             border: 1px solid rgba(0,48,135,.15);
             box-shadow: 0 4px 16px rgba(0,0,0,.06);
@@ -235,7 +235,7 @@
             padding: 28px 26px 32px 26px;
             margin-top: 20px;
         }
-        .faq-section h2 {
+        .faq-section h2, .info-section h2, .disclaimer-section h2 {
             text-align: center;
             font-weight: 700;
             font-size: 1.4rem;
@@ -255,6 +255,40 @@
             font-size: 0.95rem;
             color: var(--muted);
             line-height: 1.6;
+        }
+        .info-section p, .disclaimer-section p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 1em;
+        }
+        .info-section h3 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text);
+            margin: 24px 0 8px 0;
+        }
+        .info-section ul {
+            padding-left: 20px;
+            margin-bottom: 16px;
+        }
+        .info-section li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .info-section a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .info-section a:hover {
+            text-decoration: underline;
+        }
+        .disclaimer-section ul {
+            list-style: none;
+            padding: 0;
+            font-size: 0.95rem;
+            color: var(--muted);
         }
         @media (max-width: 640px) {
             body {
@@ -314,11 +348,11 @@
                 font-size: 0.93rem;
                 margin-top: 16px;
             }
-            .faq-section {
+            .faq-section, .info-section, .disclaimer-section {
                 padding: 20px 4%;
             }
-            .faq-section h2 { font-size: 1.2rem; }
-            .faq-item h3 { font-size: 1rem; }
+            .faq-section h2, .info-section h2, .disclaimer-section h2 { font-size: 1.2rem; }
+            .faq-item h3, .info-section h3 { font-size: 1rem; }
         }
     </style>
     
@@ -385,7 +419,7 @@
               "name": "How is vehicle import tax calculated in Sri Lanka?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Vehicle import tax in Sri Lanka is calculated based on several factors, including the CIF (Cost, Insurance, and Freight) value, the vehicle's engine or motor capacity (CC/kW), fuel type, and age. Our calculator uses the latest 2025 Sri Lankan Gazette rates to provide an accurate breakdown of all taxes, including CID, Surcharge, Excise Duty, Luxury Tax, and VAT."
+                "text": "Vehicle import tax in Sri Lanka is a combination of several duties, including Customs Import Duty (CID), Surcharge, Excise Duty, Luxury Tax, and VAT. The exact amounts depend on the vehicle's CIF (Cost, Insurance, and Freight) value, the vehicle's engine or motor capacity (CC/kW), fuel type, and age. Our calculator uses the latest 2025 Sri Lankan Gazette rates to provide an accurate breakdown of all taxes."
               }
             },
             {
@@ -486,7 +520,56 @@
             <p>Yes, hybrid vehicles, including petrol hybrids, diesel hybrids, and plug-in hybrids, have different excise duty rates compared to conventional petrol or diesel cars. The tax structure is designed to promote more environmentally friendly vehicles. Our calculator is updated to reflect these special rates, ensuring you get a correct tax figure for your specific hybrid model.</p>
         </div>
     </div>
+
+    <div class="info-section">
+        <h2>Understanding Vehicle Taxes</h2>
+        <p>
+            Understanding the different types of taxes that make up the total vehicle import cost is key. Below is a breakdown of the main taxes applied in Sri Lanka:
+        </p>
+        <ul>
+            <li>
+                <h3>Customs Import Duty (CID)</h3>
+                <p>
+                    This is a base tax calculated as 20% of the vehicle's CIF (Cost, Insurance, and Freight) value.
+                </p>
+            </li>
+            <li>
+                <h3>Surcharge on CID</h3>
+                <p>
+                    An additional 50% tax applied on top of the Customs Import Duty (CID), effectively increasing the total CID to 30% of the CIF value.
+                </p>
+            </li>
+            <li>
+                <h3>Excise Duty</h3>
+                <p>
+                    This is a significant tax determined by the vehicle's engine capacity and fuel type, based on the latest <a href="https://cal.lk/wp-content/uploads/2023/12/Excise-Duty-rates.pdf" target="_blank" rel="noopener">Excise Duty Gazette</a>. The rates vary based on the vehicle's classification and engine size (in CC or kW).
+                </p>
+            </li>
+            <li>
+                <h3>Luxury Tax</h3>
+                <p>
+                    A tax applied when a vehicle's CIF value exceeds a specific threshold, which varies by fuel type. The tax rate also changes depending on the vehicle type.
+                </p>
+            </li>
+            <li>
+                <h3>Value Added Tax (VAT)</h3>
+                <p>
+                    An 18% Value Added Tax is charged on the total of the CIF value plus all other taxes (CID, Surcharge, Excise Duty, and Luxury Tax). See the official <a href="https://cal.lk/wp-content/uploads/2023/12/Customs-Duty-and-VAT-gazette.pdf" target="_blank" rel="noopener">Customs Duty and VAT Gazette</a> for more details.
+                </p>
+            </li>
+        </ul>
+    </div>
     
+    <div class="disclaimer-section">
+        <h2>Disclaimer & HS Codes</h2>
+        <p>
+            All vehicle taxes in Sri Lanka are determined by the Harmonized System (HS) codes. These international classifications categorize different vehicle types, such as petrol (8703.2x.xx), diesel (8703.3x.xx), and electric (8703.8x.xx) vehicles. Our calculations are based on the rates corresponding to these codes.
+        </p>
+        <p style="font-weight: 700;">
+            Important Note: Our Vehicle Tax Calculator is designed to calculate duties only for standard motor cars within the HS codes listed above. It does not support calculations for special-purpose vehicles such as hearses, ambulances, or other commercial vehicles.
+        </p>
+    </div>
+
     <footer>© 2025 Amarasinghe Prime Enterprises™</footer>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
