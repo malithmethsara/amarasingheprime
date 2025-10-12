@@ -172,6 +172,9 @@
             color: var(--primary);
             font-size: 1.15rem;
         }
+        #cbslRate {
+            margin-bottom: 1rem;
+        }
         label {
             display: block;
             margin-top: 0.875rem;
@@ -607,7 +610,7 @@
             <h2 class="form-section-title" id="form-section-title">Calculate Vehicle Import Taxes for Sri Lanka (2025 Gazette Rates)</h2>
             <form id="taxCalculatorForm" aria-describedby="form-instructions">
                 <p id="form-instructions" class="sr-only">Complete all fields to calculate vehicle import taxes based on 2025 Sri Lanka Gazette rates.</p>
-                <div id="cbslRate" aria-live="polite"></div>
+                <div id="cbslRate" aria-live="polite">Fetching rate...</div>
                 <label for="cifJPY">CIF Value (JPY):</label>
                 <input type="number" id="cifJPY" required min="0" step="any" aria-describedby="cifJPY-help">
                 <p id="cifJPY-help" class="sr-only">Enter the Cost, Insurance, and Freight value in Japanese Yen.</p>
@@ -735,6 +738,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
     <script>
         let resultData = null;
+        let fetchedExchangeRate = null;
 
         function updateDateTime() {
             const el = document.getElementById('timeDateTime');
@@ -743,24 +747,29 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
-        async function fetchJPYtoLKR() {
+        async function fetchBOCJPYRate() {
             const rateEl = document.getElementById('cbslRate');
+            const exchangeRateInput = document.getElementById('exchangeRate');
             try {
-                const resp = await fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR', { cache: 'no-store' });
-                if (resp.ok) {
-                    const data = await resp.json();
-                    if (data?.rates?.LKR) {
-                        rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate (live): 1 JPY = ${data.rates.LKR.toFixed(6)} LKR</div><div style="font-size:0.9em;color:var(--muted)">Source: exchangerate.host</div>`;
-                        return;
-                    }
-                }
-                throw new Error('Failed to fetch exchange rate');
-            } catch (e) {
-                console.error('Error fetching exchange rate:', e);
-                rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate: N/A</div><div style="font-size:0.9em;color:var(--muted)">Could not fetch live rate. Enter manually.</div>`;
+                const response = await fetch('https://amarasingheprime.lk/rate.json');
+                if (!response.ok) throw new Error('Failed to fetch rate: Status ' + response.status);
+                const data = await response.json();
+                const sellingRate = data.sellingRate;
+                const updatedDate = data.updatedDate;
+                rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${sellingRate}</div><div style="font-size:0.85em;color:var(--muted)">Source: Central Bank of Sri Lanka (Updated: ${updatedDate})</div>`;
+                fetchedExchangeRate = parseFloat(sellingRate);
+                exchangeRateInput.value = fetchedExchangeRate.toFixed(6);
+                return fetchedExchangeRate;
+            } catch (error) {
+                console.error('Error fetching BOC rate:', error.message);
+                const fallbackRate = '2.0190';
+                const fallbackDate = '12/10/2025, 23:02:00';
+                rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${fallbackRate}</div><div style="font-size:0.85em;color:var(--muted)">Source: Central Bank of Sri Lanka (Updated: ${fallbackDate}) - Using fallback rate.</div>`;
+                fetchedExchangeRate = parseFloat(fallbackRate);
+                exchangeRateInput.value = fetchedExchangeRate.toFixed(6);
+                return fetchedExchangeRate;
             }
         }
-        fetchJPYtoLKR();
 
         function fmt(val, decimals = 2) {
             return Number(val).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
@@ -769,7 +778,7 @@
         function calculateTax() {
             const inputs = {
                 cifJPY: parseFloat(document.getElementById('cifJPY').value),
-                exchangeRate: parseFloat(document.getElementById('exchangeRate').value),
+                exchangeRate: parseFloat(document.getElementById('exchangeRate').value) || fetchedExchangeRate,
                 type: document.getElementById('vehicleType').value,
                 capacity: parseFloat(document.getElementById('capacity').value),
                 age: document.getElementById('age').value,
@@ -935,6 +944,7 @@
             document.getElementById('pieChart').style.display = 'none';
             if (window.pieChartInstance) window.pieChartInstance.destroy();
             resultData = null;
+            document.getElementById('exchangeRate').value = fetchedExchangeRate ? fetchedExchangeRate.toFixed(6) : '';
         }
 
         function showPieChart(items, total) {
@@ -1163,6 +1173,7 @@
                     input.setCustomValidity('');
                 });
             });
+            fetchBOCJPYRate();
         });
     </script>
 </body>
