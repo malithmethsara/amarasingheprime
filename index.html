@@ -491,6 +491,10 @@
                 <option value="1">Not more than 1 year old</option>
                 <option value="2">More than 1 year but not more than 3 years old</option>
             </select>
+            <label for="dealerFee">Dealer Fee (LKR, e.g. 300000):</label>
+            <input type="number" id="dealerFee" min="0" step="any" />
+            <label for="clearingFee">Clearing Fee (LKR, e.g. 80000):</label>
+            <input type="number" id="clearingFee" min="0" step="any" />
             <div class="btn-row">
                 <button class="blue-btn" id="calculateBtn" onclick="calculateTax()">Calculate Tax</button>
                 <button class="blue-btn" id="resetBtn" onclick="resetForm()">Reset</button>
@@ -531,7 +535,7 @@
             <li>
                 <h3>Customs Import Duty (CID)</h3>
                 <p>
-                    This is a base tax calculated as 20% of the vehicle's CIF (Cost, Insurance, and Freight) value. See the official <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Customs Duty Gazette</a> for more details.
+                    This is a base tax calculated as 20% of the vehicle's CIF (Cost, Insurance, and Freight) value. See the official <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Sri Lanka Customs Official Guide</a> for more details.
                 </p>
             </li>
             <li>
@@ -553,9 +557,15 @@
                 </p>
             </li>
             <li>
+                <h3>Vehicle Entitlement Levy (VEL)</h3>
+                <p>
+                    A flat rate of Rs.15,000 for motor cars. See the official <a href="https://www.ird.gov.lk/en/publications/Circulars_Circulars/SEC_2016_01_E.pdf" target="_blank" rel="noopener">VEL Circular</a> for more details.
+                </p>
+            </li>
+            <li>
                 <h3>Value Added Tax (VAT)</h3>
                 <p>
-                    An 18% Value Added Tax is charged on the total of the CIF value plus all other taxes (CID, Surcharge, Excise Duty, and Luxury Tax). See the official <a href="https://cal.lk/wp-content/uploads/2023/12/Customs-Duty-and-VAT-gazette.pdf" target="_blank" rel="noopener">Customs Duty and VAT Gazette</a> for more details.
+                    An 18% Value Added Tax is charged on the total of the CIF value plus all other taxes (CID, Surcharge, Excise Duty, Luxury Tax, VEL). See the official <a href="https://cal.lk/wp-content/uploads/2023/12/Customs-Duty-and-VAT-gazette.pdf" target="_blank" rel="noopener">Customs Duty and VAT Gazette</a> for more details.
                 </p>
             </li>
         </ul>
@@ -621,6 +631,8 @@
             let type = document.getElementById('vehicleType').value;
             let capacity = parseFloat(document.getElementById('capacity').value);
             let age = document.getElementById('age').value;
+            let dealerFee = parseFloat(document.getElementById('dealerFee').value) || 0;
+            let clearingFee = parseFloat(document.getElementById('clearingFee').value) || 0;
             if (isNaN(cifJPY) || isNaN(exchangeRate) || isNaN(capacity) || !type || !age) {
                 alert('Please fill in all fields with valid numbers.');
                 return;
@@ -690,14 +702,16 @@
                 excise = (age === '1') ? rate1 * capacity : rate2 * capacity;
             }
             let luxuryTax = (cif > threshold) ? (cif - threshold) * luxuryRate : 0;
-            let vatBase = cif + cid + surcharge + excise + luxuryTax;
+            let vel = 15000;
+            let vatBase = cif + cid + surcharge + excise + luxuryTax + vel;
             let vat = vatBase * 0.18;
-            let totalTax = cid + surcharge + excise + luxuryTax + vat;
-            let total = cif + totalTax;
+            let totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
+            let otherCharges = dealerFee + clearingFee;
+            let total = cif + totalTax + otherCharges;
 
             resultData = {
-                cifJPY, exchangeRate, cif, type, capacity, age,
-                cid, surcharge, excise, luxuryTax, vat, totalTax, total
+                cifJPY, exchangeRate, cif, type, capacity, age, dealerFee, clearingFee,
+                cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, total
             };
 
             const unit = (type.includes('electric') || type.includes('plugin') || type.includes('esmart')) ? 'kW' : 'cc';
@@ -712,6 +726,8 @@
                         <tr><td>Vehicle Type</td><td style="text-align:right">${type.replace('_',' ').toUpperCase()}</td></tr>
                         <tr><td>Engine/ Motor Capacity</td><td style="text-align:right">${fmt(capacity)} ${unit}</td></tr>
                         <tr><td>Vehicle Age</td><td style="text-align:right">${age === '1' ? '≤1 year' : '>1–3 years'}</td></tr>
+                        <tr><td>Dealer Fee (LKR)</td><td style="text-align:right">${fmt(dealerFee)}</td></tr>
+                        <tr><td>Clearing Fee (LKR)</td><td style="text-align:right">${fmt(clearingFee)}</td></tr>
                     </tbody>
                 </table>
             `;
@@ -732,7 +748,9 @@
                         ${createRow('Surcharge', surcharge, pct(surcharge))}
                         ${createRow('Excise Duty', excise, pct(excise))}
                         ${createRow('Luxury Tax', luxuryTax, pct(luxuryTax))}
+                        ${createRow('VEL', vel, pct(vel))}
                         ${createRow('VAT', vat, pct(vat))}
+                        ${createRow('Other Charges', otherCharges, pct(otherCharges))}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -746,7 +764,8 @@
             document.getElementById('result').innerHTML = inputsTable + breakdownTable;
             showPieChart([
                 { label: 'CIF', value: cif },
-                { label: 'Total Tax', value: totalTax }
+                { label: 'Total Tax', value: totalTax },
+                { label: 'Other Charges', value: otherCharges }
             ], total);
             document.getElementById('result').style.display = 'block';
             document.getElementById('downloadBtn').style.display = 'block';
@@ -804,6 +823,8 @@
             document.getElementById('vehicleType').value = '';
             document.getElementById('capacity').value = '';
             document.getElementById('age').value = '';
+            document.getElementById('dealerFee').value = '';
+            document.getElementById('clearingFee').value = '';
             document.getElementById('result').innerHTML = '';
             document.getElementById('result').style.display = 'none';
             document.getElementById('downloadBtn').style.display = 'none';
@@ -887,7 +908,10 @@
                 ['CIF Value in foreign currency', fmt(resultData.cifJPY)],
                 ['Exchange Rate', fmt(resultData.exchangeRate,6)],
                 ['Fuel Type', resultData.type.replace('_',' ').toUpperCase()],
-                ['Engine Capacity (CC) | Motor Power (Kw)', `${fmt(resultData.capacity)} ${unit}`]
+                ['Engine Capacity (CC) | Motor Power (Kw)', `${fmt(resultData.capacity)} ${unit}`],
+                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
+                ['Dealer Fee (LKR)', fmt(resultData.dealerFee)],
+                ['Clearing Fee (LKR)', fmt(resultData.clearingFee)]
             ];
             doc.autoTable({
                 startY: y,
@@ -930,7 +954,8 @@
                 {id: '2.0', name: 'Surcharge', base: resultData.cid, rate: '50%', amount: resultData.surcharge},
                 {id: '3.0', name: 'Excise Duty', base: resultData.capacity, rate: '', amount: resultData.excise},
                 {id: '4.0', name: 'Luxury Tax', base: resultData.cif, rate: '', amount: resultData.luxuryTax},
-                {id: '5.0', name: 'VAT', base: resultData.cif + resultData.cid + resultData.surcharge + resultData.excise + resultData.luxuryTax, rate: '18%', amount: resultData.vat}
+                {id: '4.5', name: 'VEL', base: '', rate: '', amount: resultData.vel},
+                {id: '5.0', name: 'VAT', base: resultData.cif + resultData.cid + resultData.surcharge + resultData.excise + resultData.luxuryTax + resultData.vel, rate: '18%', amount: resultData.vat}
             ];
 
             const breakdownRows = taxBreakdown.map(tax => [
@@ -970,8 +995,8 @@
             y = doc.lastAutoTable.finalY + 24;
 
             const summaryRows = [
-                ['CIF', 'Total Tax', 'Total Value'],
-                [fmt(resultData.cif), fmt(resultData.totalTax), fmt(resultData.total)]
+                ['CIF', 'Total Tax', 'Other Charges', 'Total Cost'],
+                [fmt(resultData.cif), fmt(resultData.totalTax), fmt(resultData.otherCharges), fmt(resultData.total)]
             ];
 
             doc.autoTable({
