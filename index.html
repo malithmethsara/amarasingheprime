@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Calculate Sri Lanka vehicle import taxes for 2025 with Amarasinghe Prime Enterprises' accurate tax calculator. Get instant estimates for petrol, diesel, hybrid, and electric cars." />
-    <meta name="google-site-verification" content="8w8943-d9d83m2s" />
-    <meta name="robots" content="index, follow" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate vehicle import taxes for Sri Lanka in 2025 with Amarasinghe Prime Enterprises' accurate tax calculator. Instant estimates for petrol, diesel, hybrid, and electric cars.">
+    <meta name="keywords" content="Sri Lanka vehicle tax calculator, vehicle import taxes 2025, Japanese car import Sri Lanka, petrol car tax, diesel car tax, hybrid car tax, electric vehicle tax, Amarasinghe Prime Enterprises">
+    <meta name="author" content="Amarasinghe Prime Enterprises">
+    <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="8w8943-d9d83m2s">
     <title>Sri Lanka Vehicle Tax Calculator 2025 - Amarasinghe Prime Enterprises</title>
     
-    <meta property="og:title" content="Sri Lanka Vehicle Tax Calculator 2025 by Amarasinghe Prime Enterprises" />
-    <meta property="og:description" content="Accurately calculate your import taxes for Japanese vehicles in Sri Lanka with our up-to-date tax calculator for petrol, diesel, and electric cars." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.amarasingheprimeenterprises.com/vehicle-tax-calculator.html" />
-    <meta property="og:image" content="https://www.amarasingheprimeenterprises.com/social-share-image.jpg" />
-    <meta property="og:site_name" content="Amarasinghe Prime Enterprises" />
+    <meta property="og:title" content="Sri Lanka Vehicle Tax Calculator 2025 by Amarasinghe Prime Enterprises">
+    <meta property="og:description" content="Accurately calculate import taxes for Japanese vehicles in Sri Lanka with our 2025 tax calculator for petrol, diesel, hybrid, and electric cars.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.amarasingheprimeenterprises.com/vehicle-tax-calculator.html">
+    <meta property="og:image" content="https://www.amarasingheprimeenterprises.com/social-share-image.jpg">
+    <meta property="og:image:alt" content="Sri Lanka Vehicle Tax Calculator Interface">
+    <meta property="og:site_name" content="Amarasinghe Prime Enterprises">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sri Lanka Vehicle Tax Calculator 2025 by Amarasinghe Prime Enterprises">
+    <meta name="twitter:description" content="Accurately calculate import taxes for Japanese vehicles in Sri Lanka with our 2025 tax calculator for petrol, diesel, hybrid, and electric cars.">
+    <meta name="twitter:image" content="https://www.amarasingheprimeenterprises.com/social-share-image.jpg">
 
-    <link rel="canonical" href="https://www.amarasingheprimeenterprises.com/vehicle-tax-calculator.html" />
-    <link rel="icon" href="Favicon.png" type="image/png" />
-
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="canonical" href="https://www.amarasingheprimeenterprises.com/vehicle-tax-calculator.html">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" as="style" onload="this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.rel='stylesheet'">
+    <link rel="preload" href="/logo.png" as="image">
     <style>
         :root {
             --primary: #003087;
@@ -37,90 +44,111 @@
             --soft-whatsapp-border: #b9eac7;
             --soft-black-border: #d1d1d1;
         }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
             font-family: 'Open Sans', sans-serif;
             background: linear-gradient(90deg, var(--bg1), var(--bg2));
             color: var(--text);
-            width: 92%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 28px 24px 48px;
+            padding: 1.5rem 1rem 2.5rem;
+            line-height: 1.5;
         }
         header {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 6px;
+            gap: 0.375rem;
             align-items: center;
             justify-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 0.625rem;
+        }
+        header img {
+            max-width: 160px;
+            height: auto;
         }
         header h1 {
             font-weight: 700;
-            font-size: 2.4rem;
+            font-size: clamp(1.8rem, 5vw, 2.4rem);
             color: var(--primary);
-            margin: 0;
             text-align: center;
         }
         header .tagline {
             color: var(--muted);
             font-weight: 600;
             text-align: center;
-            margin-bottom: 6px;
+            font-size: 1rem;
         }
         #timeDateTime {
             text-align: center;
             color: var(--muted);
-            margin-bottom: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
         }
         .contact {
             display: flex;
             flex-wrap: wrap;
-            gap: 14px;
+            gap: 0.875rem;
             align-items: center;
             justify-content: center;
-            margin: 10px 0 0 0;
+            margin: 0.625rem 0;
             font-weight: 600;
         }
         .contact a {
             text-decoration: none;
-            font-weight: 600;
             font-size: 1rem;
+            transition: transform 0.2s;
+        }
+        .contact a:hover {
+            transform: scale(1.05);
         }
         .contact .chip {
             display: inline-flex;
-            gap: 8px;
+            gap: 0.5rem;
             align-items: center;
-            padding: 8px 12px;
+            padding: 0.5rem 0.75rem;
             border-radius: 999px;
             background: var(--card);
-            box-shadow: 0 2px 8px rgba(0,0,0,.06);
-            border: 1px solid rgb(220, 230, 246);
-            transition: background .18s, border-color .18s, color .18s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid rgb(220,230,246);
+            transition: background 0.18s, border-color 0.18s, color 0.18s;
         }
-        .contact .chip i { width: 18px; text-align: center; }
+        .contact .chip i {
+            width: 1.125rem;
+            text-align: center;
+        }
         .phone-chip {
-            background: var(--soft-black) !important;
-            color: #222 !important;
-            border: 1px solid var(--soft-black-border) !important;
+            background: var(--soft-black);
+            color: #222;
+            border: 1px solid var(--soft-black-border);
         }
-        .phone-chip i, .phone-chip strong { color: #444 !important; }
+        .phone-chip i, .phone-chip strong {
+            color: #444;
+        }
         .whatsapp-chip {
-            background: var(--soft-whatsapp) !important;
-            color: #229e59 !important;
-            border: 1px solid var(--soft-whatsapp-border) !important;
+            background: var(--soft-whatsapp);
+            color: #229e59;
+            border: 1px solid var(--soft-whatsapp-border);
         }
-        .whatsapp-chip i { color: #229e59 !important; }
+        .whatsapp-chip i {
+            color: #229e59;
+        }
         .facebook-chip {
-            background: var(--soft-facebook) !important;
-            color: #1877f3 !important;
-            border: 1px solid var(--soft-facebook-border) !important;
+            background: var(--soft-facebook);
+            color: #1877f3;
+            border: 1px solid var(--soft-facebook-border);
         }
-        .facebook-chip i { color: #1877f3 !important; }
+        .facebook-chip i {
+            color: #1877f3;
+        }
         .container-main {
             display: flex;
             flex-wrap: wrap;
-            gap: 0;
-            margin-top: 10px;
+            gap: 1rem;
+            margin-top: 0.625rem;
             justify-content: space-between;
             align-items: stretch;
         }
@@ -129,132 +157,156 @@
             min-width: 340px;
             max-width: 540px;
             background: var(--card);
-            border: 1px solid rgba(0,48,135,.15);
-            box-shadow: 0 4px 16px rgba(0,0,0,.06);
-            border-radius: 16px;
-            padding: 28px 26px 32px 26px;
-            margin-bottom: 0;
+            border: 1px solid rgba(0,48,135,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border-radius: 1rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             min-height: 680px;
-            position: relative;
-            z-index: 1;
         }
         .form-section-title {
-            text-align:center;
-            font-weight:700;
-            margin-bottom:12px;
-            color:var(--primary);
-            font-size:1.15rem;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+            font-size: 1.15rem;
         }
-        label { display: block; margin-top: 14px; font-weight: 700; font-size: 0.98rem; }
+        label {
+            display: block;
+            margin-top: 0.875rem;
+            font-weight: 700;
+            font-size: 0.98rem;
+        }
         input, select {
             width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            margin-top: 6px;
+            padding: 0.75rem;
+            margin-top: 0.375rem;
             border: 1px solid var(--primary);
-            border-radius: 10px;
+            border-radius: 0.625rem;
             font-size: 1rem;
             background: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,.05);
-            transition: border-color .15s;
-            min-width: 0;
-            display: block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-hover);
+            box-shadow: 0 0 5px rgba(0,48,135,0.3);
         }
         select {
             appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background: #fff url("data:image/svg+xml;charset=UTF-8,<svg width='14' height='14' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M6 8l4 4 4-4' stroke='%23003087' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center/16px 16px;
+            background: #fff url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='14' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%23003087' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 0.75rem center/1rem 1rem;
         }
         .btn-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 18px;
+            gap: 0.75rem;
+            margin-top: 1.125rem;
         }
         .blue-btn {
             flex: 1 1 180px;
-            padding: 12px;
+            padding: 0.75rem;
             border: none;
-            border-radius: 10px;
+            border-radius: 0.625rem;
             cursor: pointer;
             font-size: 1rem;
             color: #fff;
             background: var(--primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
-            transition: background .18s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: background 0.18s, transform 0.2s;
             font-weight: 700;
-            height: 44px;
+            height: 2.75rem;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .blue-btn:hover {
             background: var(--primary-hover);
+            transform: translateY(-2px);
         }
         #downloadBtn {
             display: none;
             flex: 1 1 180px;
-            height: 44px;
-            margin-top: 18px;
+            height: 2.75rem;
+            margin-top: 1.125rem;
         }
         .result-section-title {
-            font-weight:700;
-            margin-bottom:10px;
-            color:var(--primary);
-            font-size:1.12rem;
+            font-weight: 700;
+            margin-bottom: 0.625rem;
+            color: var(--primary);
+            font-size: 1.12rem;
         }
-        #result { margin-top: 0; }
-        table { width: 100%; border-collapse: collapse; }
-        thead th { background: var(--primary); color: #fff; padding: 10px; text-align: left; }
-        tbody td { padding: 9px 10px; border-bottom: 1px solid rgba(0,48,135,.15); }
-        tfoot td { padding: 10px; font-weight: 700; background: #f0f4fa; }
+        #result {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+        thead th {
+            background: var(--primary);
+            color: #fff;
+            padding: 0.625rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        tbody td {
+            padding: 0.5625rem 0.625rem;
+            border-bottom: 1px solid rgba(0,48,135,0.15);
+        }
+        tfoot td {
+            padding: 0.625rem;
+            font-weight: 700;
+            background: #f0f4fa;
+        }
         #pieChart {
             display: none;
-            margin: 20px auto 0 auto;
+            margin: 1.25rem auto 0;
             max-width: 100%;
             background: transparent;
         }
         footer {
             text-align: center;
             width: 100%;
-            margin-top: 26px;
+            margin-top: 1.625rem;
             color: #555;
             font-size: 0.92rem;
-            padding: 14px 0 0 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 0.875rem 0;
         }
         .faq-section, .info-section, .disclaimer-section, .social-proof {
             background: var(--card);
-            border: 1px solid rgba(0,48,135,.15);
-            box-shadow: 0 4px 16px rgba(0,0,0,.06);
-            border-radius: 16px;
-            padding: 28px 26px 32px 26px;
-            margin-top: 20px;
+            border: 1px solid rgba(0,48,135,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1.25rem;
         }
         .social-proof {
-            padding: 14px 26px;
+            padding: 0.875rem 1.5rem;
+            text-align: center;
         }
         .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2 {
             text-align: center;
             font-weight: 700;
             font-size: 1.4rem;
             color: var(--primary);
-            margin-bottom: 18px;
+            margin-bottom: 1.125rem;
         }
         .faq-item {
-            margin-bottom: 16px;
+            margin-bottom: 1rem;
         }
         .faq-item h3 {
             font-weight: 700;
             font-size: 1.1rem;
             color: var(--text);
-            margin: 0 0 8px 0;
+            margin: 0 0 0.5rem;
             cursor: pointer;
+            transition: color 0.2s;
+        }
+        .faq-item h3:hover {
+            color: var(--primary);
         }
         .faq-item p {
             font-size: 0.95rem;
@@ -269,28 +321,30 @@
             font-size: 0.95rem;
             color: var(--muted);
             line-height: 1.6;
-            margin-bottom: 1em;
+            margin-bottom: 1rem;
         }
         .info-section h3 {
             font-weight: 700;
             font-size: 1.1rem;
             color: var(--text);
-            margin: 24px 0 8px 0;
+            margin: 1.5rem 0 0.5rem;
         }
         .info-section ul {
-            padding-left: 20px;
-            margin-bottom: 16px;
+            padding-left: 1.25rem;
+            margin-bottom: 1rem;
         }
         .info-section li {
-            margin-bottom: 8px;
+            margin-bottom: 0.5rem;
             font-size: 0.95rem;
         }
         .info-section a, .result-section a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.2s;
         }
         .info-section a:hover, .result-section a:hover {
+            color: var(--primary-hover);
             text-decoration: underline;
         }
         .disclaimer-section ul {
@@ -299,72 +353,75 @@
             font-size: 0.95rem;
             color: var(--muted);
         }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
         @media (max-width: 640px) {
             body {
-                width: 100%;
-                padding: 28px 2% 48px;
+                padding: 1.5rem 2% 2.5rem;
             }
-            header h1 { font-size: 1.9rem; }
+            header img {
+                max-width: 140px;
+            }
+            header h1 {
+                font-size: clamp(1.5rem, 4.5vw, 1.9rem);
+            }
             .form-section, .result-section, .social-proof {
-                padding: 20px 4%;
-                min-height: auto;
-                width: 92%;
+                padding: 1.25rem;
+                min-width: 100%;
                 max-width: 100%;
-                margin: 0 auto;
-                position: static;
-                box-sizing: border-box;
+                min-height: auto;
             }
             .social-proof {
-                padding: 12px 4%;
+                padding: 0.75rem 1.25rem;
             }
             .container-main {
-                flex-direction: column !important;
-                gap: 16px !important;
-                align-items: stretch !important;
+                flex-direction: column;
+                gap: 1rem;
             }
             .contact {
-                flex-direction: column !important;
-                gap: 8px !important;
-                justify-content: center !important;
-                align-items: center !important;
-                margin-bottom: 8px !important;
-                margin-top: 8px !important;
-                width: 100%;
-                max-width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin: 0.5rem 0;
             }
             .contact a {
-                flex: 1 1 90% !important;
-                min-width: 90%;
-                max-width: 90%;
-                justify-content: center;
-                align-items: center;
+                width: 100%;
+                text-align: center;
             }
             .contact .chip {
                 width: 100%;
                 justify-content: center;
                 font-size: 0.95rem;
-                padding: 10px 4px;
+                padding: 0.625rem;
             }
-            .result-section {
-                margin-top: 0 !important;
+            .btn-row {
+                gap: 0.5rem;
+            }
+            .blue-btn {
+                font-size: 0.95rem;
+            }
+            #downloadBtn {
+                margin-top: 1rem;
+            }
+            .faq-section, .info-section, .disclaimer-section {
+                padding: 1.25rem;
+            }
+            .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2 {
+                font-size: 1.2rem;
+            }
+            .faq-item h3, .info-section h3 {
+                font-size: 1rem;
             }
             #pieChart {
                 max-width: 95vw;
             }
-            .btn-row {
-                flex-direction: row;
-                gap: 8px;
-                margin-top: 16px;
-            }
-            #downloadBtn {
-                font-size: 0.93rem;
-                margin-top: 16px;
-            }
-            .faq-section, .info-section, .disclaimer-section, .social-proof {
-                padding: 20px 4%;
-            }
-            .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2 { font-size: 1.2rem; }
-            .faq-item h3, .info-section h3 { font-size: 1rem; }
         }
     </style>
     
@@ -398,7 +455,7 @@
           "name": "Amarasinghe Prime Enterprises (Pvt) Ltd",
           "image": "https://www.amarasingheprimeenterprises.com/logo.jpg",
           "url": "https://www.amarasingheprimeenterprises.com/",
-          "telephone": "+94769447740",
+          "telephone": "+94 76 944 7740",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "3rd Lane, Malabe",
@@ -421,6 +478,10 @@
               "opens": "09:00",
               "closes": "17:00"
             }
+          ],
+          "sameAs": [
+            "https://www.facebook.com/share/17Ww1VkV2S/",
+            "https://wa.me/message/XSPMWKK4BGVAM1"
           ]
         },
         {
@@ -431,7 +492,7 @@
               "name": "How is vehicle import tax calculated in Sri Lanka?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Vehicle import tax in Sri Lanka is a combination of several duties, including Customs Import Duty (CID), Surcharge, Excise Duty, Luxury Tax, Vehicle Entitlement Levy (VEL), and VAT. The exact amounts depend on the vehicle's CIF (Cost, Insurance, and Freight) value, the vehicle's engine or motor capacity (CC/kW), fuel type, and age. Our calculator uses the latest 2025 Sri Lankan Gazette rates to provide an accurate breakdown of all taxes for Colombo and Sri Lanka importers."
+                "text": "Vehicle import tax in Sri Lanka combines Customs Import Duty (CID), Surcharge, Excise Duty, Luxury Tax, Vehicle Entitlement Levy (VEL), and VAT. Amounts depend on CIF value, engine/motor capacity (CC/kW), fuel type, and age. Our calculator uses 2025 Gazette rates for accurate tax breakdowns."
               }
             },
             {
@@ -439,7 +500,7 @@
               "name": "What is the difference between a petrol hybrid and an e-SMART hybrid for tax purposes?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "For tax calculation, the Sri Lankan Customs and Excise Department distinguishes between regular hybrids (like the Toyota Aqua or Honda Vezel) and e-SMART hybrids (like the Nissan Note e-Power). The rates applied to e-SMART vehicles are different and are based on a specific formula for electric motor capacity and generator type. Our tool accounts for these different tax structures to ensure accuracy for Sri Lanka vehicle imports."
+                "text": "Sri Lankan Customs distinguishes regular hybrids (e.g., Toyota Aqua) from e-SMART hybrids (e.g., Nissan Note e-Power). e-SMART vehicles have unique tax rates based on electric motor capacity and generator type. Our tool ensures accurate calculations."
               }
             },
             {
@@ -447,7 +508,7 @@
               "name": "Is the tax rate for electric vehicles the same as petrol vehicles in Sri Lanka?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No, electric vehicles (EVs) have a unique tax structure based on their motor capacity in kilowatts (kW) and vehicle age. The excise duty and other taxes are calculated differently compared to petrol or diesel vehicles, generally resulting in lower import taxes to encourage EV adoption in Sri Lanka. Our calculator provides separate tax calculations for electric, petrol, and diesel vehicles."
+                "text": "No, electric vehicles (EVs) have a distinct tax structure based on motor capacity (kW) and age, with lower rates to promote adoption. Our calculator provides precise tax estimates for EVs, petrol, and diesel vehicles."
               }
             },
             {
@@ -455,7 +516,7 @@
               "name": "How to calculate import duty for electric vehicles in Sri Lanka?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Electric vehicle import duties in Sri Lanka for 2025 are based on motor capacity (kW) and vehicle age. Taxes include Customs Import Duty (CID), Vehicle Entitlement Levy (VEL), VAT, and others. Use our Sri Lanka vehicle tax calculator to get precise estimates for EVs in Colombo and beyond."
+                "text": "Electric vehicle duties are based on motor capacity (kW) and age, including CID, VEL, VAT, and others. Use our calculator for accurate EV tax estimates."
               }
             },
             {
@@ -463,7 +524,7 @@
               "name": "How to calculate luxury tax for vehicle imports in Sri Lanka?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Luxury Tax is applied when the CIF (Cost, Insurance, and Freight) value exceeds a specific threshold, which varies by vehicle type: Petrol & Diesel: 5 million LKR; Hybrid & Plug-in Hybrid: 5.5 million LKR; Electric Vehicles & e-SMART Hybrid (e-POWER): 6 million LKR. The tax is calculated on the amount exceeding the threshold at rates specific to the vehicle type: Petrol (100%), Diesel (120%), Petrol Hybrid (80%), Diesel Hybrid (90%), Plug-in Hybrid Petrol (80%), Plug-in Hybrid Diesel (90%), Electric (60%), e-SMART Hybrid (60%). Our calculator automatically applies these rates based on your inputs."
+                "text": "Luxury Tax applies when CIF exceeds thresholds: Petrol/Diesel (5M LKR), Hybrid/Plug-in (5.5M LKR), Electric/e-SMART (6M LKR). Rates vary: Petrol (100%), Diesel (120%), Hybrids (80-90%), Electric/e-SMART (60%). Our calculator applies these rates automatically."
               }
             },
             {
@@ -471,7 +532,7 @@
               "name": "What are HS codes and how do they affect vehicle import taxes in Sri Lanka?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "HS codes (Harmonized System codes) are a standardized six-digit international system for classifying traded goods, used by over 200 countries to administer tariffs, track trade statistics, and apply regulations. For vehicle imports in Sri Lanka, each vehicle type has a specific HS code, which determines the applicable tax rates: Petrol Vehicles (8703.2x.xx), Diesel Vehicles (8703.3x.xx), Petrol Hybrid Vehicles (8703.4x.xx), Diesel Hybrid Vehicles (8703.5x.xx), Petrol Plug-in Hybrid Vehicles (8703.6x.xx), Diesel Plug-in Hybrid Vehicles (8703.7x.xx), Electric Vehicles (8703.8x.xx), e-SMART Hybrid | e-POWER (8703.80.7x). Each HS code has distinct tax calculations, and our calculator uses these codes to ensure accurate tax estimates."
+                "text": "HS codes classify vehicles (e.g., Petrol: 8703.2x.xx, Electric: 8703.8x.xx), determining tax rates. Our calculator uses these codes for precise tax estimates."
               }
             }
           ]
@@ -505,7 +566,9 @@
               "@type": "ImageObject",
               "url": "https://www.amarasingheprimeenterprises.com/logo.png"
             }
-          }
+          },
+          "datePublished": "2025-01-01",
+          "dateModified": "2025-10-12"
         }
       ]
     }
@@ -515,322 +578,315 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'UA-XXXXX-Y');
+      gtag('config', 'UA-XXXXX-Y', { 'page_path': '/vehicle-tax-calculator.html' });
     </script>
 </head>
 <body>
     <header>
-        <img src="logo.png" alt="Amarasinghe Prime Enterprises Sri Lanka Vehicle Tax Calculator Logo" width="160" height="75" style="margin-bottom: 10px;">
+        <img src="/logo.png" alt="Amarasinghe Prime Enterprises Logo" width="160" height="75" loading="lazy">
         <h1>Sri Lanka Vehicle Tax Calculator 2025 - Amarasinghe Prime Enterprises</h1>
         <div class="tagline">Your trusted Japanese automobile partner in Sri Lanka</div>
-        <div id="timeDateTime"></div>
+        <div id="timeDateTime" aria-live="polite"></div>
     </header>
     <div class="contact" id="contact-row">
-        <a class="chip phone-chip" href="tel:0769447740">
-            <i class="fas fa-phone"></i> <strong>0769447740</strong>
+        <a class="chip phone-chip" href="tel:+94769447740" aria-label="Call Amarasinghe Prime Enterprises at +94 76 944 7740">
+            <i class="fas fa-phone" aria-hidden="true"></i> <strong>+94 76 944 7740</strong>
         </a>
-        <a class="chip whatsapp-chip" href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">
-            <i class="fab fa-whatsapp"></i> WhatsApp
+        <a class="chip whatsapp-chip" href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener" aria-label="Contact via WhatsApp">
+            <i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp
         </a>
-        <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank" rel="noopener">
-            <i class="fab fa-facebook"></i> Facebook
+        <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank" rel="noopener" aria-label="Visit our Facebook page">
+            <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
         </a>
     </div>
     <div class="social-proof">
-        <p style="text-align: center; margin: 0;">⭐ Rated 4.9/5 by 25+ users for accurate Sri Lanka vehicle tax calculations!</p>
+        <p>⭐ Rated 4.9/5 by 25+ users for accurate Sri Lanka vehicle tax calculations!</p>
     </div>
     <div class="container-main">
-        <div class="form-section">
-            <div class="form-section-title">Calculate Vehicle Import Taxes for Sri Lanka (2025 Gazette Rates)</div>
-            <label for="cifJPY">CIF Value (JPY):</label>
-            <input type="number" id="cifJPY" required min="0" step="any" />
-            <label for="exchangeRate">Exchange Rate (JPY/LKR, e.g-2.1):</label>
-            <input type="number" id="exchangeRate" required min="0" step="any" />
-            <label for="vehicleType">Vehicle Type:</label>
-            <select id="vehicleType" required>
-                <option value="">Select Vehicle Type</option>
-                <option value="petrol">Petrol</option>
-                <option value="diesel">Diesel</option>
-                <option value="petrol_hybrid">Petrol Hybrid</option>
-                <option value="diesel_hybrid">Diesel Hybrid</option>
-                <option value="petrol_plugin">Petrol Plug-in Hybrid</option>
-                <option value="diesel_plugin">Diesel Plug-in Hybrid</option>
-                <option value="electric">Electric</option>
-                <option value="esmart_petrol">e-SMART Hybrid (Petrol Generator)</option>
-                <option value="esmart_diesel">e-SMART Hybrid (Diesel Generator)</option>
-            </select>
-            <label for="capacity">Engine/ Motor Capacity (CC or kW):</label>
-            <input type="number" id="capacity" required min="0" step="any" />
-            <label for="age">Vehicle Age:</label>
-            <select id="age" required>
-                <option value="">Select Age</option>
-                <option value="1">Not more than 1 year old</option>
-                <option value="2">More than 1 year but not more than 3 years old</option>
-            </select>
-            <label for="dealerFee">Dealer Fee (LKR, e.g. 300000):</label>
-            <input type="number" id="dealerFee" min="0" step="any" />
-            <label for="clearingFee">Clearing Agent Fee (LKR, e.g. 80000):</label>
-            <input type="number" id="clearingFee" min="0" step="any" />
-            <div class="btn-row">
-                <button class="blue-btn" id="calculateBtn" onclick="calculateTax()">Calculate Tax</button>
-                <button class="blue-btn" id="resetBtn" onclick="resetForm()">Reset</button>
-            </div>
-        </div>
-        <div class="result-section">
-            <div class="result-section-title">Calculation Result</div>
-            <div id="result"></div>
-            <div style="margin-top: 20px; text-align: center;">
-                <p style="font-size: 0.95rem; color: var(--muted);">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+        <section class="form-section" aria-labelledby="form-section-title">
+            <h2 class="form-section-title" id="form-section-title">Calculate Vehicle Import Taxes for Sri Lanka (2025 Gazette Rates)</h2>
+            <form id="taxCalculatorForm" aria-describedby="form-instructions">
+                <p id="form-instructions" class="sr-only">Complete all fields to calculate vehicle import taxes based on 2025 Sri Lanka Gazette rates.</p>
+                <div id="cbslRate" aria-live="polite"></div>
+                <label for="cifJPY">CIF Value (JPY):</label>
+                <input type="number" id="cifJPY" required min="0" step="any" aria-describedby="cifJPY-help">
+                <p id="cifJPY-help" class="sr-only">Enter the Cost, Insurance, and Freight value in Japanese Yen.</p>
+                <label for="exchangeRate">Exchange Rate (JPY/LKR, e.g., 2.1):</label>
+                <input type="number" id="exchangeRate" required min="0" step="any" aria-describedby="exchangeRate-help">
+                <p id="exchangeRate-help" class="sr-only">Enter the exchange rate from Japanese Yen to Sri Lankan Rupees.</p>
+                <label for="vehicleType">Vehicle Type:</label>
+                <select id="vehicleType" required aria-describedby="vehicleType-help">
+                    <option value="">Select Vehicle Type</option>
+                    <option value="petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="petrol_hybrid">Petrol Hybrid</option>
+                    <option value="diesel_hybrid">Diesel Hybrid</option>
+                    <option value="petrol_plugin">Petrol Plug-in Hybrid</option>
+                    <option value="diesel_plugin">Diesel Plug-in Hybrid</option>
+                    <option value="electric">Electric</option>
+                    <option value="esmart_petrol">e-SMART Hybrid (Petrol Generator)</option>
+                    <option value="esmart_diesel">e-SMART Hybrid (Diesel Generator)</option>
+                </select>
+                <p id="vehicleType-help" class="sr-only">Select the type of vehicle to calculate applicable taxes.</p>
+                <label for="capacity">Engine/Motor Capacity (CC or kW):</label>
+                <input type="number" id="capacity" required min="0" step="any" aria-describedby="capacity-help">
+                <p id="capacity-help" class="sr-only">Enter the engine capacity in CC for fuel vehicles or motor capacity in kW for electric vehicles.</p>
+                <label for="age">Vehicle Age:</label>
+                <select id="age" required aria-describedby="age-help">
+                    <option value="">Select Age</option>
+                    <option value="1">Not more than 1 year old</option>
+                    <option value="2">More than 1 year but not more than 3 years old</option>
+                </select>
+                <p id="age-help" class="sr-only">Select the age of the vehicle to determine tax rates.</p>
+                <label for="dealerFee">Dealer Fee (LKR, e.g., 300000):</label>
+                <input type="number" id="dealerFee" min="0" step="any" aria-describedby="dealerFee-help">
+                <p id="dealerFee-help" class="sr-only">Enter the dealer fee in Sri Lankan Rupees, if applicable.</p>
+                <label for="clearingFee">Clearing Agent Fee (LKR, e.g., 80000):</label>
+                <input type="number" id="clearingFee" min="0" step="any" aria-describedby="clearingFee-help">
+                <p id="clearingFee-help" class="sr-only">Enter the clearing agent fee in Sri Lankan Rupees, if applicable.</p>
+                <div class="btn-row">
+                    <button type="button" class="blue-btn" id="calculateBtn" onclick="calculateTax()">Calculate Tax</button>
+                    <button type="button" class="blue-btn" id="resetBtn" onclick="resetForm()">Reset</button>
+                </div>
+            </form>
+        </section>
+        <section class="result-section" aria-labelledby="result-section-title">
+            <h2 class="result-section-title" id="result-section-title">Calculation Result</h2>
+            <div id="result" aria-live="polite"></div>
+            <div>
+                <p>Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
             </div>
             <div class="btn-row">
                 <button id="downloadBtn" class="blue-btn" onclick="downloadPDF()">Save as PDF</button>
             </div>
-            <canvas id="pieChart" width="360" height="180"></canvas>
-        </div>
+            <canvas id="pieChart" width="360" height="180" aria-label="Pie chart showing cost breakdown"></canvas>
+        </section>
     </div>
     
-    <div class="info-section">
-        <h2>Understanding Vehicle Taxes in Sri Lanka</h2>
-        <p>
-            Understanding the different types of taxes that make up the total vehicle import cost is key for Sri Lankan importers. Below is a breakdown of the main taxes applied in Sri Lanka. For accurate CIF values, <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">contact our team</a> for expert guidance.
-        </p>
+    <section class="info-section" aria-labelledby="info-section-title">
+        <h2 id="info-section-title">Understanding Vehicle Taxes in Sri Lanka</h2>
+        <p>Understand the taxes that make up the total vehicle import cost for Sri Lankan importers. Below is a breakdown of the main taxes applied in Sri Lanka. For accurate CIF values, <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">contact our team</a> for expert guidance.</p>
         <ul>
             <li>
                 <h3>Customs Import Duty (CID)</h3>
-                <p>
-                    This is a base tax calculated as 20% of the vehicle's CIF (Cost, Insurance, and Freight) value. See the official <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Sri Lanka Customs Official Guide</a> for more details.
-                </p>
+                <p>A base tax of 20% of the vehicle's CIF (Cost, Insurance, and Freight) value. See the <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Sri Lanka Customs Guide</a>.</p>
             </li>
             <li>
                 <h3>Surcharge on CID</h3>
-                <p>
-                    An additional 50% tax applied on top of the Customs Import Duty (CID), effectively increasing the total CID to 30% of the CIF value. See the official <a href="https://www.treasury.gov.lk/api/file/50324d16-41ec-4512-bd1f-f12e38578425" target="_blank" rel="noopener">Surcharge Gazette</a> for more details.
-                </p>
+                <p>A 50% tax on top of the CID, increasing it to 30% of the CIF value. See the <a href="https://www.treasury.gov.lk/api/file/50324d16-41ec-4512-bd1f-f12e38578425" target="_blank" rel="noopener">Surcharge Gazette</a>.</p>
             </li>
             <li>
                 <h3>Excise Duty</h3>
-                <p>
-                    This is a significant tax determined by the vehicle's engine capacity and fuel type, based on the latest Excise Duty Gazettes: <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2418-43_E.pdf" target="_blank" rel="noopener">Gazette 2418/43</a>, <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2421-42_E.pdf" target="_blank" rel="noopener">Gazette 2421/42</a>, <a href="https://www.treasury.gov.lk/api/file/35db5f9d-523c-448a-a8e1-f996306cb034" target="_blank" rel="noopener">Gazette 2434/04</a>. The rates vary based on the vehicle's classification and engine size (in CC or kW).
-                </p>
+                <p>A major tax based on engine capacity and fuel type, per the latest Excise Duty Gazettes: <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2418-43_E.pdf" target="_blank" rel="noopener">2418/43</a>, <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2421-42_E.pdf" target="_blank" rel="noopener">2421/42</a>, <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2434-04_E.pdf" target="_blank" rel="noopener">2434/04</a>.</p>
             </li>
             <li>
                 <h3>Luxury Tax</h3>
-                <p>
-                    A tax applied when a vehicle's CIF value exceeds a specific threshold, which varies by fuel type. The tax rate also changes depending on the vehicle type. See the official <a href="https://www.treasury.gov.lk/api/file/67450b38-5230-411c-a703-a07a7ef9063c" target="_blank" rel="noopener">Luxury Tax Gazette</a> for more details.
-                </p>
+                <p>Applied when CIF value exceeds thresholds by fuel type. See the <a href="https://www.treasury.gov.lk/api/file/67450b38-5230-411c-a703-a07a7ef9063c" target="_blank" rel="noopener">Luxury Tax Gazette</a>.</p>
             </li>
             <li>
                 <h3>Vehicle Entitlement Levy (VEL)</h3>
-                <p>
-                    A flat rate of Rs.15,000 for motor cars. See the official <a href="https://www.ird.gov.lk/en/publications/Circulars_Circulars/SEC_2016_01_E.pdf" target="_blank" rel="noopener">VEL Circular</a> for more details.
-                </p>
+                <p>A flat Rs.15,000 for motor cars. See the <a href="https://www.ird.gov.lk/en/publications/Circulars_Circulars/SEC_2016_01_E.pdf" target="_blank" rel="noopener">VEL Circular</a>.</p>
             </li>
             <li>
                 <h3>Value Added Tax (VAT)</h3>
-                <p>
-                    An 18% Value Added Tax is charged on the total of the CIF value plus all other taxes (CID, Surcharge, Excise Duty, Luxury Tax, VEL). See the official <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Customs Duty and VAT Guide</a> for more details.
-                </p>
+                <p>An 18% tax on the sum of CIF and other taxes. See the <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Customs Duty and VAT Guide</a>.</p>
             </li>
         </ul>
-    </div>
+    </section>
     
-    <div class="faq-section">
-        <h2>Frequently Asked Questions about Sri Lankan Vehicle Import Tax</h2>
+    <section class="faq-section" aria-labelledby="faq-section-title">
+        <h2 id="faq-section-title">Frequently Asked Questions about Sri Lankan Vehicle Import Tax</h2>
         <div class="faq-item">
             <h3 onclick="toggleAnswer(this)">How do I calculate the import tax for a vehicle in Sri Lanka?</h3>
-            <p>The total import tax is a combination of several duties, including Custom Import Duty (CID), Surcharge, Excise Duty, Luxury Tax, Vehicle Entitlement Levy (VEL), and VAT. The exact amounts depend on the vehicle's CIF value, engine/motor capacity, fuel type, and age. Our online calculator simplifies this complex process by applying the most recent 2025 Gazette rates to provide you with an accurate estimate instantly for Colombo and Sri Lanka importers.</p>
+            <p>The total import tax includes CID, Surcharge, Excise Duty, Luxury Tax, VEL, and VAT, based on CIF value, engine/motor capacity, fuel type, and age. Our calculator uses 2025 Gazette rates for accurate estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">What is the CIF Value and why is it important for tax calculation?</h3>
-            <p>CIF stands for Cost, Insurance, and Freight. It is the total value of the vehicle when it arrives in Sri Lanka, including its purchase price, shipping costs, and insurance. This value, converted from JPY to LKR, serves as the base for calculating several key taxes like the CID and VAT. The accuracy of your CIF value is crucial for a precise tax estimate in Sri Lanka.</p>
+            <h3 onclick="toggleAnswer(this)">What is the CIF Value and why is it important?</h3>
+            <p>CIF (Cost, Insurance, Freight) is the vehicle's total value upon arrival in Sri Lanka, used as the base for CID and VAT calculations. Accurate CIF values ensure precise tax estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">Are hybrid vehicles taxed differently than petrol or diesel cars?</h3>
-            <p>Yes, hybrid vehicles, including petrol hybrids, diesel hybrids, and plug-in hybrids, have different excise duty rates compared to conventional petrol or diesel cars. The tax structure is designed to promote more environmentally friendly vehicles. Our calculator is updated to reflect these special rates, ensuring you get a correct tax figure for your specific hybrid model in Sri Lanka.</p>
+            <h3 onclick="toggleAnswer(this)">Are hybrid vehicles taxed differently?</h3>
+            <p>Yes, hybrids (petrol, diesel, plug-in) have different excise duty rates to promote eco-friendly vehicles. Our calculator reflects these rates for accurate tax figures.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">How to calculate import duty for electric vehicles in Sri Lanka?</h3>
-            <p>Electric vehicle import duties in Sri Lanka for 2025 are based on motor capacity (kW) and vehicle age. Taxes include Customs Import Duty (CID), Vehicle Entitlement Levy (VEL), VAT, and others. Use our Sri Lanka vehicle tax calculator to get precise estimates for EVs in Colombo and beyond.</p>
+            <h3 onclick="toggleAnswer(this)">How to calculate import duty for electric vehicles?</h3>
+            <p>Electric vehicle duties are based on motor capacity (kW) and age, including CID, VEL, VAT, and others. Use our calculator for precise EV tax estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">How to calculate luxury tax for vehicle imports in Sri Lanka?</h3>
-            <p>Luxury Tax is applied when the CIF (Cost, Insurance, and Freight) value exceeds a specific threshold, which varies by vehicle type: Petrol & Diesel: 5 million LKR; Hybrid & Plug-in Hybrid: 5.5 million LKR; Electric Vehicles & e-SMART Hybrid (e-POWER): 6 million LKR. The tax is calculated on the amount exceeding the threshold at rates specific to the vehicle type: Petrol (100%), Diesel (120%), Petrol Hybrid (80%), Diesel Hybrid (90%), Plug-in Hybrid Petrol (80%), Plug-in Hybrid Diesel (90%), Electric (60%), e-SMART Hybrid (60%). Our calculator automatically applies these rates based on your inputs.</p>
+            <h3 onclick="toggleAnswer(this)">How to calculate luxury tax for vehicle imports?</h3>
+            <p>Luxury Tax applies when CIF exceeds thresholds: Petrol/Diesel (5M LKR), Hybrid/Plug-in (5.5M LKR), Electric/e-SMART (6M LKR). Rates vary, and our calculator applies them automatically.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">What are HS codes and how do they affect vehicle import taxes in Sri Lanka?</h3>
-            <p>HS codes (Harmonized System codes) are a standardized six-digit international system for classifying traded goods, used by over 200 countries to administer tariffs, track trade statistics, and apply regulations. For vehicle imports in Sri Lanka, each vehicle type has a specific HS code, which determines the applicable tax rates: Petrol Vehicles (8703.2x.xx), Diesel Vehicles (8703.3x.xx), Petrol Hybrid Vehicles (8703.4x.xx), Diesel Hybrid Vehicles (8703.5x.xx), Petrol Plug-in Hybrid Vehicles (8703.6x.xx), Diesel Plug-in Hybrid Vehicles (8703.7x.xx), Electric Vehicles (8703.8x.xx), e-SMART Hybrid | e-POWER (8703.80.7x). Each HS code has distinct tax calculations, and our calculator uses these codes to ensure accurate tax estimates.</p>
+            <h3 onclick="toggleAnswer(this)">What are HS codes and how do they affect taxes?</h3>
+            <p>HS codes classify vehicles (e.g., Petrol: 8703.2x.xx, Electric: 8703.8x.xx), determining tax rates. Our calculator uses these codes for accurate tax estimates.</p>
         </div>
-    </div>
+    </section>
     
-    <div class="disclaimer-section">
-        <h2>Disclaimer & HS Codes</h2>
-        <p>
-            All vehicle taxes in Sri Lanka are determined by the Harmonized System (HS) codes. These international classifications categorize different vehicle types, such as petrol (8703.2x.xx), diesel (8703.3x.xx), and electric (8703.8x.xx) vehicles. Our calculations are based on the rates corresponding to these codes for Sri Lankan importers.
-        </p>
-        <p style="font-weight: 700;">
-            Important Note: Our Vehicle Tax Calculator is designed to calculate duties only for standard motor cars within the HS codes listed above. It does not support calculations for special-purpose vehicles such as hearses, ambulances, or other commercial vehicles.
-        </p>
-    </div>
+    <section class="disclaimer-section" aria-labelledby="disclaimer-section-title">
+        <h2 id="disclaimer-section-title">Disclaimer & HS Codes</h2>
+        <p>Vehicle taxes in Sri Lanka are based on HS codes, such as petrol (8703.2x.xx), diesel (8703.3x.xx), and electric (8703.8x.xx). Our calculations align with these codes for Sri Lankan importers.</p>
+        <p><strong>Important Note:</strong> This calculator is for standard motor cars within the listed HS codes and does not support special-purpose vehicles like hearses or ambulances.</p>
+    </section>
 
     <footer>© 2025 Amarasinghe Prime Enterprises (Pvt) Ltd (PV 00342707)</footer>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
     <script>
         let resultData = null;
 
         function updateDateTime() {
             const el = document.getElementById('timeDateTime');
-            el.textContent = `Time: ${new Date().toLocaleString('en-GB', {timeZone: 'Asia/Colombo'})}`;
+            el.textContent = `Time: ${new Date().toLocaleString('en-GB', { timeZone: 'Asia/Colombo' })}`;
         }
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
         async function fetchJPYtoLKR() {
-            const rateElId = 'cbslRate';
-            let rateEl = document.getElementById(rateElId);
-            if (!rateEl) {
-                rateEl = document.createElement('div');
-                rateEl.id = rateElId;
-                rateEl.style.textAlign = 'center';
-                rateEl.style.marginTop = '8px';
-                rateEl.style.color = 'var(--muted)';
-                document.querySelector('.form-section').insertBefore(rateEl, document.getElementById('cifJPY').parentNode);
-            }
+            const rateEl = document.getElementById('cbslRate');
             try {
-                const resp = await fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR');
+                const resp = await fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR', { cache: 'no-store' });
                 if (resp.ok) {
                     const data = await resp.json();
-                    if (data && data.rates && data.rates.LKR) {
-                        const rate = data.rates.LKR;
-                        rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate (live): 1 JPY = ${rate.toFixed(6)} LKR</div><div style="font-size:0.9em;color:var(--muted)">Source: exchangerate.host</div>`;
+                    if (data?.rates?.LKR) {
+                        rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate (live): 1 JPY = ${data.rates.LKR.toFixed(6)} LKR</div><div style="font-size:0.9em;color:var(--muted)">Source: exchangerate.host</div>`;
                         return;
                     }
                 }
-            } catch (e) {}
-            rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate: N/A</div><div style="font-size:0.9em;color:var(--muted)">Could not fetch live rate. Enter manually.</div>`;
+                throw new Error('Failed to fetch exchange rate');
+            } catch (e) {
+                console.error('Error fetching exchange rate:', e);
+                rateEl.innerHTML = `<div style="font-weight:700;color:var(--primary)">Exchange rate: N/A</div><div style="font-size:0.9em;color:var(--muted)">Could not fetch live rate. Enter manually.</div>`;
+            }
         }
         fetchJPYtoLKR();
 
-        function fmt(val, decimals=2) {
-            return Number(val).toLocaleString('en-US', {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
+        function fmt(val, decimals = 2) {
+            return Number(val).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
         }
 
         function calculateTax() {
-            let cifJPY = parseFloat(document.getElementById('cifJPY').value);
-            let exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
-            let type = document.getElementById('vehicleType').value;
-            let capacity = parseFloat(document.getElementById('capacity').value);
-            let age = document.getElementById('age').value;
-            let dealerFee = parseFloat(document.getElementById('dealerFee').value) || 0;
-            let clearingFee = parseFloat(document.getElementById('clearingFee').value) || 0;
-            if (isNaN(cifJPY) || isNaN(exchangeRate) || isNaN(capacity) || !type || !age) {
-                alert('Please fill in all fields with valid numbers.');
+            const inputs = {
+                cifJPY: parseFloat(document.getElementById('cifJPY').value),
+                exchangeRate: parseFloat(document.getElementById('exchangeRate').value),
+                type: document.getElementById('vehicleType').value,
+                capacity: parseFloat(document.getElementById('capacity').value),
+                age: document.getElementById('age').value,
+                dealerFee: parseFloat(document.getElementById('dealerFee').value) || 0,
+                clearingFee: parseFloat(document.getElementById('clearingFee').value) || 0
+            };
+
+            if (isNaN(inputs.cifJPY) || isNaN(inputs.exchangeRate) || isNaN(inputs.capacity) || !inputs.type || !inputs.age) {
+                alert('Please fill in all required fields with valid numbers.');
                 return;
             }
-            let cif = cifJPY * exchangeRate;
 
-            let thresholds = {
-                'petrol': 5000000, 'diesel': 5000000, 'petrol_hybrid': 5500000,
-                'diesel_hybrid': 5500000, 'petrol_plugin': 5500000, 'diesel_plugin': 5500000,
-                'electric': 6000000, 'esmart_petrol': 6000000, 'esmart_diesel': 6000000
+            const cif = inputs.cifJPY * inputs.exchangeRate;
+            const thresholds = {
+                petrol: 5000000, diesel: 5000000, petrol_hybrid: 5500000,
+                diesel_hybrid: 5500000, petrol_plugin: 5500000, diesel_plugin: 5500000,
+                electric: 6000000, esmart_petrol: 6000000, esmart_diesel: 6000000
             };
-            let luxuryRates = {
-                'petrol': 1.0, 'diesel': 1.2, 'petrol_hybrid': 0.8,
-                'diesel_hybrid': 0.9, 'petrol_plugin': 0.8, 'diesel_plugin': 0.9,
-                'electric': 0.6, 'esmart_petrol': 0.6, 'esmart_diesel': 0.6
+            const luxuryRates = {
+                petrol: 1.0, diesel: 1.2, petrol_hybrid: 0.8,
+                diesel_hybrid: 0.9, petrol_plugin: 0.8, diesel_plugin: 0.9,
+                electric: 0.6, esmart_petrol: 0.6, esmart_diesel: 0.6
             };
-            let threshold = thresholds[type];
-            let luxuryRate = luxuryRates[type];
 
-            let cid = cif * 0.2;
-            let surcharge = cid * 0.5;
+            const threshold = thresholds[inputs.type];
+            const luxuryRate = luxuryRates[inputs.type];
 
+            const cid = cif * 0.2;
+            const surcharge = cid * 0.5;
             let excise = 0;
-            if (type === 'petrol' || type === 'petrol_hybrid') {
-                if (capacity < 300) excise = 482900;
-                else if (capacity < 1000) excise = Math.max(1992000, capacity * 2450);
-                else if (capacity <= 1300) excise = capacity * 3850;
-                else if (capacity <= 1500) excise = capacity * 4450;
-                else if (capacity <= 1600) excise = capacity * 5150;
-                else if (capacity <= 1800) excise = capacity * 6400;
-                else if (capacity <= 2000) excise = capacity * 7700;
-                else if (capacity <= 2500) excise = capacity * 8450;
-                else if (capacity <= 2750) excise = capacity * 9650;
-                else if (capacity <= 3000) excise = capacity * 10850;
-                else if (capacity <= 4000) excise = capacity * 12050;
-                else excise = capacity * 13300;
-            } else if (type === 'diesel' || type === 'diesel_hybrid') {
-                if (capacity < 1500) excise = capacity * 5550;
-                else if (capacity <= 1600) excise = capacity * 6950;
-                else if (capacity <= 1800) excise = capacity * 8300;
-                else if (capacity <= 2000) excise = capacity * 9650;
-                else if (capacity <= 2500) excise = capacity * 9650;
-                else if (capacity <= 2750) excise = capacity * 12050;
-                else if (capacity <= 3000) excise = capacity * 13550;
-                else if (capacity <= 4000) excise = capacity * 12050;
-                else excise = capacity * 13300;
-            } else if (type === 'electric' || type === 'petrol_plugin' || type === 'diesel_plugin') {
+
+            if (inputs.type === 'petrol' || inputs.type === 'petrol_hybrid') {
+                if (inputs.capacity < 300) excise = 482900;
+                else if (inputs.capacity < 1000) excise = Math.max(1992000, inputs.capacity * 2450);
+                else if (inputs.capacity <= 1300) excise = inputs.capacity * 3850;
+                else if (inputs.capacity <= 1500) excise = inputs.capacity * 4450;
+                else if (inputs.capacity <= 1600) excise = inputs.capacity * 5150;
+                else if (inputs.capacity <= 1800) excise = inputs.capacity * 6400;
+                else if (inputs.capacity <= 2000) excise = inputs.capacity * 7700;
+                else if (inputs.capacity <= 2500) excise = inputs.capacity * 8450;
+                else if (inputs.capacity <= 2750) excise = inputs.capacity * 9650;
+                else if (inputs.capacity <= 3000) excise = inputs.capacity * 10850;
+                else if (inputs.capacity <= 4000) excise = inputs.capacity * 12050;
+                else excise = inputs.capacity * 13300;
+            } else if (inputs.type === 'diesel' || inputs.type === 'diesel_hybrid') {
+                if (inputs.capacity < 1500) excise = inputs.capacity * 5550;
+                else if (inputs.capacity <= 1600) excise = inputs.capacity * 6950;
+                else if (inputs.capacity <= 1800) excise = inputs.capacity * 8300;
+                else if (inputs.capacity <= 2000) excise = inputs.capacity * 9650;
+                else if (inputs.capacity <= 2500) excise = inputs.capacity * 9650;
+                else if (inputs.capacity <= 2750) excise = inputs.capacity * 12050;
+                else if (inputs.capacity <= 3000) excise = inputs.capacity * 13550;
+                else if (inputs.capacity <= 4000) excise = inputs.capacity * 12050;
+                else excise = inputs.capacity * 13300;
+            } else if (inputs.type === 'electric' || inputs.type === 'petrol_plugin' || inputs.type === 'diesel_plugin') {
                 let rate1, rate2;
-                if (capacity <= 50) { rate1 = 18100; rate2 = 36200; }
-                else if (capacity <= 100) { rate1 = 24100; rate2 = 36200; }
-                else if (capacity <= 200) { rate1 = 36200; rate2 = 60400; }
+                if (inputs.capacity <= 50) { rate1 = 18100; rate2 = 36200; }
+                else if (inputs.capacity <= 100) { rate1 = 24100; rate2 = 36200; }
+                else if (inputs.capacity <= 200) { rate1 = 36200; rate2 = 60400; }
                 else { rate1 = 96600; rate2 = 132800; }
-                excise = (age === '1') ? rate1 * capacity : rate2 * capacity;
-            } else if (type === 'esmart_petrol') {
+                excise = inputs.age === '1' ? rate1 * inputs.capacity : rate2 * inputs.capacity;
+            } else if (inputs.type === 'esmart_petrol') {
                 let rate1, rate2;
-                if (capacity <= 50) { rate1 = 43440; rate2 = 30770; }
-                else if (capacity <= 100) { rate1 = 43440; rate2 = 40970; }
-                else if (capacity <= 200) { rate1 = 63420; rate2 = 41630; }
+                if (inputs.capacity <= 50) { rate1 = 43440; rate2 = 30770; }
+                else if (inputs.capacity <= 100) { rate1 = 43440; rate2 = 40970; }
+                else if (inputs.capacity <= 200) { rate1 = 63420; rate2 = 41630; }
                 else { rate1 = 139440; rate2 = 111090; }
-                excise = (age === '1') ? rate1 * capacity : rate2 * capacity;
-            } else if (type === 'esmart_diesel') {
+                excise = inputs.age === '1' ? rate1 * inputs.capacity : rate2 * inputs.capacity;
+            } else if (inputs.type === 'esmart_diesel') {
                 let rate1, rate2;
-                if (capacity <= 50) { rate1 = 52130; rate2 = 36920; }
-                else if (capacity <= 100) { rate1 = 52130; rate2 = 49160; }
-                else if (capacity <= 200) { rate1 = 76100; rate2 = 49960; }
+                if (inputs.capacity <= 50) { rate1 = 52130; rate2 = 36920; }
+                else if (inputs.capacity <= 100) { rate1 = 52130; rate2 = 49160; }
+                else if (inputs.capacity <= 200) { rate1 = 76100; rate2 = 49960; }
                 else { rate1 = 167330; rate2 = 133310; }
-                excise = (age === '1') ? rate1 * capacity : rate2 * capacity;
+                excise = inputs.age === '1' ? rate1 * inputs.capacity : rate2 * inputs.capacity;
             }
-            let luxuryTax = (cif > threshold) ? (cif - threshold) * luxuryRate : 0;
-            let vel = 15000;
-            let vatBase = cif + cid + surcharge + excise + luxuryTax + vel;
-            let vat = vatBase * 0.18;
-            let totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
-            let otherCharges = dealerFee + clearingFee;
-            let total = cif + totalTax + otherCharges;
+
+            const luxuryTax = cif > threshold ? (cif - threshold) * luxuryRate : 0;
+            const vel = 15000;
+            const vatBase = cif + cid + surcharge + excise + luxuryTax + vel;
+            const vat = vatBase * 0.18;
+            const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
+            const otherCharges = inputs.dealerFee + inputs.clearingFee;
+            const total = cif + totalTax + otherCharges;
 
             resultData = {
-                cifJPY, exchangeRate, cif, type, capacity, age, dealerFee, clearingFee,
-                cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, total
+                cifJPY: inputs.cifJPY, exchangeRate: inputs.exchangeRate, cif, type: inputs.type, 
+                capacity: inputs.capacity, age: inputs.age, dealerFee: inputs.dealerFee, 
+                clearingFee: inputs.clearingFee, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, total
             };
 
-            const unit = (type.includes('electric') || type.includes('plugin') || type.includes('esmart')) ? 'kW' : 'cc';
+            const unit = inputs.type.includes('electric') || inputs.type.includes('plugin') || inputs.type.includes('esmart') ? 'kW' : 'cc';
             const inputsTable = `
-                <div style="font-weight:700;margin-bottom:6px;color:var(--primary)">Inputs</div>
+                <div style="font-weight:700;margin-bottom:0.375rem;color:var(--primary)">Inputs</div>
                 <table>
-                    <thead><tr><th>Item</th><th style="text-align:right">Value</th></tr></thead>
+                    <thead><tr><th scope="col">Item</th><th scope="col" style="text-align:right">Value</th></tr></thead>
                     <tbody>
-                        <tr><td>CIF (JPY)</td><td style="text-align:right">${fmt(cifJPY)}</td></tr>
-                        <tr><td>Exchange Rate (JPY→LKR)</td><td style="text-align:right">${fmt(exchangeRate,6)}</td></tr>
+                        <tr><td>CIF (JPY)</td><td style="text-align:right">${fmt(inputs.cifJPY)}</td></tr>
+                        <tr><td>Exchange Rate (JPY→LKR)</td><td style="text-align:right">${fmt(inputs.exchangeRate, 6)}</td></tr>
                         <tr><td>CIF (LKR)</td><td style="text-align:right">${fmt(cif)}</td></tr>
-                        <tr><td>Vehicle Type</td><td style="text-align:right">${type.replace('_',' ').toUpperCase()}</td></tr>
-                        <tr><td>Engine/ Motor Capacity</td><td style="text-align:right">${fmt(capacity)} ${unit}</td></tr>
-                        <tr><td>Vehicle Age</td><td style="text-align:right">${age === '1' ? '≤1 year' : '>1–3 years'}</td></tr>
-                        <tr><td>Dealer Fee (LKR)</td><td style="text-align:right">${fmt(dealerFee)}</td></tr>
-                        <tr><td>Clearing Agent Fee (LKR)</td><td style="text-align:right">${fmt(clearingFee)}</td></tr>
+                        <tr><td>Vehicle Type</td><td style="text-align:right">${inputs.type.replace('_', ' ').toUpperCase()}</td></tr>
+                        <tr><td>Engine/Motor Capacity</td><td style="text-align:right">${fmt(inputs.capacity)} ${unit}</td></tr>
+                        <tr><td>Vehicle Age</td><td style="text-align:right">${inputs.age === '1' ? '≤1 year' : '>1–3 years'}</td></tr>
+                        <tr><td>Dealer Fee (LKR)</td><td style="text-align:right">${fmt(inputs.dealerFee)}</td></tr>
+                        <tr><td>Clearing Agent Fee (LKR)</td><td style="text-align:right">${fmt(inputs.clearingFee)}</td></tr>
                     </tbody>
                 </table>
             `;
-            const pct = (val) => (total > 0 ? ((val/total)*100).toFixed(2) : '0.00');
+            const pct = val => total > 0 ? ((val / total) * 100).toFixed(2) : '0.00';
             const breakdownTable = `
-                <div style="font-weight:700;margin:18px 0 6px 0;color:var(--primary)">Cost Breakdown</div>
+                <div style="font-weight:700;margin:1.125rem 0 0.375rem;color:var(--primary)">Cost Breakdown</div>
                 <table>
                     <thead>
                         <tr>
-                            <th>Item</th>
-                            <th style="text-align:right">Value (LKR)</th>
-                            <th style="text-align:right">% of Total</th>
+                            <th scope="col">Item</th>
+                            <th scope="col" style="text-align:right">Value (LKR)</th>
+                            <th scope="col" style="text-align:right">% of Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -842,7 +898,7 @@
                         ${createRow('VEL', vel, pct(vel))}
                         ${createRow('VAT', vat, pct(vat))}
                         ${createRow('Total Tax & Duties', totalTax, pct(totalTax))}
-                        ${createRow('Other Charges (Dealer Fee & Clearing Agent Fee)', otherCharges, pct(otherCharges))}
+                        ${createRow('Other Charges (Dealer & Clearing Fees)', otherCharges, pct(otherCharges))}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -857,84 +913,39 @@
             showPieChart([
                 { label: 'CIF', value: cif },
                 { label: 'Total Tax & Duties', value: totalTax },
-                { label: 'Other Charges (Dealer Fee & Clearing Agent Fee)', value: otherCharges }
+                { label: 'Other Charges (Dealer & Clearing Fees)', value: otherCharges }
             ], total);
             document.getElementById('result').style.display = 'block';
             document.getElementById('downloadBtn').style.display = 'block';
 
-            // Auto-scroll to results on mobile devices
             if (window.innerWidth <= 640) {
                 document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
-        function pdfContactRow(doc, pageW, y) {
-            const chipH = 28, chipPad = 16, chipGap = 18, chipFont = 12;
-            const phoneW = 120, whatsappW = 105, facebookW = 105;
-            const rowW = phoneW + whatsappW + facebookW + chipGap * 2;
-            const leftX = pageW / 2 - rowW / 2;
-
-            // Phone
-            doc.setFillColor(244,244,244);
-            doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'F');
-            doc.setDrawColor(209,209,209);
-            doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'S');
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(chipFont);
-            doc.setTextColor(68,68,68);
-            doc.text('0769447740', leftX + phoneW / 2, y + chipH/2 + chipFont/3.5, {align:"center"});
-            doc.link(leftX, y, phoneW, chipH, {url: 'tel:0769447740'});
-
-            // WhatsApp
-            doc.setFillColor(230,247,236);
-            doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'F');
-            doc.setDrawColor(185,234,199);
-            doc.roundedRect(leftX+phoneW+chipGap, y, whatsappW, chipH, 10, 10, 'S');
-            doc.setTextColor(34,158,89);
-            doc.setFont('helvetica', 'bold');
-            doc.text('WhatsApp', leftX + phoneW + chipGap + whatsappW / 2, y + chipH/2 + chipFont/3.5, {align:"center"});
-            doc.link(leftX+phoneW+chipGap, y, whatsappW, chipH, {url: 'https://wa.me/message/XSPMWKK4BGVAM1'});
-
-            // Facebook
-            doc.setFillColor(227,237,251);
-            doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'F');
-            doc.setDrawColor(182,210,247);
-            doc.roundedRect(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, 10, 10, 'S');
-            doc.setTextColor(24,119,243);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Facebook', leftX+phoneW+chipGap+whatsappW+chipGap + facebookW/2, y + chipH/2 + chipFont/3.5, {align:"center"});
-            doc.link(leftX+phoneW+chipGap+whatsappW+chipGap, y, facebookW, chipH, {url: 'https://www.facebook.com/share/17Ww1VkV2S/'});
-        }
-
         function createRow(name, value, percentStr) {
-            return `<tr><td>${name}</td><td style='text-align:right'>${fmt(value)}</td><td style='text-align:right'>${percentStr}%</td></tr>`;
+            return `<tr><td>${name}</td><td style="text-align:right">${fmt(value)}</td><td style="text-align:right">${percentStr}%</td></tr>`;
         }
+
         function resetForm() {
-            document.getElementById('cifJPY').value = '';
-            document.getElementById('exchangeRate').value = '';
-            document.getElementById('vehicleType').value = '';
-            document.getElementById('capacity').value = '';
-            document.getElementById('age').value = '';
-            document.getElementById('dealerFee').value = '';
-            document.getElementById('clearingFee').value = '';
+            document.getElementById('taxCalculatorForm').reset();
             document.getElementById('result').innerHTML = '';
             document.getElementById('result').style.display = 'none';
             document.getElementById('downloadBtn').style.display = 'none';
-            resultData = null;
             document.getElementById('pieChart').style.display = 'none';
             if (window.pieChartInstance) window.pieChartInstance.destroy();
+            resultData = null;
         }
+
         function showPieChart(items, total) {
             const labels = items.map(i => {
                 const pct = ((i.value / total) * 100).toFixed(2);
                 return `${i.label} (${pct}%)`;
             });
             const values = items.map(i => i.value);
-            const colors = [
-                "#7ea1e7", "#cfe2fa", "#98e4bb", "#ffe395", "#b6b6b6", "#f9c4c4"
-            ];
+            const colors = ['#7ea1e7', '#cfe2fa', '#98e4bb'];
             const canvas = document.getElementById('pieChart');
-            canvas.style.display = "block";
+            canvas.style.display = 'block';
             if (window.pieChartInstance) window.pieChartInstance.destroy();
             window.pieChartInstance = new Chart(canvas, {
                 type: 'pie',
@@ -944,22 +955,21 @@
                         data: values,
                         backgroundColor: colors,
                         borderWidth: 2,
-                        borderColor: "#fff"
+                        borderColor: '#fff'
                     }]
                 },
                 options: {
                     responsive: true,
                     plugins: {
                         legend: {
-                            display: true,
                             position: 'bottom',
-                            labels: { color: '#003087', font: { size: 13, weight: 600 } }
+                            labels: { color: '#003087', font: { size: 13, weight: '600' } }
                         },
                         tooltip: {
                             callbacks: {
                                 label: function(ctx) {
                                     const pct = ((ctx.parsed / total) * 100).toFixed(2);
-                                    return `${ctx.label}: ${fmt(ctx.parsed)} (${pct}%)`;
+                                    return `${ctx.label}: ${fmt(ctx.parsed)} LKR (${pct}%)`;
                                 }
                             }
                         }
@@ -967,176 +977,193 @@
                 }
             });
         }
+
         function downloadPDF() {
-            if (!resultData) { alert('Please calculate the tax first.'); return; }
+            if (!resultData) {
+                alert('Please calculate the tax first.');
+                return;
+            }
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({unit:'pt', format:'a4'});
+            const doc = new jsPDF({ unit: 'pt', format: 'a4' });
             const pageW = doc.internal.pageSize.width;
             let y = 40;
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(26);
-            doc.setTextColor(0,48,135);
-            doc.text('Amarasinghe Prime Enterprises (Pvt) Ltd', pageW/2, y, {align:"center"});
+            doc.setTextColor(0, 48, 135);
+            doc.text('Amarasinghe Prime Enterprises (Pvt) Ltd', pageW / 2, y, { align: 'center' });
             y += 26;
             doc.setFontSize(13);
-            doc.setTextColor(91,91,91);
-            doc.text('Your trusted Japanese automobile partner in Sri Lanka', pageW/2, y, {align:"center"});
+            doc.setTextColor(91, 91, 91);
+            doc.text('Your trusted Japanese automobile partner in Sri Lanka', pageW / 2, y, { align: 'center' });
             y += 20;
             doc.setFontSize(11);
-            doc.setTextColor(120,120,120);
-            const combinedDateTime = `Generated: ${new Date().toLocaleString('en-GB', {timeZone:'Asia/Colombo'})}`;
-            doc.text(combinedDateTime, pageW/2, y, {align:"center"});
+            doc.setTextColor(120, 120, 120);
+            doc.text(`Generated: ${new Date().toLocaleString('en-GB', { timeZone: 'Asia/Colombo' })}`, pageW / 2, y, { align: 'center' });
             y += 20;
-            pdfContactRow(doc, pageW, y);
+
+            const chipH = 28, chipGap = 18, chipFont = 12;
+            const phoneW = 120, whatsappW = 105, facebookW = 105;
+            const rowW = phoneW + whatsappW + facebookW + chipGap * 2;
+            const leftX = pageW / 2 - rowW / 2;
+
+            doc.setFillColor(244, 244, 244);
+            doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'F');
+            doc.setDrawColor(209, 209, 209);
+            doc.roundedRect(leftX, y, phoneW, chipH, 10, 10, 'S');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(chipFont);
+            doc.setTextColor(68, 68, 68);
+            doc.text('+94 76 944 7740', leftX + phoneW / 2, y + chipH / 2 + chipFont / 3.5, { align: 'center' });
+            doc.link(leftX, y, phoneW, chipH, { url: 'tel:+94769447740' });
+
+            doc.setFillColor(230, 247, 236);
+            doc.roundedRect(leftX + phoneW + chipGap, y, whatsappW, chipH, 10, 10, 'F');
+            doc.setDrawColor(185, 234, 199);
+            doc.roundedRect(leftX + phoneW + chipGap, y, whatsappW, chipH, 10, 10, 'S');
+            doc.setTextColor(34, 158, 89);
+            doc.text('WhatsApp', leftX + phoneW + chipGap + whatsappW / 2, y + chipH / 2 + chipFont / 3.5, { align: 'center' });
+            doc.link(leftX + phoneW + chipGap, y, whatsappW, chipH, { url: 'https://wa.me/message/XSPMWKK4BGVAM1' });
+
+            doc.setFillColor(227, 237, 251);
+            doc.roundedRect(leftX + phoneW + chipGap + whatsappW + chipGap, y, facebookW, chipH, 10, 10, 'F');
+            doc.setDrawColor(182, 210, 247);
+            doc.roundedRect(leftX + phoneW + chipGap + whatsappW + chipGap, y, facebookW, chipH, 10, 10, 'S');
+            doc.setTextColor(24, 119, 243);
+            doc.text('Facebook', leftX + phoneW + chipGap + whatsappW + chipGap + facebookW / 2, y + chipH / 2 + chipFont / 3.5, { align: 'center' });
+            doc.link(leftX + phoneW + chipGap + whatsappW + chipGap, y, facebookW, chipH, { url: 'https://www.facebook.com/share/17Ww1VkV2S/' });
+
             y += 50;
             doc.setFontSize(16);
-            doc.setTextColor(0,48,135);
-            doc.text('Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)', pageW/2, y, {align:"center"});
+            doc.setTextColor(0, 48, 135);
+            doc.text('Vehicle Tax Calculator for Sri Lanka (2025 Gazette Rates)', pageW / 2, y, { align: 'center' });
             y += 18;
 
-            const unit = (resultData.type.includes('electric') || resultData.type.includes('plugin') || resultData.type.includes('esmart')) ? 'kW' : 'cc';
+            const unit = resultData.type.includes('electric') || resultData.type.includes('plugin') || resultData.type.includes('esmart') ? 'kW' : 'cc';
             const inputRows = [
-                ['CIF Value in foreign currency', fmt(resultData.cifJPY)],
-                ['Exchange Rate', fmt(resultData.exchangeRate,6)],
-                ['Fuel Type', resultData.type.replace('_',' ').toUpperCase()],
-                ['Engine Capacity (CC) | Motor Power (Kw)', `${fmt(resultData.capacity)} ${unit}`],
+                ['CIF Value (JPY)', fmt(resultData.cifJPY)],
+                ['Exchange Rate (JPY→LKR)', fmt(resultData.exchangeRate, 6)],
+                ['Fuel Type', resultData.type.replace('_', ' ').toUpperCase()],
+                ['Engine/Motor Capacity', `${fmt(resultData.capacity)} ${unit}`],
                 ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
                 ['Dealer Fee (LKR)', fmt(resultData.dealerFee)],
                 ['Clearing Agent Fee (LKR)', fmt(resultData.clearingFee)]
             ];
             doc.autoTable({
                 startY: y,
-                head: [['Input Parameter','Value']],
+                head: [['Input Parameter', 'Value']],
                 body: inputRows,
                 theme: 'grid',
                 headStyles: {
-                    fillColor: [0,48,135],
-                    textColor: [255,255,255],
+                    fillColor: [0, 48, 135],
+                    textColor: [255, 255, 255],
                     fontStyle: 'bold',
                     fontSize: 12,
                     halign: 'left',
-                    valign: 'middle',
-                    lineWidth: 0.5,
-                    lineColor: [0,48,135]
+                    valign: 'middle'
                 },
                 bodyStyles: {
-                    fontStyle: 'normal',
                     fontSize: 11,
-                    textColor: [40,40,40],
-                    fillColor: [255,255,255],
+                    textColor: [40, 40, 40],
                     halign: 'left',
                     valign: 'middle'
                 },
-                alternateRowStyles: { fillColor: [240,244,250] },
-                tableLineColor: [220,220,220],
-                tableLineWidth: 0.4,
+                alternateRowStyles: { fillColor: [240, 244, 250] },
                 margin: { left: 60, right: 60 }
             });
 
             y = doc.lastAutoTable.finalY + 24;
-
             doc.setFontSize(13);
-            doc.setTextColor(0,48,135);
+            doc.setTextColor(0, 48, 135);
             doc.text('Calculation Result', 60, y);
             y += 10;
 
             const taxBreakdown = [
-                {id: '1.0', name: 'CID - Custom Import Duty', base: resultData.cif, rate: '20%', amount: resultData.cid},
-                {id: '2.0', name: 'Surcharge', base: resultData.cid, rate: '50%', amount: resultData.surcharge},
-                {id: '3.0', name: 'Excise Duty', base: resultData.capacity, rate: '', amount: resultData.excise},
-                {id: '4.0', name: 'Luxury Tax', base: resultData.cif, rate: '', amount: resultData.luxuryTax},
-                {id: '4.5', name: 'VEL', base: '', rate: '', amount: resultData.vel},
-                {id: '5.0', name: 'VAT', base: resultData.cif + resultData.cid + resultData.surcharge + resultData.excise + resultData.luxuryTax + resultData.vel, rate: '18%', amount: resultData.vat}
+                ['CID - Custom Import Duty', fmt(resultData.cid)],
+                ['Surcharge', fmt(resultData.surcharge)],
+                ['Excise Duty', fmt(resultData.excise)],
+                ['Luxury Tax', fmt(resultData.luxuryTax)],
+                ['VEL', fmt(resultData.vel)],
+                ['VAT', fmt(resultData.vat)]
             ];
-
-            const breakdownRows = taxBreakdown.map(tax => [
-                tax.name,
-                fmt(tax.amount)
-            ]);
-
             doc.autoTable({
                 startY: y,
-                head: [['Tax Type', 'Amount in LKR']],
-                body: breakdownRows,
+                head: [['Tax Type', 'Amount (LKR)']],
+                body: taxBreakdown,
                 theme: 'grid',
                 headStyles: {
-                    fillColor: [0,48,135],
-                    textColor: [255,255,255],
+                    fillColor: [0, 48, 135],
+                    textColor: [255, 255, 255],
                     fontStyle: 'bold',
                     fontSize: 12,
                     halign: 'left',
-                    valign: 'middle',
-                    lineWidth: 0.5,
-                    lineColor: [0,48,135]
+                    valign: 'middle'
                 },
                 bodyStyles: {
-                    fontStyle: 'normal',
                     fontSize: 11,
-                    textColor: [40,40,40],
-                    fillColor: [255,255,255],
+                    textColor: [40, 40, 40],
                     halign: 'left',
                     valign: 'middle'
                 },
-                alternateRowStyles: { fillColor: [240,244,250] },
-                tableLineColor: [220,220,220],
-                tableLineWidth: 0.4,
+                alternateRowStyles: { fillColor: [240, 244, 250] },
                 margin: { left: 60, right: 60 }
             });
 
             y = doc.lastAutoTable.finalY + 24;
-
             const summaryRows = [
-                ['CIF in LKR', 'Total Import Duty and Taxes', 'Other Charges (Dealer Fee & Clearing Agent Fee)', 'Total Cost'],
+                ['CIF (LKR)', 'Total Tax & Duties', 'Other Charges', 'Total Cost'],
                 [fmt(resultData.cif), fmt(resultData.totalTax), fmt(resultData.otherCharges), fmt(resultData.total)]
             ];
-
             doc.autoTable({
                 startY: y,
-                head: summaryRows.slice(0,1),
+                head: summaryRows.slice(0, 1),
                 body: summaryRows.slice(1),
                 theme: 'grid',
                 headStyles: {
-                    fillColor: [0,48,135],
-                    textColor: [255,255,255],
+                    fillColor: [0, 48, 135],
+                    textColor: [255, 255, 255],
                     fontStyle: 'bold',
                     fontSize: 12,
                     halign: 'left',
-                    valign: 'middle',
-                    lineWidth: 0.5,
-                    lineColor: [0,48,135]
+                    valign: 'middle'
                 },
                 bodyStyles: {
-                    fontStyle: 'normal',
                     fontSize: 11,
-                    textColor: [40,40,40],
-                    fillColor: [255,255,255],
+                    textColor: [40, 40, 40],
                     halign: 'left',
                     valign: 'middle'
                 },
-                alternateRowStyles: { fillColor: [240,244,250] },
-                tableLineColor: [220,220,220],
-                tableLineWidth: 0.4,
+                alternateRowStyles: { fillColor: [240, 244, 250] },
                 margin: { left: 60, right: 60 }
             });
 
             y = doc.lastAutoTable.finalY + 30;
-
             doc.setFontSize(8);
-            doc.setTextColor(100,100,100);
-            const disclaimerText = "Disclaimer: This is a guide based on current Sri Lankan tax laws for vehicles under HS codes under 8703.xx.xx. We are not responsible for future changes in tax laws, policies, or other related matters that may affect the accuracy or applicability of this information.";
+            doc.setTextColor(100, 100, 100);
+            const disclaimerText = "Disclaimer: This calculator provides estimates based on 2025 Sri Lankan tax laws for vehicles under HS codes 8703.xx.xx. We are not responsible for future changes in tax laws or policies.";
             const disclaimerLines = doc.splitTextToSize(disclaimerText, pageW - 120);
-            doc.text(disclaimerLines, pageW/2, y, {align:"center"});
+            doc.text(disclaimerLines, pageW / 2, y, { align: 'center' });
             y += doc.getTextDimensions(disclaimerLines).h + 10;
-            doc.text('© 2025 Amarasinghe Prime Enterprises (Pvt) Ltd (PV 00342707)', pageW/2, doc.internal.pageSize.height - 20, {align:"center"});
+            doc.text('© 2025 Amarasinghe Prime Enterprises (Pvt) Ltd (PV 00342707)', pageW / 2, doc.internal.pageSize.height - 20, { align: 'center' });
 
-            doc.save('Vehicle_Tax_Calculation.pdf');
+            doc.save('Vehicle_Tax_Calculation_2025.pdf');
         }
 
         function toggleAnswer(element) {
-            const item = element.parentNode;
+            const item = element.closest('.faq-item');
             item.classList.toggle('active');
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('input, select').forEach(input => {
+                input.addEventListener('invalid', () => {
+                    input.setCustomValidity('Please fill out this field correctly.');
+                });
+                input.addEventListener('input', () => {
+                    input.setCustomValidity('');
+                });
+            });
+        });
     </script>
 </body>
 </html>
