@@ -251,11 +251,16 @@
             font-size: 1.1rem;
             color: var(--text);
             margin: 0 0 8px 0;
+            cursor: pointer;
         }
         .faq-item p {
             font-size: 0.95rem;
             color: var(--muted);
             line-height: 1.6;
+            display: none;
+        }
+        .faq-item.active p {
+            display: block;
         }
         .info-section p, .disclaimer-section p, .social-proof p {
             font-size: 0.95rem;
@@ -543,7 +548,7 @@
             </select>
             <label for="dealerFee">Dealer Fee (LKR, e.g. 300000):</label>
             <input type="number" id="dealerFee" min="0" step="any" />
-            <label for="clearingFee">Clearing Fee (LKR, e.g. 80000):</label>
+            <label for="clearingFee">Clearing Agent Fee (LKR, e.g. 80000):</label>
             <input type="number" id="clearingFee" min="0" step="any" />
             <div class="btn-row">
                 <button class="blue-btn" id="calculateBtn" onclick="calculateTax()">Calculate Tax</button>
@@ -563,26 +568,6 @@
         </div>
     </div>
     
-    <div class="faq-section">
-        <h2>Frequently Asked Questions about Sri Lanka Vehicle Import Tax</h2>
-        <div class="faq-item">
-            <h3>How do I calculate the import tax for a vehicle in Sri Lanka?</h3>
-            <p>The total import tax is a combination of several duties, including Custom Import Duty (CID), Surcharge, Excise Duty, Luxury Tax, Vehicle Entitlement Levy (VEL), and VAT. The exact amounts depend on the vehicle's CIF value, engine/motor capacity, fuel type, and age. Our online calculator simplifies this complex process by applying the most recent 2025 Gazette rates to provide you with an accurate estimate instantly for Colombo and Sri Lanka importers.</p>
-        </div>
-        <div class="faq-item">
-            <h3>What is the CIF Value and why is it important for tax calculation?</h3>
-            <p>CIF stands for Cost, Insurance, and Freight. It is the total value of the vehicle when it arrives in Sri Lanka, including its purchase price, shipping costs, and insurance. This value, converted from JPY to LKR, serves as the base for calculating several key taxes like the CID and VAT. The accuracy of your CIF value is crucial for a precise tax estimate in Sri Lanka.</p>
-        </div>
-        <div class="faq-item">
-            <h3>Are hybrid vehicles taxed differently than petrol or diesel cars?</h3>
-            <p>Yes, hybrid vehicles, including petrol hybrids, diesel hybrids, and plug-in hybrids, have different excise duty rates compared to conventional petrol or diesel cars. The tax structure is designed to promote more environmentally friendly vehicles. Our calculator is updated to reflect these special rates, ensuring you get a correct tax figure for your specific hybrid model in Sri Lanka.</p>
-        </div>
-        <div class="faq-item">
-            <h3>How to calculate import duty for electric vehicles in Sri Lanka?</h3>
-            <p>Electric vehicle import duties in Sri Lanka for 2025 are based on motor capacity (kW) and vehicle age. Taxes include Customs Import Duty (CID), Vehicle Entitlement Levy (VEL), VAT, and others. Use our Sri Lanka vehicle tax calculator to get precise estimates for EVs in Colombo and beyond.</p>
-        </div>
-    </div>
-
     <div class="info-section">
         <h2>Understanding Vehicle Taxes in Sri Lanka</h2>
         <p>
@@ -622,10 +607,30 @@
             <li>
                 <h3>Value Added Tax (VAT)</h3>
                 <p>
-                    An 18% Value Added Tax is charged on the total of the CIF value plus all other taxes (CID, Surcharge, Excise Duty, Luxury Tax, VEL). See the official <a href="https://cal.lk/wp-content/uploads/2023/12/Customs-Duty-and-VAT-gazette.pdf" target="_blank" rel="noopener">Customs Duty and VAT Gazette</a> for more details.
+                    An 18% Value Added Tax is charged on the total of the CIF value plus all other taxes (CID, Surcharge, Excise Duty, Luxury Tax, VEL). See the official <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Customs Duty and VAT Guide</a> for more details.
                 </p>
             </li>
         </ul>
+    </div>
+    
+    <div class="faq-section">
+        <h2>Frequently Asked Questions about Sri Lanka Vehicle Import Tax</h2>
+        <div class="faq-item">
+            <h3 onclick="toggleAnswer(this)">How do I calculate the import tax for a vehicle in Sri Lanka?</h3>
+            <p>The total import tax is a combination of several duties, including Custom Import Duty (CID), Surcharge, Excise Duty, Luxury Tax, Vehicle Entitlement Levy (VEL), and VAT. The exact amounts depend on the vehicle's CIF value, engine/motor capacity, fuel type, and age. Our online calculator simplifies this complex process by applying the most recent 2025 Gazette rates to provide you with an accurate estimate instantly for Colombo and Sri Lanka importers.</p>
+        </div>
+        <div class="faq-item">
+            <h3 onclick="toggleAnswer(this)">What is the CIF Value and why is it important for tax calculation?</h3>
+            <p>CIF stands for Cost, Insurance, and Freight. It is the total value of the vehicle when it arrives in Sri Lanka, including its purchase price, shipping costs, and insurance. This value, converted from JPY to LKR, serves as the base for calculating several key taxes like the CID and VAT. The accuracy of your CIF value is crucial for a precise tax estimate in Sri Lanka.</p>
+        </div>
+        <div class="faq-item">
+            <h3 onclick="toggleAnswer(this)">Are hybrid vehicles taxed differently than petrol or diesel cars?</h3>
+            <p>Yes, hybrid vehicles, including petrol hybrids, diesel hybrids, and plug-in hybrids, have different excise duty rates compared to conventional petrol or diesel cars. The tax structure is designed to promote more environmentally friendly vehicles. Our calculator is updated to reflect these special rates, ensuring you get a correct tax figure for your specific hybrid model in Sri Lanka.</p>
+        </div>
+        <div class="faq-item">
+            <h3 onclick="toggleAnswer(this)">How to calculate import duty for electric vehicles in Sri Lanka?</h3>
+            <p>Electric vehicle import duties in Sri Lanka for 2025 are based on motor capacity (kW) and vehicle age. Taxes include Customs Import Duty (CID), Vehicle Entitlement Levy (VEL), VAT, and others. Use our Sri Lanka vehicle tax calculator to get precise estimates for EVs in Colombo and beyond.</p>
+        </div>
     </div>
     
     <div class="disclaimer-section">
@@ -784,7 +789,7 @@
                         <tr><td>Engine/ Motor Capacity</td><td style="text-align:right">${fmt(capacity)} ${unit}</td></tr>
                         <tr><td>Vehicle Age</td><td style="text-align:right">${age === '1' ? '≤1 year' : '>1–3 years'}</td></tr>
                         <tr><td>Dealer Fee (LKR)</td><td style="text-align:right">${fmt(dealerFee)}</td></tr>
-                        <tr><td>Clearing Fee (LKR)</td><td style="text-align:right">${fmt(clearingFee)}</td></tr>
+                        <tr><td>Clearing Agent Fee (LKR)</td><td style="text-align:right">${fmt(clearingFee)}</td></tr>
                     </tbody>
                 </table>
             `;
@@ -807,7 +812,8 @@
                         ${createRow('Luxury Tax', luxuryTax, pct(luxuryTax))}
                         ${createRow('VEL', vel, pct(vel))}
                         ${createRow('VAT', vat, pct(vat))}
-                        ${createRow('Other Charges', otherCharges, pct(otherCharges))}
+                        ${createRow('Total Tax & Duties', totalTax, pct(totalTax))}
+                        ${createRow('Other Charges (Dealer fee & Clearing agent fee)', otherCharges, pct(otherCharges))}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -821,8 +827,8 @@
             document.getElementById('result').innerHTML = inputsTable + breakdownTable;
             showPieChart([
                 { label: 'CIF', value: cif },
-                { label: 'Total Tax', value: totalTax },
-                { label: 'Other Charges', value: otherCharges }
+                { label: 'Total Tax & Duties', value: totalTax },
+                { label: 'Other Charges (Dealer fee & Clearing agent fee)', value: otherCharges }
             ], total);
             document.getElementById('result').style.display = 'block';
             document.getElementById('downloadBtn').style.display = 'block';
@@ -968,7 +974,7 @@
                 ['Engine Capacity (CC) | Motor Power (Kw)', `${fmt(resultData.capacity)} ${unit}`],
                 ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
                 ['Dealer Fee (LKR)', fmt(resultData.dealerFee)],
-                ['Clearing Fee (LKR)', fmt(resultData.clearingFee)]
+                ['Clearing Agent Fee (LKR)', fmt(resultData.clearingFee)]
             ];
             doc.autoTable({
                 startY: y,
@@ -1052,7 +1058,7 @@
             y = doc.lastAutoTable.finalY + 24;
 
             const summaryRows = [
-                ['CIF', 'Total Tax', 'Other Charges', 'Total Cost'],
+                ['CIF in LKR', 'Total Import Duty and Taxes', 'Other Charges (Dealer fee & Clearing agent fee)', 'Total Cost'],
                 [fmt(resultData.cif), fmt(resultData.totalTax), fmt(resultData.otherCharges), fmt(resultData.total)]
             ];
 
@@ -1096,6 +1102,11 @@
             doc.text('© 2025 Amarasinghe Prime Enterprises™', pageW/2, doc.internal.pageSize.height - 20, {align:"center"});
 
             doc.save('Vehicle_Tax_Calculation.pdf');
+        }
+
+        function toggleAnswer(element) {
+            const item = element.parentNode;
+            item.classList.toggle('active');
         }
     </script>
 </body>
