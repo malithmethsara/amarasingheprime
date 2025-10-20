@@ -1004,13 +1004,18 @@
             if (placeholderEl) placeholderEl.style.display = 'none';
             const helpEl = document.querySelector('.result-help');
             if (helpEl) helpEl.style.display = 'none';
-            showPieChart([
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('downloadBtn').style.display = 'block';
+            const itemsForChart = [
                 { label: 'CIF', value: cif },
                 { label: 'Total Tax & Duties', value: totalTax },
                 { label: 'Other Charges (Dealer & Clearing Fees)', value: otherCharges }
-            ], total);
-            document.getElementById('result').style.display = 'block';
-            document.getElementById('downloadBtn').style.display = 'block';
+            ];
+            if (window.Chart) {
+                showPieChart(itemsForChart, total);
+            } else {
+                setTimeout(() => { if (window.Chart) { showPieChart(itemsForChart, total); } }, 500);
+            }
 
             if (window.innerWidth <= 640) {
                 document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1083,8 +1088,16 @@
                 alert('Please calculate the tax first.');
                 return;
             }
+            if (!(window.jspdf && window.jspdf.jsPDF)) {
+                alert('PDF library is still loading. Please try again in a moment.');
+                return;
+            }
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+            if (typeof doc.autoTable !== 'function') {
+                alert('PDF table plugin is still loading. Please try again in a moment.');
+                return;
+            }
             const pageW = doc.internal.pageSize.width;
             let y = 40;
 
