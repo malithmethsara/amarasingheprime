@@ -43,6 +43,7 @@
             --soft-facebook-border: #b6d2f7;
             --soft-whatsapp-border: #b9eac7;
             --soft-black-border: #d1d1d1;
+            --banner-blue: #e6f0fa; /* Uniform light blue background */
         }
         *, *::before, *::after {
             box-sizing: border-box;
@@ -278,19 +279,40 @@
             font-size: 0.92rem;
             padding: 0.875rem 0;
         }
-        .faq-section, .info-section, .disclaimer-section, .social-proof {
+        .faq-section, .info-section, .disclaimer-section, .social-proof, .marketing-banner {
             background: var(--card);
             border: 1px solid rgba(0,48,135,0.15);
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
             border-radius: 1rem;
             padding: 1.5rem;
             margin-top: 1.25rem;
+            text-align: center;
+        }
+        .marketing-banner {
+            padding: 1rem;
+            background: var(--banner-blue); /* Uniform light blue */
+            color: #000; /* Black font */
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        .marketing-banner:hover {
+            transform: translateY(-2px);
+        }
+        .marketing-banner a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 800;
+            transition: color 0.2s;
+        }
+        .marketing-banner a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
         }
         .social-proof {
             padding: 0.875rem 1.5rem;
-            text-align: center;
         }
-        .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2 {
+        .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2, .marketing-banner h2 {
             text-align: center;
             font-weight: 700;
             font-size: 1.4rem;
@@ -376,11 +398,15 @@
             header h1 {
                 font-size: clamp(1.5rem, 4.5vw, 1.9rem);
             }
-            .form-section, .result-section, .social-proof {
+            .form-section, .result-section, .social-proof, .marketing-banner {
                 padding: 1.25rem;
                 min-width: 100%;
                 max-width: 100%;
                 min-height: auto;
+            }
+            .marketing-banner {
+                padding: 0.875rem;
+                font-size: 1rem;
             }
             .social-proof {
                 padding: 0.75rem 1.25rem;
@@ -416,7 +442,7 @@
             .faq-section, .info-section, .disclaimer-section {
                 padding: 1.25rem;
             }
-            .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2 {
+            .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2, .marketing-banner h2 {
                 font-size: 1.2rem;
             }
             .faq-item h3, .info-section h3 {
@@ -580,6 +606,9 @@
         <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank" rel="noopener" aria-label="Visit our Facebook page">
             <i class="fab fa-facebook" aria-hidden="true"></i> Facebook
         </a>
+    </div>
+    <div class="marketing-banner">
+        <a href="https://amarasingheprime.lk/who-we-are.html" target="_blank" rel="noopener">Contact us to Personally import your dream vehicle from Japan with absolute reliability</a>
     </div>
     <div class="social-proof">
         <p>⭐ Rated 4.9/5 by 25+ users for accurate Sri Lanka vehicle tax calculations!</p>
@@ -1117,7 +1146,7 @@
                     valign: 'middle'
                 },
                 bodyStyles: {
-                    fontSize: 11,
+                    font-size: 11,
                     textColor: [40, 40, 40],
                     halign: 'left',
                     valign: 'middle'
