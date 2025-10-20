@@ -43,7 +43,8 @@
             --soft-facebook-border: #b6d2f7;
             --soft-whatsapp-border: #b9eac7;
             --soft-black-border: #d1d1d1;
-            --banner-blue: #e6f0fa; /* Uniform light blue background */
+            --banner-blue: #e6f0fa;
+            --soft-red: #ffe6e6; /* Softer red for border */
         }
         *, *::before, *::after {
             box-sizing: border-box;
@@ -290,11 +291,13 @@
         }
         .marketing-banner {
             padding: 1rem;
-            background: var(--banner-blue); /* Uniform light blue */
-            color: #000; /* Black font */
+            background: var(--banner-blue);
+            color: #000;
             font-weight: 700;
             font-size: 1.1rem;
             transition: transform 0.2s;
+            border: 2px solid var(--soft-red);
+            cursor: pointer; /* Make entire box look clickable */
         }
         .marketing-banner:hover {
             transform: translateY(-2px);
@@ -304,6 +307,7 @@
             text-decoration: none;
             font-weight: 800;
             transition: color 0.2s;
+            display: block; /* Make link fill the div */
         }
         .marketing-banner a:hover {
             color: var(--primary-hover);
@@ -321,6 +325,7 @@
         }
         .faq-item {
             margin-bottom: 1rem;
+            text-align: left;
         }
         .faq-item h3 {
             font-weight: 700;
@@ -329,6 +334,7 @@
             margin: 0 0 0.5rem;
             cursor: pointer;
             transition: color 0.2s;
+            display: inline;
         }
         .faq-item h3:hover {
             color: var(--primary);
@@ -338,6 +344,7 @@
             color: var(--muted);
             line-height: 1.6;
             display: none;
+            margin-left: 1.5rem;
         }
         .faq-item.active p {
             display: block;
@@ -352,15 +359,26 @@
             font-weight: 700;
             font-size: 1.1rem;
             color: var(--text);
-            margin: 1.5rem 0 0.5rem;
+            margin: 0 0 0.25rem 0;
+            text-align: left;
         }
         .info-section ul {
             padding-left: 1.25rem;
             margin-bottom: 1rem;
+            text-align: left;
+            list-style-position: inside;
         }
         .info-section li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
             font-size: 0.95rem;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+        }
+        .info-section li p {
+            margin-top: 0;
+            margin-left: 0;
+            text-align: left;
         }
         .info-section a, .result-section a {
             color: var(--primary);
@@ -388,6 +406,24 @@
             clip: rect(0, 0, 0, 0);
             border: 0;
         }
+        .faq-indicator {
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+        }
+        .faq-item.active .faq-indicator {
+            transform: rotate(90deg);
+        }
+        .result-placeholder {
+            font-size: 0.95rem;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 1.5rem; /* Increased space between phrases */
+        }
+        .result-help {
+            font-size: 0.95rem;
+            color: var(--muted);
+            text-align: center;
+        }
         @media (max-width: 640px) {
             body {
                 padding: 1.5rem 2% 2.5rem;
@@ -405,7 +441,7 @@
                 min-height: auto;
             }
             .marketing-banner {
-                padding: 0.875rem;
+                padding: 0.75rem;
                 font-size: 1rem;
             }
             .social-proof {
@@ -450,6 +486,9 @@
             }
             #pieChart {
                 max-width: 95vw;
+            }
+            .result-placeholder, .result-help {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -663,9 +702,9 @@
         </section>
         <section class="result-section" aria-labelledby="result-section-title">
             <h2 class="result-section-title" id="result-section-title">Calculation Result</h2>
-            <div id="result" aria-live="polite"></div>
-            <div>
-                <p>Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+            <div id="result" aria-live="polite">
+                <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
+                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
             </div>
             <div class="btn-row">
                 <button id="downloadBtn" class="blue-btn" onclick="downloadPDF()">Save as PDF</button>
@@ -708,27 +747,27 @@
     <section class="faq-section" aria-labelledby="faq-section-title">
         <h2 id="faq-section-title">Frequently Asked Questions about Sri Lankan Vehicle Import Tax</h2>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">How do I calculate the import tax for a vehicle in Sri Lanka?</h3>
+            <h3 onclick="toggleAnswer(this)">1. How do I calculate the import tax for a vehicle in Sri Lanka? <i class="fas fa-chevron-down faq-indicator"></i></h3>
             <p>The total import tax includes CID, Surcharge, Excise Duty, Luxury Tax, VEL, and VAT, based on CIF value, engine/motor capacity, fuel type, and age. Our calculator uses 2025 Gazette rates for accurate estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">What is the CIF Value and why is it important?</h3>
+            <h3 onclick="toggleAnswer(this)">2. What is the CIF Value and why is it important? <i class="fas fa-chevron-down faq-indicator"></i></h3>
             <p>CIF (Cost, Insurance, Freight) is the vehicle's total value upon arrival in Sri Lanka, used as the base for CID and VAT calculations. Accurate CIF values ensure precise tax estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">Are hybrid vehicles taxed differently?</h3>
+            <h3 onclick="toggleAnswer(this)">3. Are hybrid vehicles taxed differently? <i class="fas fa-chevron-down faq-indicator"></i></h3>
             <p>Yes, hybrids (petrol, diesel, plug-in) have different excise duty rates to promote eco-friendly vehicles. Our calculator reflects these rates for accurate tax figures.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">How to calculate import duty for electric vehicles?</h3>
+            <h3 onclick="toggleAnswer(this)">4. How to calculate import duty for electric vehicles? <i class="fas fa-chevron-down faq-indicator"></i></h3>
             <p>Electric vehicle duties are based on motor capacity (kW) and age, including CID, VEL, VAT, and others. Use our calculator for precise EV tax estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">How to calculate luxury tax for vehicle imports?</h3>
+            <h3 onclick="toggleAnswer(this)">5. How to calculate luxury tax for vehicle imports? <i class="fas fa-chevron-down faq-indicator"></i></h3>
             <p>Luxury Tax applies when CIF exceeds thresholds: Petrol/Diesel (5M LKR), Hybrid/Plug-in (5.5M LKR), Electric/e-SMART (6M LKR). Rates vary, and our calculator applies them automatically.</p>
         </div>
         <div class="faq-item">
-            <h3 onclick="toggleAnswer(this)">What are HS codes and how do they affect taxes?</h3>
+            <h3 onclick="toggleAnswer(this)">6. What are HS codes and how do they affect taxes? <i class="fas fa-chevron-down faq-indicator"></i></h3>
             <p>HS codes classify vehicles (e.g., Petrol: 8703.2x.xx, Electric: 8703.8x.xx), determining tax rates. Our calculator uses these codes for accurate tax estimates.</p>
         </div>
     </section>
@@ -784,22 +823,36 @@
         }
 
         function calculateTax() {
-            const inputs = {
-                cifJPY: parseFloat(document.getElementById('cifJPY').value),
-                exchangeRate: parseFloat(document.getElementById('exchangeRate').value) || fetchedExchangeRate,
-                type: document.getElementById('vehicleType').value,
-                capacity: parseFloat(document.getElementById('capacity').value),
-                age: document.getElementById('age').value,
-                dealerFee: parseFloat(document.getElementById('dealerFee').value) || 0,
-                clearingFee: parseFloat(document.getElementById('clearingFee').value) || 0
-            };
+            const cifJPY = parseFloat(document.getElementById('cifJPY').value);
+            const exchangeRate = parseFloat(document.getElementById('exchangeRate').value) || fetchedExchangeRate;
+            const type = document.getElementById('vehicleType').value;
+            const capacity = parseFloat(document.getElementById('capacity').value);
+            const age = document.getElementById('age').value;
+            const dealerFee = parseFloat(document.getElementById('dealerFee').value) || 0;
+            const clearingFee = parseFloat(document.getElementById('clearingFee').value) || 0;
 
-            if (isNaN(inputs.cifJPY) || isNaN(inputs.exchangeRate) || isNaN(inputs.capacity) || !inputs.type || !inputs.age) {
-                alert('Please fill in all required fields with valid numbers.');
+            if (isNaN(cifJPY)) {
+                alert('Please add CIF Value (JPY).');
+                return;
+            }
+            if (isNaN(exchangeRate)) {
+                alert('Please add Exchange Rate (JPY/LKR).');
+                return;
+            }
+            if (!type) {
+                alert('Please select Vehicle Type.');
+                return;
+            }
+            if (isNaN(capacity)) {
+                alert('Please add Engine/Motor Capacity (CC or kW).');
+                return;
+            }
+            if (!age) {
+                alert('Please select Vehicle Age.');
                 return;
             }
 
-            const cif = inputs.cifJPY * inputs.exchangeRate;
+            const cif = cifJPY * exchangeRate;
             const thresholds = {
                 petrol: 5000000, diesel: 5000000, petrol_hybrid: 5500000,
                 diesel_hybrid: 5500000, petrol_plugin: 5500000, diesel_plugin: 5500000,
@@ -811,57 +864,57 @@
                 electric: 0.6, esmart_petrol: 0.6, esmart_diesel: 0.6
             };
 
-            const threshold = thresholds[inputs.type];
-            const luxuryRate = luxuryRates[inputs.type];
+            const threshold = thresholds[type];
+            const luxuryRate = luxuryRates[type];
 
             const cid = cif * 0.2;
             const surcharge = cid * 0.5;
             let excise = 0;
 
-            if (inputs.type === 'petrol' || inputs.type === 'petrol_hybrid') {
-                if (inputs.capacity < 300) excise = 482900;
-                else if (inputs.capacity < 1000) excise = Math.max(1992000, inputs.capacity * 2450);
-                else if (inputs.capacity <= 1300) excise = inputs.capacity * 3850;
-                else if (inputs.capacity <= 1500) excise = inputs.capacity * 4450;
-                else if (inputs.capacity <= 1600) excise = inputs.capacity * 5150;
-                else if (inputs.capacity <= 1800) excise = inputs.capacity * 6400;
-                else if (inputs.capacity <= 2000) excise = inputs.capacity * 7700;
-                else if (inputs.capacity <= 2500) excise = inputs.capacity * 8450;
-                else if (inputs.capacity <= 2750) excise = inputs.capacity * 9650;
-                else if (inputs.capacity <= 3000) excise = inputs.capacity * 10850;
-                else if (inputs.capacity <= 4000) excise = inputs.capacity * 12050;
-                else excise = inputs.capacity * 13300;
-            } else if (inputs.type === 'diesel' || inputs.type === 'diesel_hybrid') {
-                if (inputs.capacity < 1500) excise = inputs.capacity * 5550;
-                else if (inputs.capacity <= 1600) excise = inputs.capacity * 6950;
-                else if (inputs.capacity <= 1800) excise = inputs.capacity * 8300;
-                else if (inputs.capacity <= 2000) excise = inputs.capacity * 9650;
-                else if (inputs.capacity <= 2500) excise = inputs.capacity * 9650;
-                else if (inputs.capacity <= 2750) excise = inputs.capacity * 12050;
-                else if (inputs.capacity <= 3000) excise = inputs.capacity * 13550;
-                else if (inputs.capacity <= 4000) excise = inputs.capacity * 12050;
-                else excise = inputs.capacity * 13300;
-            } else if (inputs.type === 'electric' || inputs.type === 'petrol_plugin' || inputs.type === 'diesel_plugin') {
+            if (type === 'petrol' || type === 'petrol_hybrid') {
+                if (capacity < 300) excise = 482900;
+                else if (capacity < 1000) excise = Math.max(1992000, capacity * 2450);
+                else if (capacity <= 1300) excise = capacity * 3850;
+                else if (capacity <= 1500) excise = capacity * 4450;
+                else if (capacity <= 1600) excise = capacity * 5150;
+                else if (capacity <= 1800) excise = capacity * 6400;
+                else if (capacity <= 2000) excise = capacity * 7700;
+                else if (capacity <= 2500) excise = capacity * 8450;
+                else if (capacity <= 2750) excise = capacity * 9650;
+                else if (capacity <= 3000) excise = capacity * 10850;
+                else if (capacity <= 4000) excise = capacity * 12050;
+                else excise = capacity * 13300;
+            } else if (type === 'diesel' || type === 'diesel_hybrid') {
+                if (capacity < 1500) excise = capacity * 5550;
+                else if (capacity <= 1600) excise = capacity * 6950;
+                else if (capacity <= 1800) excise = capacity * 8300;
+                else if (capacity <= 2000) excise = capacity * 9650;
+                else if (capacity <= 2500) excise = capacity * 9650;
+                else if (capacity <= 2750) excise = capacity * 12050;
+                else if (capacity <= 3000) excise = capacity * 13550;
+                else if (capacity <= 4000) excise = capacity * 12050;
+                else excise = capacity * 13300;
+            } else if (type === 'electric' || type === 'petrol_plugin' || type === 'diesel_plugin') {
                 let rate1, rate2;
-                if (inputs.capacity <= 50) { rate1 = 18100; rate2 = 36200; }
-                else if (inputs.capacity <= 100) { rate1 = 24100; rate2 = 36200; }
-                else if (inputs.capacity <= 200) { rate1 = 36200; rate2 = 60400; }
+                if (capacity <= 50) { rate1 = 18100; rate2 = 36200; }
+                else if (capacity <= 100) { rate1 = 24100; rate2 = 36200; }
+                else if (capacity <= 200) { rate1 = 36200; rate2 = 60400; }
                 else { rate1 = 96600; rate2 = 132800; }
-                excise = inputs.age === '1' ? rate1 * inputs.capacity : rate2 * inputs.capacity;
-            } else if (inputs.type === 'esmart_petrol') {
+                excise = age === '1' ? rate1 * capacity : rate2 * capacity;
+            } else if (type === 'esmart_petrol') {
                 let rate1, rate2;
-                if (inputs.capacity <= 50) { rate1 = 43440; rate2 = 30770; }
-                else if (inputs.capacity <= 100) { rate1 = 43440; rate2 = 40970; }
-                else if (inputs.capacity <= 200) { rate1 = 63420; rate2 = 41630; }
+                if (capacity <= 50) { rate1 = 43440; rate2 = 30770; }
+                else if (capacity <= 100) { rate1 = 43440; rate2 = 40970; }
+                else if (capacity <= 200) { rate1 = 63420; rate2 = 41630; }
                 else { rate1 = 139440; rate2 = 111090; }
-                excise = inputs.age === '1' ? rate1 * inputs.capacity : rate2 * inputs.capacity;
-            } else if (inputs.type === 'esmart_diesel') {
+                excise = age === '1' ? rate1 * capacity : rate2 * capacity;
+            } else if (type === 'esmart_diesel') {
                 let rate1, rate2;
-                if (inputs.capacity <= 50) { rate1 = 52130; rate2 = 36920; }
-                else if (inputs.capacity <= 100) { rate1 = 52130; rate2 = 49160; }
-                else if (inputs.capacity <= 200) { rate1 = 76100; rate2 = 49960; }
+                if (capacity <= 50) { rate1 = 52130; rate2 = 36920; }
+                else if (capacity <= 100) { rate1 = 52130; rate2 = 49160; }
+                else if (capacity <= 200) { rate1 = 76100; rate2 = 49960; }
                 else { rate1 = 167330; rate2 = 133310; }
-                excise = inputs.age === '1' ? rate1 * inputs.capacity : rate2 * inputs.capacity;
+                excise = age === '1' ? rate1 * capacity : rate2 * capacity;
             }
 
             const luxuryTax = cif > threshold ? (cif - threshold) * luxuryRate : 0;
@@ -869,29 +922,29 @@
             const vatBase = cif + cid + surcharge + excise + luxuryTax + vel;
             const vat = vatBase * 0.18;
             const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
-            const otherCharges = inputs.dealerFee + inputs.clearingFee;
+            const otherCharges = dealerFee + clearingFee;
             const total = cif + totalTax + otherCharges;
 
             resultData = {
-                cifJPY: inputs.cifJPY, exchangeRate: inputs.exchangeRate, cif, type: inputs.type, 
-                capacity: inputs.capacity, age: inputs.age, dealerFee: inputs.dealerFee, 
-                clearingFee: inputs.clearingFee, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, total
+                cifJPY, exchangeRate, cif, type, 
+                capacity, age, dealerFee, 
+                clearingFee, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, total
             };
 
-            const unit = inputs.type.includes('electric') || inputs.type.includes('plugin') || inputs.type.includes('esmart') ? 'kW' : 'cc';
+            const unit = type.includes('electric') || type.includes('plugin') || type.includes('esmart') ? 'kW' : 'cc';
             const inputsTable = `
                 <div style="font-weight:700;margin-bottom:0.375rem;color:var(--primary)">Inputs</div>
                 <table>
                     <thead><tr><th scope="col">Item</th><th scope="col" style="text-align:right">Value</th></tr></thead>
                     <tbody>
-                        <tr><td>CIF (JPY)</td><td style="text-align:right">${fmt(inputs.cifJPY)}</td></tr>
-                        <tr><td>Exchange Rate (JPY→LKR)</td><td style="text-align:right">${fmt(inputs.exchangeRate, 6)}</td></tr>
+                        <tr><td>CIF (JPY)</td><td style="text-align:right">${fmt(cifJPY)}</td></tr>
+                        <tr><td>Exchange Rate (JPY→LKR)</td><td style="text-align:right">${fmt(exchangeRate, 6)}</td></tr>
                         <tr><td>CIF (LKR)</td><td style="text-align:right">${fmt(cif)}</td></tr>
-                        <tr><td>Vehicle Type</td><td style="text-align:right">${inputs.type.replace('_', ' ').toUpperCase()}</td></tr>
-                        <tr><td>Engine/Motor Capacity</td><td style="text-align:right">${fmt(inputs.capacity)} ${unit}</td></tr>
-                        <tr><td>Vehicle Age</td><td style="text-align:right">${inputs.age === '1' ? '≤1 year' : '>1–3 years'}</td></tr>
-                        <tr><td>Dealer Fee (LKR)</td><td style="text-align:right">${fmt(inputs.dealerFee)}</td></tr>
-                        <tr><td>Clearing Agent Fee (LKR)</td><td style="text-align:right">${fmt(inputs.clearingFee)}</td></tr>
+                        <tr><td>Vehicle Type</td><td style="text-align:right">${type.replace('_', ' ').toUpperCase()}</td></tr>
+                        <tr><td>Engine/Motor Capacity</td><td style="text-align:right">${fmt(capacity)} ${unit}</td></tr>
+                        <tr><td>Vehicle Age</td><td style="text-align:right">${age === '1' ? '≤1 year' : '>1–3 years'}</td></tr>
+                        <tr><td>Dealer Fee (LKR)</td><td style="text-align:right">${fmt(dealerFee)}</td></tr>
+                        <tr><td>Clearing Agent Fee (LKR)</td><td style="text-align:right">${fmt(clearingFee)}</td></tr>
                     </tbody>
                 </table>
             `;
@@ -907,15 +960,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${createRow('CIF', cif, pct(cif))}
-                        ${createRow('CID', cid, pct(cid))}
-                        ${createRow('Surcharge', surcharge, pct(surcharge))}
-                        ${createRow('Excise Duty', excise, pct(excise))}
-                        ${createRow('Luxury Tax', luxuryTax, pct(luxuryTax))}
-                        ${createRow('VEL', vel, pct(vel))}
-                        ${createRow('VAT', vat, pct(vat))}
-                        ${createRow('Total Tax & Duties', totalTax, pct(totalTax))}
-                        ${createRow('Other Charges (Dealer & Clearing Fees)', otherCharges, pct(otherCharges))}
+                        <tr><td>CIF</td><td style="text-align:right">${fmt(cif)}</td><td style="text-align:right">${pct(cif)}%</td></tr>
+                        <tr><td>CID</td><td style="text-align:right">${fmt(cid)}</td><td style="text-align:right">${pct(cid)}%</td></tr>
+                        <tr><td>Surcharge</td><td style="text-align:right">${fmt(surcharge)}</td><td style="text-align:right">${pct(surcharge)}%</td></tr>
+                        <tr><td>Excise Duty</td><td style="text-align:right">${fmt(excise)}</td><td style="text-align:right">${pct(excise)}%</td></tr>
+                        <tr><td>Luxury Tax</td><td style="text-align:right">${fmt(luxuryTax)}</td><td style="text-align:right">${pct(luxuryTax)}%</td></tr>
+                        <tr><td>VEL</td><td style="text-align:right">${fmt(vel)}</td><td style="text-align:right">${pct(vel)}%</td></tr>
+                        <tr><td>VAT</td><td style="text-align:right">${fmt(vat)}</td><td style="text-align:right">${pct(vat)}%</td></tr>
+                        <tr><td>Total Tax & Duties</td><td style="text-align:right">${fmt(totalTax)}</td><td style="text-align:right">${pct(totalTax)}%</td></tr>
+                        <tr><td>Other Charges (Dealer & Clearing Fees)</td><td style="text-align:right">${fmt(otherCharges)}</td><td style="text-align:right">${pct(otherCharges)}%</td></tr>
                     </tbody>
                     <tfoot>
                         <tr>
@@ -927,6 +980,8 @@
                 </table>
             `;
             document.getElementById('result').innerHTML = inputsTable + breakdownTable;
+            document.querySelector('.result-placeholder').style.display = 'none';
+            document.querySelector('.result-help').style.display = 'none';
             showPieChart([
                 { label: 'CIF', value: cif },
                 { label: 'Total Tax & Duties', value: totalTax },
@@ -946,8 +1001,13 @@
 
         function resetForm() {
             document.getElementById('taxCalculatorForm').reset();
-            document.getElementById('result').innerHTML = '';
-            document.getElementById('result').style.display = 'none';
+            document.getElementById('result').innerHTML = `
+                <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
+                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+            `;
+            document.querySelector('.result-placeholder').style.display = 'block';
+            document.querySelector('.result-help').style.display = 'block';
+            document.getElementById('result').style.display = 'block';
             document.getElementById('downloadBtn').style.display = 'none';
             document.getElementById('pieChart').style.display = 'none';
             if (window.pieChartInstance) window.pieChartInstance.destroy();
@@ -1146,7 +1206,7 @@
                     valign: 'middle'
                 },
                 bodyStyles: {
-                    font-size: 11,
+                    fontSize: 11,
                     textColor: [40, 40, 40],
                     halign: 'left',
                     valign: 'middle'
@@ -1170,6 +1230,12 @@
         function toggleAnswer(element) {
             const item = element.closest('.faq-item');
             item.classList.toggle('active');
+            const indicator = item.querySelector('.faq-indicator');
+            if (item.classList.contains('active')) {
+                indicator.style.transform = 'rotate(90deg)';
+            } else {
+                indicator.style.transform = 'rotate(0deg)';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1182,6 +1248,7 @@
                 });
             });
             fetchBOCJPYRate();
+            resetForm(); // Initialize with placeholders
         });
     </script>
 </body>
