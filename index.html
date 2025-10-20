@@ -1000,8 +1000,10 @@
                 </table>
             `;
             document.getElementById('result').innerHTML = inputsTable + taxCalculationTable + finalSummaryTable;
-            document.querySelector('.result-placeholder').style.display = 'none';
-            document.querySelector('.result-help').style.display = 'none';
+            const placeholderEl = document.querySelector('.result-placeholder');
+            if (placeholderEl) placeholderEl.style.display = 'none';
+            const helpEl = document.querySelector('.result-help');
+            if (helpEl) helpEl.style.display = 'none';
             showPieChart([
                 { label: 'CIF', value: cif },
                 { label: 'Total Tax & Duties', value: totalTax },
