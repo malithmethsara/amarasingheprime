@@ -825,6 +825,65 @@
             return Number(val).toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
         }
 
+        function waitFor(conditionFn, onReady, options = {}) {
+            const { timeoutMs = 10000, intervalMs = 100 } = options;
+            const start = Date.now();
+            const timer = setInterval(() => {
+                try {
+                    if (conditionFn()) {
+                        clearInterval(timer);
+                        onReady();
+                    } else if (Date.now() - start > timeoutMs) {
+                        clearInterval(timer);
+                        console.warn('Timed out waiting for required library.');
+                    }
+                } catch (err) {
+                    clearInterval(timer);
+                    console.error('Error while waiting for library:', err);
+                }
+            }, intervalMs);
+        }
+
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                if (document.querySelector(`script[src="${src}"]`)) {
+                    // Script tag already present; wait for it to be usable
+                    waitFor(() => !!window.Chart || !!(window.jspdf && window.jspdf.jsPDF), resolve, { timeoutMs: 8000 });
+                    return;
+                }
+                const s = document.createElement('script');
+                s.src = src;
+                s.async = true;
+                s.crossOrigin = 'anonymous';
+                s.referrerPolicy = 'no-referrer';
+                s.onload = () => resolve();
+                s.onerror = () => reject(new Error('Failed to load script: ' + src));
+                document.head.appendChild(s);
+            });
+        }
+
+        function ensureChartReady() {
+            if (window.Chart) return Promise.resolve();
+            return loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js').catch(() => {});
+        }
+
+        async function ensurePdfReady() {
+            if (!(window.jspdf && window.jspdf.jsPDF)) {
+                try {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+                } catch (_) {}
+            }
+            // Try to attach autotable
+            try {
+                const testDoc = new (window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : function(){})();
+                if (!testDoc || typeof testDoc.autoTable !== 'function') {
+                    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+                }
+            } catch (_) {
+                await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js');
+            }
+        }
+
         function calculateTax() {
             const cifJPY = parseFloat(document.getElementById('cifJPY').value);
             const exchangeRate = parseFloat(document.getElementById('exchangeRate').value) || fetchedExchangeRate;
@@ -1011,11 +1070,13 @@
                 { label: 'Total Tax & Duties', value: totalTax },
                 { label: 'Other Charges (Dealer & Clearing Fees)', value: otherCharges }
             ];
-            if (window.Chart) {
-                showPieChart(itemsForChart, total);
-            } else {
-                setTimeout(() => { if (window.Chart) { showPieChart(itemsForChart, total); } }, 500);
-            }
+            ensureChartReady().then(() => {
+                if (window.Chart) {
+                    showPieChart(itemsForChart, total);
+                } else {
+                    console.warn('Chart.js not available; pie chart skipped.');
+                }
+            });
 
             if (window.innerWidth <= 640) {
                 document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1088,16 +1149,16 @@
                 alert('Please calculate the tax first.');
                 return;
             }
-            if (!(window.jspdf && window.jspdf.jsPDF)) {
-                alert('PDF library is still loading. Please try again in a moment.');
-                return;
-            }
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-            if (typeof doc.autoTable !== 'function') {
-                alert('PDF table plugin is still loading. Please try again in a moment.');
-                return;
-            }
+            ensurePdfReady().then(() => {
+                if (!(window.jspdf && window.jspdf.jsPDF)) {
+                    alert('PDF library failed to load. Check your network and try again.');
+                    return;
+                }
+                const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+                if (typeof doc.autoTable !== 'function') {
+                    alert('PDF table plugin failed to load. Check your network and try again.');
+                    return;
+                }
             const pageW = doc.internal.pageSize.width;
             let y = 40;
 
@@ -1260,6 +1321,7 @@
             doc.text('© 2025 Amarasinghe Prime Enterprises (Pvt) Ltd (PV 00342707)', pageW / 2, doc.internal.pageSize.height - 20, { align: 'center' });
 
             doc.save('Vehicle_Tax_Calculation_2025.pdf');
+            });
         }
 
         function toggleAnswer(element) {
