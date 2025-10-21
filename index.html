@@ -787,10 +787,10 @@
                 </select>
                 <p id="age-help" class="sr-only">Age of the vehicle for tax rates.</p>
                 <label for="dealerFee">Dealer Fee (LKR):</label>
-                <input type="number" id="dealerFee" min="0" step="any" value="300000" aria-describedby="dealerFee-help">
+                <input type="number" id="dealerFee" min="0" step="any" value="0" aria-describedby="dealerFee-help">
                 <p id="dealerFee-help" class="sr-only">Dealer fee in Sri Lankan Rupees, if applicable.</p>
                 <label for="clearingFee">Clearing Agent Fee (LKR):</label>
-                <input type="number" id="clearingFee" min="0" step="any" value="80000" aria-describedby="clearingFee-help">
+                <input type="number" id="clearingFee" min="0" step="any" value="0" aria-describedby="clearingFee-help">
                 <p id="clearingFee-help" class="sr-only">Clearing agent fee in Sri Lankan Rupees, if applicable.</p>
                 <div class="btn-row">
                     <button type="button" class="blue-btn" id="calculateBtn">Calculate Tax</button>
@@ -1183,8 +1183,8 @@
         function resetForm() {
             document.getElementById('taxCalculatorForm').reset();
             document.getElementById('exchangeRate').value = fetchedExchangeRate ? fetchedExchangeRate.toFixed(6) : '2.1';
-            document.getElementById('dealerFee').value = '300000';
-            document.getElementById('clearingFee').value = '80000';
+            document.getElementById('dealerFee').value = '0';
+            document.getElementById('clearingFee').value = '0';
             document.getElementById('result').innerHTML = `
                 <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
                 <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
