@@ -780,6 +780,7 @@
                 <label for="capacity" id="capacityLabel">Engine/Motor Capacity (CC or kW):</label>
                 <input type="number" id="capacity" required min="0" step="any" aria-describedby="capacity-help">
                 <p id="capacity-help" class="sr-only">Engine capacity in CC for fuel vehicles or motor capacity in kW for electric vehicles.</p>
+                <div id="capacityError" class="error-message" style="display: none;"></div>
                 <label for="age">Vehicle Age:</label>
                 <select id="age" required aria-describedby="age-help">
                     <option value="">Select Age</option>
@@ -896,6 +897,290 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
-    <script src="/js/taxCalculator.min.js" defer></script>
+    <script>
+        // taxCalculator.js (restructured for updated excise duty calculations)
+        document.addEventListener('DOMContentLoaded', () => {
+            const timeDateTime = document.getElementById('timeDateTime');
+            timeDateTime.innerText = new Date().toLocaleString('en-US', { timeZone: 'Asia/Colombo' });
+
+            const fetchExchangeRate = async () => {
+                try {
+                    const response = await fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR');
+                    const data = await response.json();
+                    const rate = data.rates.LKR;
+                    document.getElementById('exchangeRate').value = rate.toFixed(4);
+                    document.getElementById('cbslRate').innerText = `Current JPY/LKR Rate: ${rate.toFixed(4)} (Source: exchangerate.host)`;
+                } catch (error) {
+                    document.getElementById('cbslRate').innerText = 'Failed to fetch exchange rate. Please enter manually.';
+                }
+            };
+            fetchExchangeRate();
+
+            const vehicleTypeSelect = document.getElementById('vehicleType');
+            const capacityLabel = document.getElementById('capacityLabel');
+            vehicleTypeSelect.addEventListener('change', (e) => {
+                const type = e.target.value;
+                if (type === 'electric' || type.startsWith('esmart_')) {
+                    capacityLabel.innerText = 'Motor Capacity (kW):';
+                } else {
+                    capacityLabel.innerText = 'Engine Capacity (CC):';
+                }
+            });
+
+            const faqItems = document.querySelectorAll('.faq-item h3');
+            faqItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    item.parentElement.classList.toggle('active');
+                });
+            });
+
+            const calculateBtn = document.getElementById('calculateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const resultDiv = document.getElementById('result');
+            const capacityError = document.getElementById('capacityError');
+
+            const formatNumber = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const getLuxuryParams = (type) => {
+                if (type === 'petrol') return { threshold: 5000000, rate: 1.0 };
+                if (type === 'diesel') return { threshold: 5000000, rate: 1.2 };
+                if (type === 'electric' || type.startsWith('esmart_')) return { threshold: 6000000, rate: 0.6 };
+                return { threshold: 5500000, rate: 0.8 }; // hybrids and plug-ins
+            };
+
+            const calculateExcise = (type, capacity, age) => {
+                let isKW = (type === 'electric' || type.startsWith('esmart_'));
+                capacity = isKW ? parseFloat(capacity) : parseInt(capacity, 10);
+                if (isNaN(capacity) || capacity <= 0) {
+                    return { error: `Enter valid ${isKW ? 'motor' : 'engine'} capacity` };
+                }
+                age = parseInt(age, 10);
+                let excise = 0;
+
+                switch (type) {
+                    case 'petrol':
+                        if (capacity <= 600) return { error: 'Enter valid engine capacity' };
+                        if (capacity <= 1000) excise = Math.max(2450 * capacity, 1992000);
+                        else if (capacity <= 1300) excise = 3850 * capacity;
+                        else if (capacity <= 1500) excise = 4450 * capacity;
+                        else if (capacity <= 1600) excise = 5150 * capacity;
+                        else if (capacity <= 1800) excise = 6400 * capacity;
+                        else if (capacity <= 2000) excise = 7700 * capacity;
+                        else if (capacity <= 2500) excise = 8450 * capacity;
+                        else if (capacity <= 2750) excise = 9650 * capacity;
+                        else if (capacity <= 3000) excise = 10850 * capacity;
+                        else if (capacity <= 4000) excise = 12050 * capacity;
+                        else excise = 13300 * capacity;
+                        break;
+                    case 'petrol_hybrid':
+                        if (capacity <= 600) return { error: 'Enter valid engine capacity' };
+                        if (capacity <= 1000) excise = 1810900;
+                        else if (capacity <= 1300) excise = 2750 * capacity;
+                        else if (capacity <= 1500) excise = 3450 * capacity;
+                        else if (capacity <= 1600) excise = 4800 * capacity;
+                        else if (capacity <= 1800) excise = 6300 * capacity;
+                        else if (capacity <= 2000) excise = 6900 * capacity;
+                        else if (capacity <= 2500) excise = 7250 * capacity;
+                        else if (capacity <= 2750) excise = 8450 * capacity;
+                        else if (capacity <= 3000) excise = 9650 * capacity;
+                        else if (capacity <= 4000) excise = 10850 * capacity;
+                        else excise = 12050 * capacity;
+                        break;
+                    case 'petrol_plugin':
+                        if (capacity <= 600) return { error: 'Enter valid engine capacity' };
+                        if (capacity <= 1000) excise = 1810900;
+                        else if (capacity <= 1300) excise = 2750 * capacity;
+                        else if (capacity <= 1500) excise = 3450 * capacity;
+                        else if (capacity <= 1600) excise = 4800 * capacity;
+                        else if (capacity <= 1800) excise = 6250 * capacity;
+                        else if (capacity <= 2000) excise = 6900 * capacity;
+                        else if (capacity <= 2500) excise = 7250 * capacity;
+                        else if (capacity <= 2750) excise = 8450 * capacity;
+                        else if (capacity <= 3000) excise = 9650 * capacity;
+                        else if (capacity <= 4000) excise = 10850 * capacity;
+                        else excise = 12050 * capacity;
+                        break;
+                    case 'diesel':
+                        if (capacity <= 900) return { error: 'Enter valid engine capacity' };
+                        if (capacity <= 1500) excise = 5500 * capacity;
+                        else if (capacity <= 1600) excise = 6950 * capacity;
+                        else if (capacity <= 1800) excise = 8300 * capacity;
+                        else if (capacity <= 2000) excise = 9650 * capacity;
+                        else if (capacity <= 2500) excise = 9650 * capacity;
+                        else if (capacity <= 2750) excise = 10850 * capacity;
+                        else if (capacity <= 3000) excise = 12050 * capacity;
+                        else if (capacity <= 4000) excise = 13300 * capacity;
+                        else excise = 14500 * capacity;
+                        break;
+                    case 'diesel_hybrid':
+                        if (capacity <= 900) return { error: 'Enter valid engine capacity' };
+                        if (capacity <= 1500) excise = 4150 * capacity;
+                        else if (capacity <= 1600) excise = 5500 * capacity;
+                        else if (capacity <= 1800) excise = 6900 * capacity;
+                        else if (capacity <= 2000) excise = 8350 * capacity;
+                        else if (capacity <= 2500) excise = 8450 * capacity;
+                        else if (capacity <= 2750) excise = 9650 * capacity;
+                        else if (capacity <= 3000) excise = 10850 * capacity;
+                        else if (capacity <= 4000) excise = 12050 * capacity;
+                        else excise = 13300 * capacity;
+                        break;
+                    case 'diesel_plugin':
+                        if (capacity <= 900) return { error: 'Enter valid engine capacity' };
+                        if (capacity <= 1500) excise = 4150 * capacity;
+                        else if (capacity <= 1600) excise = 5500 * capacity;
+                        else if (capacity <= 1800) excise = 6900 * capacity;
+                        else if (capacity <= 2000) excise = 8300 * capacity;
+                        else if (capacity <= 2500) excise = 8450 * capacity;
+                        else if (capacity <= 2750) excise = 9650 * capacity;
+                        else if (capacity <= 3000) excise = 10850 * capacity;
+                        else if (capacity <= 4000) excise = 12050 * capacity;
+                        else excise = 13300 * capacity;
+                        break;
+                    case 'esmart_petrol':
+                        let ratePetrol;
+                        if (capacity <= 50) ratePetrol = age === 1 ? 30770 : 43440;
+                        else if (capacity <= 100) ratePetrol = age === 1 ? 40970 : 43440;
+                        else if (capacity <= 200) ratePetrol = age === 1 ? 41630 : 63420;
+                        else ratePetrol = age === 1 ? 111090 : 139440;
+                        excise = ratePetrol * capacity;
+                        break;
+                    case 'esmart_diesel':
+                        let rateDiesel;
+                        if (capacity <= 50) rateDiesel = age === 1 ? 36920 : 52130;
+                        else if (capacity <= 100) rateDiesel = age === 1 ? 49160 : 52130;
+                        else if (capacity <= 200) rateDiesel = age === 1 ? 49960 : 76100;
+                        else rateDiesel = age === 1 ? 133310 : 167330;
+                        excise = rateDiesel * capacity;
+                        break;
+                    case 'electric':
+                        let rateEV;
+                        if (capacity <= 50) rateEV = age === 1 ? 18100 : 36200;
+                        else if (capacity <= 100) rateEV = age === 1 ? 24100 : 36200;
+                        else if (capacity <= 200) rateEV = age === 1 ? 36200 : 60400;
+                        else rateEV = age === 1 ? 96600 : 132800;
+                        excise = rateEV * capacity;
+                        break;
+                    default:
+                        return { error: 'Invalid vehicle type' };
+                }
+                return excise;
+            };
+
+            const calculateTaxes = () => {
+                capacityError.style.display = 'none';
+                const cifJPY = parseFloat(document.getElementById('cifJPY').value);
+                const exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
+                const type = document.getElementById('vehicleType').value;
+                const capacity = document.getElementById('capacity').value;
+                const age = document.getElementById('age').value;
+                const dealerFee = parseFloat(document.getElementById('dealerFee').value) || 0;
+                const clearingFee = parseFloat(document.getElementById('clearingFee').value) || 0;
+
+                if (!cifJPY || !exchangeRate || !type || !capacity || !age) {
+                    resultDiv.innerHTML = '<p class="error-message">Please fill all required fields.</p>';
+                    return;
+                }
+
+                const cifLKR = cifJPY * exchangeRate;
+                const cid = 0.2 * cifLKR;
+                const surcharge = 0.5 * cid;
+
+                const exciseResult = calculateExcise(type, capacity, age);
+                if (exciseResult.error) {
+                    capacityError.innerText = exciseResult.error;
+                    capacityError.style.display = 'block';
+                    resultDiv.innerHTML = '<p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>';
+                    downloadBtn.style.display = 'none';
+                    return;
+                }
+                const excise = exciseResult;
+
+                const { threshold, rate } = getLuxuryParams(type);
+                const luxury = Math.max(0, cifLKR - threshold) * rate;
+                const vel = 15000;
+
+                const vatBase = cifLKR * 1.1 + cid + surcharge + excise + luxury + vel;
+                const vat = vatBase * 0.18;
+
+                const totalTax = cid + surcharge + excise + luxury + vel + vat;
+                const otherCharges = dealerFee + clearingFee;
+                const totalCost = cifLKR + totalTax + otherCharges;
+
+                // Render table
+                resultDiv.innerHTML = `
+                    <table>
+                        <thead><tr><th>Item</th><th>Amount (LKR)</th></tr></thead>
+                        <tbody>
+                            <tr><td>CIF Value</td><td>${formatNumber(cifLKR)}</td></tr>
+                            <tr><td>Customs Import Duty (CID)</td><td>${formatNumber(cid)}</td></tr>
+                            <tr><td>Surcharge on CID</td><td>${formatNumber(surcharge)}</td></tr>
+                            <tr><td>Excise Duty</td><td>${formatNumber(excise)}</td></tr>
+                            <tr><td>Luxury Tax</td><td>${formatNumber(luxury)}</td></tr>
+                            <tr><td>Vehicle Entitlement Levy (VEL)</td><td>${formatNumber(vel)}</td></tr>
+                            <tr><td>Value Added Tax (VAT)</td><td>${formatNumber(vat)}</td></tr>
+                            <tr><td>Total Taxes</td><td>${formatNumber(totalTax)}</td></tr>
+                            <tr><td>Dealer Fee</td><td>${formatNumber(dealerFee)}</td></tr>
+                            <tr><td>Clearing Agent Fee</td><td>${formatNumber(clearingFee)}</td></tr>
+                        </tbody>
+                        <tfoot><tr><td>Total Import Cost</td><td>${formatNumber(totalCost)}</td></tr></tfoot>
+                    </table>
+                    <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+                `;
+
+                downloadBtn.style.display = 'block';
+
+                // Tax Pie Chart
+                const taxCtx = document.getElementById('taxPieChart').getContext('2d');
+                new Chart(taxCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['CID', 'Surcharge', 'Excise Duty', 'Luxury Tax', 'VEL', 'VAT'],
+                        datasets: [{
+                            data: [cid, surcharge, excise, luxury, vel, vat],
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                        }]
+                    },
+                    options: { responsive: true }
+                });
+
+                // Total Cost Pie Chart
+                const costCtx = document.getElementById('pieChart').getContext('2d');
+                new Chart(costCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['CIF Value', 'Total Taxes', 'Other Charges'],
+                        datasets: [{
+                            data: [cifLKR, totalTax, otherCharges],
+                            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                        }]
+                    },
+                    options: { responsive: true }
+                });
+            };
+
+            calculateBtn.addEventListener('click', calculateTaxes);
+
+            resetBtn.addEventListener('click', () => {
+                document.getElementById('taxCalculatorForm').reset();
+                resultDiv.innerHTML = '<p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p><p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>';
+                downloadBtn.style.display = 'none';
+                capacityError.style.display = 'none';
+                fetchExchangeRate();
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                doc.autoTable({
+                    html: '#result table',
+                    theme: 'grid',
+                    styles: { fontSize: 8 },
+                    margin: { top: 20 }
+                });
+                doc.save('vehicle_tax_calculation_2025.pdf');
+            });
+        });
+    </script>
 </body>
 </html>
