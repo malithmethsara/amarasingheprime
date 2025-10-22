@@ -5,7 +5,7 @@
     // Excise duty tables (EXACT 2025 Gazette rates)
     const exciseTables = {
         petrol: [
-            {min: 601, max: 1000, calc: function(cc) { return Math.max(2450 * cc, 1992000); }},
+            {min: 600, max: 1000, calc: function(cc) { return Math.max(2450 * cc, 1992000); }},
             {max: 1300, rate: 3850},
             {max: 1500, rate: 4450},
             {max: 1600, rate: 5150},
@@ -18,7 +18,7 @@
             {max: Infinity, rate: 13300}
         ],
         petrol_hybrid: [
-            {min: 601, max: 1000, fixed: 1810900},
+            {min: 600, max: 1000, fixed: 1810900},
             {max: 1300, rate: 2750},
             {max: 1500, rate: 3450},
             {max: 1600, rate: 4800},
@@ -31,7 +31,7 @@
             {max: Infinity, rate: 12050}
         ],
         petrol_plugin: [
-            {min: 601, max: 1000, fixed: 1810900},
+            {min: 600, max: 1000, fixed: 1810900},
             {max: 1300, rate: 2750},
             {max: 1500, rate: 3450},
             {max: 1600, rate: 4800},
@@ -44,7 +44,7 @@
             {max: Infinity, rate: 12050}
         ],
         diesel: [
-            {min: 901, max: 1500, rate: 5500},
+            {min: 900, max: 1500, rate: 5500},
             {max: 1600, rate: 6950},
             {max: 1800, rate: 8300},
             {max: 2000, rate: 9650},
@@ -55,7 +55,7 @@
             {max: Infinity, rate: 14500}
         ],
         diesel_hybrid: [
-            {min: 901, max: 1500, rate: 4150},
+            {min: 900, max: 1500, rate: 4150},
             {max: 1600, rate: 5500},
             {max: 1800, rate: 6900},
             {max: 2000, rate: 8350},
@@ -66,7 +66,7 @@
             {max: Infinity, rate: 13300}
         ],
         diesel_plugin: [
-            {min: 901, max: 1500, rate: 4150},
+            {min: 900, max: 1500, rate: 4150},
             {max: 1600, rate: 5500},
             {max: 1800, rate: 6900},
             {max: 2000, rate: 8300},
@@ -123,10 +123,29 @@
         const table = exciseTables[type];
         if (!table) return { error: 'Invalid vehicle type' };
 
-        const minCapacity = type.includes('petrol') && !type.includes('plugin') ? 600 : 
-                          type.includes('diesel') ? 900 : 1;
-        if (capacity < minCapacity) {
-            return { error: `Minimum ${minCapacity} ${type.includes('electric') || type.includes('esmart') ? 'kW' : 'cc'}` };
+        let minCapacity, maxCapacity, unit;
+        if (type.includes('petrol')) {
+            minCapacity = 600;
+            maxCapacity = 6500;
+            unit = 'cc';
+        } else if (type.includes('diesel')) {
+            minCapacity = 900;
+            maxCapacity = 6500;
+            unit = 'cc';
+        } else if (type === 'electric') {
+            minCapacity = 40;
+            maxCapacity = 600;
+            unit = 'kW';
+        } else if (type.includes('esmart')) {
+            minCapacity = 20;
+            maxCapacity = 600;
+            unit = 'kW';
+        } else {
+            return { error: 'Invalid vehicle type' };
+        }
+
+        if (capacity < minCapacity || capacity > maxCapacity) {
+            return { error: 'Please enter valid capacity' };
         }
 
         for (let tier of table) {
@@ -329,7 +348,7 @@
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
         errorDiv.style.cssText = 'color: #d32f2f; font-size: 0.9rem; margin-top: 0.25rem; background: #ffebee; padding: 0.5rem; border-radius: 0.25rem; border-left: 4px solid #d32f2f;';
-        errorDiv.textContent = `❌ ${message}`;
+        errorDiv.textContent = `❗ ${message}`;
         input.parentNode.insertBefore(errorDiv, input.nextSibling);
         input.focus();
         input.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -343,6 +362,16 @@
     function resetForm() {
         const form = document.getElementById('taxCalculatorForm');
         if (form) form.reset();
+        
+        window.resultData = null;
+        if (window.taxChart) {
+            window.taxChart.destroy();
+            window.taxChart = null;
+        }
+        if (window.costChart) {
+            window.costChart.destroy();
+            window.costChart = null;
+        }
         
         const resultEl = document.getElementById('result');
         if (resultEl) {
@@ -362,9 +391,6 @@
         const downloadBtn = document.getElementById('downloadBtn');
         if (downloadBtn) downloadBtn.style.display = 'none';
         clearErrors();
-        
-        if (window.taxChart) window.taxChart.destroy();
-        if (window.costChart) window.costChart.destroy();
     }
 
     // FIXED Update capacity label (SAFE)
@@ -418,25 +444,24 @@
     function init() {
         console.log('✅ SL Tax Calculator v2.0 Loaded Successfully');
         
-        // Update datetime
+        // Update datetime and fetch rate from local JSON
         const timeEl = document.getElementById('timeDateTime');
-        if (timeEl) {
-            timeEl.textContent = new Date().toLocaleString('en-LK');
-        }
-
-        // Fetch exchange rate
         const rateEl = document.getElementById('cbslRate');
-        if (rateEl) {
-            fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR')
+        if (timeEl && rateEl) {
+            fetch('./rate.json')
                 .then(r => r.json())
                 .then(data => {
-                    const rate = data.rates.LKR;
+                    const rate = data.rate;
+                    const updateTime = data.time ? new Date(data.time).toLocaleString('en-LK') : new Date().toLocaleString('en-LK');
                     const exchangeInput = document.getElementById('exchangeRate');
                     if (exchangeInput) exchangeInput.value = rate.toFixed(4);
-                    rateEl.innerHTML = `📈 Live JPY/LKR: <strong>${rate.toFixed(4)}</strong>`;
+                    timeEl.textContent = updateTime;
+                    rateEl.innerHTML = `📈 JPY/LKR Rate: <strong>${rate.toFixed(4)}</strong> (Updated: ${updateTime})`;
                 })
                 .catch(() => {
-                    rateEl.innerHTML = '⚠️ Enter JPY/LKR rate manually (~0.0052)';
+                    const currentTime = new Date().toLocaleString('en-LK');
+                    timeEl.textContent = currentTime;
+                    rateEl.innerHTML = `⚠️ Enter JPY/LKR rate manually (~0.0052)`;
                 });
         }
 
