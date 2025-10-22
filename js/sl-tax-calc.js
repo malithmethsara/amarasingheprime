@@ -212,7 +212,7 @@
 
         const html = `
             <div style="font-weight:700;margin-bottom:0.75rem;color:#003087;font-size:1.1rem">
-                📋 Inputs Summary
+                Inputs Summary
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:#003087;color:white">
@@ -229,7 +229,7 @@
             </table>
 
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:#003087;font-size:1.1rem">
-                💰 Tax Breakdown
+                Tax Breakdown
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:#003087;color:white">
@@ -253,7 +253,7 @@
             </table>
 
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:#003087;font-size:1.1rem">
-                🎯 Final Cost Summary
+                Final Cost Summary
             </div>
             <table style="width:100%;border-collapse:collapse">
                 <thead style="background:#003087;color:white">
@@ -269,7 +269,7 @@
                     <tr style="border-bottom:1px solid #e0e0e0"><td style="padding:0.75rem">Other Charges</td><td style="text-align:right;padding:0.75rem">${formatNumber(data.otherCharges)}</td><td style="text-align:right;padding:0.75rem">${((data.otherCharges/data.totalCost)*100).toFixed(1)}%</td></tr>
                 </tbody>
                 <tfoot style="border-top:2px solid #003087;background:#e3f2fd">
-                    <tr><td style="padding:0.75rem;font-weight:bold;font-size:1.1rem">💎 TOTAL IMPORT COST</td><td style="text-align:right;padding:0.75rem;font-weight:bold;font-size:1.1rem">${formatNumber(data.totalCost)}</td><td style="text-align:right;padding:0.75rem;font-weight:bold">100.0%</td></tr>
+                    <tr><td style="padding:0.75rem;font-weight:bold;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.75rem;font-weight:bold;font-size:1.1rem">${formatNumber(data.totalCost)}</td><td style="text-align:right;padding:0.75rem;font-weight:bold">100.0%</td></tr>
                 </tfoot>
             </table>
         `;
