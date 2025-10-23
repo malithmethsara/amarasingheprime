@@ -364,9 +364,13 @@
             margin: 0 0 0.5rem;
             cursor: pointer;
             transition: color 0.2s;
-            display: inline-flex;
+            display: block;
             align-items: center;
             width: 100%;
+            padding: 0.5rem 0;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
         }
         .faq-item h3:hover {
             color: var(--primary);
@@ -377,9 +381,15 @@
             line-height: 1.6;
             display: none;
             margin-left: 1.5rem;
+            margin-top: 0.5rem;
         }
         .faq-item.active p {
             display: block !important;
+        }
+        .faq-indicator {
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+            pointer-events: none;
         }
         .info-section p, .disclaimer-section p, .social-proof p {
             font-size: 0.95rem;
