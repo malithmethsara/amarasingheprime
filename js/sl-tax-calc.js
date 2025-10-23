@@ -4,4 +4,646 @@
 * This code contains proprietary calculation logic developed by Amarasinghe Prime.
 * Unauthorized copying, use, or distribution of this code is strictly prohibited.
 */
-function _0x1b46(_0x589815,_0x4ae052){const _0x3922e5=_0x3922();return _0x1b46=function(_0x1b46fc,_0x1a7f99){_0x1b46fc=_0x1b46fc-0x117;let _0x3b25eb=_0x3922e5[_0x1b46fc];return _0x3b25eb;},_0x1b46(_0x589815,_0x4ae052);}(function(_0x33f81b,_0x197d4f){const _0x22b713=_0x1b46,_0x2b1cb9=_0x33f81b();while(!![]){try{const _0x400fd9=parseInt(_0x22b713(0x1a3))/0x1*(-parseInt(_0x22b713(0x167))/0x2)+-parseInt(_0x22b713(0x172))/0x3+parseInt(_0x22b713(0x123))/0x4+-parseInt(_0x22b713(0x1a7))/0x5*(-parseInt(_0x22b713(0x1b3))/0x6)+parseInt(_0x22b713(0x130))/0x7+-parseInt(_0x22b713(0x15d))/0x8*(parseInt(_0x22b713(0x1c7))/0x9)+parseInt(_0x22b713(0x1b0))/0xa*(parseInt(_0x22b713(0x11b))/0xb);if(_0x400fd9===_0x197d4f)break;else _0x2b1cb9['push'](_0x2b1cb9['shift']());}catch(_0x357927){_0x2b1cb9['push'](_0x2b1cb9['shift']());}}}(_0x3922,0x47ebd),(function(){'use strict';const _0x4a32be=_0x1b46;let _0x100ada=null,_0x488977=null,_0x3309cb=null;const _0x1eea27={'petrol':[{'min':0x258,'max':0x3e8,'rate':_0x4e31fb=>Math['max'](0x992*_0x4e31fb,0x1e6540)},{'max':0x514,'rate':0xf0a},{'max':0x5dc,'rate':0x1162},{'max':0x640,'rate':0x141e},{'max':0x708,'rate':0x1900},{'max':0x7d0,'rate':0x1e14},{'max':0x9c4,'rate':0x2102},{'max':0xabe,'rate':0x25b2},{'max':0xbb8,'rate':0x2a62},{'max':0xfa0,'rate':0x2f12},{'max':0x1964,'rate':0x33f4}],'petrol_hybrid':[{'min':0x258,'max':0x3e8,'rate':()=>0x1ba1d4},{'max':0x514,'rate':0xabe},{'max':0x5dc,'rate':0xd7a},{'max':0x640,'rate':0x12c0},{'max':0x708,'rate':0x189c},{'max':0x7d0,'rate':0x1af4},{'max':0x9c4,'rate':0x1c52},{'max':0xabe,'rate':0x2102},{'max':0xbb8,'rate':0x25b2},{'max':0xfa0,'rate':0x2a62},{'max':0x1964,'rate':0x2f12}],'petrol_plugin':[{'min':0x258,'max':0x3e8,'rate':()=>0x1ba1d4},{'max':0x514,'rate':0xabe},{'max':0x5dc,'rate':0xd7a},{'max':0x640,'rate':0x12c0},{'max':0x708,'rate':0x186a},{'max':0x7d0,'rate':0x1af4},{'max':0x9c4,'rate':0x1c52},{'max':0xabe,'rate':0x2102},{'max':0xbb8,'rate':0x25b2},{'max':0xfa0,'rate':0x2a62},{'max':0x1964,'rate':0x2f12}],'diesel':[{'min':0x384,'max':0x5dc,'rate':0x157c},{'max':0x640,'rate':0x1b26},{'max':0x708,'rate':0x206c},{'max':0x7d0,'rate':0x25b2},{'max':0x9c4,'rate':0x25b2},{'max':0xabe,'rate':0x2a62},{'max':0xbb8,'rate':0x2f12},{'max':0xfa0,'rate':0x33f4},{'max':0x1964,'rate':0x38a4}],'diesel_hybrid':[{'min':0x384,'max':0x5dc,'rate':0x1036},{'max':0x640,'rate':0x157c},{'max':0x708,'rate':0x1af4},{'max':0x7d0,'rate':0x209e},{'max':0x9c4,'rate':0x2102},{'max':0xabe,'rate':0x25b2},{'max':0xbb8,'rate':0x2a62},{'max':0xfa0,'rate':0x2f12},{'max':0x1964,'rate':0x33f4}],'diesel_plugin':[{'min':0x384,'max':0x5dc,'rate':0x1036},{'max':0x640,'rate':0x157c},{'max':0x708,'rate':0x1af4},{'max':0x7d0,'rate':0x206c},{'max':0x9c4,'rate':0x2102},{'max':0xabe,'rate':0x25b2},{'max':0xbb8,'rate':0x2a62},{'max':0xfa0,'rate':0x2f12},{'max':0x1964,'rate':0x33f4}],'electric':[{'min':0x28,'max':0x32,'rate':_0x149259=>_0x149259==='1'?0x46b4:0x8d68},{'max':0x64,'rate':_0x49fd19=>_0x49fd19==='1'?0x5e24:0x8d68},{'max':0xc8,'rate':_0x50e041=>_0x50e041==='1'?0x8d68:0xebf0},{'max':0x258,'rate':_0x4a83ae=>_0x4a83ae==='1'?0x17958:0x206c0}],'esmart_petrol':[{'min':0x14,'max':0x32,'rate':_0x42a756=>_0x42a756==='1'?0x7832:0xa9b0},{'max':0x64,'rate':_0x3fd578=>_0x3fd578==='1'?0xa00a:0xa9b0},{'max':0xc8,'rate':_0x2f76a1=>_0x2f76a1==='1'?0xa29e:0xf7bc},{'max':0x258,'rate':_0x51e7f8=>_0x51e7f8==='1'?0x1b1f2:0x220b0}],'esmart_diesel':[{'min':0x14,'max':0x32,'rate':_0x3b1041=>_0x3b1041==='1'?0x9038:0xcba2},{'max':0x64,'rate':_0x56f33b=>_0x56f33b==='1'?0xc008:0xcba2},{'max':0xc8,'rate':_0x5a7940=>_0x5a7940==='1'?0xc328:0x12944},{'max':0x258,'rate':_0xfe2200=>_0xfe2200==='1'?0x208be:0x28da2}]},_0x11e30d={'petrol':0x4c4b40,'diesel':0x4c4b40,'petrol_hybrid':0x53ec60,'diesel_hybrid':0x53ec60,'petrol_plugin':0x53ec60,'diesel_plugin':0x53ec60,'electric':0x5b8d80,'esmart_petrol':0x5b8d80,'esmart_diesel':0x5b8d80},_0x4fe19a={'petrol':0x1,'diesel':1.2,'petrol_hybrid':0.8,'diesel_hybrid':0.8,'petrol_plugin':0.8,'diesel_plugin':0.8,'electric':0.6,'esmart_petrol':0.6,'esmart_diesel':0.6};function _0xf8e789(_0x43efb7,_0x121378=0x0){const _0x1d15f3=_0x1b46;return _0x43efb7[_0x1d15f3(0x1b8)](_0x1d15f3(0x145),{'minimumFractionDigits':_0x121378,'maximumFractionDigits':_0x121378});}function _0x53ad4a(_0x51bff3,_0x42293a){const _0x1cccb3=_0x1b46;_0x162e3c();const _0x100066=document[_0x1cccb3(0x124)](_0x51bff3);if(!_0x100066)return;const _0x35fdf6=document[_0x1cccb3(0x163)]('div');_0x35fdf6[_0x1cccb3(0x18f)]=_0x1cccb3(0x13f),_0x35fdf6[_0x1cccb3(0x12a)]=_0x42293a,_0x100066[_0x1cccb3(0x143)][_0x1cccb3(0x16d)](_0x35fdf6,_0x100066['nextSibling']),_0x100066[_0x1cccb3(0x129)](),_0x100066[_0x1cccb3(0x164)]({'behavior':_0x1cccb3(0x12b),'block':'center'});}function _0x162e3c(){const _0x172f0a=_0x1b46;document['querySelectorAll']('.error-message')['forEach'](_0x5be24f=>_0x5be24f[_0x172f0a(0x1a5)]());}function _0x2ebcf9(_0x1dde30){const _0x429c72=_0x1b46;return document[_0x429c72(0x124)](_0x1dde30)||null;}function _0x664534(_0x4a8dd4,_0x27b763){return new Promise((_0x192d36,_0x50e318)=>{const _0x35bfc4=_0x1b46;if(window[_0x27b763]){_0x192d36();return;}const _0x11cc35=document[_0x35bfc4(0x163)](_0x35bfc4(0x192));_0x11cc35[_0x35bfc4(0x1bf)]=_0x4a8dd4,_0x11cc35[_0x35bfc4(0x1bb)]=!![],_0x11cc35[_0x35bfc4(0x155)]=_0x35bfc4(0x135),_0x11cc35['onload']=()=>{const _0x3eb283=_0x35bfc4;console[_0x3eb283(0x138)](_0x3eb283(0x17e)+_0x27b763);if(_0x27b763==='jspdf'){const _0x443045=document[_0x3eb283(0x163)](_0x3eb283(0x192));_0x443045[_0x3eb283(0x1bf)]=_0x3eb283(0x17f),_0x443045[_0x3eb283(0x1bb)]=!![],_0x443045[_0x3eb283(0x150)]=_0x192d36,_0x443045[_0x3eb283(0x177)]=_0x50e318,document['head'][_0x3eb283(0x1a8)](_0x443045);}else _0x192d36();},_0x11cc35[_0x35bfc4(0x177)]=()=>_0x50e318(new Error('❌\x20Failed\x20to\x20load\x20script:\x20'+_0x4a8dd4)),document['head']['appendChild'](_0x11cc35);});}function _0x3e83e8(_0x376b56,_0x4ebf8e,_0x46b64b){const _0x358ee8=_0x1b46,_0x38a779=_0x1eea27[_0x376b56];if(!_0x38a779)return{'error':'Invalid\x20vehicle\x20type'};let _0x59b992,_0x36ce6e,_0xd2cf0d;if(_0x376b56===_0x358ee8(0x1d1)||_0x376b56===_0x358ee8(0x159))_0x59b992=0x14,_0x36ce6e=0x258,_0xd2cf0d='kW';else{if(_0x376b56===_0x358ee8(0x1ac))_0x59b992=0x28,_0x36ce6e=0x258,_0xd2cf0d='kW';else{if(_0x376b56['includes'](_0x358ee8(0x175)))_0x59b992=0x258,_0x36ce6e=0x1964,_0xd2cf0d='cc';else{if(_0x376b56['includes']('diesel'))_0x59b992=0x384,_0x36ce6e=0x1964,_0xd2cf0d='cc';else return{'error':'Invalid\x20vehicle\x20type'};}}}if(_0x4ebf8e<_0x59b992||_0x4ebf8e>_0x36ce6e)return{'error':_0x358ee8(0x127)+_0x59b992+'-'+_0x36ce6e+'\x20'+_0xd2cf0d+')'};for(let _0x38a8f8 of _0x38a779){if(_0x4ebf8e<=(_0x38a8f8['max']||_0x36ce6e)){if(_0x38a8f8[_0x358ee8(0x1d3)]){const _0xff1325=typeof _0x38a8f8[_0x358ee8(0x1d3)]===_0x358ee8(0x1cf)?_0x38a8f8[_0x358ee8(0x1d3)](_0x46b64b):_0x38a8f8['rate'];if(_0x38a8f8[_0x358ee8(0x16b)])return _0x38a8f8['calc'](_0x4ebf8e,_0xff1325);return _0xff1325*_0x4ebf8e;}if(_0x38a8f8['fixed'])return _0x38a8f8[_0x358ee8(0x1b5)];}}return 0x0;}function _0x47037c(_0x1369aa,_0x4ac303){const _0x15fcf2=_0x11e30d[_0x4ac303]||0x4c4b40,_0x4d1e92=_0x4fe19a[_0x4ac303]||0x1;return _0x1369aa>_0x15fcf2?(_0x1369aa-_0x15fcf2)*_0x4d1e92:0x0;}function _0x43e111(){const _0x299ca5=_0x1b46;_0x162e3c();const _0x23ddb0={'cifJPY':_0x2ebcf9(_0x299ca5(0x1ad)),'exchangeRate':_0x2ebcf9(_0x299ca5(0x184)),'vehicleType':_0x2ebcf9(_0x299ca5(0x139)),'capacity':_0x2ebcf9(_0x299ca5(0x181)),'age':_0x2ebcf9(_0x299ca5(0x1b4)),'dealerFee':_0x2ebcf9(_0x299ca5(0x1b6)),'clearingFee':_0x2ebcf9(_0x299ca5(0x178))};if(!_0x23ddb0['cifJPY']||!_0x23ddb0[_0x299ca5(0x184)]||!_0x23ddb0[_0x299ca5(0x139)]||!_0x23ddb0[_0x299ca5(0x181)]||!_0x23ddb0[_0x299ca5(0x1b4)]){_0x53ad4a(_0x299ca5(0x1ad),'Form\x20elements\x20not\x20found\x20-\x20reload\x20page');return;}const _0x31f4a2=parseFloat(_0x23ddb0[_0x299ca5(0x1ad)]['value'])||0x0,_0x5cd96c=parseFloat(_0x23ddb0['exchangeRate'][_0x299ca5(0x1c8)])||0x0,_0x489c3e=_0x23ddb0[_0x299ca5(0x139)]['value'],_0x23cd4d=parseFloat(_0x23ddb0[_0x299ca5(0x181)][_0x299ca5(0x1c8)])||0x0,_0x31a47d=_0x23ddb0[_0x299ca5(0x1b4)]['value'],_0x9c407b=parseFloat(_0x23ddb0[_0x299ca5(0x1b6)][_0x299ca5(0x1c8)])||0x0,_0x1d630a=parseFloat(_0x23ddb0[_0x299ca5(0x178)][_0x299ca5(0x1c8)])||0x0;if(_0x31f4a2<0xc3500||_0x31f4a2>0x1312d00)return _0x53ad4a(_0x299ca5(0x1ad),_0x299ca5(0x147));if(_0x5cd96c<1.6||_0x5cd96c>2.9)return _0x53ad4a(_0x299ca5(0x184),_0x299ca5(0x131));if(!_0x489c3e)return _0x53ad4a(_0x299ca5(0x139),'!\x20Please\x20select\x20vehicle\x20type');if(_0x23cd4d<=0x0)return _0x53ad4a(_0x299ca5(0x181),_0x299ca5(0x162));if(!_0x31a47d)return _0x53ad4a('age',_0x299ca5(0x187));const _0x24ea2c=_0x31f4a2*_0x5cd96c,_0x39deb5=_0x3e83e8(_0x489c3e,_0x23cd4d,_0x31a47d);if(_0x39deb5['error'])return _0x53ad4a(_0x299ca5(0x181),_0x39deb5[_0x299ca5(0x166)]);const _0x544503=_0x24ea2c*0.2,_0x2a08c5=_0x544503*0.5,_0x48b64b=_0x39deb5,_0x42ce47=_0x47037c(_0x24ea2c,_0x489c3e),_0x539efc=0x3a98,_0x1d9faa=_0x24ea2c*1.1+_0x544503+_0x2a08c5+_0x48b64b+_0x42ce47+_0x539efc,_0x2db082=_0x1d9faa*0.18,_0x22c245=_0x544503+_0x2a08c5+_0x48b64b+_0x42ce47+_0x539efc+_0x2db082,_0x37ee84=_0x9c407b+_0x1d630a,_0x295b3b=_0x24ea2c+_0x22c245+_0x37ee84;_0x100ada={'cifJPY':_0x31f4a2,'exchangeRate':_0x5cd96c,'cif':_0x24ea2c,'type':_0x489c3e,'capacity':_0x23cd4d,'age':_0x31a47d,'dealerFee':_0x9c407b,'clearingFee':_0x1d630a,'cid':_0x544503,'surcharge':_0x2a08c5,'excise':_0x48b64b,'luxuryTax':_0x42ce47,'vel':_0x539efc,'vat':_0x2db082,'totalTax':_0x22c245,'otherCharges':_0x37ee84,'totalCost':_0x295b3b},_0x44b7d5({'cif':_0x24ea2c,'cid':_0x544503,'surcharge':_0x2a08c5,'excise':_0x48b64b,'luxuryTax':_0x42ce47,'vel':_0x539efc,'vat':_0x2db082,'totalTax':_0x22c245,'otherCharges':_0x37ee84,'totalCost':_0x295b3b}),_0x664534(_0x299ca5(0x15c),_0x299ca5(0x17c))['then'](()=>{_0x4d0311({'cif':_0x24ea2c,'totalTax':_0x22c245,'otherCharges':_0x37ee84,'cid':_0x544503,'surcharge':_0x2a08c5,'excise':_0x48b64b,'luxuryTax':_0x42ce47,'vel':_0x539efc,'vat':_0x2db082});})['catch'](_0x4104de=>{const _0x4c83b3=_0x299ca5;console['error'](_0x4c83b3(0x16c),_0x4104de);if(_0x488977)_0x488977[_0x4c83b3(0x1a0)]();if(_0x3309cb)_0x3309cb[_0x4c83b3(0x1a0)]();});const _0x443075=_0x2ebcf9(_0x299ca5(0x16f));if(_0x443075)_0x443075[_0x299ca5(0x142)][_0x299ca5(0x1af)]=_0x299ca5(0x19c);const _0x35e8d2=_0x2ebcf9(_0x299ca5(0x152));if(_0x35e8d2)_0x35e8d2[_0x299ca5(0x164)]({'behavior':'smooth'});}function _0x44b7d5(_0x141fdf){const _0x1636ff=_0x1b46,_0x2c9544=[_0x1636ff(0x1ac),'esmart_petrol',_0x1636ff(0x159)][_0x1636ff(0x1aa)](_0x100ada[_0x1636ff(0x157)])?'kW':'cc',_0x13e29b=_0x100ada[_0x1636ff(0x1b4)]==='1'?_0x1636ff(0x1bc):'>1–3\x20years',_0x3270ed=_0x100ada[_0x1636ff(0x157)]['replace']('_','\x20')['toUpperCase'](),_0x1c20ba='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20Inputs\x20Summary\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<table\x20style=\x22width:100%;border-collapse:collapse;margin-bottom:1.5rem\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<thead\x20style=\x22background:var(--primary);color:#fff\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr><th\x20style=\x22padding:0.625rem;width:50%;text-align:left\x22>Item</th><th\x20style=\x22padding:0.625rem;text-align:right\x22>Value</th></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>CIF\x20(JPY)</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+_0xf8e789(_0x100ada[_0x1636ff(0x1ad)])+'</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Exchange\x20Rate</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+_0x100ada[_0x1636ff(0x184)][_0x1636ff(0x182)](0x4)+'</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>CIF\x20(LKR)</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+_0xf8e789(_0x141fdf[_0x1636ff(0x1cc)])+_0x1636ff(0x179)+_0x3270ed+_0x1636ff(0x19f)+_0xf8e789(_0x100ada[_0x1636ff(0x181)])+'\x20'+_0x2c9544+'</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Age</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+_0x13e29b+_0x1636ff(0x171)+_0xf8e789(_0x100ada[_0x1636ff(0x1b6)])+_0x1636ff(0x1ae)+_0xf8e789(_0x100ada[_0x1636ff(0x178)])+_0x1636ff(0x119)+_0xf8e789(_0x141fdf[_0x1636ff(0x141)])+_0x1636ff(0x195)+(_0x141fdf[_0x1636ff(0x141)]/_0x141fdf[_0x1636ff(0x11a)]*0x64)[_0x1636ff(0x182)](0x1)+_0x1636ff(0x1ba)+_0xf8e789(_0x141fdf[_0x1636ff(0x1d2)])+_0x1636ff(0x195)+(_0x141fdf[_0x1636ff(0x1d2)]/_0x141fdf['totalTax']*0x64)['toFixed'](0x1)+'%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Excise\x20Duty</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+_0xf8e789(_0x141fdf[_0x1636ff(0x18d)])+'</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+(_0x141fdf['excise']/_0x141fdf[_0x1636ff(0x11a)]*0x64)['toFixed'](0x1)+_0x1636ff(0x1d0)+_0xf8e789(_0x141fdf[_0x1636ff(0x14b)])+'</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+(_0x141fdf[_0x1636ff(0x14b)]/_0x141fdf['totalTax']*0x64)[_0x1636ff(0x182)](0x1)+_0x1636ff(0x17d)+_0xf8e789(_0x141fdf['vel'])+_0x1636ff(0x195)+(_0x141fdf['vel']/_0x141fdf['totalTax']*0x64)['toFixed'](0x1)+_0x1636ff(0x11c)+_0xf8e789(_0x141fdf['vat'])+_0x1636ff(0x195)+(_0x141fdf[_0x1636ff(0x16a)]/_0x141fdf['totalTax']*0x64)[_0x1636ff(0x182)](0x1)+'%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tfoot\x20style=\x22border-top:2px\x20solid\x20var(--primary);background:#f0f4fa\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr><td\x20style=\x22padding:0.625rem;font-weight:700\x22>Total\x20Taxes\x20&\x20Duties</td><td\x20style=\x22text-align:right;padding:0.625rem;font-weight:700\x22>'+_0xf8e789(_0x141fdf['totalTax'])+'</td><td\x20style=\x22text-align:right;padding:0.625rem;font-weight:700\x22>100.0%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tfoot>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</table>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22font-weight:700;margin:1.25rem\x200\x200.75rem\x200;color:var(--primary);font-size:1.1rem\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20Final\x20Cost\x20Summary\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<table\x20style=\x22width:100%;border-collapse:collapse\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<thead\x20style=\x22background:var(--primary);color:#fff\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th\x20style=\x22padding:0.625rem;width:45%;text-align:left\x22>Item</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th\x20style=\x22padding:0.625rem;text-align:right;width:27.5%\x22>Amount\x20(LKR)</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th\x20style=\x22padding:0.625rem;text-align:right;width:27.5%\x22>%\x20of\x20Total</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Vehicle\x20CIF\x20Value</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+_0xf8e789(_0x141fdf['cif'])+'</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+(_0x141fdf[_0x1636ff(0x1cc)]/_0x141fdf['totalCost']*0x64)[_0x1636ff(0x182)](0x1)+'%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Total\x20Taxes\x20&\x20Duties</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>'+_0xf8e789(_0x141fdf[_0x1636ff(0x11a)])+_0x1636ff(0x195)+(_0x141fdf[_0x1636ff(0x11a)]/_0x141fdf[_0x1636ff(0x122)]*0x64)[_0x1636ff(0x182)](0x1)+_0x1636ff(0x154)+_0xf8e789(_0x141fdf[_0x1636ff(0x15a)])+_0x1636ff(0x195)+(_0x141fdf[_0x1636ff(0x15a)]/_0x141fdf[_0x1636ff(0x122)]*0x64)[_0x1636ff(0x182)](0x1)+_0x1636ff(0x120)+_0xf8e789(_0x141fdf['totalCost'])+_0x1636ff(0x1c2),_0x13192c=_0x2ebcf9(_0x1636ff(0x152));if(_0x13192c)_0x13192c[_0x1636ff(0x15b)]=_0x1c20ba;}function _0x4d0311(_0xd3677a){const _0x384472=_0x1b46,_0x4d676f=_0x2ebcf9(_0x384472(0x12f)),_0x234c16=_0x2ebcf9('pieChart');if(!_0x4d676f||!_0x234c16||!window[_0x384472(0x17c)])return;const _0x258629=_0x4d676f[_0x384472(0x1c0)]('2d'),_0x1c2003=_0x234c16[_0x384472(0x1c0)]('2d');if(_0x488977)_0x488977[_0x384472(0x1a0)]();if(_0x3309cb)_0x3309cb['destroy']();_0x488977=new Chart(_0x258629,{'type':'pie','data':{'labels':[_0x384472(0x18b),_0x384472(0x13a),'Excise',_0x384472(0x1c5),_0x384472(0x176),_0x384472(0x188)],'datasets':[{'data':[_0xd3677a[_0x384472(0x141)],_0xd3677a[_0x384472(0x1d2)],_0xd3677a[_0x384472(0x18d)],_0xd3677a['luxuryTax'],_0xd3677a[_0x384472(0x161)],_0xd3677a[_0x384472(0x16a)]],'backgroundColor':[_0x384472(0x19a),'#36A2EB','#FFCE56',_0x384472(0x17b),_0x384472(0x19b),_0x384472(0x173)]}]},'options':{'responsive':!![],'plugins':{'legend':{'position':_0x384472(0x156)}}}}),_0x3309cb=new Chart(_0x1c2003,{'type':_0x384472(0x125),'data':{'labels':[_0x384472(0x160),_0x384472(0x1be),'Other\x20Charges'],'datasets':[{'data':[_0xd3677a[_0x384472(0x1cc)],_0xd3677a[_0x384472(0x11a)],_0xd3677a['otherCharges']],'backgroundColor':[_0x384472(0x19a),_0x384472(0x128),_0x384472(0x190)]}]},'options':{'responsive':!![],'plugins':{'legend':{'position':_0x384472(0x156)}}}});}function _0x766561(){const _0x31bb2c=_0x1b46;if(!_0x100ada){alert('Please\x20calculate\x20the\x20tax\x20first.');return;}const _0x546027=_0x2ebcf9(_0x31bb2c(0x16f));if(_0x546027)_0x546027[_0x31bb2c(0x1cb)]=!![];if(_0x546027)_0x546027[_0x31bb2c(0x12a)]=_0x31bb2c(0x198);_0x664534(_0x31bb2c(0x18e),_0x31bb2c(0x126))['then'](()=>{_0x342de9(_0x100ada);})[_0x31bb2c(0x13d)](_0x55d542=>{const _0x5f499d=_0x31bb2c;console['error'](_0x5f499d(0x12d),_0x55d542),alert(_0x5f499d(0x1ca));})[_0x31bb2c(0x134)](()=>{const _0x5640ef=_0x31bb2c;_0x546027&&(_0x546027[_0x5640ef(0x1cb)]=![],_0x546027[_0x5640ef(0x12a)]='Save\x20as\x20PDF');});}function _0x342de9(_0x2897bd){const _0x22b5cb=_0x1b46;if(!window[_0x22b5cb(0x126)]||!window[_0x22b5cb(0x126)][_0x22b5cb(0x15f)]||!window['jspdf']['autoTable'])return alert(_0x22b5cb(0x11f));const {jsPDF:_0x37f68a}=window[_0x22b5cb(0x126)],_0x1d54fb=new _0x37f68a({'orientation':_0x22b5cb(0x1cd),'unit':'mm','format':'a4'});let _0x4a8485=0xa;_0x1d54fb['setFontSize'](0xe),_0x1d54fb[_0x22b5cb(0x1a9)](_0x22b5cb(0x1d4),0xa,_0x4a8485),_0x4a8485+=0x6,_0x1d54fb['setFontSize'](0xa),_0x1d54fb[_0x22b5cb(0x1a9)]('Amarasinghe\x20Prime\x20Enterprises\x20(Pvt)\x20Ltd',0xa,_0x4a8485),_0x4a8485+=0x5,_0x1d54fb['text']('Contact:\x20+94\x2076\x20944\x207740',0xa,_0x4a8485),_0x4a8485+=0x5,_0x1d54fb[_0x22b5cb(0x1a9)]('Date:\x20'+new Date()['toLocaleString'](_0x22b5cb(0x1a6)),0xa,_0x4a8485),_0x4a8485+=0x8,_0x1d54fb[_0x22b5cb(0x12c)]({'startY':_0x4a8485,'head':[[_0x22b5cb(0x170),_0x22b5cb(0x117)]],'body':[['CIF\x20(JPY)',_0xf8e789(_0x2897bd[_0x22b5cb(0x1ad)])],[_0x22b5cb(0x15e),_0x2897bd[_0x22b5cb(0x184)][_0x22b5cb(0x182)](0x4)],[_0x22b5cb(0x158),_0xf8e789(_0x2897bd['cif'])],[_0x22b5cb(0x1c3),_0x2897bd['type']['replace']('_','\x20')[_0x22b5cb(0x12e)]()],[_0x22b5cb(0x1a1),_0xf8e789(_0x2897bd[_0x22b5cb(0x181)])+'\x20'+([_0x22b5cb(0x1ac),'esmart_petrol',_0x22b5cb(0x159)][_0x22b5cb(0x1aa)](_0x2897bd[_0x22b5cb(0x157)])?'kW':'cc')],[_0x22b5cb(0x1c1),_0x2897bd['age']==='1'?_0x22b5cb(0x1bc):_0x22b5cb(0x1a4)],[_0x22b5cb(0x1ab),_0xf8e789(_0x2897bd[_0x22b5cb(0x1b6)])],[_0x22b5cb(0x153),_0xf8e789(_0x2897bd[_0x22b5cb(0x178)])]],'theme':_0x22b5cb(0x14d),'styles':{'fontSize':0x8,'cellPadding':0x2,'lineWidth':0.2},'headStyles':{'fillColor':[0x0,0x30,0x87],'textColor':[0xff,0xff,0xff]},'columnStyles':{0x0:{'cellWidth':0x3c},0x1:{'cellWidth':0x78}},'margin':{'top':0xa,'left':0xa,'right':0xa}}),_0x4a8485=_0x1d54fb[_0x22b5cb(0x1c9)][_0x22b5cb(0x169)]+0x8,_0x1d54fb[_0x22b5cb(0x12c)]({'startY':_0x4a8485,'head':[[_0x22b5cb(0x185),_0x22b5cb(0x118),_0x22b5cb(0x1b9)]],'body':[[_0x22b5cb(0x191),_0xf8e789(_0x2897bd[_0x22b5cb(0x141)]),(_0x2897bd[_0x22b5cb(0x141)]/_0x2897bd[_0x22b5cb(0x11a)]*0x64)[_0x22b5cb(0x182)](0x1)+'%'],[_0x22b5cb(0x13a),_0xf8e789(_0x2897bd[_0x22b5cb(0x1d2)]),(_0x2897bd[_0x22b5cb(0x1d2)]/_0x2897bd[_0x22b5cb(0x11a)]*0x64)[_0x22b5cb(0x182)](0x1)+'%'],[_0x22b5cb(0x186),_0xf8e789(_0x2897bd[_0x22b5cb(0x18d)]),(_0x2897bd[_0x22b5cb(0x18d)]/_0x2897bd[_0x22b5cb(0x11a)]*0x64)[_0x22b5cb(0x182)](0x1)+'%'],[_0x22b5cb(0x1c5),_0xf8e789(_0x2897bd['luxuryTax']),(_0x2897bd[_0x22b5cb(0x14b)]/_0x2897bd[_0x22b5cb(0x11a)]*0x64)[_0x22b5cb(0x182)](0x1)+'%'],[_0x22b5cb(0x146),_0xf8e789(_0x2897bd[_0x22b5cb(0x161)]),(_0x2897bd[_0x22b5cb(0x161)]/_0x2897bd[_0x22b5cb(0x11a)]*0x64)['toFixed'](0x1)+'%'],[_0x22b5cb(0x199),_0xf8e789(_0x2897bd[_0x22b5cb(0x16a)]),(_0x2897bd['vat']/_0x2897bd['totalTax']*0x64)[_0x22b5cb(0x182)](0x1)+'%'],[_0x22b5cb(0x19d),_0xf8e789(_0x2897bd[_0x22b5cb(0x11a)]),'100.0%']],'theme':_0x22b5cb(0x14d),'styles':{'fontSize':0x8,'cellPadding':0x2,'lineWidth':0.2},'headStyles':{'fillColor':[0x0,0x30,0x87],'textColor':[0xff,0xff,0xff]},'columnStyles':{0x0:{'cellWidth':0x3c},0x1:{'cellWidth':0x50},0x2:{'cellWidth':0x28}},'margin':{'left':0xa,'right':0xa}}),_0x4a8485=_0x1d54fb[_0x22b5cb(0x1c9)][_0x22b5cb(0x169)]+0x8,_0x1d54fb[_0x22b5cb(0x12c)]({'startY':_0x4a8485,'head':[[_0x22b5cb(0x13c),_0x22b5cb(0x118),_0x22b5cb(0x137)]],'body':[['CIF\x20Value',_0xf8e789(_0x2897bd[_0x22b5cb(0x1cc)]),(_0x2897bd[_0x22b5cb(0x1cc)]/_0x2897bd[_0x22b5cb(0x122)]*0x64)[_0x22b5cb(0x182)](0x1)+'%'],[_0x22b5cb(0x193),_0xf8e789(_0x2897bd[_0x22b5cb(0x11a)]),(_0x2897bd[_0x22b5cb(0x11a)]/_0x2897bd[_0x22b5cb(0x122)]*0x64)[_0x22b5cb(0x182)](0x1)+'%'],[_0x22b5cb(0x17a),_0xf8e789(_0x2897bd[_0x22b5cb(0x15a)]),(_0x2897bd[_0x22b5cb(0x15a)]/_0x2897bd[_0x22b5cb(0x122)]*0x64)['toFixed'](0x1)+'%'],[_0x22b5cb(0x194),_0xf8e789(_0x2897bd[_0x22b5cb(0x122)]),_0x22b5cb(0x168)]],'theme':_0x22b5cb(0x14d),'styles':{'fontSize':0x8,'cellPadding':0x2,'lineWidth':0.2},'headStyles':{'fillColor':[0x0,0x30,0x87],'textColor':[0xff,0xff,0xff]},'columnStyles':{0x0:{'cellWidth':0x3c},0x1:{'cellWidth':0x50},0x2:{'cellWidth':0x28}},'margin':{'left':0xa,'right':0xa}}),_0x1d54fb['save'](_0x22b5cb(0x1b1)+_0x2897bd[_0x22b5cb(0x157)]+'_'+Date['now']()+_0x22b5cb(0x148));}function _0xcd606f(){const _0x290f7c=_0x1b46,_0x17003e=_0x2ebcf9(_0x290f7c(0x196));if(_0x17003e)_0x17003e[_0x290f7c(0x165)]();_0x100ada=null;_0x488977&&(_0x488977['destroy'](),_0x488977=null);_0x3309cb&&(_0x3309cb['destroy'](),_0x3309cb=null);const _0x2c2524=_0x2ebcf9(_0x290f7c(0x152));_0x2c2524&&(_0x2c2524[_0x290f7c(0x15b)]=_0x290f7c(0x132));const _0xa7d54b=_0x2ebcf9(_0x290f7c(0x16f));if(_0xa7d54b)_0xa7d54b['style']['display']=_0x290f7c(0x14f);_0x162e3c(),_0xffe1d6();}function _0xffe1d6(){const _0x452021=_0x1b46,_0x239c29=_0x2ebcf9(_0x452021(0x139)),_0x4116e4=_0x2ebcf9(_0x452021(0x1b7));if(!_0x239c29||!_0x4116e4)return;const _0x1867a6=_0x239c29[_0x452021(0x1c8)],_0x417ffa=_0x1867a6['includes'](_0x452021(0x1ac))||_0x1867a6[_0x452021(0x1aa)](_0x452021(0x1c6));_0x4116e4[_0x452021(0x12a)]=_0x417ffa?_0x452021(0x183):_0x452021(0x1b2);}function _0x35a47d(_0x11280e){const _0x3240bb=_0x1b46,_0x4c7e9c=_0x11280e['closest'](_0x3240bb(0x1c4));if(!_0x4c7e9c)return;_0x4c7e9c[_0x3240bb(0x1bd)][_0x3240bb(0x149)](_0x3240bb(0x13b));const _0xfcaafd=_0x4c7e9c['querySelector']('.faq-indicator');_0xfcaafd&&(_0xfcaafd[_0x3240bb(0x142)][_0x3240bb(0x11d)]=_0x4c7e9c[_0x3240bb(0x1bd)]['contains'](_0x3240bb(0x13b))?_0x3240bb(0x11e):_0x3240bb(0x14c));}function _0x142890(){const _0x28561b=_0x1b46;console['log']('✅\x20SL\x20Tax\x20Calculator\x20Loaded');const _0x37edf6=_0x2ebcf9(_0x28561b(0x14a));if(_0x37edf6)_0x37edf6[_0x28561b(0x12a)]=new Date()[_0x28561b(0x1b8)]('en-LK');const _0x120d69=_0x2ebcf9(_0x28561b(0x174));_0x120d69&&fetch(_0x28561b(0x189))[_0x28561b(0x197)](_0xdb402b=>_0xdb402b[_0x28561b(0x13e)]())[_0x28561b(0x197)](_0x5915c6=>{const _0x36a8cf=_0x28561b,_0x1e84d9=parseFloat(_0x5915c6[_0x36a8cf(0x136)]),_0x54549e=_0x5915c6['updatedDate'],_0x115625=_0x2ebcf9('exchangeRate');if(_0x115625)_0x115625[_0x36a8cf(0x1c8)]=_0x1e84d9['toFixed'](0x4);_0x120d69[_0x36a8cf(0x15b)]=_0x36a8cf(0x144)+_0x1e84d9['toFixed'](0x4)+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22color:var(--muted);font-size:0.85rem\x22>Source:\x20Central\x20Bank\x20of\x20Sri\x20Lanka\x20(Updated:\x20'+_0x54549e+_0x36a8cf(0x16e);})[_0x28561b(0x13d)](()=>_0x120d69[_0x28561b(0x15b)]=_0x28561b(0x18c));const _0x37a5cd=_0x2ebcf9(_0x28561b(0x180)),_0x9e3fd5=_0x2ebcf9('resetBtn'),_0x21be57=_0x2ebcf9(_0x28561b(0x16f)),_0x3d3a1a=_0x2ebcf9(_0x28561b(0x139)),_0x277fcd=_0x2ebcf9('cifJPY'),_0x23bcb6=_0x2ebcf9(_0x28561b(0x184)),_0x394544=_0x2ebcf9('capacity'),_0x57ee98=_0x2ebcf9(_0x28561b(0x1b4));if(_0x37a5cd)_0x37a5cd[_0x28561b(0x151)](_0x28561b(0x18a),_0x43e111);if(_0x9e3fd5)_0x9e3fd5['addEventListener'](_0x28561b(0x18a),_0xcd606f);if(_0x21be57)_0x21be57[_0x28561b(0x151)](_0x28561b(0x18a),_0x766561);_0x3d3a1a&&_0x3d3a1a[_0x28561b(0x151)]('change',()=>{_0xffe1d6(),_0x162e3c();});if(_0x277fcd)_0x277fcd[_0x28561b(0x151)](_0x28561b(0x121),_0x162e3c);if(_0x23bcb6)_0x23bcb6[_0x28561b(0x151)](_0x28561b(0x121),_0x162e3c);if(_0x394544)_0x394544[_0x28561b(0x151)](_0x28561b(0x121),_0x162e3c);if(_0x57ee98)_0x57ee98[_0x28561b(0x151)]('change',_0x162e3c);document[_0x28561b(0x1a2)]('.faq-item\x20h3')[_0x28561b(0x140)](_0x523c54=>{const _0x2160bf=_0x28561b;_0x523c54[_0x2160bf(0x151)](_0x2160bf(0x18a),()=>_0x35a47d(_0x523c54));}),console[_0x28561b(0x138)](_0x28561b(0x19e));}document[_0x4a32be(0x14e)]===_0x4a32be(0x1ce)?document['addEventListener'](_0x4a32be(0x133),_0x142890):_0x142890();}()));function _0x3922(){const _0x372db8=['</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','taxCalculatorForm','then','Preparing\x20PDF...','VAT\x20(18%)','#FF6384','#9966FF','flex','TOTAL\x20TAXES','✅\x20Initialization\x20complete','</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Capacity</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','destroy','Capacity','querySelectorAll','345914OCvQap','>1–3\x20years','remove','en-LK','5HUPUWB','appendChild','text','includes','Dealer\x20Fee\x20(LKR)','electric','cifJPY','</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Clearing\x20Agent\x20Fee\x20(LKR)</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','display','2703700DDjLKA','vehicle_tax_','Engine\x20Capacity\x20(CC):','429696NzpFQA','age','fixed','dealerFee','capacityLabel','toLocaleString','%\x20of\x20Total\x20Tax','%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Surcharge\x20(50%\x20of\x20CID)</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','defer','≤1\x20year','classList','Total\x20Taxes','src','getContext','Vehicle\x20Age','</td><td\x20style=\x22text-align:right;padding:0.625rem;font-weight:700\x22>100.0%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tfoot>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</table>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','Vehicle\x20Type','.faq-item','Luxury\x20Tax','esmart','36XneGxB','value','lastAutoTable','Failed\x20to\x20load\x20PDF\x20generator.\x20Please\x20try\x20again.','disabled','cif','portrait','loading','function','%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Luxury\x20Tax</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','esmart_petrol','surcharge','rate','Sri\x20Lanka\x20Vehicle\x20Tax\x20Calculation\x202025','Value','Amount\x20(LKR)','</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</table>\x0a\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22font-weight:700;margin:1.25rem\x200\x200.75rem\x200;color:var(--primary);font-size:1.1rem\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20Tax\x20Breakdown\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<table\x20style=\x22width:100%;border-collapse:collapse;margin-bottom:1.5rem\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<thead\x20style=\x22background:var(--primary);color:#fff\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th\x20style=\x22padding:0.625rem;width:45%;text-align:left\x22>Tax\x20Type</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th\x20style=\x22padding:0.625rem;text-align:right;width:27.5%\x22>Amount\x20(LKR)</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<th\x20style=\x22padding:0.625rem;text-align:right;width:27.5%\x22>%\x20of\x20Total\x20Tax</th>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</thead>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Customs\x20Import\x20Duty</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','totalTax','44sYjrgu','%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>VAT\x20(18%)</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','transform','rotate(180deg)','PDF\x20library\x20not\x20fully\x20initialized.','%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tfoot\x20style=\x22border-top:2px\x20solid\x20var(--primary);background:#e3edfb\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr><td\x20style=\x22padding:0.625rem;font-weight:700;font-size:1.1rem\x22>TOTAL\x20IMPORT\x20COST</td><td\x20style=\x22text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem\x22>','input','totalCost','185332qUhsjd','getElementById','pie','jspdf','!\x20Please\x20enter\x20valid\x20capacity\x20(','#36A2EB','focus','textContent','smooth','autoTable','Failed\x20to\x20load\x20jsPDF','toUpperCase','taxPieChart','175931OAppNo','!\x20Please\x20enter\x20valid\x20Exchange\x20Rate','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22result-placeholder\x22>Add\x20input\x20data\x20and\x20click\x20the\x20Calculate\x20Tax\x20button\x20to\x20get\x20results</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p\x20class=\x22result-help\x22>Need\x20help\x20importing\x20your\x20vehicle\x20to\x20Sri\x20Lanka?\x20<a\x20href=\x22https://wa.me/message/XSPMWKK4BGVAM1\x22\x20target=\x22_blank\x22\x20rel=\x22noopener\x22>Contact\x20us\x20on\x20WhatsApp</a>\x20for\x20expert\x20assistance!</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','DOMContentLoaded','finally','anonymous','sellingRate','%\x20of\x20Total\x20Cost','log','vehicleType','Surcharge','active','Summary','catch','json','error-message','forEach','cid','style','parentNode','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22font-weight:700;color:var(--primary)\x22>Exchange\x20Rate:\x20JPY/LKR\x20=\x20','en-US','Vehicle\x20Entitlement\x20Levy','!\x20Please\x20enter\x20valid\x20CIF\x20(JPY)\x20amount','.pdf','toggle','timeDateTime','luxuryTax','rotate(0deg)','grid','readyState','none','onload','addEventListener','result','Clearing\x20Agent\x20Fee\x20(LKR)','%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Other\x20Charges</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','crossOrigin','bottom','type','CIF\x20(LKR)','esmart_diesel','otherCharges','innerHTML','https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js','1167272KdhiTB','Exchange\x20Rate','jsPDF','CIF\x20Value','vel','!\x20Please\x20enter\x20valid\x20capacity','createElement','scrollIntoView','reset','error','2rThTQU','100.0%','finalY','vat','calc','Failed\x20to\x20load\x20Chart.js','insertBefore',')</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','downloadBtn','Input','</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Dealer\x20Fee\x20(LKR)</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','1269zPHgHV','#FF9F40','cbslRate','petrol','VEL','onerror','clearingFee','</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Vehicle\x20Type</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','Other\x20Charges','#4BC0C0','Chart','%</td></tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20style=\x22border-bottom:1px\x20solid\x20rgba(0,48,135,0.15)\x22><td\x20style=\x22padding:0.5625rem\x200.625rem\x22>Vehicle\x20Entitlement\x20Levy</td><td\x20style=\x22text-align:right;padding:0.5625rem\x200.625rem\x22>','✅\x20Lazy\x20Loaded\x20','https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js','calculateBtn','capacity','toFixed','Motor\x20Capacity\x20(kW):','exchangeRate','Tax\x20Type','Excise\x20Duty','!\x20Please\x20select\x20vehicle\x20age','VAT','/rate.json','click','CID','Failed\x20to\x20fetch\x20exchange\x20rate.\x20Please\x20enter\x20manually.','excise','https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js','className','#FFCE56','Customs\x20Import\x20Duty','script','Total\x20Taxes\x20&\x20Duties','TOTAL\x20IMPORT\x20COST'];_0x3922=function(){return _0x372db8;};return _0x3922();}
+(function() {
+    'use strict';
+
+    // 1. Global Variables (Safe Initialization)
+    let resultData = null;
+    let taxChart = null;
+    let costChart = null;
+
+    // 2. Excise Duty Tables (Exact 2025 Gazette Rates - HS Code Based)
+    const exciseRates = {
+        petrol: [
+            { min: 600, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) },
+            { max: 1300, rate: 3850 },
+            { max: 1500, rate: 4450 },
+            { max: 1600, rate: 5150 },
+            { max: 1800, rate: 6400 },
+            { max: 2000, rate: 7700 },
+            { max: 2500, rate: 8450 },
+            { max: 2750, rate: 9650 },
+            { max: 3000, rate: 10850 },
+            { max: 4000, rate: 12050 },
+            { max: 6500, rate: 13300 }
+        ],
+        petrol_hybrid: [
+            { min: 600, max: 1000, rate: () => 1810900 },
+            { max: 1300, rate: 2750 },
+            { max: 1500, rate: 3450 },
+            { max: 1600, rate: 4800 },
+            { max: 1800, rate: 6300 },
+            { max: 2000, rate: 6900 },
+            { max: 2500, rate: 7250 },
+            { max: 2750, rate: 8450 },
+            { max: 3000, rate: 9650 },
+            { max: 4000, rate: 10850 },
+            { max: 6500, rate: 12050 }
+        ],
+        petrol_plugin: [
+            { min: 600, max: 1000, rate: () => 1810900 },
+            { max: 1300, rate: 2750 },
+            { max: 1500, rate: 3450 },
+            { max: 1600, rate: 4800 },
+            { max: 1800, rate: 6250 },
+            { max: 2000, rate: 6900 },
+            { max: 2500, rate: 7250 },
+            { max: 2750, rate: 8450 },
+            { max: 3000, rate: 9650 },
+            { max: 4000, rate: 10850 },
+            { max: 6500, rate: 12050 }
+        ],
+        diesel: [
+            { min: 900, max: 1500, rate: 5500 },
+            { max: 1600, rate: 6950 },
+            { max: 1800, rate: 8300 },
+            { max: 2000, rate: 9650 },
+            { max: 2500, rate: 9650 },
+            { max: 2750, rate: 10850 },
+            { max: 3000, rate: 12050 },
+            { max: 4000, rate: 13300 },
+            { max: 6500, rate: 14500 }
+        ],
+        diesel_hybrid: [
+            { min: 900, max: 1500, rate: 4150 },
+            { max: 1600, rate: 5500 },
+            { max: 1800, rate: 6900 },
+            { max: 2000, rate: 8350 },
+            { max: 2500, rate: 8450 },
+            { max: 2750, rate: 9650 },
+            { max: 3000, rate: 10850 },
+            { max: 4000, rate: 12050 },
+            { max: 6500, rate: 13300 }
+        ],
+        diesel_plugin: [
+            { min: 900, max: 1500, rate: 4150 },
+            { max: 1600, rate: 5500 },
+            { max: 1800, rate: 6900 },
+            { max: 2000, rate: 8300 },
+            { max: 2500, rate: 8450 },
+            { max: 2750, rate: 9650 },
+            { max: 3000, rate: 10850 },
+            { max: 4000, rate: 12050 },
+            { max: 6500, rate: 13300 }
+        ],
+        electric: [
+            { min: 40, max: 50, rate: (age) => age === '1' ? 18100 : 36200 },
+            { max: 100, rate: (age) => age === '1' ? 24100 : 36200 },
+            { max: 200, rate: (age) => age === '1' ? 36200 : 60400 },
+            { max: 600, rate: (age) => age === '1' ? 96600 : 132800 }
+        ],
+        esmart_petrol: [
+            { min: 20, max: 50, rate: (age) => age === '1' ? 30770 : 43440 },
+            { max: 100, rate: (age) => age === '1' ? 40970 : 43440 },
+            { max: 200, rate: (age) => age === '1' ? 41630 : 63420 },
+            { max: 600, rate: (age) => age === '1' ? 111090 : 139440 }
+        ],
+        esmart_diesel: [
+            { min: 20, max: 50, rate: (age) => age === '1' ? 36920 : 52130 },
+            { max: 100, rate: (age) => age === '1' ? 49160 : 52130 },
+            { max: 200, rate: (age) => age === '1' ? 49960 : 76100 },
+            { max: 600, rate: (age) => age === '1' ? 133310 : 167330 }
+        ]
+    };
+
+    // 3. Luxury Tax Thresholds & Rates
+    const luxuryThresholds = {
+        petrol: 5000000, diesel: 5000000,
+        petrol_hybrid: 5500000, diesel_hybrid: 5500000,
+        petrol_plugin: 5500000, diesel_plugin: 5500000,
+        electric: 6000000, esmart_petrol: 6000000, esmart_diesel: 6000000
+    };
+    const luxuryRates = {
+        petrol: 1.0, diesel: 1.2,
+        petrol_hybrid: 0.8, diesel_hybrid: 0.8,
+        petrol_plugin: 0.8, diesel_plugin: 0.8,
+        electric: 0.6, esmart_petrol: 0.6, esmart_diesel: 0.6
+    };
+
+    // 4. Utility Functions
+    function formatNumber(num, decimals = 0) {
+        return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+    }
+
+    function showError(fieldId, message) {
+        clearErrors();
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        input.parentNode.insertBefore(errorDiv, input.nextSibling);
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function clearErrors() {
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+    }
+
+    function getElementSafe(id) {
+        return document.getElementById(id) || null;
+    }
+    
+    // 4.1. Lazy Load Utility (FIX APPLIED)
+    function loadExternalScript(url, globalCheck) {
+        return new Promise((resolve, reject) => {
+            // Check if the script is already loaded
+            if (window[globalCheck]) {
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = url;
+            script.defer = true;
+            script.crossOrigin = 'anonymous';
+
+            script.onload = () => {
+                console.log(`✅ Lazy Loaded ${globalCheck}`);
+                
+                // Special case for jsPDF: also load the autotable plugin after the main library
+                if (globalCheck === 'jspdf') {
+                    const autotableScript = document.createElement('script');
+                    autotableScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js';
+                    autotableScript.defer = true;
+                    autotableScript.onload = resolve;
+                    autotableScript.onerror = reject;
+                    document.head.appendChild(autotableScript);
+                } else {
+                    resolve();
+                }
+            };
+            script.onerror = () => reject(new Error(`❌ Failed to load script: ${url}`));
+            document.head.appendChild(script);
+        });
+    }
+
+    // 5. Calculate Excise Duty (Core Logic)
+    function calculateExcise(type, capacity, age) {
+        const table = exciseRates[type];
+        if (!table) return { error: 'Invalid vehicle type' };
+
+        let minCapacity, maxCapacity, unit;
+        if (type === 'esmart_petrol' || type === 'esmart_diesel') {
+            minCapacity = 20;
+            maxCapacity = 600;
+            unit = 'kW';
+        } else if (type === 'electric') {
+            minCapacity = 40;
+            maxCapacity = 600;
+            unit = 'kW';
+        } else if (type.includes('petrol')) {
+            minCapacity = 600;
+            maxCapacity = 6500;
+            unit = 'cc';
+        } else if (type.includes('diesel')) {
+            minCapacity = 900;
+            maxCapacity = 6500;
+            unit = 'cc';
+        } else {
+            return { error: 'Invalid vehicle type' };
+        }
+
+        if (capacity < minCapacity || capacity > maxCapacity) {
+            return { error: `! Please enter valid capacity (${minCapacity}-${maxCapacity} ${unit})` };
+        }
+
+        for (let tier of table) {
+            if (capacity <= (tier.max || maxCapacity)) {
+                if (tier.rate) {
+                    const rate = typeof tier.rate === 'function' ? tier.rate(age) : tier.rate;
+                    if (tier.calc) return tier.calc(capacity, rate);
+                    return rate * capacity;
+                }
+                if (tier.fixed) return tier.fixed;
+            }
+        }
+        return 0;
+    }
+
+    // 6. Calculate Luxury Tax
+    function calculateLuxuryTax(cif, type) {
+        const threshold = luxuryThresholds[type] || 5000000;
+        const rate = luxuryRates[type] || 1.0;
+        return cif > threshold ? (cif - threshold) * rate : 0;
+    }
+
+    // 7. Main Calculation Function (FIX APPLIED: Lazy loads Chart.js)
+    function calculateTax() {
+        clearErrors();
+        const elements = {
+            cifJPY: getElementSafe('cifJPY'),
+            exchangeRate: getElementSafe('exchangeRate'),
+            vehicleType: getElementSafe('vehicleType'),
+            capacity: getElementSafe('capacity'),
+            age: getElementSafe('age'),
+            dealerFee: getElementSafe('dealerFee'),
+            clearingFee: getElementSafe('clearingFee')
+        };
+
+        if (!elements.cifJPY || !elements.exchangeRate || !elements.vehicleType || !elements.capacity || !elements.age) {
+            showError('cifJPY', 'Form elements not found - reload page');
+            return;
+        }
+
+        const cifJPY = parseFloat(elements.cifJPY.value) || 0;
+        const exchangeRate = parseFloat(elements.exchangeRate.value) || 0;
+        const type = elements.vehicleType.value;
+        const capacity = parseFloat(elements.capacity.value) || 0;
+        const age = elements.age.value;
+        const dealerFee = parseFloat(elements.dealerFee.value) || 0;
+        const clearingFee = parseFloat(elements.clearingFee.value) || 0;
+
+        if (cifJPY < 800000 || cifJPY > 20000000) return showError('cifJPY', '! Please enter valid CIF (JPY) amount');
+        if (exchangeRate < 1.6 || exchangeRate > 2.9) return showError('exchangeRate', '! Please enter valid Exchange Rate');
+        if (!type) return showError('vehicleType', '! Please select vehicle type');
+        if (capacity <= 0) return showError('capacity', '! Please enter valid capacity');
+        if (!age) return showError('age', '! Please select vehicle age');
+
+        const cif = cifJPY * exchangeRate;
+        const exciseResult = calculateExcise(type, capacity, age);
+        if (exciseResult.error) return showError('capacity', exciseResult.error);
+
+        const cid = cif * 0.2;
+        const surcharge = cid * 0.5;
+        const excise = exciseResult;
+        const luxuryTax = calculateLuxuryTax(cif, type);
+        const vel = 15000;
+        // VAT Base: (CIF * 1.1) + CID + Surcharge + Excise + LuxuryTax + VEL
+        const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax + vel;
+        const vat = vatBase * 0.18;
+        const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
+        const otherCharges = dealerFee + clearingFee;
+        const totalCost = cif + totalTax + otherCharges;
+
+        resultData = {
+            cifJPY, exchangeRate, cif, type, capacity, age,
+            dealerFee, clearingFee, cid, surcharge, excise,
+            luxuryTax, vel, vat, totalTax, otherCharges, totalCost
+        };
+
+        displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
+        
+        // Lazy load Chart.js only when results are ready
+        loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'Chart')
+            .then(() => {
+                showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat });
+            })
+            .catch(error => {
+                console.error('Failed to load Chart.js', error);
+                if (taxChart) taxChart.destroy();
+                if (costChart) costChart.destroy();
+            });
+
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.style.display = 'flex';
+
+        const resultEl = getElementSafe('result');
+        if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 8. Display Results Table (UNCHANGED)
+    function displayResults(data) {
+        const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
+        const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
+        const typeText = resultData.type.replace('_', ' ').toUpperCase();
+
+        const html = `
+            <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem">
+                Inputs Summary
+            </div>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
+                <thead style="background:var(--primary);color:#fff">
+                    <tr><th style="padding:0.625rem;width:50%;text-align:left">Item</th><th style="padding:0.625rem;text-align:right">Value</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (JPY)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.cifJPY)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Exchange Rate</td><td style="text-align:right;padding:0.5625rem 0.625rem">${resultData.exchangeRate.toFixed(4)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Type</td><td style="text-align:right;padding:0.5625rem 0.625rem">${typeText}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Age</td><td style="text-align:right;padding:0.5625rem 0.625rem">${ageText}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Dealer Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.dealerFee)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Clearing Agent Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.clearingFee)}</td></tr>
+                </tbody>
+            </table>
+
+            <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
+                Tax Breakdown
+            </div>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
+                <thead style="background:var(--primary);color:#fff">
+                    <tr>
+                        <th style="padding:0.625rem;width:45%;text-align:left">Tax Type</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">Amount (LKR)</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">% of Total Tax</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Import Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.cid/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.surcharge/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.excise/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.luxuryTax/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.vel/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.vat/data.totalTax)*100).toFixed(1)}%</td></tr>
+                </tbody>
+                <tfoot style="border-top:2px solid var(--primary);background:#f0f4fa">
+                    <tr><td style="padding:0.625rem;font-weight:700">Total Taxes & Duties</td><td style="text-align:right;padding:0.625rem;font-weight:700">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">100.0%</td></tr>
+                </tfoot>
+            </table>
+
+            <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
+                Final Cost Summary
+            </div>
+            <table style="width:100%;border-collapse:collapse">
+                <thead style="background:var(--primary);color:#fff">
+                    <tr>
+                        <th style="padding:0.625rem;width:45%;text-align:left">Item</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">Amount (LKR)</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">% of Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle CIF Value</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.cif/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.totalTax/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.otherCharges/data.totalCost)*100).toFixed(1)}%</td></tr>
+                </tbody>
+                <tfoot style="border-top:2px solid var(--primary);background:#e3edfb">
+                    <tr><td style="padding:0.625rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">100.0%</td></tr>
+                </tfoot>
+            </table>
+        `;
+        const resultEl = getElementSafe('result');
+        if (resultEl) resultEl.innerHTML = html;
+    }
+
+    // 9. Show Charts (UNCHANGED)
+    function showCharts(data) {
+        const taxCanvas = getElementSafe('taxPieChart');
+        const costCanvas = getElementSafe('pieChart');
+        // This check ensures Chart is available after lazy-loading
+        if (!taxCanvas || !costCanvas || !window.Chart) return; 
+
+        const ctx1 = taxCanvas.getContext('2d');
+        const ctx2 = costCanvas.getContext('2d');
+
+        if (taxChart) taxChart.destroy();
+        if (costChart) costChart.destroy();
+
+        taxChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['CID', 'Surcharge', 'Excise', 'Luxury Tax', 'VEL', 'VAT'],
+                datasets: [{
+                    data: [data.cid, data.surcharge, data.excise, data.luxuryTax, data.vel, data.vat],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+
+        costChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['CIF Value', 'Total Taxes', 'Other Charges'],
+                datasets: [{
+                    data: [data.cif, data.totalTax, data.otherCharges],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+    }
+
+    // 10. PDF Download (FIX APPLIED: Lazy loads jsPDF)
+    function downloadPDF() {
+        if (!resultData) {
+            alert('Please calculate the tax first.');
+            return;
+        }
+
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.disabled = true;
+        if (downloadBtn) downloadBtn.textContent = 'Preparing PDF...';
+
+        // Lazy load jsPDF only when the download button is clicked
+        loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf')
+            .then(() => {
+                // generatePDFContent handles the actual PDF creation
+                generatePDFContent(resultData);
+            })
+            .catch(error => {
+                console.error('Failed to load jsPDF', error);
+                alert('Failed to load PDF generator. Please try again.');
+            })
+            .finally(() => {
+                // Re-enable button
+                if (downloadBtn) {
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = 'Save as PDF';
+                }
+            });
+    }
+
+    // 10.1. PDF Content Helper (NEW: Contains all PDF generation logic)
+    function generatePDFContent(resultData) {
+        if (!window.jspdf || !window.jspdf.jsPDF || !window.jspdf.autoTable) return alert('PDF library not fully initialized.');
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+        let y = 10;
+
+        doc.setFontSize(14);
+        doc.text('Sri Lanka Vehicle Tax Calculation 2025', 10, y);
+        y += 6;
+        doc.setFontSize(10);
+        doc.text('Amarasinghe Prime Enterprises (Pvt) Ltd', 10, y);
+        y += 5;
+        doc.text('Contact: +94 76 944 7740', 10, y);
+        y += 5;
+        doc.text(`Date: ${new Date().toLocaleString('en-LK')}`, 10, y);
+        y += 8;
+
+        // Inputs
+        doc.autoTable({
+            startY: y,
+            head: [['Input', 'Value']],
+            body: [
+                ['CIF (JPY)', formatNumber(resultData.cifJPY)],
+                ['Exchange Rate', resultData.exchangeRate.toFixed(4)],
+                ['CIF (LKR)', formatNumber(resultData.cif)],
+                ['Vehicle Type', resultData.type.replace('_', ' ').toUpperCase()],
+                ['Capacity', `${formatNumber(resultData.capacity)} ${['electric','esmart_petrol','esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc'}`],
+                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
+                ['Dealer Fee (LKR)', formatNumber(resultData.dealerFee)],
+                ['Clearing Agent Fee (LKR)', formatNumber(resultData.clearingFee)]
+            ],
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
+            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
+            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 120 } },
+            margin: { top: 10, left: 10, right: 10 }
+        });
+
+        y = doc.lastAutoTable.finalY + 8;
+        // Taxes
+        doc.autoTable({
+            startY: y,
+            head: [['Tax Type', 'Amount (LKR)', '% of Total Tax']],
+            body: [
+                ['Customs Import Duty', formatNumber(resultData.cid), ((resultData.cid/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Surcharge', formatNumber(resultData.surcharge), ((resultData.surcharge/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Excise Duty', formatNumber(resultData.excise), ((resultData.excise/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Luxury Tax', formatNumber(resultData.luxuryTax), ((resultData.luxuryTax/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Vehicle Entitlement Levy', formatNumber(resultData.vel), ((resultData.vel/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['VAT (18%)', formatNumber(resultData.vat), ((resultData.vat/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['TOTAL TAXES', formatNumber(resultData.totalTax), '100.0%']
+            ],
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
+            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
+            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 80 }, 2: { cellWidth: 40 } },
+            margin: { left: 10, right: 10 }
+        });
+
+        y = doc.lastAutoTable.finalY + 8;
+        // Summary
+        doc.autoTable({
+            startY: y,
+            head: [['Summary', 'Amount (LKR)', '% of Total Cost']],
+            body: [
+                ['CIF Value', formatNumber(resultData.cif), ((resultData.cif/resultData.totalCost)*100).toFixed(1) + '%'],
+                ['Total Taxes & Duties', formatNumber(resultData.totalTax), ((resultData.totalTax/resultData.totalCost)*100).toFixed(1) + '%'],
+                ['Other Charges', formatNumber(resultData.otherCharges), ((resultData.otherCharges/resultData.totalCost)*100).toFixed(1) + '%'],
+                ['TOTAL IMPORT COST', formatNumber(resultData.totalCost), '100.0%']
+            ],
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
+            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
+            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 80 }, 2: { cellWidth: 40 } },
+            margin: { left: 10, right: 10 }
+        });
+
+        doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
+    }
+
+    // 11. Reset Form (UNCHANGED)
+    function resetForm() {
+        const form = getElementSafe('taxCalculatorForm');
+        if (form) form.reset();
+        
+        resultData = null;
+        if (taxChart) {
+            taxChart.destroy();
+            taxChart = null;
+        }
+        if (costChart) {
+            costChart.destroy();
+            costChart = null;
+        }
+        
+        const resultEl = getElementSafe('result');
+        if (resultEl) {
+            resultEl.innerHTML = `
+                <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
+                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+            `;
+        }
+        
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.style.display = 'none';
+        clearErrors();
+        updateCapacityLabel();
+    }
+
+    // 12. Update Capacity Label (UNCHANGED)
+    function updateCapacityLabel() {
+        const vehicleTypeEl = getElementSafe('vehicleType');
+        const capacityLabelEl = getElementSafe('capacityLabel');
+        if (!vehicleTypeEl || !capacityLabelEl) return;
+        
+        const vehicleType = vehicleTypeEl.value;
+        const isElectric = vehicleType.includes('electric') || vehicleType.includes('esmart');
+        capacityLabelEl.textContent = isElectric ? 'Motor Capacity (kW):' : 'Engine Capacity (CC):';
+    }
+
+    // 13. Toggle FAQ (UNCHANGED)
+    function toggleFAQ(element) {
+        const item = element.closest('.faq-item');
+        if (!item) return;
+        item.classList.toggle('active');
+        const indicator = item.querySelector('.faq-indicator');
+        if (indicator) {
+            indicator.style.transform = item.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+    }
+
+    // 14. Initialization (UNCHANGED)
+    function init() {
+        console.log('✅ SL Tax Calculator Loaded');
+        
+        const timeEl = getElementSafe('timeDateTime');
+        if (timeEl) timeEl.textContent = new Date().toLocaleString('en-LK');
+
+        const rateEl = getElementSafe('cbslRate');
+        if (rateEl) {
+            fetch('/rate.json')
+                .then(r => r.json())
+                .then(data => {
+                    const rate = parseFloat(data.sellingRate);
+                    const updatedDate = data.updatedDate;
+                    const exchangeInput = getElementSafe('exchangeRate');
+                    if (exchangeInput) exchangeInput.value = rate.toFixed(4);
+                    rateEl.innerHTML = `
+                        <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
+                        <div style="color:var(--muted);font-size:0.85rem">Source: Central Bank of Sri Lanka (Updated: ${updatedDate})</div>
+                    `;
+                })
+                .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
+        }
+
+        const calculateBtn = getElementSafe('calculateBtn');
+        const resetBtn = getElementSafe('resetBtn');
+        const downloadBtn = getElementSafe('downloadBtn');
+        const vehicleTypeEl = getElementSafe('vehicleType');
+        const cifJPYInput = getElementSafe('cifJPY');
+        const exchangeRateInput = getElementSafe('exchangeRate');
+        const capacityInput = getElementSafe('capacity');
+        const ageEl = getElementSafe('age');
+
+        if (calculateBtn) calculateBtn.addEventListener('click', calculateTax);
+        if (resetBtn) resetBtn.addEventListener('click', resetForm);
+        if (downloadBtn) downloadBtn.addEventListener('click', downloadPDF);
+        if (vehicleTypeEl) {
+            vehicleTypeEl.addEventListener('change', () => {
+                updateCapacityLabel();
+                clearErrors();
+            });
+        }
+        if (cifJPYInput) cifJPYInput.addEventListener('input', clearErrors);
+        if (exchangeRateInput) exchangeRateInput.addEventListener('input', clearErrors);
+        if (capacityInput) capacityInput.addEventListener('input', clearErrors);
+        if (ageEl) ageEl.addEventListener('change', clearErrors);
+
+        document.querySelectorAll('.faq-item h3').forEach(h3 => {
+            h3.addEventListener('click', () => toggleFAQ(h3));
+        });
+
+        console.log('✅ Initialization complete');
+    }
+
+    // 15. DOM Ready (Incognito-Safe) 
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    // 16. Window Load (Extra Safety) - FIX APPLIED: REMOVED DUPLICATE INITIALIZER
+    // window.addEventListener('load', init); 
+})();
