@@ -1,7 +1,3 @@
-// /js/sl-tax-calc.js - NEW FROM SCRATCH: Clean, Error-Proof, Incognito-Compatible
-// ✅ Robust error handling | ✅ No null errors | ✅ Works in incognito | ✅ Exact 2025 Gazette rates
-// ✅ Live exchange rate | ✅ PDF export | ✅ Charts | ✅ Mobile-safe | ✅ FAQ toggle
-
 (function() {
     'use strict';
 
@@ -12,9 +8,9 @@
 
     // 2. Excise Duty Tables (Exact 2025 Gazette Rates - HS Code Based)
     const exciseRates = {
-        // Petrol (HS 8703.2x.xx) - Min 601cc
+        // Petrol (HS 8703.2x.xx) - Min 600cc, Max 6500cc
         petrol: [
-            { min: 601, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) },
+            { min: 600, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) },
             { max: 1300, rate: 3850 },
             { max: 1500, rate: 4450 },
             { max: 1600, rate: 5150 },
@@ -24,11 +20,11 @@
             { max: 2750, rate: 9650 },
             { max: 3000, rate: 10850 },
             { max: 4000, rate: 12050 },
-            { max: Infinity, rate: 13300 }
+            { max: 6500, rate: 13300 }
         ],
-        // Petrol Hybrid (HS 8703.4x.xx) - Min 601cc
+        // Petrol Hybrid (HS 8703.4x.xx) - Min 600cc, Max 6500cc
         petrol_hybrid: [
-            { min: 601, max: 1000, rate: () => 1810900 },
+            { min: 600, max: 1000, rate: () => 1810900 },
             { max: 1300, rate: 2750 },
             { max: 1500, rate: 3450 },
             { max: 1600, rate: 4800 },
@@ -38,11 +34,11 @@
             { max: 2750, rate: 8450 },
             { max: 3000, rate: 9650 },
             { max: 4000, rate: 10850 },
-            { max: Infinity, rate: 12050 }
+            { max: 6500, rate: 12050 }
         ],
-        // Petrol Plug-in Hybrid (HS 8703.6x.xx) - Min 601cc
+        // Petrol Plug-in Hybrid (HS 8703.6x.xx) - Min 600cc, Max 6500cc
         petrol_plugin: [
-            { min: 601, max: 1000, rate: () => 1810900 },
+            { min: 600, max: 1000, rate: () => 1810900 },
             { max: 1300, rate: 2750 },
             { max: 1500, rate: 3450 },
             { max: 1600, rate: 4800 },
@@ -52,11 +48,11 @@
             { max: 2750, rate: 8450 },
             { max: 3000, rate: 9650 },
             { max: 4000, rate: 10850 },
-            { max: Infinity, rate: 12050 }
+            { max: 6500, rate: 12050 }
         ],
-        // Diesel (HS 8703.3x.xx) - Min 901cc
+        // Diesel (HS 8703.3x.xx) - Min 900cc, Max 6500cc
         diesel: [
-            { min: 901, max: 1500, rate: 5500 },
+            { min: 900, max: 1500, rate: 5500 },
             { max: 1600, rate: 6950 },
             { max: 1800, rate: 8300 },
             { max: 2000, rate: 9650 },
@@ -64,11 +60,11 @@
             { max: 2750, rate: 10850 },
             { max: 3000, rate: 12050 },
             { max: 4000, rate: 13300 },
-            { max: Infinity, rate: 14500 }
+            { max: 6500, rate: 14500 }
         ],
-        // Diesel Hybrid (HS 8703.50.xx) - Min 901cc
+        // Diesel Hybrid (HS 8703.50.xx) - Min 900cc, Max 6500cc
         diesel_hybrid: [
-            { min: 901, max: 1500, rate: 4150 },
+            { min: 900, max: 1500, rate: 4150 },
             { max: 1600, rate: 5500 },
             { max: 1800, rate: 6900 },
             { max: 2000, rate: 8350 },
@@ -76,11 +72,11 @@
             { max: 2750, rate: 9650 },
             { max: 3000, rate: 10850 },
             { max: 4000, rate: 12050 },
-            { max: Infinity, rate: 13300 }
+            { max: 6500, rate: 13300 }
         ],
-        // Diesel Plug-in Hybrid (HS 8703.70.xx) - Min 901cc
+        // Diesel Plug-in Hybrid (HS 8703.70.xx) - Min 900cc, Max 6500cc
         diesel_plugin: [
-            { min: 901, max: 1500, rate: 4150 },
+            { min: 900, max: 1500, rate: 4150 },
             { max: 1600, rate: 5500 },
             { max: 1800, rate: 6900 },
             { max: 2000, rate: 8300 },
@@ -88,28 +84,28 @@
             { max: 2750, rate: 9650 },
             { max: 3000, rate: 10850 },
             { max: 4000, rate: 12050 },
-            { max: Infinity, rate: 13300 }
+            { max: 6500, rate: 13300 }
         ],
-        // Electric (HS 8703.8x.xx) - Min 1 kW
+        // Electric (HS 8703.8x.xx) - Min 40 kW, Max 600 kW
         electric: [
-            { max: 50, rate: (age) => age === '1' ? 18100 : 36200 },
+            { min: 40, max: 50, rate: (age) => age === '1' ? 18100 : 36200 },
             { max: 100, rate: (age) => age === '1' ? 24100 : 36200 },
             { max: 200, rate: (age) => age === '1' ? 36200 : 60400 },
-            { max: Infinity, rate: (age) => age === '1' ? 96600 : 132800 }
+            { max: 600, rate: (age) => age === '1' ? 96600 : 132800 }
         ],
-        // e-SMART Petrol (HS 8703.80.7x) - Min 1 kW
+        // e-SMART Petrol (HS 8703.80.7x) - Min 20 kW, Max 600 kW
         esmart_petrol: [
-            { max: 50, rate: (age) => age === '1' ? 30770 : 43440 },
+            { min: 20, max: 50, rate: (age) => age === '1' ? 30770 : 43440 },
             { max: 100, rate: (age) => age === '1' ? 40970 : 43440 },
             { max: 200, rate: (age) => age === '1' ? 41630 : 63420 },
-            { max: Infinity, rate: (age) => age === '1' ? 111090 : 139440 }
+            { max: 600, rate: (age) => age === '1' ? 111090 : 139440 }
         ],
-        // e-SMART Diesel (HS 8703.80.8x) - Min 1 kW
+        // e-SMART Diesel (HS 8703.80.8x) - Min 20 kW, Max 600 kW
         esmart_diesel: [
-            { max: 50, rate: (age) => age === '1' ? 36920 : 52130 },
+            { min: 20, max: 50, rate: (age) => age === '1' ? 36920 : 52130 },
             { max: 100, rate: (age) => age === '1' ? 49160 : 52130 },
             { max: 200, rate: (age) => age === '1' ? 49960 : 76100 },
-            { max: Infinity, rate: (age) => age === '1' ? 133310 : 167330 }
+            { max: 600, rate: (age) => age === '1' ? 133310 : 167330 }
         ]
     };
 
@@ -159,32 +155,32 @@
 
         let minCapacity, maxCapacity, unit;
         if (type === 'esmart_petrol' || type === 'esmart_diesel') {
-            minCapacity = 1;
-            maxCapacity = Infinity;
+            minCapacity = 20;
+            maxCapacity = 600;
             unit = 'kW';
         } else if (type === 'electric') {
-            minCapacity = 1;
-            maxCapacity = Infinity;
+            minCapacity = 40;
+            maxCapacity = 600;
             unit = 'kW';
         } else if (type.includes('petrol')) {
-            minCapacity = 601;
-            maxCapacity = Infinity;
+            minCapacity = 600;
+            maxCapacity = 6500;
             unit = 'cc';
         } else if (type.includes('diesel')) {
-            minCapacity = 901;
-            maxCapacity = Infinity;
+            minCapacity = 900;
+            maxCapacity = 6500;
             unit = 'cc';
         } else {
             return { error: 'Invalid vehicle type' };
         }
 
-        if (capacity < minCapacity) {
-            return { error: `Enter valid ${unit} capacity (min ${minCapacity} ${unit})` };
+        if (capacity < minCapacity || capacity > maxCapacity) {
+            return { error: '! Please enter valid capacity' };
         }
 
         // Find tier and calculate
         for (let tier of table) {
-            if (capacity <= (tier.max || Infinity)) {
+            if (capacity <= (tier.max || maxCapacity)) {
                 if (tier.rate) {
                     const rate = typeof tier.rate === 'function' ? tier.rate(age) : tier.rate;
                     if (tier.calc) return tier.calc(capacity, rate);
@@ -229,10 +225,10 @@
         const dealerFee = parseFloat(elements.dealerFee.value) || 0;
         const clearingFee = parseFloat(elements.clearingFee.value) || 0;
 
-        if (cifJPY <= 0) return showError('cifJPY', 'Enter valid CIF value > 0');
-        if (exchangeRate <= 0) return showError('exchangeRate', 'Enter valid exchange rate > 0');
+        if (cifJPY < 800000 || cifJPY > 20000000) return showError('cifJPY', '! Please enter valid CIF (JPY) amount');
+        if (exchangeRate < 1.6 || exchangeRate > 2.9) return showError('exchangeRate', '! Please enter valid Exchange Rate');
         if (!type) return showError('vehicleType', 'Select vehicle type');
-        if (capacity <= 0) return showError('capacity', 'Enter valid capacity > 0');
+        if (capacity <= 0) return showError('capacity', '! Please enter valid capacity');
         if (!age) return showError('age', 'Select vehicle age');
 
         const cif = cifJPY * exchangeRate;
@@ -274,7 +270,7 @@
 
         const html = `
             <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem">
-                📋 Inputs Summary
+                Inputs Summary
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
@@ -291,7 +287,7 @@
             </table>
 
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
-                💰 Tax Breakdown
+                Tax Breakdown
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
@@ -315,7 +311,7 @@
             </table>
 
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
-                🎯 Final Cost Summary
+                Final Cost Summary
             </div>
             <table style="width:100%;border-collapse:collapse">
                 <thead style="background:var(--primary);color:#fff">
@@ -508,16 +504,17 @@
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) timeEl.textContent = new Date().toLocaleString('en-LK');
 
-        // Safe exchange rate fetch
+        // Safe exchange rate fetch from /rate.json
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
-            fetch('https://api.exchangerate.host/latest?base=JPY&symbols=LKR')
+            fetch('/rate.json')
                 .then(r => r.json())
                 .then(data => {
-                    const rate = data.rates.LKR;
+                    const rate = parseFloat(data.sellingRate);
+                    const updatedDate = data.updatedDate;
                     const exchangeInput = getElementSafe('exchangeRate');
                     if (exchangeInput) exchangeInput.value = rate.toFixed(4);
-                    rateEl.innerHTML = `Current JPY/LKR Rate: ${rate.toFixed(4)} (Source: exchangerate.host)`;
+                    rateEl.innerHTML = `Current JPY/LKR Rate: ${rate.toFixed(4)} (Updated: ${updatedDate})`;
                 })
                 .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
         }
