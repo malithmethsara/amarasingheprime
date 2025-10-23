@@ -270,7 +270,7 @@
 
         const html = `
             <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem">
-                Inputs Summary
+                📋 Inputs Summary
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
@@ -287,7 +287,7 @@
             </table>
 
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
-                Tax Breakdown
+                💰 Tax Breakdown
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
@@ -311,7 +311,7 @@
             </table>
 
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
-                Final Cost Summary
+                🎯 Final Cost Summary
             </div>
             <table style="width:100%;border-collapse:collapse">
                 <thead style="background:var(--primary);color:#fff">
