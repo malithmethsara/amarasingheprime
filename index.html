@@ -28,7 +28,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="https://amarasingheprime.lk/apple-touch-icon.png">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" as="style" onload="this.rel='stylesheet'">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.rel='stylesheet'">
-    <link rel="preload" href="/logo.png" as="image">
     <style>
         :root {
             --primary: #003087;
@@ -590,142 +589,9 @@
             }
         }
     </style>
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "LocalBusiness",
-          "name": "Amarasinghe Prime Enterprises (Pvt) Ltd",
-          "image": "https://amarasingheprime.lk/logo.png",
-          "url": "https://amarasingheprime.lk/",
-          "telephone": "+94 76 944 7740",
-          "priceRange": "$$$$",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Aththanagalla",
-            "addressLocality": "Nittambuwa",
-            "addressRegion": "Western Province",
-            "postalCode": "11880",
-            "addressCountry": "LK"
-          },
-          "openingHoursSpecification": [
-            {
-              "@type": "OpeningHoursSpecification",
-              "dayOfWeek": [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday"
-              ],
-              "opens": "09:00",
-              "closes": "17:00"
-            }
-          ],
-          "sameAs": [
-            "https://www.facebook.com/share/17Ww1VkV2S/",
-            "https://wa.me/message/XSPMWKK4BGVAM1"
-          ]
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "How do I calculate the import tax for a vehicle in Sri Lanka?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "The total import tax includes CID, Surcharge, Excise Duty, Luxury Tax, VEL, and VAT, based on CIF value, engine/motor capacity, fuel type, and age. Our calculator uses 2025 Gazette rates for accurate estimates."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What is the CIF Value and why is it important?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "CIF (Cost, Insurance, Freight) is the vehicle's total value upon arrival in Sri Lanka, used as the base for CID and VAT calculations. Accurate CIF values ensure precise tax estimates."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Are hybrid vehicles taxed differently?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes, hybrids (petrol, diesel, plug-in) have different excise duty rates to promote eco-friendly vehicles. Our calculator reflects these rates for accurate tax figures."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How to calculate import duty for electric vehicles?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Electric vehicle duties are based on motor capacity (kW) and age, including CID, VEL, VAT, and others. Use our calculator for precise EV tax estimates."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "How to calculate luxury tax for vehicle imports?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Luxury Tax applies when CIF exceeds thresholds: Petrol/Diesel (5M LKR), Hybrid/Plug-in (5.5M LKR), Electric/e-SMART (6M LKR). Rates vary, and our calculator applies them automatically."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What are HS codes and how do they affect taxes?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "HS codes classify vehicles (e.g., Petrol: 8703.2x.xx, Electric: 8703.8x.xx), determining tax rates. Our calculator uses these codes for accurate tax estimates."
-              }
-            }
-          ]
-        },
-        {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://amarasingheprime.lk/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Vehicle Tax Calculator",
-              "item": "https://amarasingheprime.lk"
-            }
-          ]
-        },
-        {
-          "@type": "WebPage",
-          "name": "Sri Lanka Vehicle Tax Calculator 2025",
-          "description": "Calculate vehicle import taxes for Sri Lanka in 2025 with Amarasinghe Prime Enterprises' accurate online tool.",
-          "url": "https://amarasingheprime.lk",
-          "publisher": {
-            "@type": "Organization",
-            "name": "Amarasinghe Prime Enterprises (Pvt) Ltd",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "https://amarasingheprime.lk/logo.png"
-            }
-          },
-          "datePublished": "2025-01-01",
-          "dateModified": "2025-10-12"
-        }
-      ]
-    }
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KKJ4VY3SP6"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-KKJ4VY3SP6');
-    </script>
+    <script src="/sl-tax-calc.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js" defer></script>
 </head>
 <body>
     <header>
@@ -825,77 +691,71 @@
             </div>
         </section>
     </div>
-    
     <section class="info-section" aria-labelledby="info-section-title">
         <h2 id="info-section-title">Understanding Vehicle Taxes in Sri Lanka</h2>
         <p>Understand the taxes that make up the total vehicle import cost for Sri Lankan importers. Below is a breakdown of the main taxes applied in Sri Lanka. For accurate CIF values, <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">contact our team</a> for expert guidance.</p>
         <ul>
             <li>
                 <h3>Customs Import Duty (CID)</h3>
-                <p>A base tax of 20% of the vehicle's CIF (Cost, Insurance, and Freight) value. See the <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Sri Lanka Customs Guide</a>.</p>
+                <p>A base tax of 20% of the CIF value, applicable to all vehicles.</p>
             </li>
             <li>
-                <h3>Surcharge on CID</h3>
-                <p>A 50% tax on top of the CID, increasing it to 30% of the CIF value. See the <a href="https://www.treasury.gov.lk/api/file/50324d16-41ec-4512-bd1f-f12e38578425" target="_blank" rel="noopener">Surcharge Gazette</a>.</p>
+                <h3>Surcharge</h3>
+                <p>An additional 50% of the CID, applied to increase government revenue.</p>
             </li>
             <li>
                 <h3>Excise Duty</h3>
-                <p>A major tax based on engine capacity and fuel type, per the latest Excise Duty Gazettes: <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2418-43_E.pdf" target="_blank" rel="noopener">2418/43</a>, <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2421-42_E.pdf" target="_blank" rel="noopener">2421/42</a>, <a href="https://documents.gov.lk/view/extra-gazettes/2025/1/2434-04_E.pdf" target="_blank" rel="noopener">2434/04</a>.</p>
+                <p>A tax based on engine/motor capacity and vehicle age, varying by fuel type (petrol, diesel, hybrid, electric).</p>
             </li>
             <li>
                 <h3>Luxury Tax</h3>
-                <p>Applied when CIF value exceeds thresholds by fuel type. See the <a href="https://www.treasury.gov.lk/api/file/67450b38-5230-411c-a703-a07a7ef9063c" target="_blank" rel="noopener">Luxury Tax Gazette</a>.</p>
+                <p>Applied when CIF exceeds specific thresholds (e.g., 5M LKR for petrol/diesel, 5.5M LKR for hybrids, 6M LKR for electric/e-SMART), with rates varying by vehicle type.</p>
             </li>
             <li>
                 <h3>Vehicle Entitlement Levy (VEL)</h3>
-                <p>A flat Rs.15,000 for motor cars. See the <a href="https://www.ird.gov.lk/en/publications/Circulars_Circulars/SEC_2016_01_E.pdf" target="_blank" rel="noopener">VEL Circular</a>.</p>
+                <p>A fixed fee of 15,000 LKR for all vehicles to regulate imports.</p>
             </li>
             <li>
                 <h3>Value Added Tax (VAT)</h3>
-                <p>An 18% tax on the sum of CIF, taxes, and a 10% PAL uplift plus VEL. See the <a href="http://www.customs.gov.lk/wp-content/uploads/2025/08/Tariff%202022%20Chapter%20-%2087%20Final.pdf" target="_blank" rel="noopener">Customs Duty and VAT Guide</a>.</p>
+                <p>An 18% tax applied on the cumulative value of CIF, CID, surcharge, excise, luxury tax, and VEL.</p>
             </li>
         </ul>
     </section>
-    
     <section class="faq-section" aria-labelledby="faq-section-title">
         <h2 id="faq-section-title">Frequently Asked Questions about Sri Lankan Vehicle Import Tax</h2>
         <div class="faq-item">
-            <h3 tabindex="0">1. How do I calculate the import tax for a vehicle in Sri Lanka? <i class="fas fa-chevron-down faq-indicator"></i></h3>
+            <h3 tabindex="0">How do I calculate the import tax for a vehicle in Sri Lanka? <span class="faq-indicator">❯</span></h3>
             <p>The total import tax includes CID, Surcharge, Excise Duty, Luxury Tax, VEL, and VAT, based on CIF value, engine/motor capacity, fuel type, and age. Our calculator uses 2025 Gazette rates for accurate estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 tabindex="0">2. What is the CIF Value and why is it important? <i class="fas fa-chevron-down faq-indicator"></i></h3>
+            <h3 tabindex="0">What is the CIF Value and why is it important? <span class="faq-indicator">❯</span></h3>
             <p>CIF (Cost, Insurance, Freight) is the vehicle's total value upon arrival in Sri Lanka, used as the base for CID and VAT calculations. Accurate CIF values ensure precise tax estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 tabindex="0">3. Are hybrid vehicles taxed differently? <i class="fas fa-chevron-down faq-indicator"></i></h3>
+            <h3 tabindex="0">Are hybrid vehicles taxed differently? <span class="faq-indicator">❯</span></h3>
             <p>Yes, hybrids (petrol, diesel, plug-in) have different excise duty rates to promote eco-friendly vehicles. Our calculator reflects these rates for accurate tax figures.</p>
         </div>
         <div class="faq-item">
-            <h3 tabindex="0">4. How to calculate import duty for electric vehicles? <i class="fas fa-chevron-down faq-indicator"></i></h3>
+            <h3 tabindex="0">How to calculate import duty for electric vehicles? <span class="faq-indicator">❯</span></h3>
             <p>Electric vehicle duties are based on motor capacity (kW) and age, including CID, VEL, VAT, and others. Use our calculator for precise EV tax estimates.</p>
         </div>
         <div class="faq-item">
-            <h3 tabindex="0">5. How to calculate luxury tax for vehicle imports? <i class="fas fa-chevron-down faq-indicator"></i></h3>
+            <h3 tabindex="0">How to calculate luxury tax for vehicle imports? <span class="faq-indicator">❯</span></h3>
             <p>Luxury Tax applies when CIF exceeds thresholds: Petrol/Diesel (5M LKR), Hybrid/Plug-in (5.5M LKR), Electric/e-SMART (6M LKR). Rates vary, and our calculator applies them automatically.</p>
         </div>
         <div class="faq-item">
-            <h3 tabindex="0">6. What are HS codes and how do they affect taxes? <i class="fas fa-chevron-down faq-indicator"></i></h3>
+            <h3 tabindex="0">What are HS codes and how do they affect taxes? <span class="faq-indicator">❯</span></h3>
             <p>HS codes classify vehicles (e.g., Petrol: 8703.2x.xx, Electric: 8703.8x.xx), determining tax rates. Our calculator uses these codes for accurate tax estimates.</p>
         </div>
     </section>
-    
     <section class="disclaimer-section" aria-labelledby="disclaimer-section-title">
-        <h2 id="disclaimer-section-title">Disclaimer & HS Codes</h2>
-        <p>Vehicle taxes in Sri Lanka are based on HS codes, such as petrol (8703.2x.xx), diesel (8703.3x.xx), and electric (8703.8x.xx). Our calculations align with these codes for Sri Lankan importers.</p>
-        <p><strong>Important Note:</strong> This calculator is for standard motor cars within the listed HS codes and does not support special-purpose vehicles like hearses or ambulances.</p>
+        <h2 id="disclaimer-section-title">Disclaimer</h2>
+        <ul>
+            <li>This calculator provides estimates based on 2025 Sri Lanka Gazette rates. Actual taxes may vary due to regulatory changes or exchange rate fluctuations.</li>
+            <li>For precise quotations, contact Amarasinghe Prime Enterprises via <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">WhatsApp</a>.</li>
+            <li>Calculations assume accurate CIF values and correct vehicle specifications provided by the user.</li>
+        </ul>
     </section>
-
-    <footer>© 2025 Amarasinghe Prime Enterprises (Pvt) Ltd (PV 00342707)</footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" defer></script>
-    <script src="https://amarasingheprime.lk/js/sl-tax-calc.js" defer></script>
-</body>
-</html>
+    <footer>
+        <p>&copy; 2025 Amarasinghe Prime Enterprises (Pvt) Ltd. All rights reserved.</p>
+        <p>Developed with care for vehicle importers in Sri
