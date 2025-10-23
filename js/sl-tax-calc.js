@@ -138,6 +138,41 @@
     function getElementSafe(id) {
         return document.getElementById(id) || null;
     }
+    
+    // 4.1. Lazy Load Utility (NEW)
+    function loadExternalScript(url, globalCheck) {
+        return new Promise((resolve, reject) => {
+            // Check if the script is already loaded (by checking a global object it creates, e.g., 'Chart' or 'jspdf')
+            if (window[globalCheck]) {
+                resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = url;
+            script.defer = true;
+            script.crossOrigin = 'anonymous';
+
+            script.onload = () => {
+                console.log(`✅ Lazy Loaded ${globalCheck}`);
+                // Wait for dependent scripts (like jspdf-autotable) if applicable, 
+                // though usually the global check is enough.
+                if (globalCheck === 'jspdf') {
+                    // Manually load the smaller jspdf-autotable plugin dependency if needed
+                    const autotableScript = document.createElement('script');
+                    autotableScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js';
+                    autotableScript.defer = true;
+                    autotableScript.onload = resolve;
+                    autotableScript.onerror = reject;
+                    document.head.appendChild(autotableScript);
+                } else {
+                    resolve();
+                }
+            };
+            script.onerror = () => reject(new Error(`❌ Failed to load script: ${url}`));
+            document.head.appendChild(script);
+        });
+    }
 
     // 5. Calculate Excise Duty (Core Logic)
     function calculateExcise(type, capacity, age) {
@@ -166,7 +201,7 @@
         }
 
         if (capacity < minCapacity || capacity > maxCapacity) {
-            return { error: '! Please enter valid capacity' };
+            return { error: `! Please enter valid capacity (${minCapacity}-${maxCapacity} ${unit})` };
         }
 
         for (let tier of table) {
@@ -189,7 +224,7 @@
         return cif > threshold ? (cif - threshold) * rate : 0;
     }
 
-    // 7. Main Calculation Function
+    // 7. Main Calculation Function (MODIFIED)
     function calculateTax() {
         clearErrors();
         const elements = {
@@ -230,6 +265,7 @@
         const excise = exciseResult;
         const luxuryTax = calculateLuxuryTax(cif, type);
         const vel = 15000;
+        // VAT Base: (CIF * 1.1) + CID + Surcharge + Excise + LuxuryTax + VEL
         const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax + vel;
         const vat = vatBase * 0.18;
         const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
@@ -243,7 +279,19 @@
         };
 
         displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
-        showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat });
+        
+        // --- PERFORMANCE FIX: LAZY LOAD CHART.JS ---
+        loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'Chart')
+            .then(() => {
+                showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat });
+            })
+            .catch(error => {
+                console.error('Failed to load Chart.js', error);
+                // Fallback: Clear previous charts if they exist but cannot be updated
+                if (taxChart) taxChart.destroy();
+                if (costChart) costChart.destroy();
+            });
+        // --- END PERFORMANCE FIX ---
 
         const downloadBtn = getElementSafe('downloadBtn');
         if (downloadBtn) downloadBtn.style.display = 'flex';
@@ -252,7 +300,7 @@
         if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 8. Display Results Table
+    // 8. Display Results Table (UNCHANGED)
     function displayResults(data) {
         const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
         const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
@@ -327,11 +375,12 @@
         if (resultEl) resultEl.innerHTML = html;
     }
 
-    // 9. Show Charts
+    // 9. Show Charts (UNCHANGED)
     function showCharts(data) {
         const taxCanvas = getElementSafe('taxPieChart');
         const costCanvas = getElementSafe('pieChart');
-        if (!taxCanvas || !costCanvas || !window.Chart) return;
+        // This check ensures Chart is available after lazy-loading
+        if (!taxCanvas || !costCanvas || !window.Chart) return; 
 
         const ctx1 = taxCanvas.getContext('2d');
         const ctx2 = costCanvas.getContext('2d');
@@ -364,50 +413,40 @@
         });
     }
 
-    // 10. Reset Form
-    function resetForm() {
-        const form = getElementSafe('taxCalculatorForm');
-        if (form) form.reset();
-        
-        resultData = null;
-        if (taxChart) {
-            taxChart.destroy();
-            taxChart = null;
-        }
-        if (costChart) {
-            costChart.destroy();
-            costChart = null;
-        }
-        
-        const resultEl = getElementSafe('result');
-        if (resultEl) {
-            resultEl.innerHTML = `
-                <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
-                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
-            `;
-        }
-        
-        const downloadBtn = getElementSafe('downloadBtn');
-        if (downloadBtn) downloadBtn.style.display = 'none';
-        clearErrors();
-        updateCapacityLabel();
-    }
-
-    // 11. Update Capacity Label
-    function updateCapacityLabel() {
-        const vehicleTypeEl = getElementSafe('vehicleType');
-        const capacityLabelEl = getElementSafe('capacityLabel');
-        if (!vehicleTypeEl || !capacityLabelEl) return;
-        
-        const vehicleType = vehicleTypeEl.value;
-        const isElectric = vehicleType.includes('electric') || vehicleType.includes('esmart');
-        capacityLabelEl.textContent = isElectric ? 'Motor Capacity (kW):' : 'Engine Capacity (CC):';
-    }
-
-    // 12. PDF Download (Using jsPDF)
+    // 10. PDF Download (MODIFIED)
     function downloadPDF() {
-        if (!resultData) return alert('Calculate first!');
-        if (!window.jspdf) return alert('PDF library not loaded - try again');
+        if (!resultData) {
+            alert('Please calculate the tax first.');
+            return;
+        }
+
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.disabled = true;
+        if (downloadBtn) downloadBtn.textContent = 'Preparing PDF...';
+
+        // --- PERFORMANCE FIX: LAZY LOAD JSPDF ---
+        loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf')
+            .then(() => {
+                // Ensure autotable plugin is loaded, which is handled inside loadExternalScript for jspdf
+                generatePDFContent(resultData);
+            })
+            .catch(error => {
+                console.error('Failed to load jsPDF', error);
+                alert('Failed to load PDF generator. Please try again.');
+            })
+            .finally(() => {
+                // Re-enable button
+                if (downloadBtn) {
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = 'Save as PDF';
+                }
+            });
+        // --- END PERFORMANCE FIX ---
+    }
+
+    // 10.1. PDF Content Helper (NEW - Contains all previous PDF generation logic)
+    function generatePDFContent(resultData) {
+        if (!window.jspdf || !window.jspdf.jsPDF) return alert('PDF library not fully initialized.');
 
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({
@@ -491,7 +530,47 @@
         doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
     }
 
-    // 13. Toggle FAQ
+    // 11. Reset Form (UNCHANGED)
+    function resetForm() {
+        const form = getElementSafe('taxCalculatorForm');
+        if (form) form.reset();
+        
+        resultData = null;
+        if (taxChart) {
+            taxChart.destroy();
+            taxChart = null;
+        }
+        if (costChart) {
+            costChart.destroy();
+            costChart = null;
+        }
+        
+        const resultEl = getElementSafe('result');
+        if (resultEl) {
+            resultEl.innerHTML = `
+                <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
+                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+            `;
+        }
+        
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.style.display = 'none';
+        clearErrors();
+        updateCapacityLabel();
+    }
+
+    // 12. Update Capacity Label (UNCHANGED)
+    function updateCapacityLabel() {
+        const vehicleTypeEl = getElementSafe('vehicleType');
+        const capacityLabelEl = getElementSafe('capacityLabel');
+        if (!vehicleTypeEl || !capacityLabelEl) return;
+        
+        const vehicleType = vehicleTypeEl.value;
+        const isElectric = vehicleType.includes('electric') || vehicleType.includes('esmart');
+        capacityLabelEl.textContent = isElectric ? 'Motor Capacity (kW):' : 'Engine Capacity (CC):';
+    }
+
+    // 13. Toggle FAQ (UNCHANGED)
     function toggleFAQ(element) {
         const item = element.closest('.faq-item');
         if (!item) return;
@@ -502,7 +581,7 @@
         }
     }
 
-    // 14. Initialization (Incognito-Safe)
+    // 14. Initialization (UNCHANGED)
     function init() {
         console.log('✅ SL Tax Calculator Loaded');
         
@@ -556,13 +635,13 @@
         console.log('✅ Initialization complete');
     }
 
-    // 15. DOM Ready (Incognito-Safe)
+    // 15. DOM Ready (Incognito-Safe) - (Initial FAQ fix applied here)
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
 
-    // 16. Window Load (Extra Safety)
-    // window.addEventListener('load', init); // THIS LINE WAS REMOVED TO FIX THE BUG
+    // 16. Window Load (Extra Safety) - REMOVED FOR FAQ FIX
+    // window.addEventListener('load', init); 
 })();
