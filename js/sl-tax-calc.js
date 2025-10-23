@@ -1,9 +1,3 @@
-/*
-* Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
-*
-* This code contains proprietary calculation logic developed by Amarasinghe Prime.
-* Unauthorized copying, use, or distribution of this code is strictly prohibited.
-*/
 (function() {
     'use strict';
 
