@@ -139,10 +139,10 @@
         return document.getElementById(id) || null;
     }
     
-    // 4.1. Lazy Load Utility (NEW)
+    // 4.1. Lazy Load Utility (FIX APPLIED)
     function loadExternalScript(url, globalCheck) {
         return new Promise((resolve, reject) => {
-            // Check if the script is already loaded (by checking a global object it creates, e.g., 'Chart' or 'jspdf')
+            // Check if the script is already loaded
             if (window[globalCheck]) {
                 resolve();
                 return;
@@ -155,10 +155,9 @@
 
             script.onload = () => {
                 console.log(`✅ Lazy Loaded ${globalCheck}`);
-                // Wait for dependent scripts (like jspdf-autotable) if applicable, 
-                // though usually the global check is enough.
+                
+                // Special case for jsPDF: also load the autotable plugin after the main library
                 if (globalCheck === 'jspdf') {
-                    // Manually load the smaller jspdf-autotable plugin dependency if needed
                     const autotableScript = document.createElement('script');
                     autotableScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js';
                     autotableScript.defer = true;
@@ -224,7 +223,7 @@
         return cif > threshold ? (cif - threshold) * rate : 0;
     }
 
-    // 7. Main Calculation Function (MODIFIED)
+    // 7. Main Calculation Function (FIX APPLIED: Lazy loads Chart.js)
     function calculateTax() {
         clearErrors();
         const elements = {
@@ -280,18 +279,16 @@
 
         displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
         
-        // --- PERFORMANCE FIX: LAZY LOAD CHART.JS ---
+        // Lazy load Chart.js only when results are ready
         loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'Chart')
             .then(() => {
                 showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat });
             })
             .catch(error => {
                 console.error('Failed to load Chart.js', error);
-                // Fallback: Clear previous charts if they exist but cannot be updated
                 if (taxChart) taxChart.destroy();
                 if (costChart) costChart.destroy();
             });
-        // --- END PERFORMANCE FIX ---
 
         const downloadBtn = getElementSafe('downloadBtn');
         if (downloadBtn) downloadBtn.style.display = 'flex';
@@ -413,7 +410,7 @@
         });
     }
 
-    // 10. PDF Download (MODIFIED)
+    // 10. PDF Download (FIX APPLIED: Lazy loads jsPDF)
     function downloadPDF() {
         if (!resultData) {
             alert('Please calculate the tax first.');
@@ -424,10 +421,10 @@
         if (downloadBtn) downloadBtn.disabled = true;
         if (downloadBtn) downloadBtn.textContent = 'Preparing PDF...';
 
-        // --- PERFORMANCE FIX: LAZY LOAD JSPDF ---
+        // Lazy load jsPDF only when the download button is clicked
         loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf')
             .then(() => {
-                // Ensure autotable plugin is loaded, which is handled inside loadExternalScript for jspdf
+                // generatePDFContent handles the actual PDF creation
                 generatePDFContent(resultData);
             })
             .catch(error => {
@@ -441,12 +438,11 @@
                     downloadBtn.textContent = 'Save as PDF';
                 }
             });
-        // --- END PERFORMANCE FIX ---
     }
 
-    // 10.1. PDF Content Helper (NEW - Contains all previous PDF generation logic)
+    // 10.1. PDF Content Helper (NEW: Contains all PDF generation logic)
     function generatePDFContent(resultData) {
-        if (!window.jspdf || !window.jspdf.jsPDF) return alert('PDF library not fully initialized.');
+        if (!window.jspdf || !window.jspdf.jsPDF || !window.jspdf.autoTable) return alert('PDF library not fully initialized.');
 
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({
@@ -635,13 +631,13 @@
         console.log('✅ Initialization complete');
     }
 
-    // 15. DOM Ready (Incognito-Safe) - (Initial FAQ fix applied here)
+    // 15. DOM Ready (Incognito-Safe) 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
 
-    // 16. Window Load (Extra Safety) - REMOVED FOR FAQ FIX
+    // 16. Window Load (Extra Safety) - FIX APPLIED: REMOVED DUPLICATE INITIALIZER
     // window.addEventListener('load', init); 
 })();
