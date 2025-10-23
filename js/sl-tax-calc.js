@@ -8,6 +8,7 @@
 
     // 2. Excise Duty Tables (Exact 2025 Gazette Rates - HS Code Based)
     const exciseRates = {
+        // Petrol (HS 8703.2x.xx) - Min 600cc, Max 6500cc
         petrol: [
             { min: 600, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) },
             { max: 1300, rate: 3850 },
@@ -21,6 +22,7 @@
             { max: 4000, rate: 12050 },
             { max: 6500, rate: 13300 }
         ],
+        // Petrol Hybrid (HS 8703.4x.xx) - Min 600cc, Max 6500cc
         petrol_hybrid: [
             { min: 600, max: 1000, rate: () => 1810900 },
             { max: 1300, rate: 2750 },
@@ -34,6 +36,7 @@
             { max: 4000, rate: 10850 },
             { max: 6500, rate: 12050 }
         ],
+        // Petrol Plug-in Hybrid (HS 8703.6x.xx) - Min 600cc, Max 6500cc
         petrol_plugin: [
             { min: 600, max: 1000, rate: () => 1810900 },
             { max: 1300, rate: 2750 },
@@ -47,6 +50,7 @@
             { max: 4000, rate: 10850 },
             { max: 6500, rate: 12050 }
         ],
+        // Diesel (HS 8703.3x.xx) - Min 900cc, Max 6500cc
         diesel: [
             { min: 900, max: 1500, rate: 5500 },
             { max: 1600, rate: 6950 },
@@ -58,6 +62,7 @@
             { max: 4000, rate: 13300 },
             { max: 6500, rate: 14500 }
         ],
+        // Diesel Hybrid (HS 8703.50.xx) - Min 900cc, Max 6500cc
         diesel_hybrid: [
             { min: 900, max: 1500, rate: 4150 },
             { max: 1600, rate: 5500 },
@@ -69,6 +74,7 @@
             { max: 4000, rate: 12050 },
             { max: 6500, rate: 13300 }
         ],
+        // Diesel Plug-in Hybrid (HS 8703.70.xx) - Min 900cc, Max 6500cc
         diesel_plugin: [
             { min: 900, max: 1500, rate: 4150 },
             { max: 1600, rate: 5500 },
@@ -80,18 +86,21 @@
             { max: 4000, rate: 12050 },
             { max: 6500, rate: 13300 }
         ],
+        // Electric (HS 8703.8x.xx) - Min 40 kW, Max 600 kW
         electric: [
             { min: 40, max: 50, rate: (age) => age === '1' ? 18100 : 36200 },
             { max: 100, rate: (age) => age === '1' ? 24100 : 36200 },
             { max: 200, rate: (age) => age === '1' ? 36200 : 60400 },
             { max: 600, rate: (age) => age === '1' ? 96600 : 132800 }
         ],
+        // e-SMART Petrol (HS 8703.80.7x) - Min 20 kW, Max 600 kW
         esmart_petrol: [
             { min: 20, max: 50, rate: (age) => age === '1' ? 30770 : 43440 },
             { max: 100, rate: (age) => age === '1' ? 40970 : 43440 },
             { max: 200, rate: (age) => age === '1' ? 41630 : 63420 },
             { max: 600, rate: (age) => age === '1' ? 111090 : 139440 }
         ],
+        // e-SMART Diesel (HS 8703.80.8x) - Min 20 kW, Max 600 kW
         esmart_diesel: [
             { min: 20, max: 50, rate: (age) => age === '1' ? 36920 : 52130 },
             { max: 100, rate: (age) => age === '1' ? 49160 : 52130 },
@@ -169,6 +178,7 @@
             return { error: '! Please enter valid capacity' };
         }
 
+        // Find tier and calculate
         for (let tier of table) {
             if (capacity <= (tier.max || maxCapacity)) {
                 if (tier.rate) {
@@ -273,8 +283,6 @@
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Type</td><td style="text-align:right;padding:0.5625rem 0.625rem">${typeText}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Age</td><td style="text-align:right;padding:0.5625rem 0.625rem">${ageText}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Dealer Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.dealerFee)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Clearing Agent Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.clearingFee)}</td></tr>
                 </tbody>
             </table>
 
@@ -425,6 +433,7 @@
         doc.text(`Date: ${new Date().toLocaleString('en-LK')}`, 20, y);
         y += 15;
 
+        // Inputs
         doc.autoTable({
             startY: y,
             head: [['Input', 'Value']],
@@ -434,15 +443,14 @@
                 ['CIF (LKR)', formatNumber(resultData.cif)],
                 ['Vehicle Type', resultData.type.replace('_', ' ').toUpperCase()],
                 ['Capacity', `${formatNumber(resultData.capacity)} ${['electric','esmart_petrol','esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc'}`],
-                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
-                ['Dealer Fee (LKR)', formatNumber(resultData.dealerFee)],
-                ['Clearing Agent Fee (LKR)', formatNumber(resultData.clearingFee)]
+                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years']
             ],
             theme: 'grid',
             styles: { fontSize: 10, cellPadding: 3 }
         });
 
         y = doc.lastAutoTable.finalY + 15;
+        // Taxes
         doc.autoTable({
             startY: y,
             head: [['Tax Type', 'Amount (LKR)', '% of Total Tax']],
@@ -460,6 +468,7 @@
         });
 
         y = doc.lastAutoTable.finalY + 15;
+        // Summary
         doc.autoTable({
             startY: y,
             head: [['Summary', 'Amount (LKR)', '% of Total Cost']],
@@ -478,83 +487,58 @@
 
     // 13. Toggle FAQ
     function toggleFAQ(element) {
-        try {
-            const item = element.closest('.faq-item');
-            if (!item) return;
-            item.classList.toggle('active');
-            const indicator = item.querySelector('.faq-indicator');
-            if (indicator) {
-                indicator.style.transform = item.classList.contains('active') ? 'rotate(90deg)' : 'rotate(0deg)';
-            }
-        } catch (e) {
-            console.error('FAQ toggle error:', e);
+        const item = element.closest('.faq-item');
+        if (!item) return;
+        item.classList.toggle('active');
+        const indicator = item.querySelector('.faq-indicator');
+        if (indicator) {
+            indicator.style.transform = item.classList.contains('active') ? 'rotate(90deg)' : 'rotate(0deg)';
         }
     }
 
     // 14. Initialization (Incognito-Safe)
     function init() {
-        try {
-            console.log('✅ SL Tax Calculator Loaded');
+        console.log('✅ SL Tax Calculator Loaded');
+        
+        // Safe datetime update
+        const timeEl = getElementSafe('timeDateTime');
+        if (timeEl) timeEl.textContent = new Date().toLocaleString('en-LK');
 
-            const timeEl = getElementSafe('timeDateTime');
-            if (timeEl) timeEl.textContent = new Date().toLocaleString('en-LK');
-
-            const rateEl = getElementSafe('cbslRate');
-            if (rateEl) {
-                fetch('/rate.json')
-                    .then(r => {
-                        if (!r.ok) throw new Error('Failed to fetch exchange rate');
-                        return r.json();
-                    })
-                    .then(data => {
-                        const rate = parseFloat(data.sellingRate) || 0;
-                        const updatedDate = data.updatedDate || 'Unknown';
-                        const exchangeInput = getElementSafe('exchangeRate');
-                        if (exchangeInput && rate) exchangeInput.value = rate.toFixed(4);
-                        rateEl.innerHTML = `
-                            <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate ? rate.toFixed(4) : 'N/A'}</div>
-                            <div style="color:var(--muted);font-size:0.85rem">Source: Central Bank of Sri Lanka (Updated: ${updatedDate})</div>
-                        `;
-                    })
-                    .catch(err => {
-                        console.error('Exchange rate fetch error:', err);
-                        rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.';
-                    });
-            }
-
-            const calculateBtn = getElementSafe('calculateBtn');
-            const resetBtn = getElementSafe('resetBtn');
-            const downloadBtn = getElementSafe('downloadBtn');
-            const vehicleTypeEl = getElementSafe('vehicleType');
-            const cifJPYInput = getElementSafe('cifJPY');
-            const exchangeRateInput = getElementSafe('exchangeRate');
-            const capacityInput = getElementSafe('capacity');
-
-            if (calculateBtn) calculateBtn.addEventListener('click', calculateTax);
-            if (resetBtn) resetBtn.addEventListener('click', resetForm);
-            if (downloadBtn) downloadBtn.addEventListener('click', downloadPDF);
-            if (vehicleTypeEl) {
-                vehicleTypeEl.addEventListener('change', updateCapacityLabel);
-                updateCapacityLabel();
-            }
-            if (cifJPYInput) cifJPYInput.addEventListener('input', clearErrors);
-            if (exchangeRateInput) exchangeRateInput.addEventListener('input', clearErrors);
-            if (capacityInput) capacityInput.addEventListener('input', clearErrors);
-
-            document.querySelectorAll('.faq-item h3').forEach(h3 => {
-                h3.addEventListener('click', () => toggleFAQ(h3));
-                h3.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleFAQ(h3);
-                    }
-                });
-            });
-
-            console.log('✅ Initialization complete');
-        } catch (e) {
-            console.error('Initialization error:', e);
+        // Safe exchange rate fetch from /rate.json
+        const rateEl = getElementSafe('cbslRate');
+        if (rateEl) {
+            fetch('/rate.json')
+                .then(r => r.json())
+                .then(data => {
+                    const rate = parseFloat(data.sellingRate);
+                    const updatedDate = data.updatedDate;
+                    const exchangeInput = getElementSafe('exchangeRate');
+                    if (exchangeInput) exchangeInput.value = rate.toFixed(4);
+                    rateEl.innerHTML = `Current JPY/LKR Rate: ${rate.toFixed(4)} (Updated: ${updatedDate})`;
+                })
+                .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
         }
+
+        // Safe event listeners
+        const calculateBtn = getElementSafe('calculateBtn');
+        const resetBtn = getElementSafe('resetBtn');
+        const downloadBtn = getElementSafe('downloadBtn');
+        const vehicleTypeEl = getElementSafe('vehicleType');
+
+        if (calculateBtn) calculateBtn.addEventListener('click', calculateTax);
+        if (resetBtn) resetBtn.addEventListener('click', resetForm);
+        if (downloadBtn) downloadBtn.addEventListener('click', downloadPDF);
+        if (vehicleTypeEl) {
+            vehicleTypeEl.addEventListener('change', updateCapacityLabel);
+            updateCapacityLabel();
+        }
+
+        // Safe FAQ toggles
+        document.querySelectorAll('.faq-item h3').forEach(h3 => {
+            h3.addEventListener('click', () => toggleFAQ(h3));
+        });
+
+        console.log('✅ Initialization complete');
     }
 
     // 15. DOM Ready (Incognito-Safe)
@@ -566,4 +550,5 @@
 
     // 16. Window Load (Extra Safety)
     window.addEventListener('load', init);
+
 })();
