@@ -283,6 +283,8 @@
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Type</td><td style="text-align:right;padding:0.5625rem 0.625rem">${typeText}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Age</td><td style="text-align:right;padding:0.5625rem 0.625rem">${ageText}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Dealer Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.dealerFee)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Clearing Agent Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.clearingFee)}</td></tr>
                 </tbody>
             </table>
 
@@ -443,7 +445,9 @@
                 ['CIF (LKR)', formatNumber(resultData.cif)],
                 ['Vehicle Type', resultData.type.replace('_', ' ').toUpperCase()],
                 ['Capacity', `${formatNumber(resultData.capacity)} ${['electric','esmart_petrol','esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc'}`],
-                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years']
+                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
+                ['Dealer Fee (LKR)', formatNumber(resultData.dealerFee)],
+                ['Clearing Agent Fee (LKR)', formatNumber(resultData.clearingFee)]
             ],
             theme: 'grid',
             styles: { fontSize: 10, cellPadding: 3 }
@@ -514,7 +518,10 @@
                     const updatedDate = data.updatedDate;
                     const exchangeInput = getElementSafe('exchangeRate');
                     if (exchangeInput) exchangeInput.value = rate.toFixed(4);
-                    rateEl.innerHTML = `Current JPY/LKR Rate: ${rate.toFixed(4)} (Updated: ${updatedDate})`;
+                    rateEl.innerHTML = `
+                        <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
+                        <div style="color:var(--muted);font-size:0.85rem">Source: Central Bank of Sri Lanka (Updated: ${updatedDate})</div>
+                    `;
                 })
                 .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
         }
@@ -524,18 +531,32 @@
         const resetBtn = getElementSafe('resetBtn');
         const downloadBtn = getElementSafe('downloadBtn');
         const vehicleTypeEl = getElementSafe('vehicleType');
+        const cifJPYInput = getElementSafe('cifJPY');
+        const exchangeRateInput = getElementSafe('exchangeRate');
+        const capacityInput = getElementSafe('capacity');
 
         if (calculateBtn) calculateBtn.addEventListener('click', calculateTax);
-        if (resetBtn) resetBtn.addEventListener('click', resetForm);
+        if (resetBtn) resetBtn.addEventListener('resetBtn');
         if (downloadBtn) downloadBtn.addEventListener('click', downloadPDF);
         if (vehicleTypeEl) {
             vehicleTypeEl.addEventListener('change', updateCapacityLabel);
             updateCapacityLabel();
         }
+        // Clear errors on input change
+        if (cifJPYInput) cifJPYInput.addEventListener('input', clearErrors);
+        if (exchangeRateInput) exchangeRateInput.addEventListener('input', clearErrors);
+        if (capacityInput) capacityInput.addEventListener('input', clearErrors);
 
         // Safe FAQ toggles
         document.querySelectorAll('.faq-item h3').forEach(h3 => {
             h3.addEventListener('click', () => toggleFAQ(h3));
+            // Add keyboard accessibility
+            h3.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleFAQ(h3);
+                }
+            });
         });
 
         console.log('✅ Initialization complete');
