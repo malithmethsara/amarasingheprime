@@ -442,8 +442,9 @@
 
     // 10.1. PDF Content Helper (NEW: Contains all PDF generation logic)
     function generatePDFContent(resultData) {
-        if (!window.jspdf || !window.jspdf.jsPDF || !window.jspdf.autoTable) return alert('PDF library not fully initialized.');
-
+        if (!window.jspdf || !window.jspdf.jsPDF || !window.jspdf.autoTable) {
+            return; //
+        }
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({
             orientation: 'portrait',
