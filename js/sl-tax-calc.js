@@ -1,9 +1,3 @@
-/*
-* Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
-*
-* This code contains proprietary calculation logic developed by Amarasinghe Prime.
-* Unauthorized copying, use, or distribution of this code is strictly prohibited.
-*/
 (function() {
     'use strict';
 
@@ -145,13 +139,19 @@
         return document.getElementById(id) || null;
     }
     
-    // 4.1. Lazy Load Utility (FIX APPLIED)
+    // 4.1. Lazy Load Utility (FIXED: Ensures AutoTable loads before resolving for jsPDF)
     function loadExternalScript(url, globalCheck) {
         return new Promise((resolve, reject) => {
             // Check if the script is already loaded
             if (window[globalCheck]) {
-                resolve();
-                return;
+                // Special check for jsPDF to ensure autotable is also present
+                if (globalCheck === 'jspdf' && typeof window.jspdf.jsPDF.prototype.autoTable === 'function') {
+                    resolve();
+                    return;
+                } else if (globalCheck !== 'jspdf') {
+                    resolve();
+                    return;
+                }
             }
 
             const script = document.createElement('script');
@@ -167,7 +167,12 @@
                     const autotableScript = document.createElement('script');
                     autotableScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js';
                     autotableScript.defer = true;
-                    autotableScript.onload = resolve;
+                    
+                    // IMPORTANT: Resolve ONLY after autotable loads
+                    autotableScript.onload = () => {
+                        console.log('✅ AutoTable Plugin Loaded');
+                        resolve();
+                    };
                     autotableScript.onerror = reject;
                     document.head.appendChild(autotableScript);
                 } else {
@@ -229,7 +234,7 @@
         return cif > threshold ? (cif - threshold) * rate : 0;
     }
 
-    // 7. Main Calculation Function (FIX APPLIED: Lazy loads Chart.js)
+    // 7. Main Calculation Function (UNCHANGED)
     function calculateTax() {
         clearErrors();
         const elements = {
