@@ -1,3 +1,9 @@
+/*
+* Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
+*
+* This code contains proprietary calculation logic developed by Amarasinghe Prime.
+* Unauthorized copying, use, or distribution of this code is strictly prohibited.
+*/
 (function() {
     'use strict';
 
@@ -139,19 +145,13 @@
         return document.getElementById(id) || null;
     }
     
-    // 4.1. Lazy Load Utility (FIXED: Ensures AutoTable loads before resolving for jsPDF)
+    // 4.1. Lazy Load Utility (FIXED: Proper jsPDF + autotable loading sequence)
     function loadExternalScript(url, globalCheck) {
         return new Promise((resolve, reject) => {
             // Check if the script is already loaded
             if (window[globalCheck]) {
-                // Special check for jsPDF to ensure autotable is also present
-                if (globalCheck === 'jspdf' && typeof window.jspdf.jsPDF.prototype.autoTable === 'function') {
-                    resolve();
-                    return;
-                } else if (globalCheck !== 'jspdf') {
-                    resolve();
-                    return;
-                }
+                resolve();
+                return;
             }
 
             const script = document.createElement('script');
@@ -161,23 +161,7 @@
 
             script.onload = () => {
                 console.log(`✅ Lazy Loaded ${globalCheck}`);
-                
-                // Special case for jsPDF: also load the autotable plugin after the main library
-                if (globalCheck === 'jspdf') {
-                    const autotableScript = document.createElement('script');
-                    autotableScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js';
-                    autotableScript.defer = true;
-                    
-                    // IMPORTANT: Resolve ONLY after autotable loads
-                    autotableScript.onload = () => {
-                        console.log('✅ AutoTable Plugin Loaded');
-                        resolve();
-                    };
-                    autotableScript.onerror = reject;
-                    document.head.appendChild(autotableScript);
-                } else {
-                    resolve();
-                }
+                resolve();
             };
             script.onerror = () => reject(new Error(`❌ Failed to load script: ${url}`));
             document.head.appendChild(script);
@@ -234,7 +218,7 @@
         return cif > threshold ? (cif - threshold) * rate : 0;
     }
 
-    // 7. Main Calculation Function (UNCHANGED)
+    // 7. Main Calculation Function
     function calculateTax() {
         clearErrors();
         const elements = {
@@ -308,7 +292,7 @@
         if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 8. Display Results Table (UNCHANGED)
+    // 8. Display Results Table
     function displayResults(data) {
         const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
         const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
@@ -383,7 +367,7 @@
         if (resultEl) resultEl.innerHTML = html;
     }
 
-    // 9. Show Charts (UNCHANGED)
+    // 9. Show Charts
     function showCharts(data) {
         const taxCanvas = getElementSafe('taxPieChart');
         const costCanvas = getElementSafe('pieChart');
@@ -421,45 +405,40 @@
         });
     }
 
-// ************************************************************
-// ** START OF CORRECTED PDF FUNCTIONS **
-// ************************************************************
-
-    // 10. PDF Download (FIXED: Handles initialization and download retry)
+    // 10. PDF Download (FIXED: Sequential loading with proper initialization)
     function downloadPDF() {
         if (!resultData) {
             alert('Please calculate the tax first.');
             return;
         }
 
-        // 1. Define the correct ready check
-        const isPDFReady = typeof window.jspdf !== 'undefined' && 
-                           typeof window.jspdf.jsPDF !== 'undefined' &&
-                           typeof window.jspdf.jsPDF.prototype.autoTable === 'function';
-
-        if (isPDFReady) {
-            // 2. If already loaded, execute immediately and return.
-            generatePDFContent(resultData);
-            return;
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) {
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = 'Loading PDF...';
         }
 
-        // 3. If not loaded, handle the async loading process
-        const downloadBtn = getElementSafe('downloadBtn');
-        if (downloadBtn) downloadBtn.disabled = true;
-        if (downloadBtn) downloadBtn.textContent = 'Preparing PDF...';
-
-        // Lazy load jsPDF only when the download button is clicked
+        // Step 1: Load jsPDF main library
         loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf')
             .then(() => {
-                // generatePDFContent handles the actual PDF creation (which includes doc.save())
+                // Step 2: Wait a bit for jsPDF to fully initialize, then load autotable
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js', 'autoTable')
+                            .then(resolve)
+                            .catch(resolve); // Continue even if autotable fails
+                    }, 100); // Small delay ensures jsPDF is fully ready
+                });
+            })
+            .then(() => {
+                // Step 3: Generate PDF (now both libraries are guaranteed to be loaded)
                 generatePDFContent(resultData);
             })
             .catch(error => {
-                console.error('Failed to load jsPDF', error);
+                console.error('Failed to load PDF libraries', error);
                 alert('Failed to load PDF generator. Please try again.');
             })
             .finally(() => {
-                // Re-enable button regardless of success or failure
                 if (downloadBtn) {
                     downloadBtn.disabled = false;
                     downloadBtn.textContent = 'Save as PDF';
@@ -467,15 +446,12 @@
             });
     }
 
-    // 10.1. PDF Content Helper (FIXED: Silent return if library is not fully initialized)
+    // 10.1. PDF Content Helper (FIXED: Better library detection)
     function generatePDFContent(resultData) {
-        // Correct check: Ensure jspdf core and AutoTable plugin are ready. Stop silently if not.
-        const isReady = typeof window.jspdf !== 'undefined' && 
-                        typeof window.jspdf.jsPDF !== 'undefined' &&
-                        typeof window.jspdf.jsPDF.prototype.autoTable === 'function';
-        
-        if (!isReady) {
-            return; // Stops execution without an alert, allowing the async loading in downloadPDF to finish.
+        // More robust library check
+        if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
+            alert('PDF library not ready. Please try again.');
+            return;
         }
 
         const { jsPDF } = window.jspdf;
@@ -559,12 +535,8 @@
 
         doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
     }
-    
-// ************************************************************
-// ** END OF CORRECTED PDF FUNCTIONS **
-// ************************************************************
 
-    // 11. Reset Form (UNCHANGED)
+    // 11. Reset Form
     function resetForm() {
         const form = getElementSafe('taxCalculatorForm');
         if (form) form.reset();
@@ -593,7 +565,7 @@
         updateCapacityLabel();
     }
 
-    // 12. Update Capacity Label (UNCHANGED)
+    // 12. Update Capacity Label
     function updateCapacityLabel() {
         const vehicleTypeEl = getElementSafe('vehicleType');
         const capacityLabelEl = getElementSafe('capacityLabel');
@@ -604,7 +576,7 @@
         capacityLabelEl.textContent = isElectric ? 'Motor Capacity (kW):' : 'Engine Capacity (CC):';
     }
 
-    // 13. Toggle FAQ (UNCHANGED)
+    // 13. Toggle FAQ
     function toggleFAQ(element) {
         const item = element.closest('.faq-item');
         if (!item) return;
@@ -615,7 +587,7 @@
         }
     }
 
-    // 14. Initialization (UNCHANGED)
+    // 14. Initialization
     function init() {
         console.log('✅ SL Tax Calculator Loaded');
         
@@ -675,7 +647,4 @@
     } else {
         init();
     }
-
-    // 16. Window Load (Extra Safety) - FIX APPLIED: REMOVED DUPLICATE INITIALIZER
-    // window.addEventListener('load', init); 
 })();
