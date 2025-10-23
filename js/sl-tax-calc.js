@@ -549,22 +549,8 @@
         if (capacityInput) capacityInput.addEventListener('input', clearErrors);
         if (ageEl) ageEl.addEventListener('change', clearErrors);
 
-        document.querySelectorAll('.faq-item').forEach(item => {
-            const h3 = item.querySelector('h3');
-            if (h3) {
-                const toggle = (e) => {
-                    e.preventDefault();
-                    toggleFAQ(h3);
-                };
-                h3.addEventListener('click', toggle);
-                h3.addEventListener('touchstart', toggle);
-                h3.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleFAQ(h3);
-                    }
-                });
-            }
+        document.querySelectorAll('.faq-item h3').forEach(h3 => {
+            h3.addEventListener('click', () => toggleFAQ(h3));
         });
 
         console.log('✅ Initialization complete');
@@ -578,5 +564,5 @@
     }
 
     // 16. Window Load (Extra Safety)
-    window.addEventListener('load', init);
+    // window.addEventListener('load', init); // THIS LINE WAS REMOVED TO FIX THE BUG
 })();
