@@ -1,3 +1,9 @@
+/*
+* Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
+*
+* This code contains proprietary calculation logic developed by Amarasinghe Prime.
+* Unauthorized copying, use, or distribution of this code is strictly prohibited.
+*/
 (function() {
     'use strict';
 
@@ -410,13 +416,29 @@
         });
     }
 
-    // 10. PDF Download (FIX APPLIED: Lazy loads jsPDF)
+// ************************************************************
+// ** START OF CORRECTED PDF FUNCTIONS **
+// ************************************************************
+
+    // 10. PDF Download (FIXED: Handles initialization and download retry)
     function downloadPDF() {
         if (!resultData) {
             alert('Please calculate the tax first.');
             return;
         }
 
+        // 1. Define the correct ready check
+        const isPDFReady = typeof window.jspdf !== 'undefined' && 
+                           typeof window.jspdf.jsPDF !== 'undefined' &&
+                           typeof window.jspdf.jsPDF.prototype.autoTable === 'function';
+
+        if (isPDFReady) {
+            // 2. If already loaded, execute immediately and return.
+            generatePDFContent(resultData);
+            return;
+        }
+
+        // 3. If not loaded, handle the async loading process
         const downloadBtn = getElementSafe('downloadBtn');
         if (downloadBtn) downloadBtn.disabled = true;
         if (downloadBtn) downloadBtn.textContent = 'Preparing PDF...';
@@ -424,7 +446,7 @@
         // Lazy load jsPDF only when the download button is clicked
         loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf')
             .then(() => {
-                // generatePDFContent handles the actual PDF creation
+                // generatePDFContent handles the actual PDF creation (which includes doc.save())
                 generatePDFContent(resultData);
             })
             .catch(error => {
@@ -432,7 +454,7 @@
                 alert('Failed to load PDF generator. Please try again.');
             })
             .finally(() => {
-                // Re-enable button
+                // Re-enable button regardless of success or failure
                 if (downloadBtn) {
                     downloadBtn.disabled = false;
                     downloadBtn.textContent = 'Save as PDF';
@@ -440,11 +462,17 @@
             });
     }
 
-    // 10.1. PDF Content Helper (NEW: Contains all PDF generation logic)
+    // 10.1. PDF Content Helper (FIXED: Silent return if library is not fully initialized)
     function generatePDFContent(resultData) {
-        if (!window.jspdf || !window.jspdf.jsPDF || !window.jspdf.autoTable) {
-            return; //
+        // Correct check: Ensure jspdf core and AutoTable plugin are ready. Stop silently if not.
+        const isReady = typeof window.jspdf !== 'undefined' && 
+                        typeof window.jspdf.jsPDF !== 'undefined' &&
+                        typeof window.jspdf.jsPDF.prototype.autoTable === 'function';
+        
+        if (!isReady) {
+            return; // Stops execution without an alert, allowing the async loading in downloadPDF to finish.
         }
+
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({
             orientation: 'portrait',
@@ -526,6 +554,10 @@
 
         doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
     }
+    
+// ************************************************************
+// ** END OF CORRECTED PDF FUNCTIONS **
+// ************************************************************
 
     // 11. Reset Form (UNCHANGED)
     function resetForm() {
