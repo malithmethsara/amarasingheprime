@@ -124,7 +124,6 @@
 
     // 4. Utility Functions
     function formatNumber(num, decimals = 0) {
-        if (typeof num !== 'number' || !isFinite(num)) return '-';
         return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
     }
 
@@ -151,24 +150,8 @@
     // 4.1. Lazy Load External Scripts (PDF & Charts)
     function loadExternalScript(url, globalCheck) {
         return new Promise((resolve, reject) => {
-            if (globalCheck && window[globalCheck]) {
+            if (window[globalCheck]) {
                 resolve();
-                return;
-            }
-            const existing = Array.from(document.scripts).find(s => s.src && s.src.indexOf(url) !== -1);
-            if (existing) {
-                // if script exists but global variable not yet available, wait briefly
-                const poll = setInterval(() => {
-                    if (!globalCheck || window[globalCheck]) {
-                        clearInterval(poll);
-                        resolve();
-                    }
-                }, 50);
-                setTimeout(() => {
-                    clearInterval(poll);
-                    if (!globalCheck || window[globalCheck]) resolve();
-                    else reject(new Error(`Script loaded but ${globalCheck} not ready`));
-                }, 5000);
                 return;
             }
             const script = document.createElement('script');
@@ -176,6 +159,7 @@
             script.defer = true;
             script.crossOrigin = 'anonymous';
             script.onload = () => {
+                console.log(`Lazy Loaded ${globalCheck}`);
                 resolve();
             };
             script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
@@ -204,30 +188,30 @@
         }
 
         for (let tier of table) {
-            const tierMin = (typeof tier.min !== 'undefined') ? tier.min : minCapacity;
-            const tierMax = (typeof tier.max !== 'undefined') ? tier.max : maxCapacity;
+            const tierMin = tier.min || minCapacity;
+            const tierMax = tier.max || maxCapacity;
             if (capacity >= tierMin && capacity <= tierMax) {
                 const rateFn = tier.rate;
 
-                // CASE 1: Petrol 601–1000 → returns FINAL amount (already encoded in table but keep backwards compat)
-                if (type === 'petrol' && capacity <= 1000 && tierMin === 600) {
+                // CASE 1: Petrol 601–1000 → returns FINAL amount
+                if (type === 'petrol' && capacity <= 1000 && tier.min === 600) {
                     return Math.max(2450 * capacity, 1992000);
                 }
 
                 // CASE 2: Hybrid / Plug-in 601–1000 → returns FIXED amount
-                if (['petrol_hybrid', 'petrol_plugin'].includes(type) && capacity <= 1000 && tierMin === 600) {
+                if (['petrol_hybrid', 'petrol_plugin'].includes(type) && capacity <= 1000 && tier.min === 600) {
                     return 1810900;
                 }
 
-                // CASE 3: Electric / eSmart → rate depends on age (rate is per kW)
+                // CASE 3: Electric / eSmart → rate depends on age
                 if (type.includes('electric') || type.includes('esmart')) {
-                    const perUnit = (typeof rateFn === 'function') ? rateFn(age) : rateFn;
-                    return perUnit * capacity;
+                    const rate = typeof rateFn === 'function' ? rateFn(age) : rateFn;
+                    return rate * capacity;
                 }
 
-                // CASE 4: Normal per-cc tiers (rate is per cc)
-                const perUnit = (typeof rateFn === 'function') ? rateFn() : rateFn;
-                return perUnit * capacity;
+                // CASE 4: Normal per-cc tiers
+                const rate = typeof rateFn === 'function' ? rateFn() : rateFn;
+                return rate * capacity;
             }
         }
         return 0;
@@ -238,20 +222,6 @@
         const threshold = luxuryThresholds[type] || 5000000;
         const rate = luxuryRates[type] || 1.0;
         return cif > threshold ? (cif - threshold) * rate : 0;
-    }
-
-    // Helper: format ISO or other date string to DD/MM/YYYY if possible
-    function formatDateToDDMMYYYY(dateStr) {
-        if (!dateStr) return 'N/A';
-        const d = new Date(dateStr);
-        if (isNaN(d.getTime())) {
-            // try common alternative formats, or return as-is
-            return dateStr;
-        }
-        const dd = String(d.getDate()).padStart(2, '0');
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        const yyyy = d.getFullYear();
-        return `${dd}/${mm}/${yyyy}`;
     }
 
     // 7. Main Calculation
@@ -288,11 +258,11 @@
 
         const cif = cifJPY * exchangeRate;
         const exciseResult = calculateExcise(type, capacity, age);
-        if (exciseResult && typeof exciseResult === 'object' && exciseResult.error) return showError('capacity', exciseResult.error);
+        if (exciseResult.error) return showError('capacity', exciseResult.error);
 
-        const cid = cif * 0.2; // Customs Import Duty 20%
-        const surcharge = cid * 0.5; // 50% surcharge of CID
-        const excise = Number(exciseResult) || 0;
+        const cid = cif * 0.2;
+        const surcharge = cid * 0.5;
+        const excise = exciseResult;
         const luxuryTax = calculateLuxuryTax(cif, type);
         const vel = 15000;
         const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax + vel;
@@ -307,7 +277,7 @@
             luxuryTax, vel, vat, totalTax, otherCharges, totalCost
         };
 
-        displayResults(resultData);
+        displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
 
         loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'Chart')
             .then(() => showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat }))
@@ -322,33 +292,27 @@
 
     // 8. Display Results
     function displayResults(data) {
-        if (!data) return;
-        const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(data.type) ? 'kW' : 'cc';
-        const ageText = data.age === '1' ? '≤1 year' : '>1–3 years';
-        const typeText = (data.type || '').replace(/_/g, ' ').toUpperCase();
-
-        function pct(part, total) {
-            if (!total || total === 0) return '0.0%';
-            return ((part / total) * 100).toFixed(1) + '%';
-        }
+        const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
+        const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
+        const typeText = resultData.type.replace('_', ' ').toUpperCase();
 
         const html = `
             <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem">
                 Inputs Summary
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
-                <thead style="background:var(--primary);color:#fff">
+ систему                <thead style="background:var(--primary);color:#fff">
                     <tr><th style="padding:0.625rem;width:50%;text-align:left">Item</th><th style="padding:0.625rem;text-align:right">Value</th></tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (JPY)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cifJPY)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Exchange Rate</td><td style="text-align:right;padding:0.5625rem 0.625rem">${(data.exchangeRate).toFixed(4)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (JPY)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.cifJPY)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Exchange Rate</td><td style="text-align:right;padding:0.5625rem 0.625rem">${resultData.exchangeRate.toFixed(4)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Type</td><td style="text-align:right;padding:0.5625rem 0.625rem">${typeText}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.capacity)} ${unit}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Age</td><td style="text-align:right;padding:0.5625rem 0.625rem">${ageText}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Dealer Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.dealerFee)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Clearing Agent Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.clearingFee)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Dealer Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.dealerFee)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Clearing Agent Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.clearingFee)}</td></tr>
                 </tbody>
             </table>
 
@@ -364,12 +328,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Import Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.cid, data.totalTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.surcharge, data.totalTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.excise, data.totalTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.luxuryTax, data.totalTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.vel, data.totalTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.vat, data.totalTax)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Import Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.cid/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.surcharge/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.excise/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.luxuryTax/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.vel/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.vat/data.totalTax)*100).toFixed(1)}%</td></tr>
                 </tbody>
                 <tfoot style="border-top:2px solid var(--primary);background:#f0f4fa">
                     <tr><td style="padding:0.625rem;font-weight:700">Total Taxes & Duties</td><td style="text-align:right;padding:0.625rem;font-weight:700">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">100.0%</td></tr>
@@ -388,12 +352,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle CIF Value</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.cif, data.totalCost)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.totalTax, data.totalCost)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${pct(data.otherCharges, data.totalCost)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle CIF Value</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.cif/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.totalTax/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.otherCharges/data.totalCost)*100).toFixed(1)}%</td></tr>
                 </tbody>
                 <tfoot style="border-top:2px solid var(--primary);background:#e3edfb">
-                    <tr><td style="padding:0.625rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">100.0%</td></tr>
+                    <tr><td style="padding:0.625rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">100.0%</td></tr>
                 </tfoot>
             </table>
         `;
@@ -475,7 +439,6 @@
 
     // 10.1. Generate PDF
     function generatePDFContent(resultData) {
-        // jspdf UMD exposes window.jspdf with jsPDF
         if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
             alert('PDF library not ready. Please try again.');
             return;
@@ -516,7 +479,7 @@
             margin: { top: 10, left: 10, right: 10 }
         });
 
-        y = doc.lastAutoTable ? doc.lastAutoTable.finalY + 8 : y + 8;
+        y = doc.lastAutoTable.finalY + 8;
         doc.autoTable({
             startY: y,
             head: [['Tax Type', 'Amount (LKR)', '% of Total Tax']],
@@ -536,7 +499,7 @@
             margin: { left: 10, right: 10 }
         });
 
-        y = doc.lastAutoTable ? doc.lastAutoTable.finalY + 8 : y + 8;
+        y = doc.lastAutoTable.finalY + 8;
         doc.autoTable({
             startY: y,
             head: [['Summary', 'Amount (LKR)', '% of Total Cost']],
@@ -567,7 +530,7 @@
         if (resultEl) {
             resultEl.innerHTML = `
                 <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
-                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance.</p>
+                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
             `;
         }
         const downloadBtn = getElementSafe('downloadBtn');
@@ -581,7 +544,7 @@
         const vehicleTypeEl = getElementSafe('vehicleType');
         const capacityLabelEl = getElementSafe('capacityLabel');
         if (!vehicleTypeEl || !capacityLabelEl) return;
-        const vehicleType = vehicleTypeEl.value || '';
+        const vehicleType = vehicleTypeEl.value;
         const isElectric = vehicleType.includes('electric') || vehicleType.includes('esmart');
         capacityLabelEl.textContent = isElectric ? 'Motor Capacity (kW):' : 'Engine Capacity (CC):';
     }
@@ -605,43 +568,18 @@
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
             fetch('/rate.json')
-                .then(r => {
-                    if (!r.ok) throw new Error('Network response was not ok');
-                    return r.json();
-                })
+                .then(r => r.json())
                 .then(data => {
-                    const rawRate = parseFloat(data.sellingRate);
-                    const rate = isNaN(rawRate) ? null : rawRate;
+                    const rate = parseFloat(data.sellingRate);
                     const updatedDate = data.updatedDate;
-                    const updatedDateFormatted = formatDateToDDMMYYYY(updatedDate);
                     const exchangeInput = getElementSafe('exchangeRate');
-                    if (exchangeInput && rate !== null) exchangeInput.value = rate.toFixed(4);
-
-                    // Render two lines:
-                    // Line 1: "Source: Sri Lanka Customs Weekly Exchange Rates" (only the phrase is clickable)
-                    // Line 2: "(Effective from: DD/MM/YYYY)"
-                    // Keep font size/shape same as surrounding text, but make anchor clickable and change on hover.
+                    if (exchangeInput) exchangeInput.value = rate.toFixed(4);
                     rateEl.innerHTML = `
-                        <div style="font-weight:700;color:var(--primary);font-size:0.95rem;line-height:1.2">
-                            Source:&nbsp;
-                            <a href="https://www.customs.gov.lk/exchange-rates/" target="_blank" rel="noopener"
-                               style="color:inherit;text-decoration:none;cursor:pointer"
-                               onmouseover="this.style.textDecoration='underline';this.style.opacity=0.92"
-                               onmouseout="this.style.textDecoration='none';this.style.opacity=1"
-                               title="Open Sri Lanka Customs Weekly Exchange Rates"
-                            >
-                                Sri Lanka Customs Weekly Exchange Rates
-                            </a>
-                        </div>
-                        <div style="color:var(--muted);font-size:0.85rem;line-height:1.2;margin-top:2px">
-                            (Effective from: ${updatedDateFormatted})
-                        </div>
+                        <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
+                        <div style="color:var(--muted);font-size:0.85rem">Source: Sri Lanka Customs Weekly Exchange Rates (Effective from: ${updatedDate})</div>
                     `;
                 })
-                .catch(() => {
-                    // on failure keep the manual message but still allow the user to type rate
-                    rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.';
-                });
+                .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
         }
 
         const calculateBtn = getElementSafe('calculateBtn');
