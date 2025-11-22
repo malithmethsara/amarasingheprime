@@ -567,3 +567,14 @@ footer {
         margin: 0.5rem 0;
     }
 }
+/* --- HIDE CHART TITLES UNTIL CALCULATED --- */
+
+/* 1. Hide the charts and titles by default */
+.charts-container {
+    display: none; 
+}
+
+/* 2. Magic Rule: AUTOMATICALLY show them ONLY when a table (the result) appears */
+.result-section:has(table) .charts-container {
+    display: flex; 
+}
