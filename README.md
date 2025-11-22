@@ -21,9 +21,6 @@ A free online tool to calculate vehicle import taxes for Sri Lanka based on 2025
 - WhatsApp: [Contact Us](https://wa.me/message/XSPMWKK4BGVAM1)
 - Facebook: [Amarasinghe Prime](https://www.facebook.com/share/17Ww1VkV2S/)
 
-## License
-[MIT License](LICENSE) - Free to use and modify.
-
 ## Contribute
 Fork this repo, improve the calculator, and submit a pull request!
 
