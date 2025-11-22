@@ -12,9 +12,10 @@
     let taxChart = null;
     let costChart = null;
 
-    // 2. EXCISE DUTY TABLES — FINAL & 100% GAZETTE ACCURATE (2025)
+    // 2. EXCISE DUTY TABLES — VERIFIED WITH 2025 GAZETTE
     const exciseRates = {
         petrol: [
+            // Verified: Min tax for <1000cc is 1,992,000 (Matches Customs XID)
             { min: 600, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) },
             { max: 1300, rate: 3850 },
             { max: 1500, rate: 4450 },
@@ -159,7 +160,6 @@
             script.defer = true;
             script.crossOrigin = 'anonymous';
             script.onload = () => {
-                console.log(`Lazy Loaded ${globalCheck}`);
                 resolve();
             };
             script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
@@ -167,7 +167,7 @@
         });
     }
 
-    // 5. Calculate Excise Duty — FIXED & 100% CORRECT
+    // 5. Calculate Excise Duty
     function calculateExcise(type, capacity, age) {
         const table = exciseRates[type];
         if (!table) return { error: 'Invalid vehicle type' };
@@ -193,17 +193,17 @@
             if (capacity >= tierMin && capacity <= tierMax) {
                 const rateFn = tier.rate;
 
-                // CASE 1: Petrol 601–1000 → returns FINAL amount
+                // CASE 1: Petrol 601–1000 -> Handled by rate function (min 1,992,000)
                 if (type === 'petrol' && capacity <= 1000 && tier.min === 600) {
-                    return Math.max(2450 * capacity, 1992000);
+                    return typeof rateFn === 'function' ? rateFn(capacity) : rateFn * capacity;
                 }
 
-                // CASE 2: Hybrid / Plug-in 601–1000 → returns FIXED amount
+                // CASE 2: Hybrid / Plug-in 601–1000
                 if (['petrol_hybrid', 'petrol_plugin'].includes(type) && capacity <= 1000 && tier.min === 600) {
                     return 1810900;
                 }
 
-                // CASE 3: Electric / eSmart → rate depends on age
+                // CASE 3: Electric / eSmart
                 if (type.includes('electric') || type.includes('esmart')) {
                     const rate = typeof rateFn === 'function' ? rateFn(age) : rateFn;
                     return rate * capacity;
@@ -260,13 +260,20 @@
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
-        const cid = cif * 0.2;
-        const surcharge = cid * 0.5;
-        const excise = exciseResult;
+        // --- CUSTOMS LOGIC (Verified with 2025 CusDec) ---
+        const cid = cif * 0.20;          // Customs Import Duty (20%)
+        const surcharge = cid * 0.50;    // Surcharge (50% of CID)
+        const excise = exciseResult;     // Excise Duty (XID)
         const luxuryTax = calculateLuxuryTax(cif, type);
-        const vel = 15000;
-        const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax + vel;
-        const vat = vatBase * 0.18;
+        const vel = 15000;               // Vehicle Entitlement Levy
+
+        // --- THE CRITICAL FIX: VEL is EXEMPT from VAT ---
+        // VAT Base = (CIF * 1.1) + CID + Surcharge + Excise + Luxury Tax
+        // NOTE: VEL is intentionally EXCLUDED from this base.
+        const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
+        
+        const vat = vatBase * 0.18;      // VAT (18%)
+
         const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
         const otherCharges = dealerFee + clearingFee;
         const totalCost = cif + totalTax + otherCharges;
@@ -353,8 +360,8 @@
                 </thead>
                 <tbody>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle CIF Value</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.cif/data.totalCost)*100).toFixed(1)}%</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.totalTax/data.totalCost)*100).toFixed(1)}%</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.otherCharges/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">${((data.totalTax/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">${((data.otherCharges/data.totalCost)*100).toFixed(1)}%</td></tr>
                 </tbody>
                 <tfoot style="border-top:2px solid var(--primary);background:#e3edfb">
                     <tr><td style="padding:0.625rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">100.0%</td></tr>
@@ -402,7 +409,7 @@
         });
     }
 
-    // 10. PDF Download — FIXED & RELIABLE
+    // 10. PDF Download
     function downloadPDF() {
         if (!resultData) {
             alert('Please calculate the tax first.');
@@ -565,45 +572,35 @@
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) timeEl.textContent = new Date().toLocaleString('en-LK');
 
-        // --- CHANGED SECTION START: FETCH RATE FROM rates.txt ---
+        // Fetch Rate from rates.txt
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
-            fetch('rates.txt') // Updated to read the text file
+            fetch('rates.txt')
                 .then(r => {
                     if (!r.ok) throw new Error("rates.txt not found");
                     return r.text();
                 })
                 .then(text => {
-                    // 1. Clean data: remove empty lines and whitespace
                     const lines = text.trim().split('\n').filter(line => line.trim() !== "");
-                    
                     if (lines.length > 0) {
-                        // 2. Get the last line (latest data)
                         const lastLine = lines[lines.length - 1];
-                        const parts = lastLine.split(','); // Format: YYYY-MM-DD,RATE
-
+                        const parts = lastLine.split(','); 
                         if (parts.length >= 2) {
                             const updatedDate = parts[0].trim();
                             const rate = parseFloat(parts[1].trim());
-
-                            // 3. Update the UI
                             if (!isNaN(rate)) {
                                 const exchangeInput = getElementSafe('exchangeRate');
                                 if (exchangeInput) exchangeInput.value = rate.toFixed(4);
-                                
                                 rateEl.innerHTML = `
                                     <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
                                     <div style="color:var(--muted);font-size:0.85rem">Source: Sri Lanka Customs Weekly Exchange Rates (Effective from: ${updatedDate})</div>
                                 `;
-                            } else {
-                                throw new Error("Invalid rate format");
                             }
                         }
                     }
                 })
                 .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
         }
-        // --- CHANGED SECTION END ---
 
         const calculateBtn = getElementSafe('calculateBtn');
         const resetBtn = getElementSafe('resetBtn');
