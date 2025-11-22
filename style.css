@@ -580,13 +580,14 @@ footer {
 }
 /* --- ADVERTISEMENT POSTER STYLING --- */
 .poster-container {
-    margin-top: 1.25rem;
+    margin-top: 2.5rem; /* This creates the big gap you need */
+    margin-bottom: 2rem; /* This adds space below the image too */
     text-align: center;
 }
 .poster-container img {
-    width: 100%; /* Ensures it fits mobile screens */
-    height: auto; /* Keeps the image shape correct */
-    border-radius: 1rem; /* Matches your other design elements */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06); /* Adds the same shadow as your calculator */
-    border: 1px solid rgba(0,48,135,0.15); /* Adds the subtle blue border */
+    width: 100%; 
+    height: auto; 
+    border-radius: 1rem; 
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); 
+    border: 1px solid rgba(0,48,135,0.15); 
 }
