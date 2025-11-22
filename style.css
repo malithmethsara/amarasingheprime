@@ -591,3 +591,27 @@ footer {
     box-shadow: 0 4px 16px rgba(0,0,0,0.06); 
     border: 1px solid rgba(0,48,135,0.15); 
 }
+/* --- FLOATING WHATSAPP BUTTON --- */
+.float-wa {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+    text-decoration: none;
+}
+.float-wa:hover {
+    transform: scale(1.1);
+    background-color: #128C7E;
+}
