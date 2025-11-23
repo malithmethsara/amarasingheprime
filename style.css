@@ -676,7 +676,6 @@ tfoot td {
     max-width: 80px; /* Smaller than header logo */
     height: auto;
     margin-bottom: 0.8rem;
-    opacity: 0.8;
 }
 .legal-links {
     margin-top: 0.5rem;
