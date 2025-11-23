@@ -128,8 +128,10 @@ header .tagline {
     color: #4285F4;      /* Google Blue */
     border: 1px solid #dadce0; /* Grey Border */
 }
-.google-chip i, .google-chip svg {
-    color: #4285F4;
+.google-chip {
+    background: #fff;
+    color: #4285F4; /* This will color the word "Google" blue */
+    border: 1px solid #dadce0;
 }
 .container-main {
     display: flex;
