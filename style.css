@@ -317,40 +317,45 @@ tfoot td {
     margin-top: 1.25rem;
     text-align: center;
 }
-/* --- NEW MARKETING BANNER (Blue Clickable Card) --- */
+/* --- MARKETING BANNER (Light Gold Style) --- */
 .marketing-banner {
     display: block;
     width: 100%;
     
-    /* CHANGED: New color from your image */
-    background-color: #0f75bd; 
+    /* 1. Light Creamy Background */
+    background-color: #fffbea; 
     
-    color: #ffffff !important; /* Force White Text */
+    /* 2. Dark Gold/Brown Text (Important for readability on light bg) */
+    color: #92400e !important; 
     
-    /* Shape & Spacing */
+    /* 3. The Thick Gold Left Border (Like your screenshot) */
+    border-left: 6px solid #f59e0b;
+    border-radius: 0.5rem; /* Slightly sharper corners look better with this style */
+    
+    /* Spacing & Font */
     padding: 1.25rem;
-    border-radius: 1rem;
     text-align: center;
     margin-top: 1.25rem;
-    
-    /* Typography */
     font-weight: 700;
     font-size: 1.1rem;
     text-decoration: none;
     
-    /* Premium Shadow */
-    box-shadow: 0 4px 16px rgba(0, 48, 135, 0.25);
-    border: none;
+    /* Subtle Shadow */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-top: 1px solid #fef3c7;
+    border-right: 1px solid #fef3c7;
+    border-bottom: 1px solid #fef3c7;
     
     transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-/* Optional: Make the hover effect slightly darker than the new color */
 .marketing-banner:hover {
     transform: translateY(-2px);
-    background-color: #0c629e; /* A slightly darker shade for hover */
-    box-shadow: 0 8px 24px rgba(0, 48, 135, 0.35);
-    color: #ffffff;
+    /* Slightly darker cream on hover */
+    background-color: #fef3c7; 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    /* Keep text dark */
+    color: #78350f !important; 
 }
 .social-proof {
     padding: 0.875rem 1.5rem;
