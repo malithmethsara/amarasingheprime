@@ -21,16 +21,17 @@
 }
 body {
     font-family: 'Open Sans', sans-serif;
-    /* CHANGED: New Theme Color Background */
-    background-color: #aed2eb; 
-    background-image: linear-gradient(180deg, #0070b8 0%, #005a9e 100%); /* Optional subtle gradient */
+    
+    /* CHANGED: A professional light blue tint of your brand color */
+    background-color: #e6f2fa; 
+    
     color: var(--text);
     max-width: 1200px;
     margin: 0 auto;
     padding: 1.5rem 1rem 2.5rem;
     line-height: 1.5;
     overflow-x: hidden;
-    min-height: 100vh; /* Ensures blue covers whole screen even if content is short */
+    min-height: 100vh; /* Ensures the blue covers the whole screen */
 }
 header {
     display: grid;
