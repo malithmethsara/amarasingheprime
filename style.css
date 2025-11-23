@@ -651,6 +651,7 @@ tfoot td {
     background: var(--bg1);
 }
 /* --- NEW PROFESSIONAL FOOTER STYLE --- */
+/* --- NEW PROFESSIONAL FOOTER STYLE (ROUNDED CARD) --- */
 .final-footer {
     display: flex;
     flex-direction: column;
@@ -658,12 +659,17 @@ tfoot td {
     justify-content: center;
     text-align: center;
     width: 100%;
-    padding: 1.5rem 0 0.5rem;
-    margin-top: 3rem;
+    padding: 1.5rem;
+    margin-top: 1.25rem;    /* Space above */
+    margin-bottom: 1.25rem; /* Space below (Floating look) */
     color: var(--muted);
     font-size: 0.9rem;
-    border-top: 5px solid var(--primary-light); 
-    background: #fdfdfd; 
+    background: #fdfdfd;
+    
+    /* MATCHING THE "VIBE" OF OTHER CARDS */
+    border-radius: 1rem;    /* Rounds the corners */
+    border: 1px solid rgba(0,48,135,0.15); /* Subtle blue border */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); /* Soft shadow */
 }
 /* Removed ::before hack for logo */
 .footer-logo-img {
