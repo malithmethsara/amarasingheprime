@@ -59,6 +59,8 @@ header .tagline {
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
 }
+
+/* --- CONTACT CHIPS (Updated for Uniformity) --- */
 .contact {
     display: flex;
     flex-wrap: wrap;
@@ -70,7 +72,6 @@ header .tagline {
 }
 .contact a {
     text-decoration: none;
-    font-size: 1rem;
     transition: transform 0.2s;
 }
 .contact a:hover {
@@ -78,61 +79,66 @@ header .tagline {
 }
 .contact .chip {
     display: inline-flex;
-    gap: 0.5rem;
+    gap: 0.75rem;
     align-items: center;
-    padding: 0.5rem 0.75rem;
+    justify-content: center;
+    padding: 0.6rem 1rem;
     border-radius: 999px;
     background: var(--card);
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     border: 1px solid rgb(220,230,246);
     transition: background 0.18s, border-color 0.18s, color 0.18s;
+    
+    /* Uniform Sizing */
+    min-width: 140px;
+    height: 46px;
+    font-size: 0.95rem;
+    line-height: 1;
 }
-.contact .chip i {
-    width: 1.125rem;
-    text-align: center;
+.contact .chip svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
 }
+
+/* --- Chip Colors --- */
 .phone-chip {
     background: var(--accent2);
     color: #222;
     border: 1px solid var(--border2);
 }
-.phone-chip i, .phone-chip strong {
-    color: #444;
-}
+.phone-chip svg { color: #444; }
+
 .whatsapp-chip {
     background: var(--accent1);
     color: #229e59;
     border: 1px solid var(--border2);
 }
-.whatsapp-chip i {
-    color: #229e59;
-}
+.whatsapp-chip svg { color: #229e59; }
+
 .facebook-chip {
     background: var(--primary-light);
     color: #1877f3;
     border: 1px solid var(--border1);
 }
-.facebook-chip i {
-    color: #1877f3;
-}
+.facebook-chip svg { color: #1877f3; }
+
 .email-chip {
-    background: #fce8e6; /* Light Red */
-    color: #d93025;      /* Gmail Red */
+    background: #fce8e6;
+    color: #c5221f;
     border: 1px solid #f6c5c2;
 }
-.email-chip i, .email-chip svg {
-    color: #d93025;
-}
-.google-chip {
-    background: #fff;    /* White */
-    color: #4285F4;      /* Google Blue */
-    border: 1px solid #dadce0; /* Grey Border */
-}
+.email-chip svg { color: #d93025; }
+
 .google-chip {
     background: #fff;
-    color: #4285F4; /* This will color the word "Google" blue */
+    color: #3c4043;
     border: 1px solid #dadce0;
 }
+/* Note: Google SVG is multicolored, so no color override needed */
+
+/* --- END CONTACT CHIPS --- */
+
 .container-main {
     display: flex;
     flex-wrap: wrap;
@@ -586,29 +592,27 @@ footer {
     }
 }
 /* --- HIDE CHART TITLES UNTIL CALCULATED --- */
-
-/* 1. Hide the charts and titles by default */
 .charts-container {
     display: none; 
 }
-
-/* 2. Magic Rule: AUTOMATICALLY show them ONLY when a table (the result) appears */
 .result-section:has(table) .charts-container {
     display: flex; 
 }
+
 /* --- ADVERTISEMENT POSTER STYLING --- */
 .poster-container {
-    margin-top: 2.5rem; /* This creates the big gap you need */
-    margin-bottom: 2rem; /* This adds space below the image too */
+    margin-top: 2.5rem;
+    margin-bottom: 2rem;
     text-align: center;
 }
 .poster-container img {
-    width: 100%; 
-    height: auto; 
-    border-radius: 1rem; 
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06); 
-    border: 1px solid rgba(0,48,135,0.15); 
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,48,135,0.15);
 }
+
 /* --- FLOATING WHATSAPP BUTTON --- */
 .float-wa {
     position: fixed;
@@ -633,19 +637,23 @@ footer {
     transform: scale(1.1);
     background-color: #128C7E;
 }
+
 /* --- SECONDARY BUTTON STYLE --- */
 .outline-btn {
     flex: 1 1 180px;
     padding: 0.75rem;
-    border: 2px solid var(--primary); /* Blue border */
+    border: 2px solid var(--primary);
     border-radius: 0.625rem;
     cursor: pointer;
     font-size: 1rem;
-    color: var(--primary); /* Blue text */
-    background: #fff; /* White background */
+    color: var(--primary);
+    background: #fff;
     font-weight: 700;
     height: 2.75rem;
     transition: background 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .outline-btn:hover {
     background: var(--bg1);
