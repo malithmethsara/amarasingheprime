@@ -163,10 +163,13 @@ header .tagline {
 }
 .form-section-title {
     text-align: center;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 0.75rem;
     color: var(--primary);
     font-size: 1.15rem;
+    border-bottom: 2px solid var(--primary); /* A line matching your brand blue */
+    padding-bottom: 5px;
+    margin-top: 0.5rem;
 }
 #cbslRate {
     margin-bottom: 1rem;
