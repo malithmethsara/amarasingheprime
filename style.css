@@ -12,7 +12,7 @@
     --border1: #b6d2f7;
     --border2: #b9eac7;
     --banner-blue: #e6f0fa;
-    --error: #d32f2f; /* Restoring dark error color */
+    --error: #d3f2f2;
 }
 *, *::before, *::after {
     box-sizing: border-box;
@@ -136,6 +136,7 @@ header .tagline {
     color: #3c4043;
     border: 1px solid #dadce0;
 }
+/* Note: Google SVG is multicolored, so no color override needed */
 
 /* --- END CONTACT CHIPS --- */
 
