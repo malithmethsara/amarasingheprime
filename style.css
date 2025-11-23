@@ -298,14 +298,6 @@ tfoot td {
     background: transparent;
     max-width: 100%;
 }
-footer {
-    text-align: center;
-    width: 100%;
-    margin-top: 1.625rem;
-    color: #555;
-    font-size: 0.92rem;
-    padding: 0.875rem 0;
-}
 .faq-section, .info-section, .disclaimer-section, .social-proof, .marketing-banner {
     background: var(--card);
     border: 1px solid rgba(0,48,135,0.15);
@@ -661,4 +653,41 @@ footer {
 }
 .outline-btn:hover {
     background: var(--bg1);
+}
+/* --- NEW PROFESSIONAL FOOTER STYLE --- */
+.final-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    padding: 1.5rem 0 0.5rem;
+    margin-top: 3rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+    border-top: 5px solid var(--primary-light); /* Strong separator line */
+    background: #fdfdfd; 
+}
+.final-footer::before {
+    /* TRICK: This displays the logo via CSS */
+    content: url('/logo.png'); 
+    max-width: 80px;
+    height: auto;
+    margin-bottom: 0.8rem;
+    opacity: 0.8;
+}
+.legal-links {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+}
+.legal-links a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0 0.5rem;
+    transition: color 0.1s;
+}
+.legal-links a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
 }
