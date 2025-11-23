@@ -440,6 +440,7 @@ tfoot td {
 .faq-indicator {
     margin-left: 0.5rem;
     transition: transform 0.3s;
+    pointer-events: none;
 }
 .faq-item.active .faq-indicator {
     transform: rotate(180deg);
