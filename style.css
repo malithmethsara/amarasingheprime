@@ -21,13 +21,16 @@
 }
 body {
     font-family: 'Open Sans', sans-serif;
-    background: linear-gradient(90deg, var(--bg1), var(--bg2));
+    /* CHANGED: New Theme Color Background */
+    background-color: #0070b8; 
+    background-image: linear-gradient(180deg, #0070b8 0%, #005a9e 100%); /* Optional subtle gradient */
     color: var(--text);
     max-width: 1200px;
     margin: 0 auto;
     padding: 1.5rem 1rem 2.5rem;
     line-height: 1.5;
     overflow-x: hidden;
+    min-height: 100vh; /* Ensures blue covers whole screen even if content is short */
 }
 header {
     display: grid;
