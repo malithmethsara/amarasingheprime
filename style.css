@@ -12,7 +12,7 @@
     --border1: #b6d2f7;
     --border2: #b9eac7;
     --banner-blue: #e6f0fa;
-    --error: #d3f2f2;
+    --error: #d32f2f;
 }
 *, *::before, *::after {
     box-sizing: border-box;
@@ -61,7 +61,7 @@ header .tagline {
     margin-bottom: 0.5rem;
 }
 
-/* --- CONTACT CHIPS (Updated for Uniformity) --- */
+/* --- CONTACT CHIPS --- */
 .contact {
     display: flex;
     flex-wrap: wrap;
@@ -89,8 +89,6 @@ header .tagline {
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     border: 1px solid rgb(220,230,246);
     transition: background 0.18s, border-color 0.18s, color 0.18s;
-    
-    /* Uniform Sizing */
     min-width: 140px;
     height: 46px;
     font-size: 0.95rem;
@@ -102,7 +100,7 @@ header .tagline {
     flex-shrink: 0;
 }
 
-/* --- Chip Colors --- */
+/* Chip Colors */
 .phone-chip {
     background: var(--accent2);
     color: #222;
@@ -136,10 +134,8 @@ header .tagline {
     color: #3c4043;
     border: 1px solid #dadce0;
 }
-/* Note: Google SVG is multicolored, so no color override needed */
 
-/* --- END CONTACT CHIPS --- */
-
+/* --- MAIN LAYOUT --- */
 .container-main {
     display: flex;
     flex-wrap: wrap;
@@ -440,7 +436,6 @@ tfoot td {
 .faq-indicator {
     margin-left: 0.5rem;
     transition: transform 0.3s;
-    pointer-events: none;
 }
 .faq-item.active .faq-indicator {
     transform: rotate(180deg);
@@ -474,9 +469,6 @@ tfoot td {
     border-radius: 0.625rem;
     font-size: 0.95rem;
     text-align: center;
-    /* FIX: Restoring contrast text color */
-    color: var(--error);
-    border: 1px solid var(--error);
 }
 .loading {
     text-align: center;
@@ -670,13 +662,12 @@ tfoot td {
     margin-top: 3rem;
     color: var(--muted);
     font-size: 0.9rem;
-    border-top: 5px solid var(--primary-light); /* Strong separator line */
+    border-top: 5px solid var(--primary-light); 
     background: #fdfdfd; 
 }
-.final-footer::before {
-    /* TRICK: This displays the logo via CSS */
-    content: url('/logo.png'); 
-    max-width: 80px;
+/* Removed ::before hack for logo */
+.footer-logo-img {
+    max-width: 80px; /* Smaller than header logo */
     height: auto;
     margin-bottom: 0.8rem;
     opacity: 0.8;
