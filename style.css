@@ -158,7 +158,10 @@ header .tagline {
 .form-section, .result-section {
     flex: 1 1 340px;
     min-width: 340px;
-    max-width: 540px;
+    
+    /* FIX: Allow them to grow to fill the container width */
+    max-width: 100%; 
+    
     background: var(--card);
     border: 1px solid rgba(0,48,135,0.15);
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
