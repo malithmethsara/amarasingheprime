@@ -294,7 +294,14 @@
         if (downloadBtn) downloadBtn.style.display = 'flex';
 
         const resultEl = getElementSafe('result');
-        if (resultEl) resultEl.scrollIntoView({ behavior: 'smooth' });
+        
+        // FIX: Use requestAnimationFrame to prevent "Forced Reflow" warning
+        // This politely waits for the next frame before scrolling
+        if (resultEl) {
+            requestAnimationFrame(() => {
+                resultEl.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
     }
 
     // 8. Display Results
