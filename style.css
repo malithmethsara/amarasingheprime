@@ -314,14 +314,14 @@ tfoot td {
     margin-top: 1.25rem;
     text-align: center;
 }
-
 /* --- NEW MARKETING BANNER (Blue Clickable Card) --- */
 .marketing-banner {
-    display: block; /* Makes the link behave like a box */
+    display: block;
     width: 100%;
     
-    /* New Design: Brand Blue Background */
-    background: var(--primary); 
+    /* CHANGED: New color from your image */
+    background-color: #0f75bd; 
+    
     color: #ffffff !important; /* Force White Text */
     
     /* Shape & Spacing */
@@ -333,26 +333,22 @@ tfoot td {
     /* Typography */
     font-weight: 700;
     font-size: 1.1rem;
-    text-decoration: none; /* Removes underline */
+    text-decoration: none;
     
     /* Premium Shadow */
     box-shadow: 0 4px 16px rgba(0, 48, 135, 0.25);
-    border: none; /* Removes the old yellow border */
+    border: none;
     
     transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
+/* Optional: Make the hover effect slightly darker than the new color */
 .marketing-banner:hover {
     transform: translateY(-2px);
-    background: var(--primary-hover); /* Darker blue on hover */
+    background-color: #0c629e; /* A slightly darker shade for hover */
     box-shadow: 0 8px 24px rgba(0, 48, 135, 0.35);
     color: #ffffff;
 }
-
-.marketing-banner a {
-    color: #fff; /* Ensures text stays white */
-}
-
 .social-proof {
     padding: 0.875rem 1.5rem;
 }
