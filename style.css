@@ -115,6 +115,22 @@ header .tagline {
 .facebook-chip i {
     color: #1877f3;
 }
+.email-chip {
+    background: #fce8e6; /* Light Red */
+    color: #d93025;      /* Gmail Red */
+    border: 1px solid #f6c5c2;
+}
+.email-chip i, .email-chip svg {
+    color: #d93025;
+}
+.google-chip {
+    background: #fff;    /* White */
+    color: #4285F4;      /* Google Blue */
+    border: 1px solid #dadce0; /* Grey Border */
+}
+.google-chip i, .google-chip svg {
+    color: #4285F4;
+}
 .container-main {
     display: flex;
     flex-wrap: wrap;
