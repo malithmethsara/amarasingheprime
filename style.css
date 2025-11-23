@@ -22,7 +22,7 @@
 body {
     font-family: 'Open Sans', sans-serif;
     
-    /* CHANGED: A professional light blue tint of your brand color */
+    /* NEW: Professional Light Blue Background */
     background-color: #e6f2fa; 
     
     color: var(--text);
@@ -31,7 +31,7 @@ body {
     padding: 1.5rem 1rem 2.5rem;
     line-height: 1.5;
     overflow-x: hidden;
-    min-height: 100vh; /* Ensures the blue covers the whole screen */
+    min-height: 100vh;
 }
 header {
     display: grid;
@@ -40,14 +40,14 @@ header {
     align-items: center;
     justify-items: center;
     
-    /* NEW: Card Styling to match Footer & Calculator */
-    background: var(--card); /* Sets it to White */
-    border-radius: 1rem;     /* Rounded Corners */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06); /* Soft Shadow */
-    border: 1px solid rgba(0,48,135,0.15);   /* Subtle Border */
+    /* NEW: Header is now a White Card */
+    background: var(--card);
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,48,135,0.15);
     
-    padding: 1.5rem;         /* Inner spacing */
-    margin-bottom: 1.25rem;  /* Space below the card */
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 header img {
     max-width: 160px;
@@ -305,7 +305,7 @@ tfoot td {
     background: transparent;
     max-width: 100%;
 }
-.faq-section, .info-section, .disclaimer-section, .social-proof, .marketing-banner {
+.faq-section, .info-section, .disclaimer-section, .social-proof {
     background: var(--card);
     border: 1px solid rgba(0,48,135,0.15);
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
@@ -314,34 +314,49 @@ tfoot td {
     margin-top: 1.25rem;
     text-align: center;
 }
+
+/* --- NEW MARKETING BANNER (Blue Clickable Card) --- */
 .marketing-banner {
-    padding: 1rem;
-    background: var(--banner-blue);
-    color: #000;
+    display: block; /* Makes the link behave like a box */
+    width: 100%;
+    
+    /* New Design: Brand Blue Background */
+    background: var(--primary); 
+    color: #ffffff !important; /* Force White Text */
+    
+    /* Shape & Spacing */
+    padding: 1.25rem;
+    border-radius: 1rem;
+    text-align: center;
+    margin-top: 1.25rem;
+    
+    /* Typography */
     font-weight: 700;
     font-size: 1.1rem;
-    transition: transform 0.2s;
-    border: 2px solid #fff3cd;
-    cursor: pointer;
+    text-decoration: none; /* Removes underline */
+    
+    /* Premium Shadow */
+    box-shadow: 0 4px 16px rgba(0, 48, 135, 0.25);
+    border: none; /* Removes the old yellow border */
+    
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
 }
+
 .marketing-banner:hover {
     transform: translateY(-2px);
+    background: var(--primary-hover); /* Darker blue on hover */
+    box-shadow: 0 8px 24px rgba(0, 48, 135, 0.35);
+    color: #ffffff;
 }
+
 .marketing-banner a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 800;
-    transition: color 0.2s;
-    display: block;
+    color: #fff; /* Ensures text stays white */
 }
-.marketing-banner a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
-}
+
 .social-proof {
     padding: 0.875rem 1.5rem;
 }
-.faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2, .marketing-banner h2 {
+.faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2 {
     text-align: center;
     font-weight: 700;
     font-size: 1.4rem;
@@ -527,7 +542,7 @@ tfoot td {
         box-sizing: border-box;
     }
     .marketing-banner {
-        padding: 0.75rem;
+        padding: 1rem;
         font-size: 1rem;
     }
     .social-proof {
@@ -661,7 +676,7 @@ tfoot td {
 .outline-btn:hover {
     background: var(--bg1);
 }
-/* --- NEW PROFESSIONAL FOOTER STYLE --- */
+
 /* --- NEW PROFESSIONAL FOOTER STYLE (ROUNDED CARD) --- */
 .final-footer {
     display: flex;
@@ -671,23 +686,25 @@ tfoot td {
     text-align: center;
     width: 100%;
     padding: 1.5rem;
-    margin-top: 1.25rem;    /* Space above */
-    margin-bottom: 1.25rem; /* Space below (Floating look) */
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
     color: var(--muted);
     font-size: 0.9rem;
     background: #fdfdfd;
     
     /* MATCHING THE "VIBE" OF OTHER CARDS */
-    border-radius: 1rem;    /* Rounds the corners */
-    border: 1px solid rgba(0,48,135,0.15); /* Subtle blue border */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06); /* Soft shadow */
+    border-radius: 1rem;
+    border: 1px solid rgba(0,48,135,0.15);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
-/* Removed ::before hack for logo */
+
 .footer-logo-img {
-    max-width: 80px; /* Smaller than header logo */
+    max-width: 80px;
     height: auto;
     margin-bottom: 0.8rem;
+    /* Opacity deleted for brightness */
 }
+
 .legal-links {
     margin-top: 0.5rem;
     font-size: 0.8rem;
