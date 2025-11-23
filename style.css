@@ -40,13 +40,14 @@ header {
     align-items: center;
     justify-items: center;
     
-    /* NEW: Card Styling (Matches Footer/Calculator) */
-    background: var(--card); /* White background */
-    border-radius: 1rem;     /* Rounded corners */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15); /* Stronger shadow to pop off blue bg */
-    border: 1px solid rgba(0,48,135,0.15);   /* Subtle border */
-    padding: 1.5rem;         /* Internal spacing */
-    margin-bottom: 1.25rem;  /* Space below the header card */
+    /* NEW: Card Styling to match Footer & Calculator */
+    background: var(--card); /* Sets it to White */
+    border-radius: 1rem;     /* Rounded Corners */
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06); /* Soft Shadow */
+    border: 1px solid rgba(0,48,135,0.15);   /* Subtle Border */
+    
+    padding: 1.5rem;         /* Inner spacing */
+    margin-bottom: 1.25rem;  /* Space below the card */
 }
 header img {
     max-width: 160px;
