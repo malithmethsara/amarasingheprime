@@ -317,43 +317,34 @@ tfoot td {
     margin-top: 1.25rem;
     text-align: center;
 }
-/* --- MARKETING BANNER (Gold/Premium Style) --- */
+/* --- MARKETING BANNER (Deep Brand Blue) --- */
 .marketing-banner {
     display: block;
     width: 100%;
     
-    /* 1. Pale Creamy Yellow Background */
-    background-color: #fffbea; 
+    /* 1. Your Main Brand Color */
+    background-color: var(--primary); 
     
-    /* 2. Dark Brown/Gold Text (Essential for readability) */
-    color: #92400e !important; 
+    /* 2. White Text */
+    color: #ffffff !important; 
     
-    /* 3. Thick Gold Accent Border */
-    border-left: 6px solid #f59e0b; 
-    border-radius: 0.5rem;
-    
-    /* Spacing */
     padding: 1.25rem;
+    border-radius: 1rem;
     text-align: center;
     margin-top: 1.25rem;
     font-weight: 700;
     font-size: 1.1rem;
     text-decoration: none;
-    
-    /* Subtle Styling */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border-top: 1px solid #fef3c7;
-    border-right: 1px solid #fef3c7;
-    border-bottom: 1px solid #fef3c7;
+    box-shadow: 0 4px 16px rgba(0, 48, 135, 0.3);
+    border: none;
     
     transition: all 0.2s ease;
 }
 
 .marketing-banner:hover {
     transform: translateY(-2px);
-    background-color: #fef3c7; /* Slightly darker cream on hover */
-    color: #78350f !important; /* Darker text on hover */
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    background-color: var(--primary-hover);
+    box-shadow: 0 8px 24px rgba(0, 48, 135, 0.4);
 }
 .social-proof {
     padding: 0.875rem 1.5rem;
