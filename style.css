@@ -21,10 +21,7 @@
 }
 body {
     font-family: 'Open Sans', sans-serif;
-    
-    /* NEW: Professional Light Blue Background */
     background-color: #f8faff; 
-    
     color: var(--text);
     max-width: 1200px;
     margin: 0 auto;
@@ -39,13 +36,10 @@ header {
     gap: 0.375rem;
     align-items: center;
     justify-items: center;
-    
-    /* NEW: Header is now a White Card */
     background: var(--card);
     border-radius: 1rem;
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     border: 1px solid rgba(0,48,135,0.15);
-    
     padding: 1.5rem;
     margin-bottom: 1.25rem;
 }
@@ -158,10 +152,7 @@ header .tagline {
 .form-section, .result-section {
     flex: 1 1 340px;
     min-width: 340px;
-    
-    /* FIX: Allow them to grow to fill the container width */
     max-width: 100%; 
-    
     background: var(--card);
     border: 1px solid rgba(0,48,135,0.15);
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
@@ -316,35 +307,6 @@ tfoot td {
     padding: 1.5rem;
     margin-top: 1.25rem;
     text-align: center;
-}
-/* --- MARKETING BANNER (Deep Brand Blue) --- */
-.marketing-banner {
-    display: block;
-    width: 100%;
-    
-    /* 1. Your Main Brand Color */
-    background-color: var(--primary); 
-    
-    /* 2. White Text */
-    color: #ffffff !important; 
-    
-    padding: 1.25rem;
-    border-radius: 1rem;
-    text-align: center;
-    margin-top: 1.25rem;
-    font-weight: 700;
-    font-size: 1.1rem;
-    text-decoration: none;
-    box-shadow: 0 4px 16px rgba(0, 48, 135, 0.3);
-    border: none;
-    
-    transition: all 0.2s ease;
-}
-
-.marketing-banner:hover {
-    transform: translateY(-2px);
-    background-color: var(--primary-hover);
-    box-shadow: 0 8px 24px rgba(0, 48, 135, 0.4);
 }
 .social-proof {
     padding: 0.875rem 1.5rem;
@@ -527,16 +489,12 @@ tfoot td {
     header h1 {
         font-size: clamp(1.5rem, 4.5vw, 1.9rem);
     }
-    .form-section, .result-section, .social-proof, .marketing-banner {
+    .form-section, .result-section, .social-proof {
         padding: 1rem;
         min-width: 100%;
         max-width: 100%;
         min-height: auto;
         box-sizing: border-box;
-    }
-    .marketing-banner {
-        padding: 1rem;
-        font-size: 1rem;
     }
     .social-proof {
         padding: 0.75rem 1rem;
@@ -579,7 +537,7 @@ tfoot td {
         padding: 1rem;
         width: 100%;
     }
-    .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2, .marketing-banner h2 {
+    .faq-section h2, .info-section h2, .disclaimer-section h2, .social-proof h2 {
         font-size: 1.2rem;
     }
     .faq-item h3, .info-section h3 {
