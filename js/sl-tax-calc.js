@@ -147,7 +147,7 @@
         return document.getElementById(id) || null;
     }
 
-    // NEW: Live Clock Function
+    // --- LIVE CLOCK ---
     function startLiveClock() {
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) {
@@ -189,7 +189,6 @@
     function calculateExcise(type, capacity, age) {
         const table = exciseRates[type];
         if (!table) return { error: 'Invalid vehicle type' };
-
         let minCapacity, maxCapacity, unit;
         if (type.includes('electric') || type.includes('esmart')) {
             minCapacity = 1; maxCapacity = 600; unit = 'kW';
@@ -200,17 +199,14 @@
         } else {
             return { error: 'Invalid vehicle type' };
         }
-
         if (capacity < minCapacity || capacity > maxCapacity) {
             return { error: `! Please enter valid capacity (${minCapacity}–${maxCapacity} ${unit})` };
         }
-
         for (let tier of table) {
             const tierMin = tier.min || minCapacity;
             const tierMax = tier.max || maxCapacity;
             if (capacity >= tierMin && capacity <= tierMax) {
                 const rateFn = tier.rate;
-
                 if (type === 'petrol' && capacity <= 1000 && tier.min === 600) {
                     return typeof rateFn === 'function' ? rateFn(capacity) : rateFn * capacity;
                 }
@@ -278,7 +274,7 @@
         const luxuryTax = calculateLuxuryTax(cif, type);
         const vel = 15000;
 
-        // VAT Logic
+        // VAT Logic (VEL excluded)
         const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
         const vat = vatBase * 0.18;
 
@@ -302,7 +298,6 @@
         if (downloadBtn) downloadBtn.style.display = 'flex';
 
         const resultEl = getElementSafe('result');
-        // Corrected Scrolling Logic
         if (resultEl) {
             requestAnimationFrame(() => {
                 resultEl.scrollIntoView({ behavior: 'smooth' });
@@ -360,7 +355,7 @@
                 </tfoot>
             </table>
 
-            <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
+            <div style="font-weight:700;margin:1.5rem 0 0.5rem 0;color:var(--primary);font-size:1.1rem">
                 Final Cost Summary
             </div>
             <table style="width:100%;border-collapse:collapse">
@@ -578,11 +573,70 @@
         if (indicator) indicator.style.transform = item.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 
+    // 16. Draw Exchange Rate History Chart (Direct Load)
+    function drawExchangeRateChart() {
+        const ctx = getElementSafe('exchangeRateChart');
+        if (!ctx) return;
+
+        fetch('rates.txt')
+            .then(r => r.text())
+            .then(text => {
+                const lines = text.trim().split('\n').filter(line => line.trim() !== "");
+                const recentLines = lines.slice(-12); // Last 12 entries
+                
+                const labels = [];
+                const dataPoints = [];
+
+                recentLines.forEach(line => {
+                    const parts = line.split(',');
+                    if (parts.length >= 2) {
+                        labels.push(parts[0].trim());
+                        dataPoints.push(parseFloat(parts[1].trim()));
+                    }
+                });
+
+                loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'Chart')
+                    .then(() => {
+                        if (window.exchangeChartInstance) window.exchangeChartInstance.destroy();
+                        
+                        window.exchangeChartInstance = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Exchange Rate',
+                                    data: dataPoints,
+                                    borderColor: '#003087',
+                                    backgroundColor: 'rgba(0, 48, 135, 0.05)',
+                                    borderWidth: 2,
+                                    tension: 0.3,
+                                    fill: true,
+                                    pointRadius: 3,
+                                    pointBackgroundColor: '#fff',
+                                    pointBorderColor: '#003087'
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false, 
+                                plugins: { legend: { display: false } },
+                                scales: {
+                                    x: { display: false },
+                                    y: { display: true }
+                                }
+                            }
+                        });
+                    });
+            })
+            .catch(err => console.error("Chart failed to load:", err));
+    }
+
     // 14. Initialization
     function init() {
         console.log('SL Tax Calculator Loaded');
 
         startLiveClock(); // Start live clock immediately
+        drawExchangeRateChart(); // Load Exchange Rate Chart immediately
 
         // Fetch Rate from rates.txt
         const rateEl = getElementSafe('cbslRate');
