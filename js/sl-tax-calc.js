@@ -11,6 +11,7 @@
     let resultData = null;
     let taxChart = null;
     let costChart = null;
+    let exchangeChartInstance = null;
 
     // 2. EXCISE DUTY TABLES — VERIFIED WITH 2025 GAZETTE
     const exciseRates = {
@@ -147,7 +148,7 @@
         return document.getElementById(id) || null;
     }
 
-    // --- LIVE CLOCK ---
+    // --- LIVE CLOCK FUNCTION ---
     function startLiveClock() {
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) {
@@ -168,7 +169,7 @@
         }
     }
 
-    // 4.1. Lazy Load External Scripts
+    // 4.1. Lazy Load External Scripts (PDF)
     function loadExternalScript(url, globalCheck) {
         return new Promise((resolve, reject) => {
             if (window[globalCheck]) {
@@ -189,6 +190,7 @@
     function calculateExcise(type, capacity, age) {
         const table = exciseRates[type];
         if (!table) return { error: 'Invalid vehicle type' };
+
         let minCapacity, maxCapacity, unit;
         if (type.includes('electric') || type.includes('esmart')) {
             minCapacity = 1; maxCapacity = 600; unit = 'kW';
@@ -199,9 +201,11 @@
         } else {
             return { error: 'Invalid vehicle type' };
         }
+
         if (capacity < minCapacity || capacity > maxCapacity) {
             return { error: `! Please enter valid capacity (${minCapacity}–${maxCapacity} ${unit})` };
         }
+
         for (let tier of table) {
             const tierMin = tier.min || minCapacity;
             const tierMax = tier.max || maxCapacity;
@@ -267,14 +271,12 @@
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
-        // Customs Logic
         const cid = cif * 0.20;
         const surcharge = cid * 0.50;
         const excise = exciseResult;
         const luxuryTax = calculateLuxuryTax(cif, type);
         const vel = 15000;
 
-        // VAT Logic (VEL excluded)
         const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
         const vat = vatBase * 0.18;
 
@@ -290,9 +292,12 @@
 
         displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
 
-        loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'Chart')
-            .then(() => showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat }))
-            .catch(error => console.error('Failed to load Chart.js', error));
+        // Show Charts (Assumes Chart.js is in HTML)
+        if (window.Chart) {
+            showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat });
+        } else {
+            console.error("Chart.js not loaded");
+        }
 
         const downloadBtn = getElementSafe('downloadBtn');
         if (downloadBtn) downloadBtn.style.display = 'flex';
@@ -312,9 +317,7 @@
         const typeText = resultData.type.replace('_', ' ').toUpperCase();
 
         const html = `
-            <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem">
-                Inputs Summary
-            </div>
+            <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem">Inputs Summary</div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
                     <tr><th style="padding:0.625rem;width:50%;text-align:left">Item</th><th style="padding:0.625rem;text-align:right">Value</th></tr>
@@ -326,14 +329,10 @@
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Type</td><td style="text-align:right;padding:0.5625rem 0.625rem">${typeText}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Age</td><td style="text-align:right;padding:0.5625rem 0.625rem">${ageText}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Dealer Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.dealerFee)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Clearing Agent Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.clearingFee)}</td></tr>
                 </tbody>
             </table>
 
-            <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
-                Tax Breakdown
-            </div>
+            <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">Tax Breakdown</div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
                     <tr>
@@ -355,9 +354,7 @@
                 </tfoot>
             </table>
 
-            <div style="font-weight:700;margin:1.5rem 0 0.5rem 0;color:var(--primary);font-size:1.1rem">
-                Final Cost Summary
-            </div>
+            <div style="font-weight:700;margin:1.5rem 0 0.5rem 0;color:var(--primary);font-size:1.1rem">Final Cost Summary</div>
             <table style="width:100%;border-collapse:collapse">
                 <thead style="background:var(--primary);color:#fff">
                     <tr>
@@ -380,7 +377,7 @@
         if (resultEl) resultEl.innerHTML = html;
     }
 
-    // 9. Show Charts
+    // 9. Show Pie Charts
     function showCharts(data) {
         const taxCanvas = getElementSafe('taxPieChart');
         const costCanvas = getElementSafe('pieChart');
@@ -415,6 +412,62 @@
             },
             options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
         });
+    }
+
+    // 16. Draw Exchange Rate History Chart (Blue Line)
+    function drawExchangeRateChart() {
+        const ctx = getElementSafe('exchangeRateChart');
+        if (!ctx) return;
+
+        fetch('rates.txt')
+            .then(r => r.text())
+            .then(text => {
+                const lines = text.trim().split('\n').filter(line => line.trim() !== "");
+                const recentLines = lines.slice(-12); 
+                
+                const labels = [];
+                const dataPoints = [];
+
+                recentLines.forEach(line => {
+                    const parts = line.split(',');
+                    if (parts.length >= 2) {
+                        labels.push(parts[0].trim());
+                        dataPoints.push(parseFloat(parts[1].trim()));
+                    }
+                });
+
+                if (window.Chart) {
+                    if (exchangeChartInstance) exchangeChartInstance.destroy();
+                    exchangeChartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Exchange Rate',
+                                data: dataPoints,
+                                borderColor: '#003087',
+                                backgroundColor: 'rgba(0, 48, 135, 0.05)',
+                                borderWidth: 2,
+                                tension: 0.3,
+                                fill: true,
+                                pointRadius: 3,
+                                pointBackgroundColor: '#fff',
+                                pointBorderColor: '#003087'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: {
+                                x: { display: false },
+                                y: { display: true }
+                            }
+                        }
+                    });
+                }
+            })
+            .catch(err => console.error("Chart failed to load:", err));
     }
 
     // 10. PDF Download
@@ -520,190 +573,4 @@
             head: [['Summary', 'Amount (LKR)', '% of Total Cost']],
             body: [
                 ['CIF Value', formatNumber(resultData.cif), ((resultData.cif/resultData.totalCost)*100).toFixed(1) + '%'],
-                ['Total Taxes & Duties', formatNumber(resultData.totalTax), ((resultData.totalTax/resultData.totalCost)*100).toFixed(1) + '%'],
-                ['Other Charges', formatNumber(resultData.otherCharges), ((resultData.otherCharges/resultData.totalCost)*100).toFixed(1) + '%'],
-                ['TOTAL IMPORT COST', formatNumber(resultData.totalCost), '100.0%']
-            ],
-            theme: 'grid',
-            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
-            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
-            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 80 }, 2: { cellWidth: 40 } },
-            margin: { left: 10, right: 10 }
-        });
-
-        doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
-    }
-
-    // 11. Reset Form
-    function resetForm() {
-        const form = getElementSafe('taxCalculatorForm');
-        if (form) form.reset();
-        resultData = null;
-        if (taxChart) { taxChart.destroy(); taxChart = null; }
-        if (costChart) { costChart.destroy(); costChart = null; }
-        const resultEl = getElementSafe('result');
-        if (resultEl) {
-            resultEl.innerHTML = `
-                <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
-                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
-            `;
-        }
-        const downloadBtn = getElementSafe('downloadBtn');
-        if (downloadBtn) downloadBtn.style.display = 'none';
-        clearErrors();
-        updateCapacityLabel();
-    }
-
-    // 12. Update Capacity Label
-    function updateCapacityLabel() {
-        const vehicleTypeEl = getElementSafe('vehicleType');
-        const capacityLabelEl = getElementSafe('capacityLabel');
-        if (!vehicleTypeEl || !capacityLabelEl) return;
-        const vehicleType = vehicleTypeEl.value;
-        const isElectric = vehicleType.includes('electric') || vehicleType.includes('esmart');
-        capacityLabelEl.textContent = isElectric ? 'Motor Capacity (kW):' : 'Engine Capacity (CC):';
-    }
-
-    // 13. Toggle FAQ
-    function toggleFAQ(element) {
-        const item = element.closest('.faq-item');
-        if (!item) return;
-        item.classList.toggle('active');
-        const indicator = item.querySelector('.faq-indicator');
-        if (indicator) indicator.style.transform = item.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
-    }
-
-    // 16. Draw Exchange Rate History Chart (Simple & Reliable)
-    function drawExchangeRateChart() {
-        const ctx = getElementSafe('exchangeRateChart');
-        if (!ctx) return;
-
-        fetch('rates.txt')
-            .then(r => r.text())
-            .then(text => {
-                const lines = text.trim().split('\n').filter(line => line.trim() !== "");
-                const recentLines = lines.slice(-12); 
-                
-                const labels = [];
-                const dataPoints = [];
-
-                recentLines.forEach(line => {
-                    const parts = line.split(',');
-                    if (parts.length >= 2) {
-                        labels.push(parts[0].trim());
-                        dataPoints.push(parseFloat(parts[1].trim()));
-                    }
-                });
-
-                // Chart.js is now loaded in HTML, so we can use it directly
-                if (window.Chart) {
-                    if (window.exchangeChartInstance) window.exchangeChartInstance.destroy();
-                    
-                    window.exchangeChartInstance = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Exchange Rate',
-                                data: dataPoints,
-                                borderColor: '#003087',
-                                backgroundColor: 'rgba(0, 48, 135, 0.05)',
-                                borderWidth: 2,
-                                tension: 0.3,
-                                fill: true,
-                                pointRadius: 3,
-                                pointBackgroundColor: '#fff',
-                                pointBorderColor: '#003087'
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: { legend: { display: false } },
-                            scales: {
-                                x: { display: false },
-                                y: { display: true }
-                            }
-                        }
-                    });
-                } else {
-                    console.error("Chart.js library not found");
-                }
-            })
-            .catch(err => console.error("Chart failed to load:", err));
-    }
-
-    // 14. Initialization
-    function init() {
-        console.log('SL Tax Calculator Loaded');
-
-        startLiveClock(); // Start live clock immediately
-        drawExchangeRateChart(); // Load Exchange Rate Chart immediately
-
-        // Fetch Rate from rates.txt
-        const rateEl = getElementSafe('cbslRate');
-        if (rateEl) {
-            fetch('rates.txt')
-                .then(r => {
-                    if (!r.ok) throw new Error("rates.txt not found");
-                    return r.text();
-                })
-                .then(text => {
-                    const lines = text.trim().split('\n').filter(line => line.trim() !== "");
-                    if (lines.length > 0) {
-                        const lastLine = lines[lines.length - 1];
-                        const parts = lastLine.split(','); 
-                        if (parts.length >= 2) {
-                            const updatedDate = parts[0].trim();
-                            const rate = parseFloat(parts[1].trim());
-                            if (!isNaN(rate)) {
-                                const exchangeInput = getElementSafe('exchangeRate');
-                                if (exchangeInput) exchangeInput.value = rate.toFixed(4);
-                                rateEl.innerHTML = `
-                                    <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
-                                    <div style="color:var(--muted);font-size:0.85rem">Source: Sri Lanka Customs Weekly Exchange Rates (Effective from: ${updatedDate})</div>
-                                `;
-                            }
-                        }
-                    }
-                })
-                .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
-        }
-
-        const calculateBtn = getElementSafe('calculateBtn');
-        const resetBtn = getElementSafe('resetBtn');
-        const downloadBtn = getElementSafe('downloadBtn');
-        const vehicleTypeEl = getElementSafe('vehicleType');
-        const cifJPYInput = getElementSafe('cifJPY');
-        const exchangeRateInput = getElementSafe('exchangeRate');
-        const capacityInput = getElementSafe('capacity');
-        const ageEl = getElementSafe('age');
-
-        if (calculateBtn) calculateBtn.addEventListener('click', calculateTax);
-        if (resetBtn) resetBtn.addEventListener('click', resetForm);
-        if (downloadBtn) downloadBtn.addEventListener('click', downloadPDF);
-        if (vehicleTypeEl) {
-            vehicleTypeEl.addEventListener('change', () => {
-                updateCapacityLabel();
-                clearErrors();
-            });
-        }
-        if (cifJPYInput) cifJPYInput.addEventListener('input', clearErrors);
-        if (exchangeRateInput) exchangeRateInput.addEventListener('input', clearErrors);
-        if (capacityInput) capacityInput.addEventListener('input', clearErrors);
-        if (ageEl) ageEl.addEventListener('change', clearErrors);
-
-        document.querySelectorAll('.faq-item h3').forEach(h3 => {
-            h3.addEventListener('click', () => toggleFAQ(h3));
-        });
-
-        console.log('Initialization complete');
-    }
-
-    // 15. DOM Ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-})();
+                ['Total Taxes & Duties', formatNumber(resultData.totalTax), ((
