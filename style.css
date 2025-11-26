@@ -133,11 +133,6 @@ header .tagline {
     border: 1px solid #f6c5c2;
 }
 .email-chip svg { color: #d93025; }
-
-.google-chip {
-    background: #fff;
-    color: #3c4043;
-    border: 1px solid #dadce0;
 }
 
 /* --- MAIN LAYOUT --- */
