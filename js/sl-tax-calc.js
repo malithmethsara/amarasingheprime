@@ -1,777 +1,653 @@
-:root {
-    --primary: #003087;
-    --primary-hover: #002060;
-    --primary-light: #e3edfb;
-    --bg1: #f7f9fc;
-    --bg2: #e9eff6;
-    --text: #2b2b2b;
-    --muted: #5b5b5b;
-    --card: #fff;
-    --accent1: #e6f7ec;
-    --accent2: #f4f4f4;
-    --border1: #b6d2f7;
-    --border2: #b9eac7;
-    --banner-blue: #e6f0fa;
-    --error: #d32f2f;
-}
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-body {
-    font-family: 'Open Sans', sans-serif;
-    background-color: #f8faff; 
-    color: var(--text);
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem 2.5rem;
-    line-height: 1.5;
-    overflow-x: hidden;
-    min-height: 100vh;
-}
-header {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.375rem;
-    align-items: center;
-    justify-items: center;
-    background: var(--card);
-    border-radius: 1rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,48,135,0.15);
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-}
-header img {
-    max-width: 160px;
-    height: auto;
-}
-header h1 {
-    font-weight: 700;
-    font-size: clamp(1.8rem, 5vw, 2.4rem);
-    color: var(--primary);
-    text-align: center;
-}
-header .tagline {
-    color: var(--muted);
-    font-weight: 600;
-    text-align: center;
-    font-size: 1rem;
-}
-#timeDateTime {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-}
+/*
+* Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
+*
+* This code contains proprietary calculation logic developed by Amarasinghe Prime.
+* Unauthorized copying, use, or distribution of this code is strictly prohibited.
+*/
+(function() {
+    'use strict';
 
-/* --- CONTACT CHIPS --- */
-.contact {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.875rem;
-    align-items: center;
-    justify-content: center;
-    margin: 0.625rem 0;
-    font-weight: 600;
-}
-.contact a {
-    text-decoration: none;
-    transition: transform 0.2s;
-}
-.contact a:hover {
-    transform: scale(1.05);
-}
-.contact .chip {
-    display: inline-flex;
-    gap: 0.75rem;
-    align-items: center;
-    justify-content: center;
-    padding: 0.6rem 1rem;
-    border-radius: 999px;
-    background: var(--card);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border: 1px solid rgb(220,230,246);
-    transition: background 0.18s, border-color 0.18s, color 0.18s;
-    min-width: 140px;
-    height: 46px;
-    font-size: 0.95rem;
-    line-height: 1;
-}
-.contact .chip svg {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-}
+    // 1. Global Variables
+    let resultData = null;
+    let taxChart = null;
+    let costChart = null;
 
-/* Chip Colors */
-.phone-chip {
-    background: var(--accent2);
-    color: #222;
-    border: 1px solid var(--border2);
-}
-.phone-chip svg { color: #444; }
+    // 2. EXCISE DUTY TABLES — VERIFIED WITH 2025 GAZETTE
+    const exciseRates = {
+        petrol: [
+            { min: 600, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) },
+            { max: 1300, rate: 3850 },
+            { max: 1500, rate: 4450 },
+            { max: 1600, rate: 5150 },
+            { max: 1800, rate: 6400 },
+            { max: 2000, rate: 7700 },
+            { max: 2500, rate: 8450 },
+            { max: 2750, rate: 9650 },
+            { max: 3000, rate: 10850 },
+            { max: 4000, rate: 12050 },
+            { max: 6500, rate: 13300 }
+        ],
+        petrol_hybrid: [
+            { min: 600, max: 1000, rate: () => 1810900 },
+            { max: 1300, rate: 2750 },
+            { max: 1500, rate: 3450 },
+            { max: 1600, rate: 4800 },
+            { max: 1800, rate: 6300 },
+            { max: 2000, rate: 6900 },
+            { max: 2500, rate: 7250 },
+            { max: 2750, rate: 8450 },
+            { max: 3000, rate: 9650 },
+            { max: 4000, rate: 10850 },
+            { max: 6500, rate: 12050 }
+        ],
+        petrol_plugin: [
+            { min: 600, max: 1000, rate: () => 1810900 },
+            { max: 1300, rate: 2750 },
+            { max: 1500, rate: 3450 },
+            { max: 1600, rate: 4800 },
+            { max: 1800, rate: 6250 },
+            { max: 2000, rate: 6900 },
+            { max: 2500, rate: 7250 },
+            { max: 2750, rate: 8450 },
+            { max: 3000, rate: 9650 },
+            { max: 4000, rate: 10850 },
+            { max: 6500, rate: 12050 }
+        ],
+        diesel: [
+            { min: 900, max: 1500, rate: 5500 },
+            { max: 1600, rate: 6950 },
+            { max: 1800, rate: 8300 },
+            { max: 2000, rate: 9650 },
+            { max: 2500, rate: 9650 },
+            { max: 2750, rate: 10850 },
+            { max: 3000, rate: 12050 },
+            { max: 4000, rate: 13300 },
+            { max: 6500, rate: 14500 }
+        ],
+        diesel_hybrid: [
+            { min: 900, max: 1000, rate: 4150 },
+            { max: 1500, rate: 4150 },
+            { max: 1600, rate: 5500 },
+            { max: 1800, rate: 6900 },
+            { max: 2000, rate: 8350 },
+            { max: 2500, rate: 8450 },
+            { max: 2750, rate: 9650 },
+            { max: 3000, rate: 10850 },
+            { max: 4000, rate: 12050 },
+            { max: 6500, rate: 13300 }
+        ],
+        diesel_plugin: [
+            { min: 900, max: 1000, rate: 4150 },
+            { max: 1500, rate: 4150 },
+            { max: 1600, rate: 5500 },
+            { max: 1800, rate: 6900 },
+            { max: 2000, rate: 8300 },
+            { max: 2500, rate: 8450 },
+            { max: 2750, rate: 9650 },
+            { max: 3000, rate: 10850 },
+            { max: 4000, rate: 12050 },
+            { max: 6500, rate: 13300 }
+        ],
+        electric: [
+            { min: 1, max: 50, rate: (age) => age === '1' ? 18100 : 36200 },
+            { max: 100, rate: (age) => age === '1' ? 24100 : 36200 },
+            { max: 200, rate: (age) => age === '1' ? 36200 : 60400 },
+            { max: 600, rate: (age) => age === '1' ? 96600 : 132800 }
+        ],
+        esmart_petrol: [
+            { min: 1, max: 50, rate: (age) => age === '1' ? 30770 : 43440 },
+            { max: 100, rate: (age) => age === '1' ? 40970 : 43440 },
+            { max: 200, rate: (age) => age === '1' ? 41630 : 63420 },
+            { max: 600, rate: (age) => age === '1' ? 111090 : 139440 }
+        ],
+        esmart_diesel: [
+            { min: 1, max: 50, rate: (age) => age === '1' ? 36920 : 52130 },
+            { max: 100, rate: (age) => age === '1' ? 49160 : 52130 },
+            { max: 200, rate: (age) => age === '1' ? 49960 : 76100 },
+            { max: 600, rate: (age) => age === '1' ? 133310 : 167330 }
+        ]
+    };
 
-.whatsapp-chip {
-    background: var(--accent1);
-    color: #229e59;
-    border: 1px solid var(--border2);
-}
-.whatsapp-chip svg { color: #229e59; }
+    // 3. Luxury Tax Thresholds & Rates
+    const luxuryThresholds = {
+        petrol: 5000000, diesel: 5000000,
+        petrol_hybrid: 5500000, diesel_hybrid: 5500000,
+        petrol_plugin: 5500000, diesel_plugin: 5500000,
+        electric: 6000000, esmart_petrol: 6000000, esmart_diesel: 6000000
+    };
+    const luxuryRates = {
+        petrol: 1.0, diesel: 1.2,
+        petrol_hybrid: 0.8, diesel_hybrid: 0.8,
+        petrol_plugin: 0.8, diesel_plugin: 0.8,
+        electric: 0.6, esmart_petrol: 0.6, esmart_diesel: 0.6
+    };
 
-.facebook-chip {
-    background: var(--primary-light);
-    color: #1877f3;
-    border: 1px solid var(--border1);
-}
-.facebook-chip svg { color: #1877f3; }
-
-.email-chip {
-    background: #fce8e6;
-    color: #c5221f;
-    border: 1px solid #f6c5c2;
-}
-.email-chip svg { color: #d93025; }
-
-.google-chip {
-    background: #fff;
-    color: #3c4043;
-    border: 1px solid #dadce0;
-}
-
-/* --- MAIN LAYOUT --- */
-.container-main {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 0.625rem;
-    justify-content: center;
-    align-items: stretch;
-}
-.form-section, .result-section {
-    flex: 1 1 340px;
-    min-width: 340px;
-    max-width: 100%; 
-    background: var(--card);
-    border: 1px solid rgba(0,48,135,0.15);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    min-height: 680px;
-}
-.form-section-title {
-    text-align: center;
-    font-weight: 800;
-    margin-bottom: 0.75rem;
-    color: var(--primary);
-    font-size: 1.15rem;
-    border-bottom: 2px solid var(--primary); 
-    padding-bottom: 5px;
-    margin-top: 0.5rem;
-}
-#cbslRate {
-    margin-bottom: 1rem;
-    text-align: center;
-}
-label {
-    display: block;
-    margin-top: 0.875rem;
-    font-weight: 700;
-    font-size: 0.98rem;
-}
-input, select {
-    width: 100%;
-    padding: 0.75rem;
-    margin-top: 0.375rem;
-    border: 1px solid var(--primary);
-    border-radius: 0.625rem;
-    font-size: 1rem;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    transition: border-color 0.15s, box-shadow 0.15s;
-}
-input:focus, select:focus {
-    outline: none;
-    border-color: var(--primary-hover);
-    box-shadow: 0 0 5px rgba(0,48,135,0.3);
-}
-select {
-    appearance: none;
-    background: #fff url("data:image/svg+xml;charset=UTF-8,%3Csvg width='14' height='14' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 8l4 4 4-4' stroke='%23003087' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 0.75rem center/1rem 1rem;
-}
-.btn-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.125rem;
-}
-.blue-btn {
-    flex: 1 1 180px;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 0.625rem;
-    cursor: pointer;
-    font-size: 1rem;
-    color: #fff;
-    background: var(--primary);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: background 0.18s, transform 0.2s;
-    font-weight: 700;
-    height: 2.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.blue-btn:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-}
-.blue-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-}
-#downloadBtn {
-    display: none;
-    flex: 1 1 180px;
-    height: 2.75rem;
-    margin-top: 1.125rem;
-}
-.result-section-title {
-    font-weight: 700;
-    margin-bottom: 0.625rem;
-    color: var(--primary);
-    font-size: 1.12rem;
-}
-#result {
-    margin-top: 0;
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-}
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 0.5rem;
-}
-thead th {
-    background: var(--primary);
-    color: #fff;
-    padding: 0.625rem;
-    text-align: left;
-    font-weight: 600;
-}
-tbody td {
-    padding: 0.5625rem 0.625rem;
-    border-bottom: 1px solid rgba(0,48,135,0.15);
-}
-tfoot td {
-    padding: 0.625rem;
-    font-weight: 700;
-    background: #f0f4fa;
-}
-.charts-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1.25rem;
-}
-.chart-wrapper {
-    width: 100%;
-    max-width: 400px;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-}
-.chart-title {
-    text-align: center;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 0.5rem;
-}
-#pieChart, #taxPieChart {
-    display: block;
-    margin: 0 auto;
-    background: transparent;
-    max-width: 100%;
-}
-.faq-section, .info-section, .disclaimer-section {
-    background: var(--card);
-    border: 1px solid rgba(0,48,135,0.15);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin-top: 1.25rem;
-    text-align: center;
-}
-
-.social-proof {
-    /* Removed .social-proof specific styling to use the generic card style above if desired, or keep custom padding */
-    padding: 0.875rem 1.5rem;
-}
-.faq-section h2, .info-section h2, .disclaimer-section h2 {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.4rem;
-    color: var(--primary);
-    margin-bottom: 1.125rem;
-}
-.faq-item {
-    margin-bottom: 1rem;
-    text-align: left;
-}
-.faq-item h3 {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--text);
-    margin: 0 0 0.5rem;
-    cursor: pointer;
-    transition: color 0.2s;
-    display: block;
-    align-items: center;
-    width: 100%;
-    padding: 0.5rem 0;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-.faq-item h3:hover {
-    color: var(--primary);
-}
-.faq-item p {
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.6;
-    display: none;
-    margin-left: 1.5rem;
-    margin-top: 0.5rem;
-}
-.faq-item.active p {
-    display: block !important;
-}
-.faq-indicator {
-    margin-left: 0.5rem;
-    transition: transform 0.3s;
-    pointer-events: none;
-}
-.info-section p, .disclaimer-section p {
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-.info-section h3 {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--text);
-    margin: 0 0 0.25rem 0;
-    text-align: left;
-}
-.info-section ul {
-    padding-left: 1.25rem;
-    margin-bottom: 1rem;
-    text-align: left;
-    list-style-type: disc;
-    list-style-position: inside;
-}
-.info-section li {
-    margin-bottom: 1.5rem;
-    font-size: 0.95rem;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-}
-.info-section li p {
-    margin-top: 0;
-    margin-left: 0;
-    text-align: left;
-}
-.info-section a, .result-section a {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.2s;
-}
-.info-section a:hover, .result-section a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
-}
-.disclaimer-section ul {
-    list-style: none;
-    padding: 0;
-    font-size: 0.95rem;
-    color: var(--muted);
-}
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-}
-.faq-indicator {
-    margin-left: 0.5rem;
-    transition: transform 0.3s;
-}
-.faq-item.active .faq-indicator {
-    transform: rotate(180deg);
-}
-.result-placeholder {
-    font-size: 0.95rem;
-    color: var(--muted);
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-.result-help {
-    font-size: 0.95rem;
-    color: var(--muted);
-    text-align: center;
-}
-.error-message {
-    color: var(--error);
-    font-size: 0.9rem;
-    margin-top: 0.25rem;
-    text-align: left;
-    background: #ffebee;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-}
-.warning-box {
-    background: #ffebee;
-    border: 1px solid var(--error);
-    color: var(--error);
-    padding: 1rem;
-    margin-top: 1rem;
-    border-radius: 0.625rem;
-    font-size: 0.95rem;
-    text-align: center;
-}
-.loading {
-    text-align: center;
-    font-size: 1rem;
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-.loading::before {
-    content: '';
-    width: 1rem;
-    height: 1rem;
-    border: 2px solid var(--primary);
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-@keyframes pulse {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
-}
-
-/* --- MOBILE OPTIMIZATION --- */
-@media (max-width: 640px) {
-    body {
-        padding: 1rem;
-        width: 100vw;
-        overflow-x: hidden;
+    // 4. Utility Functions
+    function formatNumber(num, decimals = 0) {
+        return num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
     }
-    header img {
-        max-width: 140px;
-    }
-    header h1 {
-        font-size: clamp(1.5rem, 4.5vw, 1.9rem);
-    }
-    .form-section, .result-section, .social-proof {
-        padding: 1rem;
-        min-width: 100%;
-        max-width: 100%;
-        min-height: auto;
-        box-sizing: border-box;
-    }
-    .social-proof {
-        padding: 0.75rem 1rem;
-    }
-    .container-main {
-        flex-direction: column;
-        gap: 1rem;
-        width: 100%;
-        align-items: center;
-    }
-    
-    /* --- 2x2 GRID FOR CONTACT BUTTONS ON MOBILE --- */
-    .contact {
-        display: grid;                 
-        grid-template-columns: 1fr 1fr; /* Two equal columns */
-        gap: 0.75rem;
-        margin: 0.5rem 0;
-        width: 100%;
-    }
-    .contact a {
-        width: 100%;
-        text-align: center;
-    }
-    .contact .chip {
-        width: 100%;
-        justify-content: center;
-        font-size: 0.95rem;
-        padding: 0.625rem;
-        margin: 0; /* Important for grid */
-    }
-    
-    .btn-row {
-        gap: 0.5rem;
-        width: 100%;
-    }
-    .blue-btn {
-        font-size: 0.95rem;
-        width: 100%;
-    }
-    #downloadBtn {
-        margin-top: 1rem;
-        width: 100%;
-    }
-    .faq-section, .info-section, .disclaimer-section {
-        padding: 1rem;
-        width: 100%;
-    }
-    .faq-section h2, .info-section h2, .disclaimer-section h2 {
-        font-size: 1.2rem;
-    }
-    .faq-item h3, .info-section h3 {
-        font-size: 1rem;
-    }
-    #pieChart, #taxPieChart {
-        max-width: 100%;
-        width: 100%;
-    }
-    .result-placeholder, .result-help {
-        font-size: 0.9rem;
-    }
-    .charts-container {
-        flex-direction: column;
-        width: 100%;
-    }
-    .chart-wrapper {
-        width: 100%;
-        max-width: 300px;
-        margin: 0.5rem 0;
-    }
-}
 
-/* --- HIDE CHART TITLES UNTIL CALCULATED --- */
-.charts-container {
-    display: none; 
-}
-.result-section:has(table) .charts-container {
-    display: flex; 
-}
+    function showError(fieldId, message) {
+        clearErrors();
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        input.parentNode.insertBefore(errorDiv, input.nextSibling);
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
 
-/* --- ADVERTISEMENT POSTER STYLING --- */
-.poster-container {
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-    text-align: center;
-}
-.poster-container img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    border: 1px solid rgba(0,48,135,0.15);
-}
+    function clearErrors() {
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+    }
 
-/* --- FLOATING WHATSAPP BUTTON --- */
-.float-wa {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 20px;
-    right: 20px;
-    background-color: #25d366;
-    color: #FFF;
-    border-radius: 50px;
-    text-align: center;
-    font-size: 30px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s;
-    text-decoration: none;
-}
-.float-wa:hover {
-    transform: scale(1.1);
-    background-color: #128C7E;
-}
+    function getElementSafe(id) {
+        return document.getElementById(id) || null;
+    }
 
-/* --- SECONDARY BUTTON STYLE --- */
-.outline-btn {
-    flex: 1 1 180px;
-    padding: 0.75rem;
-    border: 2px solid var(--primary);
-    border-radius: 0.625rem;
-    cursor: pointer;
-    font-size: 1rem;
-    color: var(--primary);
-    background: #fff;
-    font-weight: 700;
-    height: 2.75rem;
-    transition: background 0.18s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.outline-btn:hover {
-    background: var(--bg1);
-}
+    // NEW: Live Clock Function
+    function startLiveClock() {
+        const timeEl = getElementSafe('timeDateTime');
+        if (timeEl) {
+            const updateTime = () => {
+                timeEl.textContent = new Date().toLocaleString('en-LK', {
+                    weekday: 'long',
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                });
+            };
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+    }
 
-/* --- NEW PROFESSIONAL FOOTER STYLE (ROUNDED CARD) --- */
-.final-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-    padding: 1.5rem;
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-    color: var(--muted);
-    font-size: 0.9rem;
-    background: #fdfdfd;
-    
-    /* MATCHING THE "VIBE" OF OTHER CARDS */
-    border-radius: 1rem;
-    border: 1px solid rgba(0,48,135,0.15);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-}
+    // 4.1. Lazy Load External Scripts
+    function loadExternalScript(url, globalCheck) {
+        return new Promise((resolve, reject) => {
+            if (window[globalCheck]) {
+                resolve();
+                return;
+            }
+            const script = document.createElement('script');
+            script.src = url;
+            script.defer = true;
+            script.crossOrigin = 'anonymous';
+            script.onload = () => { resolve(); };
+            script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+            document.head.appendChild(script);
+        });
+    }
 
-.footer-logo-img {
-    max-width: 80px;
-    height: auto;
-    margin-bottom: 0.8rem;
-    /* Opacity deleted for brightness */
-}
+    // 5. Calculate Excise Duty
+    function calculateExcise(type, capacity, age) {
+        const table = exciseRates[type];
+        if (!table) return { error: 'Invalid vehicle type' };
 
-.legal-links {
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-}
-.legal-links a {
-    color: var(--muted);
-    text-decoration: none;
-    padding: 0 0.5rem;
-    transition: color 0.1s;
-}
-.legal-links a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
-}
+        let minCapacity, maxCapacity, unit;
+        if (type.includes('electric') || type.includes('esmart')) {
+            minCapacity = 1; maxCapacity = 600; unit = 'kW';
+        } else if (type.includes('petrol')) {
+            minCapacity = 600; maxCapacity = 6500; unit = 'cc';
+        } else if (type.includes('diesel')) {
+            minCapacity = 900; maxCapacity = 6500; unit = 'cc';
+        } else {
+            return { error: 'Invalid vehicle type' };
+        }
 
-/* --- GOOGLE REVIEW WIDGET --- */
-.google-review-section {
-    background: #fff;
-    border: 1px solid rgba(0,48,135,0.1);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin-top: 1.25rem;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    max-width: 100%;
-}
+        if (capacity < minCapacity || capacity > maxCapacity) {
+            return { error: `! Please enter valid capacity (${minCapacity}–${maxCapacity} ${unit})` };
+        }
 
-/* Header Row */
-.g-badge-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #f1f3f4;
-    padding-bottom: 0.8rem;
-}
-.g-brand {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1.1rem;
-    color: #3c4043;
-    font-weight: 700;
-}
-.g-write-btn {
-    font-size: 0.85rem;
-    color: #1a73e8;
-    text-decoration: none;
-    font-weight: 600;
-}
-.g-write-btn:hover { text-decoration: underline; }
+        for (let tier of table) {
+            const tierMin = tier.min || minCapacity;
+            const tierMax = tier.max || maxCapacity;
+            if (capacity >= tierMin && capacity <= tierMax) {
+                const rateFn = tier.rate;
 
-/* Review Card Itself */
-.review-single-card {
-    background: #f9f9f9;
-    border-radius: 0.8rem;
-    padding: 1.25rem;
-    position: relative;
-}
+                if (type === 'petrol' && capacity <= 1000 && tier.min === 600) {
+                    return typeof rateFn === 'function' ? rateFn(capacity) : rateFn * capacity;
+                }
+                if (['petrol_hybrid', 'petrol_plugin'].includes(type) && capacity <= 1000 && tier.min === 600) {
+                    return 1810900;
+                }
+                if (type.includes('electric') || type.includes('esmart')) {
+                    const rate = typeof rateFn === 'function' ? rateFn(age) : rateFn;
+                    return rate * capacity;
+                }
+                const rate = typeof rateFn === 'function' ? rateFn() : rateFn;
+                return rate * capacity;
+            }
+        }
+        return 0;
+    }
 
-.reviewer-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 0.8rem;
-}
-/* Style for real user profile photo */
-.reviewer-avatar-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%; /* Circle */
-    object-fit: cover;  /* Prevents stretching */
-    border: 1px solid #e0e0e0;
-}
-.r-name {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #202124;
-}
-.r-meta {
-    font-size: 0.75rem;
-    color: #5f6368;
-}
-.small-g-icon {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    width: 20px;
-    height: 20px;
-}
+    // 6. Calculate Luxury Tax
+    function calculateLuxuryTax(cif, type) {
+        const threshold = luxuryThresholds[type] || 5000000;
+        const rate = luxuryRates[type] || 1.0;
+        return cif > threshold ? (cif - threshold) * rate : 0;
+    }
 
-.r-stars {
-    color: #e37400;
-    font-size: 1.1rem;
-    margin-bottom: 0.6rem;
-    letter-spacing: 1px;
-}
-.r-text {
-    font-size: 0.95rem;
-    color: #3c4043;
-    line-height: 1.5;
-    font-style: italic;
-    margin-bottom: 1rem;
-}
-.r-link {
-    font-size: 0.85rem;
-    color: #1a73e8;
-    text-decoration: none;
-    font-weight: 600;
-}
+    // 7. Main Calculation
+    function calculateTax() {
+        clearErrors();
+        const elements = {
+            cifJPY: getElementSafe('cifJPY'),
+            exchangeRate: getElementSafe('exchangeRate'),
+            vehicleType: getElementSafe('vehicleType'),
+            capacity: getElementSafe('capacity'),
+            age: getElementSafe('age'),
+            dealerFee: getElementSafe('dealerFee'),
+            clearingFee: getElementSafe('clearingFee')
+        };
+
+        if (!elements.cifJPY || !elements.exchangeRate || !elements.vehicleType || !elements.capacity || !elements.age) {
+            showError('cifJPY', 'Form elements not found - reload page');
+            return;
+        }
+
+        const cifJPY = parseFloat(elements.cifJPY.value) || 0;
+        const exchangeRate = parseFloat(elements.exchangeRate.value) || 0;
+        const type = elements.vehicleType.value;
+        const capacity = parseFloat(elements.capacity.value) || 0;
+        const age = elements.age.value;
+        const dealerFee = parseFloat(elements.dealerFee.value) || 0;
+        const clearingFee = parseFloat(elements.clearingFee.value) || 0;
+
+        if (cifJPY < 800000 || cifJPY > 20000000) return showError('cifJPY', '! Please enter valid CIF (JPY) amount');
+        if (exchangeRate < 1.6 || exchangeRate > 2.9) return showError('exchangeRate', '! Please enter valid Exchange Rate');
+        if (!type) return showError('vehicleType', '! Please select vehicle type');
+        if (capacity <= 0) return showError('capacity', '! Please enter valid capacity');
+        if (!age) return showError('age', '! Please select vehicle age');
+
+        const cif = cifJPY * exchangeRate;
+        const exciseResult = calculateExcise(type, capacity, age);
+        if (exciseResult.error) return showError('capacity', exciseResult.error);
+
+        // Customs Logic
+        const cid = cif * 0.20;
+        const surcharge = cid * 0.50;
+        const excise = exciseResult;
+        const luxuryTax = calculateLuxuryTax(cif, type);
+        const vel = 15000;
+
+        // VAT Logic
+        const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
+        const vat = vatBase * 0.18;
+
+        const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
+        const otherCharges = dealerFee + clearingFee;
+        const totalCost = cif + totalTax + otherCharges;
+
+        resultData = {
+            cifJPY, exchangeRate, cif, type, capacity, age,
+            dealerFee, clearingFee, cid, surcharge, excise,
+            luxuryTax, vel, vat, totalTax, otherCharges, totalCost
+        };
+
+        displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
+
+        loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js', 'Chart')
+            .then(() => showCharts({ cif, totalTax, otherCharges, cid, surcharge, excise, luxuryTax, vel, vat }))
+            .catch(error => console.error('Failed to load Chart.js', error));
+
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.style.display = 'flex';
+
+        const resultEl = getElementSafe('result');
+        // Corrected Scrolling Logic
+        if (resultEl) {
+            requestAnimationFrame(() => {
+                resultEl.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+    }
+
+    // 8. Display Results
+    function displayResults(data) {
+        const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
+        const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
+        const typeText = resultData.type.replace('_', ' ').toUpperCase();
+
+        const html = `
+            <div style="font-weight:700;margin-bottom:0.75rem;color:var(--primary);font-size:1.1rem">
+                Inputs Summary
+            </div>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
+                <thead style="background:var(--primary);color:#fff">
+                    <tr><th style="padding:0.625rem;width:50%;text-align:left">Item</th><th style="padding:0.625rem;text-align:right">Value</th></tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (JPY)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.cifJPY)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Exchange Rate</td><td style="text-align:right;padding:0.5625rem 0.625rem">${resultData.exchangeRate.toFixed(4)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Type</td><td style="text-align:right;padding:0.5625rem 0.625rem">${typeText}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Age</td><td style="text-align:right;padding:0.5625rem 0.625rem">${ageText}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Dealer Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.dealerFee)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Clearing Agent Fee (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.clearingFee)}</td></tr>
+                </tbody>
+            </table>
+
+            <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
+                Tax Breakdown
+            </div>
+            <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
+                <thead style="background:var(--primary);color:#fff">
+                    <tr>
+                        <th style="padding:0.625rem;width:45%;text-align:left">Tax Type</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">Amount (LKR)</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">% of Total Tax</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Import Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.cid/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.surcharge/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.excise/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.luxuryTax/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.vel/data.totalTax)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.vat/data.totalTax)*100).toFixed(1)}%</td></tr>
+                </tbody>
+                <tfoot style="border-top:2px solid var(--primary);background:#f0f4fa">
+                    <tr><td style="padding:0.625rem;font-weight:700">Total Taxes & Duties</td><td style="text-align:right;padding:0.625rem;font-weight:700">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">100.0%</td></tr>
+                </tfoot>
+            </table>
+
+            <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
+                Final Cost Summary
+            </div>
+            <table style="width:100%;border-collapse:collapse">
+                <thead style="background:var(--primary);color:#fff">
+                    <tr>
+                        <th style="padding:0.625rem;width:45%;text-align:left">Item</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">Amount (LKR)</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">% of Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle CIF Value</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td><td style="text-align:right;padding:0.5625rem 0.625rem">${((data.cif/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">${((data.totalTax/data.totalCost)*100).toFixed(1)}%</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">${((data.otherCharges/data.totalCost)*100).toFixed(1)}%</td></tr>
+                </tbody>
+                <tfoot style="border-top:2px solid var(--primary);background:#e3edfb">
+                    <tr><td style="padding:0.625rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td><td style="text-align:right;padding:0.625rem;font-weight:700">100.0%</td></tr>
+                </tfoot>
+            </table>
+        `;
+        const resultEl = getElementSafe('result');
+        if (resultEl) resultEl.innerHTML = html;
+    }
+
+    // 9. Show Charts
+    function showCharts(data) {
+        const taxCanvas = getElementSafe('taxPieChart');
+        const costCanvas = getElementSafe('pieChart');
+        if (!taxCanvas || !costCanvas || !window.Chart) return;
+
+        const ctx1 = taxCanvas.getContext('2d');
+        const ctx2 = costCanvas.getContext('2d');
+
+        if (taxChart) taxChart.destroy();
+        if (costChart) costChart.destroy();
+
+        taxChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['CID', 'Surcharge', 'Excise', 'Luxury Tax', 'VEL', 'VAT'],
+                datasets: [{
+                    data: [data.cid, data.surcharge, data.excise, data.luxuryTax, data.vel, data.vat],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+
+        costChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['CIF Value', 'Total Taxes', 'Other Charges'],
+                datasets: [{
+                    data: [data.cif, data.totalTax, data.otherCharges],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        });
+    }
+
+    // 10. PDF Download
+    function downloadPDF() {
+        if (!resultData) {
+            alert('Please calculate the tax first.');
+            return;
+        }
+
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) {
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = 'Loading PDF...';
+        }
+
+        loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf')
+            .then(() => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js', 'autoTable')
+                            .then(resolve).catch(resolve);
+                    }, 100);
+                });
+            })
+            .then(() => generatePDFContent(resultData))
+            .catch(error => {
+                console.error('Failed to load PDF libraries', error);
+                alert('Failed to load PDF generator. Please try again.');
+            })
+            .finally(() => {
+                if (downloadBtn) {
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = 'Save as PDF';
+                }
+            });
+    }
+
+    // 10.1. Generate PDF
+    function generatePDFContent(resultData) {
+        if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
+            alert('PDF library not ready. Please try again.');
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        let y = 10;
+
+        doc.setFontSize(14);
+        doc.text('Sri Lanka Vehicle Tax Calculation 2025', 10, y);
+        y += 6;
+        doc.setFontSize(10);
+        doc.text('Amarasinghe Prime Enterprises (Pvt) Ltd', 10, y);
+        y += 5;
+        doc.text('Contact: +94 76 944 7740', 10, y);
+        y += 5;
+        doc.text(`Date: ${new Date().toLocaleString('en-LK')}`, 10, y);
+        y += 8;
+
+        doc.autoTable({
+            startY: y,
+            head: [['Input', 'Value']],
+            body: [
+                ['CIF (JPY)', formatNumber(resultData.cifJPY)],
+                ['Exchange Rate', resultData.exchangeRate.toFixed(4)],
+                ['CIF (LKR)', formatNumber(resultData.cif)],
+                ['Vehicle Type', resultData.type.replace('_', ' ').toUpperCase()],
+                ['Capacity', `${formatNumber(resultData.capacity)} ${['electric','esmart_petrol','esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc'}`],
+                ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
+                ['Dealer Fee (LKR)', formatNumber(resultData.dealerFee)],
+                ['Clearing Agent Fee (LKR)', formatNumber(resultData.clearingFee)]
+            ],
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
+            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
+            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 120 } },
+            margin: { top: 10, left: 10, right: 10 }
+        });
+
+        y = doc.lastAutoTable.finalY + 8;
+        doc.autoTable({
+            startY: y,
+            head: [['Tax Type', 'Amount (LKR)', '% of Total Tax']],
+            body: [
+                ['Customs Import Duty', formatNumber(resultData.cid), ((resultData.cid/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Surcharge', formatNumber(resultData.surcharge), ((resultData.surcharge/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Excise Duty', formatNumber(resultData.excise), ((resultData.excise/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Luxury Tax', formatNumber(resultData.luxuryTax), ((resultData.luxuryTax/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['Vehicle Entitlement Levy', formatNumber(resultData.vel), ((resultData.vel/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['VAT (18%)', formatNumber(resultData.vat), ((resultData.vat/resultData.totalTax)*100).toFixed(1) + '%'],
+                ['TOTAL TAXES', formatNumber(resultData.totalTax), '100.0%']
+            ],
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
+            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
+            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 80 }, 2: { cellWidth: 40 } },
+            margin: { left: 10, right: 10 }
+        });
+
+        y = doc.lastAutoTable.finalY + 8;
+        doc.autoTable({
+            startY: y,
+            head: [['Summary', 'Amount (LKR)', '% of Total Cost']],
+            body: [
+                ['CIF Value', formatNumber(resultData.cif), ((resultData.cif/resultData.totalCost)*100).toFixed(1) + '%'],
+                ['Total Taxes & Duties', formatNumber(resultData.totalTax), ((resultData.totalTax/resultData.totalCost)*100).toFixed(1) + '%'],
+                ['Other Charges', formatNumber(resultData.otherCharges), ((resultData.otherCharges/resultData.totalCost)*100).toFixed(1) + '%'],
+                ['TOTAL IMPORT COST', formatNumber(resultData.totalCost), '100.0%']
+            ],
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
+            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
+            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 80 }, 2: { cellWidth: 40 } },
+            margin: { left: 10, right: 10 }
+        });
+
+        doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
+    }
+
+    // 11. Reset Form
+    function resetForm() {
+        const form = getElementSafe('taxCalculatorForm');
+        if (form) form.reset();
+        resultData = null;
+        if (taxChart) { taxChart.destroy(); taxChart = null; }
+        if (costChart) { costChart.destroy(); costChart = null; }
+        const resultEl = getElementSafe('result');
+        if (resultEl) {
+            resultEl.innerHTML = `
+                <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
+                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+            `;
+        }
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.style.display = 'none';
+        clearErrors();
+        updateCapacityLabel();
+    }
+
+    // 12. Update Capacity Label
+    function updateCapacityLabel() {
+        const vehicleTypeEl = getElementSafe('vehicleType');
+        const capacityLabelEl = getElementSafe('capacityLabel');
+        if (!vehicleTypeEl || !capacityLabelEl) return;
+        const vehicleType = vehicleTypeEl.value;
+        const isElectric = vehicleType.includes('electric') || vehicleType.includes('esmart');
+        capacityLabelEl.textContent = isElectric ? 'Motor Capacity (kW):' : 'Engine Capacity (CC):';
+    }
+
+    // 13. Toggle FAQ
+    function toggleFAQ(element) {
+        const item = element.closest('.faq-item');
+        if (!item) return;
+        item.classList.toggle('active');
+        const indicator = item.querySelector('.faq-indicator');
+        if (indicator) indicator.style.transform = item.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+
+    // 14. Initialization
+    function init() {
+        console.log('SL Tax Calculator Loaded');
+
+        startLiveClock(); // Start live clock immediately
+
+        // Fetch Rate from rates.txt
+        const rateEl = getElementSafe('cbslRate');
+        if (rateEl) {
+            fetch('rates.txt')
+                .then(r => {
+                    if (!r.ok) throw new Error("rates.txt not found");
+                    return r.text();
+                })
+                .then(text => {
+                    const lines = text.trim().split('\n').filter(line => line.trim() !== "");
+                    if (lines.length > 0) {
+                        const lastLine = lines[lines.length - 1];
+                        const parts = lastLine.split(','); 
+                        if (parts.length >= 2) {
+                            const updatedDate = parts[0].trim();
+                            const rate = parseFloat(parts[1].trim());
+                            if (!isNaN(rate)) {
+                                const exchangeInput = getElementSafe('exchangeRate');
+                                if (exchangeInput) exchangeInput.value = rate.toFixed(4);
+                                rateEl.innerHTML = `
+                                    <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
+                                    <div style="color:var(--muted);font-size:0.85rem">Source: Sri Lanka Customs Weekly Exchange Rates (Effective from: ${updatedDate})</div>
+                                `;
+                            }
+                        }
+                    }
+                })
+                .catch(() => rateEl.innerHTML = 'Failed to fetch exchange rate. Please enter manually.');
+        }
+
+        const calculateBtn = getElementSafe('calculateBtn');
+        const resetBtn = getElementSafe('resetBtn');
+        const downloadBtn = getElementSafe('downloadBtn');
+        const vehicleTypeEl = getElementSafe('vehicleType');
+        const cifJPYInput = getElementSafe('cifJPY');
+        const exchangeRateInput = getElementSafe('exchangeRate');
+        const capacityInput = getElementSafe('capacity');
+        const ageEl = getElementSafe('age');
+
+        if (calculateBtn) calculateBtn.addEventListener('click', calculateTax);
+        if (resetBtn) resetBtn.addEventListener('click', resetForm);
+        if (downloadBtn) downloadBtn.addEventListener('click', downloadPDF);
+        if (vehicleTypeEl) {
+            vehicleTypeEl.addEventListener('change', () => {
+                updateCapacityLabel();
+                clearErrors();
+            });
+        }
+        if (cifJPYInput) cifJPYInput.addEventListener('input', clearErrors);
+        if (exchangeRateInput) exchangeRateInput.addEventListener('input', clearErrors);
+        if (capacityInput) capacityInput.addEventListener('input', clearErrors);
+        if (ageEl) ageEl.addEventListener('change', clearErrors);
+
+        document.querySelectorAll('.faq-item h3').forEach(h3 => {
+            h3.addEventListener('click', () => toggleFAQ(h3));
+        });
+
+        console.log('Initialization complete');
+    }
+
+    // 15. DOM Ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
