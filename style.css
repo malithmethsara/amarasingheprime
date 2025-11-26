@@ -66,7 +66,7 @@ header .tagline {
     margin-bottom: 0.5rem;
 }
 
-/* --- CONTACT CHIPS --- */
+/* --- CONTACT CHIPS (Desktop Default: Flex Row) --- */
 .contact {
     display: flex;
     flex-wrap: wrap;
@@ -133,6 +133,11 @@ header .tagline {
     border: 1px solid #f6c5c2;
 }
 .email-chip svg { color: #d93025; }
+
+.google-chip {
+    background: #fff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
 }
 
 /* --- MAIN LAYOUT --- */
@@ -472,6 +477,8 @@ tfoot td {
     50% { opacity: 1; }
     100% { opacity: 0.5; }
 }
+
+/* --- MOBILE OPTIMIZATION --- */
 @media (max-width: 640px) {
     body {
         padding: 1rem;
@@ -500,9 +507,12 @@ tfoot td {
         width: 100%;
         align-items: center;
     }
+    
+    /* --- 2x2 GRID FOR CONTACT BUTTONS ON MOBILE --- */
     .contact {
-        flex-direction: column;
-        gap: 0.5rem;
+        display: grid;                 
+        grid-template-columns: 1fr 1fr; /* Two equal columns */
+        gap: 0.75rem;
         margin: 0.5rem 0;
         width: 100%;
     }
@@ -515,7 +525,9 @@ tfoot td {
         justify-content: center;
         font-size: 0.95rem;
         padding: 0.625rem;
+        margin: 0; /* Important for grid */
     }
+    
     .btn-row {
         gap: 0.5rem;
         width: 100%;
@@ -555,6 +567,7 @@ tfoot td {
         margin: 0.5rem 0;
     }
 }
+
 /* --- HIDE CHART TITLES UNTIL CALCULATED --- */
 .charts-container {
     display: none; 
@@ -648,7 +661,6 @@ tfoot td {
     max-width: 80px;
     height: auto;
     margin-bottom: 0.8rem;
-    /* Opacity deleted for brightness */
 }
 
 .legal-links {
@@ -665,7 +677,8 @@ tfoot td {
     color: var(--primary-hover);
     text-decoration: underline;
 }
-/* --- SINGLE PREMIUM GOOGLE REVIEW --- */
+
+/* --- GOOGLE REVIEW WIDGET --- */
 .google-review-section {
     background: #fff;
     border: 1px solid rgba(0,48,135,0.1);
@@ -689,8 +702,9 @@ tfoot td {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #3c4043;
+    font-weight: 700;
 }
 .g-write-btn {
     font-size: 0.85rem;
@@ -700,20 +714,33 @@ tfoot td {
 }
 .g-write-btn:hover { text-decoration: underline; }
 
-/* The Review Card */
+/* Review Card Itself */
 .review-single-card {
-    background: #f8f9fa; /* Google Grey Background */
+    background: #f9f9f9;
     border-radius: 0.8rem;
-    padding: 1rem;
+    padding: 1.25rem;
     position: relative;
 }
 
 .reviewer-top {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 0.5rem;
+    gap: 12px;
+    margin-bottom: 0.8rem;
 }
+.reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    background: #8e24aa; /* Google Purple for default */
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+/* Style for real user profile photo */
 .reviewer-avatar-img {
     width: 40px;
     height: 40px;
@@ -723,7 +750,7 @@ tfoot td {
 }
 .r-name {
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #202124;
 }
 .r-meta {
@@ -731,28 +758,28 @@ tfoot td {
     color: #5f6368;
 }
 .small-g-icon {
-    width: 16px;
-    height: 16px;
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    opacity: 0.6;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 20px;
+    height: 20px;
 }
 
 .r-stars {
     color: #e37400;
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: 1px;
 }
 .r-text {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #3c4043;
     line-height: 1.5;
     font-style: italic;
-    margin-bottom: 0.8rem;
+    margin-bottom: 1rem;
 }
 .r-link {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #1a73e8;
     text-decoration: none;
     font-weight: 600;
