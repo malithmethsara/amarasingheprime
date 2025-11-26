@@ -719,17 +719,12 @@ tfoot td {
     gap: 10px;
     margin-bottom: 0.5rem;
 }
-.reviewer-avatar {
-    width: 36px;
-    height: 36px;
-    background: #8e24aa; /* Google assigns random colors, purple is common */
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 1rem;
+.reviewer-avatar-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Circle */
+    object-fit: cover;  /* Prevents stretching */
+    border: 1px solid #e0e0e0;
 }
 .r-name {
     font-weight: 700;
