@@ -670,3 +670,100 @@ tfoot td {
     color: var(--primary-hover);
     text-decoration: underline;
 }
+/* --- SINGLE PREMIUM GOOGLE REVIEW --- */
+.google-review-section {
+    background: #fff;
+    border: 1px solid rgba(0,48,135,0.1);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-top: 1.25rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    max-width: 100%;
+}
+
+/* Header Row */
+.g-badge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #f1f3f4;
+    padding-bottom: 0.8rem;
+}
+.g-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    color: #3c4043;
+}
+.g-write-btn {
+    font-size: 0.85rem;
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 600;
+}
+.g-write-btn:hover { text-decoration: underline; }
+
+/* The Review Card */
+.review-single-card {
+    background: #f8f9fa; /* Google Grey Background */
+    border-radius: 0.8rem;
+    padding: 1rem;
+    position: relative;
+}
+
+.reviewer-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+}
+.reviewer-avatar {
+    width: 36px;
+    height: 36px;
+    background: #8e24aa; /* Google assigns random colors, purple is common */
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+.r-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #202124;
+}
+.r-meta {
+    font-size: 0.75rem;
+    color: #5f6368;
+}
+.small-g-icon {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0.6;
+}
+
+.r-stars {
+    color: #e37400;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+.r-text {
+    font-size: 0.9rem;
+    color: #3c4043;
+    line-height: 1.5;
+    font-style: italic;
+    margin-bottom: 0.8rem;
+}
+.r-link {
+    font-size: 0.8rem;
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 600;
+}
