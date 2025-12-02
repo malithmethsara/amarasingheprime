@@ -66,7 +66,7 @@ header .tagline {
     margin-bottom: 0.5rem;
 }
 
-/* --- CONTACT CHIPS (Desktop Default: Flex Row) --- */
+/* --- CONTACT CHIPS --- */
 .contact {
     display: flex;
     flex-wrap: wrap;
@@ -661,6 +661,7 @@ tfoot td {
     max-width: 80px;
     height: auto;
     margin-bottom: 0.8rem;
+    /* Opacity deleted for brightness */
 }
 
 .legal-links {
@@ -783,4 +784,9 @@ tfoot td {
     color: #1a73e8;
     text-decoration: none;
     font-weight: 600;
+}
+
+/* Add space between stacked reviews */
+.review-single-card + .review-single-card {
+    margin-top: 1rem;
 }
