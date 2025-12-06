@@ -541,10 +541,34 @@
     }
 
     // 14. Initialization
+    function timeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+        
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) return interval + " year" + (interval === 1 ? "" : "s") + " ago";
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) return interval + " month" + (interval === 1 ? "" : "s") + " ago";
+        interval = Math.floor(seconds / 604800);
+        if (interval >= 1) return interval + " week" + (interval === 1 ? "" : "s") + " ago";
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return interval + " day" + (interval === 1 ? "" : "s") + " ago";
+        return "Just now";
+    }
+
+    function updateReviewTimes() {
+        const reviews = document.querySelectorAll('.r-meta[data-date]');
+        reviews.forEach(review => {
+            const date = review.getAttribute('data-date');
+            if (date) review.textContent = timeAgo(date);
+        });
+    }
     function init() {
         console.log('SL Tax Calculator Loaded');
 
         startLiveClock(); // Start live clock immediately
+        updateReviewTimes();
         
         // Fetch Rate from rates.txt
         const rateEl = getElementSafe('cbslRate');
