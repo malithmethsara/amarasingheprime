@@ -36,7 +36,7 @@
     }
     function clearErrors() { document.querySelectorAll('.error-message').forEach(el => el.remove()); }
 
-    // --- SMART LOADER ---
+    // --- LAZY LOADER ---
     function loadScript(url) {
         return new Promise((resolve, reject) => {
             if (document.querySelector(`script[src="${url}"]`)) { resolve(); return; }
@@ -93,7 +93,7 @@
         });
     }
 
-    // --- CALCULATOR ---
+    // --- CALCULATOR LOGIC ---
     function calculateExcise(type, capacity, age) {
         const table = exciseRates[type];
         if (!table) return { error: 'Invalid vehicle type' };
@@ -163,7 +163,6 @@
 
         displayResults(resultData);
         
-        // LAZY LOAD PIE CHARTS
         loadScript('https://cdn.jsdelivr.net/npm/chart.js').then(() => {
             showCharts(resultData);
         });
@@ -184,7 +183,6 @@
                     <tr><td style="padding:0.5rem">Capacity</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.capacity)} ${unit}</td></tr>
                 </tbody>
             </table>
-
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">Tax Breakdown</div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff"><tr><th style="padding:0.6rem">Tax Type</th><th style="padding:0.6rem;text-align:right">Amount (LKR)</th></tr></thead>
@@ -197,7 +195,6 @@
                     <tr><td style="padding:0.5rem">VAT</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.vat)}</td></tr>
                 </tbody>
             </table>
-
             <div style="font-weight:700;margin:1.5rem 0 0.5rem 0;color:var(--primary);font-size:1.1rem">Final Cost Summary</div>
             <table style="width:100%;border-collapse:collapse">
                 <tfoot style="background:#e3edfb;border-top:2px solid var(--primary)">
@@ -220,6 +217,10 @@
         costChart = new Chart(ctx2, { type: 'pie', data: { labels: ['CIF', 'Taxes', 'Other'], datasets: [{ data: [data.cif, data.totalTax, data.otherCharges], backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'] }] } });
     }
 
+    function drawExchangeRateChart() {
+        // Static Image - No Code Needed
+    }
+
     // --- PDF DOWNLOAD ---
     function downloadPDF() {
         if (!resultData) return alert('Calculate tax first.');
@@ -227,12 +228,10 @@
         btn.textContent = 'Loading PDF...';
         btn.disabled = true;
 
-        // Load Libraries on Click (Lazy Load)
         Promise.all([
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'),
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js')
         ]).then(() => {
-            // Wait 100ms for libraries to initialize
             setTimeout(() => generatePDF(btn), 100);
         }).catch(() => {
             btn.textContent = 'Error';
@@ -277,7 +276,7 @@
                 if (parts.length >= 2) {
                     const rate = parseFloat(parts[1].trim());
                     const el = getElementSafe('exchangeRate'); if (el) el.value = rate;
-                    const msg = getElementSafe('cbslRate'); if (msg) msg.innerHTML = `Rate: ${rate}`;
+                    const msg = getElementSafe('cbslRate'); if (msg) msg.innerHTML = `Exchange Rate: JPY/LKR = ${rate.toFixed(4)}`;
                 }
             }
         });
