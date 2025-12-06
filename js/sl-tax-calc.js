@@ -11,7 +11,6 @@
     let resultData = null;
     let taxChart = null;
     let costChart = null;
-    let exchangeChartInstance = null;
 
     // 2. EXCISE DUTY TABLES — VERIFIED WITH 2025 GAZETTE
     const exciseRates = {
@@ -129,18 +128,26 @@
     }
 
     function showError(fieldId, message) {
-        const input = getElementSafe(fieldId); if (!input) return;
-        const err = document.createElement('div'); err.className = 'error-message'; err.textContent = message;
-        const existing = input.parentNode.querySelector('.error-message'); if(existing) existing.remove();
-        input.parentNode.insertBefore(err, input.nextSibling); input.focus();
+        clearErrors();
+        const input = document.getElementById(fieldId);
+        if (!input) return;
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message';
+        errorDiv.textContent = message;
+        input.parentNode.insertBefore(errorDiv, input.nextSibling);
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    function clearErrors() { document.querySelectorAll('.error-message').forEach(el => el.remove()); }
+
+    function clearErrors() {
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+    }
 
     function getElementSafe(id) {
         return document.getElementById(id) || null;
     }
 
-    // --- LIVE CLOCK FUNCTION ---
+    // --- LIVE CLOCK ---
     function startLiveClock() {
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) {
@@ -161,7 +168,32 @@
         }
     }
 
-    // 4.1. Lazy Load External Scripts (PDF)
+    // --- REVIEW DATE CALCULATOR ---
+    function timeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+        
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) return interval + " year" + (interval === 1 ? "" : "s") + " ago";
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) return interval + " month" + (interval === 1 ? "" : "s") + " ago";
+        interval = Math.floor(seconds / 604800);
+        if (interval >= 1) return interval + " week" + (interval === 1 ? "" : "s") + " ago";
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return interval + " day" + (interval === 1 ? "" : "s") + " ago";
+        return "Just now";
+    }
+
+    function updateReviewTimes() {
+        const reviews = document.querySelectorAll('.r-meta[data-date]');
+        reviews.forEach(review => {
+            const date = review.getAttribute('data-date');
+            if (date) review.textContent = timeAgo(date);
+        });
+    }
+
+    // 4.1. Lazy Load External Scripts
     function loadExternalScript(url, globalCheck) {
         return new Promise((resolve, reject) => {
             if (window[globalCheck]) {
@@ -178,17 +210,32 @@
         });
     }
 
+    // --- SMART LOADER (For PDF/Charts) ---
+    function loadScript(url) {
+        return new Promise((resolve, reject) => {
+            if (document.querySelector(`script[src="${url}"]`)) { resolve(); return; }
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+
     // 5. Calculate Excise Duty
     function calculateExcise(type, capacity, age) {
         const table = exciseRates[type];
         if (!table) return { error: 'Invalid vehicle type' };
-        let minCapacity, maxCapacity, unit;
-        if (type.includes('electric') || type.includes('esmart')) { minCapacity = 1; maxCapacity = 600; unit = 'kW'; } 
-        else if (type.includes('petrol')) { minCapacity = 600; maxCapacity = 6500; unit = 'cc'; } 
-        else if (type.includes('diesel')) { minCapacity = 900; maxCapacity = 6500; unit = 'cc'; } 
+
+        let minCapacity, maxCapacity;
+        if (type.includes('electric') || type.includes('esmart')) { minCapacity = 1; maxCapacity = 600; } 
+        else if (type.includes('petrol')) { minCapacity = 600; maxCapacity = 6500; } 
+        else if (type.includes('diesel')) { minCapacity = 900; maxCapacity = 6500; } 
         else { return { error: 'Invalid vehicle type' }; }
-        
-        if (capacity < minCapacity || capacity > maxCapacity) return { error: `! Please enter valid capacity (${minCapacity}–${maxCapacity} ${unit})` };
+
+        if (capacity < minCapacity || capacity > maxCapacity) {
+            return { error: `! Please enter valid capacity (${minCapacity}–${maxCapacity})` };
+        }
 
         for (let tier of table) {
             const tierMin = tier.min || minCapacity;
@@ -205,62 +252,87 @@
     }
 
     // 6. Calculate Luxury Tax
-    function calculateLuxuryTax(cif, type) { 
-        const threshold = luxuryThresholds[type] || 5000000; 
-        const rate = luxuryRates[type] || 1.0; 
-        return cif > threshold ? (cif - threshold) * rate : 0; 
+    function calculateLuxuryTax(cif, type) {
+        const threshold = luxuryThresholds[type] || 5000000;
+        const rate = luxuryRates[type] || 1.0;
+        return cif > threshold ? (cif - threshold) * rate : 0;
     }
 
     // 7. Main Calculation
     function calculateTax() {
         clearErrors();
-        const els = {
-            cif: getElementSafe('cifJPY'), rate: getElementSafe('exchangeRate'),
-            type: getElementSafe('vehicleType'), cap: getElementSafe('capacity'),
-            age: getElementSafe('age'), dealer: getElementSafe('dealerFee'),
-            clearing: getElementSafe('clearingFee')
+        const elements = {
+            cifJPY: getElementSafe('cifJPY'),
+            exchangeRate: getElementSafe('exchangeRate'),
+            vehicleType: getElementSafe('vehicleType'),
+            capacity: getElementSafe('capacity'),
+            age: getElementSafe('age'),
+            dealerFee: getElementSafe('dealerFee'),
+            clearingFee: getElementSafe('clearingFee')
         };
-        if (!els.cif) return;
 
-        const cifJPY = parseFloat(els.cif.value) || 0;
-        const exchangeRate = parseFloat(els.rate.value) || 0;
-        const type = els.type.value;
-        const capacity = parseFloat(els.cap.value) || 0;
-        const age = els.age.value;
-        const dealerFee = parseFloat(els.dealer.value) || 0;
-        const clearingFee = parseFloat(els.clearing.value) || 0;
+        if (!elements.cifJPY || !elements.exchangeRate || !elements.vehicleType || !elements.capacity || !elements.age) {
+            showError('cifJPY', 'Form elements not found - reload page');
+            return;
+        }
 
-        if (cifJPY < 800000) return showError('cifJPY', '! Please enter valid CIF');
-        if (!type) return showError('vehicleType', '! Select type');
+        const cifJPY = parseFloat(elements.cifJPY.value) || 0;
+        const exchangeRate = parseFloat(elements.exchangeRate.value) || 0;
+        const type = elements.vehicleType.value;
+        const capacity = parseFloat(elements.capacity.value) || 0;
+        const age = elements.age.value;
+        const dealerFee = parseFloat(elements.dealerFee.value) || 0;
+        const clearingFee = parseFloat(elements.clearingFee.value) || 0;
+
+        // --- RESTORED VALIDATION ---
+        if (cifJPY < 800000 || cifJPY > 20000000) return showError('cifJPY', '! Please enter valid CIF (JPY) amount');
+        if (exchangeRate < 1.6 || exchangeRate > 2.9) return showError('exchangeRate', '! Please enter valid Exchange Rate');
+        if (!type) return showError('vehicleType', '! Please select vehicle type');
+        if (capacity <= 0) return showError('capacity', '! Please enter valid capacity');
+        if (!age) return showError('age', '! Please select vehicle age');
+        // ---------------------------
 
         const cif = cifJPY * exchangeRate;
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
+        // Customs Logic
         const cid = cif * 0.20;
         const surcharge = cid * 0.50;
         const excise = exciseResult;
         const luxuryTax = calculateLuxuryTax(cif, type);
         const vel = 15000;
+        
+        // VAT Logic
         const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
         const vat = vatBase * 0.18;
+
         const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
-        const totalCost = cif + totalTax + dealerFee + clearingFee;
+        const otherCharges = dealerFee + clearingFee;
+        const totalCost = cif + totalTax + otherCharges;
 
-        resultData = { cifJPY, exchangeRate, cif, type, capacity, age, dealerFee, clearingFee, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges: dealerFee + clearingFee, totalCost };
+        resultData = {
+            cifJPY, exchangeRate, cif, type, capacity, age,
+            dealerFee, clearingFee, cid, surcharge, excise,
+            luxuryTax, vel, vat, totalTax, otherCharges, totalCost
+        };
 
-        displayResults(resultData);
-        
-        // Lazy Load Charts for Pie Charts
-        if (window.Chart) {
+        displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
+
+        // Lazy Load Charts on Calculation
+        loadScript('https://cdn.jsdelivr.net/npm/chart.js').then(() => {
             showCharts(resultData);
-        } else {
-            // If Chart.js isn't loaded yet (should be via index.html), try dynamic load
-            loadExternalScript('https://cdn.jsdelivr.net/npm/chart.js').then(() => showCharts(resultData));
-        }
+        });
 
-        const dlBtn = getElementSafe('downloadBtn'); if (dlBtn) dlBtn.style.display = 'flex';
-        const resEl = getElementSafe('result'); if (resEl) requestAnimationFrame(() => resEl.scrollIntoView({ behavior: 'smooth' }));
+        const downloadBtn = getElementSafe('downloadBtn');
+        if (downloadBtn) downloadBtn.style.display = 'flex';
+
+        const resultEl = getElementSafe('result');
+        if (resultEl) {
+            requestAnimationFrame(() => {
+                resultEl.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
     }
 
     // 8. Display Results
@@ -275,15 +347,15 @@
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
-                    <tr><th style="padding:0.6rem;text-align:left">Input Description</th><th style="padding:0.6rem;text-align:right">Value</th></tr>
+                    <tr><th style="padding:0.625rem;width:50%;text-align:left">Input Description</th><th style="padding:0.625rem;text-align:right">Value</th></tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">CIF (JPY)</td><td style="text-align:right;padding:0.5rem">${formatNumber(resultData.cifJPY)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Exchange Rate</td><td style="text-align:right;padding:0.5rem">${resultData.exchangeRate.toFixed(4)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">CIF (LKR)</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.cif)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Vehicle Type</td><td style="text-align:right;padding:0.5rem">${typeText}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Capacity</td><td style="text-align:right;padding:0.5rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Age</td><td style="text-align:right;padding:0.5rem">${ageText}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (JPY)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.cifJPY)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Exchange Rate</td><td style="text-align:right;padding:0.5625rem 0.625rem">${resultData.exchangeRate.toFixed(4)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">CIF (LKR)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Type</td><td style="text-align:right;padding:0.5625rem 0.625rem">${typeText}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Capacity</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(resultData.capacity)} ${unit}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Age</td><td style="text-align:right;padding:0.5625rem 0.625rem">${ageText}</td></tr>
                 </tbody>
             </table>
 
@@ -292,18 +364,21 @@
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
-                    <tr><th style="padding:0.6rem;text-align:left">Tax Type</th><th style="padding:0.6rem;text-align:right">Amount (LKR)</th></tr>
+                    <tr>
+                        <th style="padding:0.625rem;width:45%;text-align:left">Tax Type</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">Amount (LKR)</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Customs Import Duty</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.cid)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Surcharge</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.surcharge)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Excise Duty</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.excise)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">Luxury Tax</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.luxuryTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">VEL</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.vel)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5rem">VAT</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.vat)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Import Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td></tr>
                 </tbody>
-                <tfoot style="background:#f0f4fa; font-weight:700;">
-                    <tr><td style="padding:0.6rem">Total Taxes</td><td style="text-align:right;padding:0.6rem">${formatNumber(data.totalTax)}</td></tr>
+                <tfoot style="border-top:2px solid var(--primary);background:#f0f4fa">
+                    <tr><td style="padding:0.625rem;font-weight:700">Total Taxes & Duties</td><td style="text-align:right;padding:0.625rem;font-weight:700">${formatNumber(data.totalTax)}</td></tr>
                 </tfoot>
             </table>
 
@@ -312,38 +387,31 @@
             </div>
             <table style="width:100%;border-collapse:collapse">
                 <thead style="background:var(--primary);color:#fff">
-                    <tr><th style="padding:0.6rem;text-align:left">Cost Component</th><th style="padding:0.6rem;text-align:right">Amount (LKR)</th></tr>
+                    <tr>
+                        <th style="padding:0.625rem;width:45%;text-align:left">Cost Component</th>
+                        <th style="padding:0.625rem;text-align:right;width:27.5%">Amount (LKR)</th>
+                    </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)">
-                        <td style="padding:0.5rem">Vehicle CIF Value</td>
-                        <td style="text-align:right;padding:0.5rem">${formatNumber(data.cif)}</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)">
-                        <td style="padding:0.5rem">Total Taxes & Duties</td>
-                        <td style="text-align:right;padding:0.5rem">${formatNumber(data.totalTax)}</td>
-                    </tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)">
-                        <td style="padding:0.5rem">Other Charges (Dealer & Clearing Fee)</td>
-                        <td style="text-align:right;padding:0.5rem">${formatNumber(data.otherCharges)}</td>
-                    </tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle CIF Value</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges (Dealer & Clearing Fee)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td></tr>
                 </tbody>
-                <tfoot style="background:#e3edfb;border-top:2px solid var(--primary)">
-                    <tr>
-                        <td style="padding:0.6rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td>
-                        <td style="text-align:right;padding:0.6rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td>
-                    </tr>
+                <tfoot style="border-top:2px solid var(--primary);background:#e3edfb">
+                    <tr><td style="padding:0.625rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td></tr>
                 </tfoot>
             </table>
         `;
-        const resultEl = getElementSafe('result'); if (resultEl) resultEl.innerHTML = html;
+        const resultEl = getElementSafe('result');
+        if (resultEl) resultEl.innerHTML = html;
     }
 
-    // 9. Show Pie Charts
+    // 9. Show Charts
     function showCharts(data) {
+        if (!window.Chart) return;
         const ctx1 = getElementSafe('taxPieChart');
         const ctx2 = getElementSafe('pieChart');
-        if (!ctx1 || !ctx2 || !window.Chart) return;
+        if (!ctx1 || !ctx2) return;
 
         if (taxChart) taxChart.destroy();
         if (costChart) costChart.destroy();
@@ -373,12 +441,7 @@
         });
     }
 
-    // 16. Draw Exchange Rate History Chart (Static Image Used now)
-    function drawExchangeRateChart() {
-        // Placeholder function if we ever go back to dynamic charts
-    }
-
-    // 10. PDF Download
+    // 10. PDF Download (Safe Lazy Load)
     function downloadPDF() {
         if (!resultData) {
             alert('Please calculate the tax first.');
@@ -391,30 +454,24 @@
             downloadBtn.textContent = 'Loading PDF...';
         }
 
-        loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'jspdf')
-            .then(() => {
-                return new Promise(resolve => {
-                    setTimeout(() => {
-                        loadExternalScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js', 'autoTable')
-                            .then(resolve).catch(resolve);
-                    }, 100);
-                });
-            })
-            .then(() => generatePDFContent(resultData))
-            .catch(error => {
-                console.error('Failed to load PDF libraries', error);
-                alert('Failed to load PDF generator. Please try again.');
-            })
-            .finally(() => {
-                if (downloadBtn) {
-                    downloadBtn.disabled = false;
-                    downloadBtn.textContent = 'Save as PDF';
-                }
-            });
+        // Load libraries only on click
+        Promise.all([
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'),
+            loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js')
+        ]).then(() => {
+            setTimeout(() => generatePDFContent(resultData, downloadBtn), 100);
+        }).catch(error => {
+            console.error('Failed to load PDF libraries', error);
+            alert('Failed to load PDF generator. Please try again.');
+            if (downloadBtn) {
+                downloadBtn.disabled = false;
+                downloadBtn.textContent = 'Save as PDF';
+            }
+        });
     }
 
-    // 10.1. Generate PDF (Restored with proper formatting)
-    function generatePDFContent(resultData) {
+    // 10.1. Generate PDF
+    function generatePDFContent(resultData, btn) {
         if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
             alert('PDF library not ready. Please try again.');
             return;
@@ -435,7 +492,7 @@
         doc.text(`Date: ${new Date().toLocaleString('en-LK')}`, 10, y);
         y += 8;
 
-        // Inputs Summary for PDF
+        // Inputs
         doc.autoTable({
             startY: y,
             head: [['Input Description', 'Value']],
@@ -457,47 +514,30 @@
         });
 
         y = doc.lastAutoTable.finalY + 8;
-        
-        // Tax Breakdown for PDF
+
+        // Cost Summary
         doc.autoTable({
             startY: y,
-            head: [['Tax Type', 'Amount (LKR)', '% of Total Tax']],
+            head: [['Cost Component', 'Amount (LKR)']],
             body: [
-                ['Customs Import Duty', formatNumber(resultData.cid), ((resultData.cid/resultData.totalTax)*100).toFixed(1) + '%'],
-                ['Surcharge', formatNumber(resultData.surcharge), ((resultData.surcharge/resultData.totalTax)*100).toFixed(1) + '%'],
-                ['Excise Duty', formatNumber(resultData.excise), ((resultData.excise/resultData.totalTax)*100).toFixed(1) + '%'],
-                ['Luxury Tax', formatNumber(resultData.luxuryTax), ((resultData.luxuryTax/resultData.totalTax)*100).toFixed(1) + '%'],
-                ['Vehicle Entitlement Levy', formatNumber(resultData.vel), ((resultData.vel/resultData.totalTax)*100).toFixed(1) + '%'],
-                ['VAT (18%)', formatNumber(resultData.vat), ((resultData.vat/resultData.totalTax)*100).toFixed(1) + '%'],
-                ['TOTAL TAXES', formatNumber(resultData.totalTax), '100.0%']
+                ['Vehicle CIF Value', formatNumber(resultData.cif)],
+                ['Total Taxes & Duties', formatNumber(resultData.totalTax)],
+                ['Other Charges (Dealer & Clearing Fee)', formatNumber(resultData.otherCharges)],
+                ['TOTAL IMPORT COST', formatNumber(resultData.totalCost)]
             ],
             theme: 'grid',
             styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
             headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
-            columnStyles: { 0: { cellWidth: 60 }, 1: { cellWidth: 80 }, 2: { cellWidth: 40 } },
-            margin: { left: 10, right: 10 }
-        });
-
-        y = doc.lastAutoTable.finalY + 8;
-
-        // Final Cost Summary for PDF
-        doc.autoTable({
-            startY: y,
-            head: [['Cost Component', 'Amount (LKR)', '% of Total']],
-            body: [
-                ['Vehicle CIF Value', formatNumber(resultData.cif), ((resultData.cif/resultData.totalCost)*100).toFixed(1) + '%'],
-                ['Total Taxes & Duties', formatNumber(resultData.totalTax), ((resultData.totalTax/resultData.totalCost)*100).toFixed(1) + '%'],
-                ['Other Charges (Dealer & Clearing Fee)', formatNumber(resultData.otherCharges), ((resultData.otherCharges/resultData.totalCost)*100).toFixed(1) + '%'],
-                ['TOTAL IMPORT COST', formatNumber(resultData.totalCost), '100.0%']
-            ],
-            theme: 'grid',
-            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
-            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
-            columnStyles: { 0: { cellWidth: 80 }, 1: { cellWidth: 60 }, 2: { cellWidth: 40 } },
+            columnStyles: { 0: { cellWidth: 80 }, 1: { cellWidth: 100 } },
             margin: { left: 10, right: 10 }
         });
 
         doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
+        
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = 'Save as PDF';
+        }
     }
 
     // 11. Reset Form
@@ -507,7 +547,6 @@
         resultData = null;
         if (taxChart) { taxChart.destroy(); taxChart = null; }
         if (costChart) { costChart.destroy(); costChart = null; }
-        if (exchangeChartInstance) { exchangeChartInstance.destroy(); exchangeChartInstance = null; }
         const resultEl = getElementSafe('result');
         if (resultEl) {
             resultEl.innerHTML = `
@@ -541,35 +580,12 @@
     }
 
     // 14. Initialization
-    function timeAgo(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const seconds = Math.floor((now - date) / 1000);
-        
-        let interval = Math.floor(seconds / 31536000);
-        if (interval >= 1) return interval + " year" + (interval === 1 ? "" : "s") + " ago";
-        interval = Math.floor(seconds / 2592000);
-        if (interval >= 1) return interval + " month" + (interval === 1 ? "" : "s") + " ago";
-        interval = Math.floor(seconds / 604800);
-        if (interval >= 1) return interval + " week" + (interval === 1 ? "" : "s") + " ago";
-        interval = Math.floor(seconds / 86400);
-        if (interval >= 1) return interval + " day" + (interval === 1 ? "" : "s") + " ago";
-        return "Just now";
-    }
-
-    function updateReviewTimes() {
-        const reviews = document.querySelectorAll('.r-meta[data-date]');
-        reviews.forEach(review => {
-            const date = review.getAttribute('data-date');
-            if (date) review.textContent = timeAgo(date);
-        });
-    }
     function init() {
         console.log('SL Tax Calculator Loaded');
 
-        startLiveClock(); // Start live clock immediately
-        updateReviewTimes();
-        
+        startLiveClock();
+        updateReviewTimes(); 
+
         // Fetch Rate from rates.txt
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
@@ -626,9 +642,6 @@
         document.querySelectorAll('.faq-item h3').forEach(h3 => {
             h3.addEventListener('click', () => toggleFAQ(h3));
         });
-
-        // Add Review Time Update Logic
-        updateReviewTimes();
 
         console.log('Initialization complete');
     }
