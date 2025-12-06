@@ -7,9 +7,9 @@
     let resultData = null;
     let taxChart = null;
     let costChart = null;
-    let exchangeChartInstance = null; // Defined to prevent crash
+    let exchangeChartInstance = null;
 
-    // --- CONFIGURATION & DATA ---
+    // --- EXCISE DATA (Keep existing arrays...) ---
     const exciseRates = {
         petrol: [ { min: 600, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) }, { max: 1300, rate: 3850 }, { max: 1500, rate: 4450 }, { max: 1600, rate: 5150 }, { max: 1800, rate: 6400 }, { max: 2000, rate: 7700 }, { max: 2500, rate: 8450 }, { max: 2750, rate: 9650 }, { max: 3000, rate: 10850 }, { max: 4000, rate: 12050 }, { max: 6500, rate: 13300 } ],
         petrol_hybrid: [ { min: 600, max: 1000, rate: () => 1810900 }, { max: 1300, rate: 2750 }, { max: 1500, rate: 3450 }, { max: 1600, rate: 4800 }, { max: 1800, rate: 6300 }, { max: 2000, rate: 6900 }, { max: 2500, rate: 7250 }, { max: 2750, rate: 8450 }, { max: 3000, rate: 9650 }, { max: 4000, rate: 10850 }, { max: 6500, rate: 12050 } ],
@@ -25,31 +25,21 @@
     const luxuryRates = { petrol: 1.0, diesel: 1.2, petrol_hybrid: 0.8, diesel_hybrid: 0.8, petrol_plugin: 0.8, diesel_plugin: 0.8, electric: 0.6, esmart_petrol: 0.6, esmart_diesel: 0.6 };
 
     // --- UTILITIES ---
-    function getElementSafe(id) { return document.getElementById(id) || null; }
     function formatNumber(num) { return num.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
-
+    function getElementSafe(id) { return document.getElementById(id) || null; }
+    
     function showError(fieldId, message) {
         const input = getElementSafe(fieldId); if (!input) return;
-        // Clear existing
-        const existing = input.parentNode.querySelector('.error-message');
-        if (existing) existing.remove();
-        
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = message;
-        input.parentNode.insertBefore(errorDiv, input.nextSibling);
-        input.focus();
-        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const err = document.createElement('div'); err.className = 'error-message'; err.textContent = message;
+        const existing = input.parentNode.querySelector('.error-message'); if(existing) existing.remove();
+        input.parentNode.insertBefore(err, input.nextSibling); input.focus();
     }
     function clearErrors() { document.querySelectorAll('.error-message').forEach(el => el.remove()); }
 
-    // --- LAZY LOADER (The Magic for Speed) ---
+    // --- LAZY LOADER ---
     function loadScript(url) {
         return new Promise((resolve, reject) => {
-            // Check if already loaded
-            if (document.querySelector(`script[src="${url}"]`)) {
-                resolve(); return;
-            }
+            if (document.querySelector(`script[src="${url}"]`)) { resolve(); return; }
             const script = document.createElement('script');
             script.src = url;
             script.onload = resolve;
@@ -63,12 +53,44 @@
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) {
             setInterval(() => {
-                timeEl.textContent = new Date().toLocaleString('en-LK', {
-                    weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
-                });
+                timeEl.textContent = new Date().toLocaleString('en-LK', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             }, 1000);
         }
+    }
+
+    // --- TIME AGO CALCULATOR (NEW!) ---
+    function timeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+        
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) return interval + " year" + (interval === 1 ? "" : "s") + " ago";
+        
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) return interval + " month" + (interval === 1 ? "" : "s") + " ago";
+        
+        interval = Math.floor(seconds / 604800);
+        if (interval >= 1) return interval + " week" + (interval === 1 ? "" : "s") + " ago";
+        
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return interval + " day" + (interval === 1 ? "" : "s") + " ago";
+        
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) return interval + " hour" + (interval === 1 ? "" : "s") + " ago";
+        
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) return interval + " minute" + (interval === 1 ? "" : "s") + " ago";
+        
+        return "Just now";
+    }
+
+    function updateReviewTimes() {
+        const reviews = document.querySelectorAll('.r-meta[data-date]');
+        reviews.forEach(review => {
+            const date = review.getAttribute('data-date');
+            if (date) review.textContent = timeAgo(date);
+        });
     }
 
     // --- CALCULATOR LOGIC ---
@@ -141,14 +163,12 @@
 
         displayResults(resultData);
         
-        // LAZY LOAD CHARTS: Only download Chart.js now
         loadScript('https://cdn.jsdelivr.net/npm/chart.js').then(() => {
             showCharts(resultData);
         });
 
         const dlBtn = getElementSafe('downloadBtn'); if (dlBtn) dlBtn.style.display = 'flex';
-        const resultEl = getElementSafe('result');
-        if (resultEl) requestAnimationFrame(() => resultEl.scrollIntoView({ behavior: 'smooth' }));
+        const resEl = getElementSafe('result'); if (resEl) requestAnimationFrame(() => resEl.scrollIntoView({ behavior: 'smooth' }));
     }
 
     function displayResults(data) {
@@ -163,7 +183,6 @@
                     <tr><td style="padding:0.5rem">Capacity</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.capacity)} ${unit}</td></tr>
                 </tbody>
             </table>
-
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">Tax Breakdown</div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff"><tr><th style="padding:0.6rem">Tax Type</th><th style="padding:0.6rem;text-align:right">Amount (LKR)</th></tr></thead>
@@ -176,7 +195,6 @@
                     <tr><td style="padding:0.5rem">VAT</td><td style="text-align:right;padding:0.5rem">${formatNumber(data.vat)}</td></tr>
                 </tbody>
             </table>
-
             <div style="font-weight:700;margin:1.5rem 0 0.5rem 0;color:var(--primary);font-size:1.1rem">Final Cost Summary</div>
             <table style="width:100%;border-collapse:collapse">
                 <tfoot style="background:#e3edfb;border-top:2px solid var(--primary)">
@@ -188,8 +206,9 @@
     }
 
     function showCharts(data) {
+        if (!window.Chart) return;
         const ctx1 = getElementSafe('taxPieChart'); const ctx2 = getElementSafe('pieChart');
-        if (!ctx1 || !ctx2 || !window.Chart) return;
+        if (!ctx1 || !ctx2) return;
         
         if (taxChart) taxChart.destroy();
         if (costChart) costChart.destroy();
@@ -199,26 +218,23 @@
     }
 
     function drawExchangeRateChart() {
-        // Intentionally Empty because you are using a STATIC IMAGE now.
-        // This prevents the "Missing Chart" error from breaking the script.
+        // Static Image - No Code Needed
     }
 
-    // --- PDF DOWNLOAD (Lazy Loaded) ---
+    // --- PDF DOWNLOAD ---
     function downloadPDF() {
         if (!resultData) return alert('Calculate tax first.');
         const btn = getElementSafe('downloadBtn');
         btn.textContent = 'Loading PDF...';
         btn.disabled = true;
 
-        // Load Libraries on Click
         Promise.all([
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'),
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js')
         ]).then(() => {
-            // Wait 100ms for libraries to initialize
             setTimeout(() => generatePDF(btn), 100);
         }).catch(() => {
-            btn.textContent = 'Error loading PDF';
+            btn.textContent = 'Error';
             btn.disabled = false;
         });
     }
@@ -251,8 +267,8 @@
     function init() {
         console.log('App Loaded');
         startLiveClock();
+        updateReviewTimes(); // Updates "X weeks ago" automatically
         
-        // Rate Fetcher
         fetch('rates.txt').then(r => r.text()).then(t => {
             const lines = t.trim().split('\n');
             if (lines.length > 0) {
