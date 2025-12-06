@@ -790,3 +790,41 @@ tfoot td {
 .review-single-card + .review-single-card {
     margin-top: 1rem;
 }
+
+/* --- LOGO LINKS & HOVER --- */
+.logo-link {
+    display: inline-block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+.logo-link:hover {
+    transform: scale(1.05); /* The Zoom Effect */
+    cursor: pointer;
+}
+/* Ensure images inside don't interfere with the link's layout */
+.logo-link img {
+    display: block; 
+}
+
+/* --- RATE CHART IMAGE STYLING (Clean & Seamless) --- */
+.rate-chart-container {
+    margin-top: 2rem;
+    text-align: center;
+    /* REMOVED: border-top: 1px solid #eee; */
+    padding-top: 1.5rem;
+    width: 100%;
+}
+
+.rate-chart-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    
+    /* FIX: Remove shadow and border */
+    box-shadow: none !important; 
+    border: none !important;
+    
+    /* Ensures it centers perfectly */
+    display: block; 
+    margin: 0 auto;
+}
