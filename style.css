@@ -721,6 +721,21 @@ tfoot td {
     border-radius: 0.8rem;
     padding: 1.25rem;
     position: relative;
+    /* RESET vertical margin from previous code */
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    
+    /* Horizontal Layout Logic */
+    flex: 1; /* All cards grow equally */
+    min-width: 280px; /* Minimum width so they don't get squashed */
+    
+    /* Snap alignment */
+    scroll-snap-align: start;
+    
+    /* Ensure uniform height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .reviewer-top {
@@ -786,11 +801,6 @@ tfoot td {
     font-weight: 600;
 }
 
-/* Add space between stacked reviews */
-.review-single-card + .review-single-card {
-    margin-top: 1rem;
-}
-
 /* --- LOGO LINKS & HOVER --- */
 .logo-link {
     display: inline-block;
@@ -804,66 +814,6 @@ tfoot td {
 /* Ensure images inside don't interfere with the link's layout */
 .logo-link img {
     display: block; 
-}
-
-/* --- RATE CHART IMAGE STYLING (Clean & Seamless) --- */
-.rate-chart-container {
-    margin-top: 2rem;
-    text-align: center;
-    /* REMOVED: border-top: 1px solid #eee; */
-    padding-top: 1.5rem;
-    width: 100%;
-}
-
-.rate-chart-container img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 0.5rem;
-    
-    /* FIX: Remove shadow and border */
-    box-shadow: none !important; 
-    border: none !important;
-    
-    /* Ensures it centers perfectly */
-    display: block; 
-    margin: 0 auto;
-}
-
-/* --- HORIZONTAL REVIEWS (Side-by-Side) --- */
-.reviews-row {
-    display: flex;
-    gap: 1rem;
-    overflow-x: auto; /* Enables horizontal scrolling on mobile */
-    padding-bottom: 0.5rem; /* Space for scrollbar */
-    scroll-snap-type: x mandatory; /* Smooth snapping on mobile */
-    -webkit-overflow-scrolling: touch;
-}
-
-.review-single-card {
-    /* RESET vertical margin from previous code */
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    
-    /* Horizontal Layout Logic */
-    flex: 1; /* All cards grow equally */
-    min-width: 280px; /* Minimum width so they don't get squashed */
-    
-    /* Snap alignment */
-    scroll-snap-align: start;
-    
-    /* Ensure uniform height */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-/* Optional: Cleaner Scrollbar */
-.reviews-row::-webkit-scrollbar {
-    height: 6px;
-}
-.reviews-row::-webkit-scrollbar-thumb {
-    background-color: #ddd;
-    border-radius: 3px;
 }
 
 /* --- RATE CHART CLEANUP (Ensures no dark lines) --- */
@@ -881,4 +831,23 @@ tfoot td {
     border: none !important;
     display: block; 
     margin: 0 auto;
+}
+
+/* --- HORIZONTAL REVIEWS (Side-by-Side) --- */
+.reviews-row {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto; /* Enables horizontal scrolling on mobile */
+    padding-bottom: 0.5rem; /* Space for scrollbar */
+    scroll-snap-type: x mandatory; /* Smooth snapping on mobile */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Optional: Cleaner Scrollbar */
+.reviews-row::-webkit-scrollbar {
+    height: 6px;
+}
+.reviews-row::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 3px;
 }
