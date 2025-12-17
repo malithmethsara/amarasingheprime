@@ -642,6 +642,20 @@
         document.querySelectorAll('.faq-item h3').forEach(h3 => {
             h3.addEventListener('click', () => toggleFAQ(h3));
         });
+        // --- REVIEW SCROLL ARROWS ---
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const leftArrow = document.querySelector('.left-arrow');
+        const rightArrow = document.querySelector('.right-arrow');
+
+        if (reviewsContainer && leftArrow && rightArrow) {
+            leftArrow.addEventListener('click', () => {
+                reviewsContainer.scrollBy({ left: -300, behavior: 'smooth' });
+            });
+            
+            rightArrow.addEventListener('click', () => {
+                reviewsContainer.scrollBy({ left: 300, behavior: 'smooth' });
+            });
+        }
 
         console.log('Initialization complete');
     }
