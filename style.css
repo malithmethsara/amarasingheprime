@@ -851,3 +851,43 @@ tfoot td {
     background-color: #ddd;
     border-radius: 3px;
 }
+
+/* --- NAVIGATION ARROWS FOR REVIEWS --- */
+.google-review-section {
+    position: relative; /* Essential for positioning arrows */
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 55%; /* Centers vertically relative to reviews */
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #555;
+    transition: all 0.2s ease;
+}
+
+.nav-arrow:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }
+
+/* Optional: Hide arrows on desktop if you prefer scrollbar, 
+   but keeping them visible is good UX for everyone */
+@media (min-width: 1024px) {
+    .nav-arrow { width: 40px; height: 40px; }
+}
