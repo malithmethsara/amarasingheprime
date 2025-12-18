@@ -1,8 +1,6 @@
 /*
 * Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
-*
-* This code contains proprietary calculation logic developed by Amarasinghe Prime.
-* Unauthorized copying, use, or distribution of this code is strictly prohibited.
+* Official Calculation Logic - Adjusted for 2025 Gazette & Real World CUSDEC
 */
 (function() {
     'use strict';
@@ -258,7 +256,7 @@
         return cif > threshold ? (cif - threshold) * rate : 0;
     }
 
-    // 7. Main Calculation
+    // 7. Main Calculation (THE REAL WORLD FORMULA)
     function calculateTax() {
         clearErrors();
         const elements = {
@@ -284,40 +282,57 @@
         const dealerFee = parseFloat(elements.dealerFee.value) || 0;
         const clearingFee = parseFloat(elements.clearingFee.value) || 0;
 
-        // --- RESTORED VALIDATION ---
+        // --- VALIDATION ---
         if (cifJPY < 800000 || cifJPY > 20000000) return showError('cifJPY', '! Please enter valid CIF (JPY) amount');
         if (exchangeRate < 1.6 || exchangeRate > 2.9) return showError('exchangeRate', '! Please enter valid Exchange Rate');
         if (!type) return showError('vehicleType', '! Please select vehicle type');
         if (capacity <= 0) return showError('capacity', '! Please enter valid capacity');
         if (!age) return showError('age', '! Please select vehicle age');
-        // ---------------------------
 
         const cif = cifJPY * exchangeRate;
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
-        // Customs Logic
+        // 1. Customs Import Duty (CID)
         const cid = cif * 0.20;
+
+        // 2. Surcharge
         const surcharge = cid * 0.50;
+
+        // 3. PAL (10%)
+        const pal = cif * 0.10;
+
+        // 4. Excise Duty
         const excise = exciseResult;
+
+        // 5. Luxury Tax (Added to total, excluded from VAT base per 2025 CUSDEC)
         const luxuryTax = calculateLuxuryTax(cif, type);
-        const vel = 15000;
-        
-        // VAT Logic
-        const vatBase = (cif * 1.1) + cid + surcharge + excise + luxuryTax;
+
+        // 6. VAT Calculation (18%)
+        // Base = CIF + PAL + CID + Surcharge + Excise (Excludes Luxury)
+        const vatBase = cif + pal + cid + surcharge + excise;
         const vat = vatBase * 0.18;
 
-        const totalTax = cid + surcharge + excise + luxuryTax + vel + vat;
+        // 7. Fixed Levies
+        const vel = 15000;       // Vehicle Entitlement Levy
+        const comFee = 1750;     // Computer / Exam / Seal Fee (ADDED)
+
+        // 8. SSCL (Exempt for Personal Cars - Hidden in Display)
+        const sscl = 0; 
+
+        // 9. Totals
+        const totalTax = cid + surcharge + excise + luxuryTax + vel + vat + comFee + pal + sscl;
         const otherCharges = dealerFee + clearingFee;
         const totalCost = cif + totalTax + otherCharges;
 
         resultData = {
             cifJPY, exchangeRate, cif, type, capacity, age,
             dealerFee, clearingFee, cid, surcharge, excise,
-            luxuryTax, vel, vat, totalTax, otherCharges, totalCost
+            luxuryTax, vel, vat, comFee, totalTax, 
+            otherCharges, totalCost
         };
 
-        displayResults({ cif, cid, surcharge, excise, luxuryTax, vel, vat, totalTax, otherCharges, totalCost });
+        displayResults(resultData);
 
         // Lazy Load Charts on Calculation
         loadScript('https://cdn.jsdelivr.net/npm/chart.js').then(() => {
@@ -335,7 +350,7 @@
         }
     }
 
-    // 8. Display Results
+    // 8. Display Results (UPDATED WITH NEW ROW)
     function displayResults(data) {
         const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
         const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
@@ -374,8 +389,9 @@
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">COM / Exam / Seal Fee</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.comFee)}</td></tr>
                 </tbody>
                 <tfoot style="border-top:2px solid var(--primary);background:#f0f4fa">
                     <tr><td style="padding:0.625rem;font-weight:700">Total Taxes & Duties</td><td style="text-align:right;padding:0.625rem;font-weight:700">${formatNumber(data.totalTax)}</td></tr>
@@ -454,7 +470,6 @@
             downloadBtn.textContent = 'Loading PDF...';
         }
 
-        // Load libraries only on click
         Promise.all([
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'),
             loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js')
@@ -515,6 +530,28 @@
 
         y = doc.lastAutoTable.finalY + 8;
 
+        // TAX TABLE (Added COM Fee row here too)
+        doc.text('Tax Breakdown', 10, y - 2);
+        doc.autoTable({
+            startY: y,
+            head: [['Tax Type', 'Amount (LKR)']],
+            body: [
+                ['Customs Import Duty', formatNumber(resultData.cid)],
+                ['Surcharge', formatNumber(resultData.surcharge)],
+                ['Excise Duty', formatNumber(resultData.excise)],
+                ['Luxury Tax', formatNumber(resultData.luxuryTax)],
+                ['VAT', formatNumber(resultData.vat)],
+                ['VEL', formatNumber(resultData.vel)],
+                ['COM / Exam / Seal Fee', formatNumber(resultData.comFee)] // NEW ROW
+            ],
+            theme: 'grid',
+            styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
+            headStyles: { fillColor: [0, 48, 135], textColor: [255, 255, 255] },
+            margin: { left: 10, right: 10 }
+        });
+
+        y = doc.lastAutoTable.finalY + 8;
+
         // Cost Summary
         doc.autoTable({
             startY: y,
@@ -522,7 +559,7 @@
             body: [
                 ['Vehicle CIF Value', formatNumber(resultData.cif)],
                 ['Total Taxes & Duties', formatNumber(resultData.totalTax)],
-                ['Other Charges (Dealer & Clearing Fee)', formatNumber(resultData.otherCharges)],
+                ['Other Charges', formatNumber(resultData.otherCharges)],
                 ['TOTAL IMPORT COST', formatNumber(resultData.totalCost)]
             ],
             theme: 'grid',
