@@ -768,6 +768,17 @@ tfoot td {
     font-weight: 700;
     font-size: 0.95rem;
     color: #202124;
+    
+    /* ALIGNMENT FIX START */
+    line-height: 1.35;        /* Sets specific height for each line */
+    min-height: 2.7em;        /* Forces height to equal exactly 2 lines (1.35 * 2) */
+    display: -webkit-box;     /* Safety: Truncates text if it exceeds 2 lines */
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    display: flex;            /* Uses Flexbox to align text properly */
+    align-items: center;      /* Vertically centers 1-line names (Optional: remove if you prefer top alignment) */
+    /* ALIGNMENT FIX END */
 }
 .r-meta {
     font-size: 0.75rem;
