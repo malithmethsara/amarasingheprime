@@ -10,7 +10,7 @@
 const vehicleInventory = [
     {
         id: "car1",
-        model: "Suzuki WagonR Fx MH 85s ",
+        model: "Suzuki WagonR Fx (MH 85s)",
         badge: "Best Seller", // Optional badge (or leave empty "")
         specs: {
             year: "2024",
@@ -19,45 +19,45 @@ const vehicleInventory = [
             auction: "5"
         },
         price: "LKR 6,600,000",
-        image: "wagonr.jpg", // Must match file in vehicle-photos folder
+        image: "wagonr.jpg", 
         
         // Calculator Auto-Fill Data
-        calcType: "petrol_hybrid",
+        calcType: "petrol",
         calcCapacity: 660,
-        calcCif: 1250000
+        calcCif: 1300000
     },
     {
         id: "car2",
-        model: "Toyota Vitz (KSP130)",
-        badge: "", 
+        model: "Daihatsu Mira (LA350S)",
+        badge: "Best-value", 
         specs: {
-            year: "2019",
-            mileage: "12,000 km",
-            grade: "F Safety",
-            auction: "4.5" // High auction grade is a selling point!
+            year: "2024",
+            mileage: "5,000 km",
+            grade: "L SAIII",
+            auction: "5" 
         },
-        price: "LKR 6,800,000",
-        image: "vitz.jpg",
+        price: "LKR 6,050,000",
+        image: "mira.jpg",
         
         calcType: "petrol",
-        calcCapacity: 1000,
-        calcCif: 1600000
+        calcCapacity: 660,
+        calcCif: 1100000
     },
     {
         id: "car3",
-        model: "Nissan Leaf (ZE1)",
-        badge: "Electric",
+        model: "Toyota Roomy (M",
+        badge: "Multi-purpose",
         specs: {
-            year: "2018",
-            mileage: "40,000 km",
-            grade: "G Grade",
-            auction: "4.0"
+            year: "2025",
+            mileage: "0 km",
+            grade: "Custom GT",
+            auction: "S"
         },
-        price: "LKR 5,900,000",
-        image: "leaf.jpg",
+        price: "LKR 10,500,000",
+        image: "roomy.jpg",
         
-        calcType: "electric",
-        calcCapacity: 110,
-        calcCif: 950000
+        calcType: "petrol",
+        calcCapacity: 996,
+        calcCif: 2400000
     }
 ];
