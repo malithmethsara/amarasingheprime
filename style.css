@@ -920,3 +920,132 @@ tfoot td {
 .logo-link img {
     display: block; /* Removes tiny gap at bottom of image */
 }
+
+/* --- VEHICLE SHOWCASE SLIDER --- */
+.vehicle-showcase-section {
+    position: relative;
+    margin: 2rem 0;
+    padding: 0 1rem;
+}
+.vehicle-showcase-section h2 {
+    text-align: center;
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.vehicle-slider {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 1rem 0.5rem 2rem 0.5rem;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar IE */
+}
+.vehicle-slider::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
+
+.vehicle-card {
+    flex: 0 0 300px; /* Slightly wider for the data grid */
+    background: #fff;
+    border: 1px solid rgba(0,48,135,0.1);
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+}
+.vehicle-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,48,135,0.15);
+}
+
+.veh-img-container {
+    position: relative;
+    height: 190px;
+    background: #eee;
+}
+.veh-img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.veh-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ffcc00;
+    color: #000;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.veh-info {
+    padding: 1.25rem;
+}
+.veh-info h3 {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* THE 2x2 DATA GRID */
+.veh-specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    background: #f8faff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+.spec-item {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+/* Icons for specs (optional, using emojis for simplicity) */
+.spec-icon { opacity: 0.7; }
+
+.veh-price-box {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.price-tag {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+.price-sub {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.veh-btn {
+    width: 100%;
+    padding: 0.7rem;
+    border: 2px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    font-weight: 700;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.veh-btn:hover {
+    background: var(--primary);
+    color: white;
+}
