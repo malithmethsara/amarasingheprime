@@ -1,6 +1,7 @@
 /*
 * Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2025 Gazette & Real World CUSDEC
+* Updated: Added Bank LC Fee to Other Charges
 */
 (function() {
     'use strict';
@@ -266,7 +267,8 @@
             capacity: getElementSafe('capacity'),
             age: getElementSafe('age'),
             dealerFee: getElementSafe('dealerFee'),
-            clearingFee: getElementSafe('clearingFee')
+            clearingFee: getElementSafe('clearingFee'),
+            bankFee: getElementSafe('bankLcFee') // NEW: Grab Bank Fee Input
         };
 
         if (!elements.cifJPY || !elements.exchangeRate || !elements.vehicleType || !elements.capacity || !elements.age) {
@@ -281,6 +283,7 @@
         const age = elements.age.value;
         const dealerFee = parseFloat(elements.dealerFee.value) || 0;
         const clearingFee = parseFloat(elements.clearingFee.value) || 0;
+        const bankFee = parseFloat(elements.bankFee ? elements.bankFee.value : 0) || 0; // NEW: Parse Bank Fee
 
         // --- VALIDATION ---
         if (cifJPY < 800000 || cifJPY > 20000000) return showError('cifJPY', '! Please enter valid CIF (JPY) amount');
@@ -315,7 +318,7 @@
 
         // 7. Fixed Levies
         const vel = 15000;       // Vehicle Entitlement Levy
-        const comFee = 1750;     // Computer / Exam / Seal Fee (ADDED)
+        const comFee = 1750;     // Computer / Exam / Seal Fee 
 
         // 8. SSCL (Exempt for Personal Cars - Hidden in Display)
         const sscl = 0; 
@@ -323,12 +326,15 @@
         // 9. Totals
         // REMOVED 'pal' from this sum to match Reference Web & CUSDEC Total Line
         const totalTax = cid + surcharge + excise + luxuryTax + vel + vat + comFee + sscl;
-        const otherCharges = dealerFee + clearingFee;
+        
+        // NEW: Sum up all 3 charges for "Other Charges" grouping
+        const otherCharges = dealerFee + clearingFee + bankFee;
         const totalCost = cif + totalTax + otherCharges;
 
         resultData = {
             cifJPY, exchangeRate, cif, type, capacity, age,
-            dealerFee, clearingFee, cid, surcharge, excise,
+            dealerFee, clearingFee, bankFee, // NEW: Added to data object
+            cid, surcharge, excise,
             luxuryTax, vel, vat, comFee, totalTax, 
             otherCharges, totalCost
         };
@@ -351,7 +357,7 @@
         }
     }
 
-    // 8. Display Results (UPDATED WITH NEW ROW)
+    // 8. Display Results (UPDATED LABEL)
     function displayResults(data) {
         const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
         const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
@@ -412,7 +418,7 @@
                 <tbody>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle CIF Value</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cif)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Total Taxes & Duties</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.totalTax)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges (Dealer & Clearing Fee)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Other Charges (Bank, Dealer & Clearing Fee)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.otherCharges)}</td></tr>
                 </tbody>
                 <tfoot style="border-top:2px solid var(--primary);background:#e3edfb">
                     <tr><td style="padding:0.625rem;font-weight:700;font-size:1.1rem">TOTAL IMPORT COST</td><td style="text-align:right;padding:0.625rem;font-weight:700;font-size:1.1rem">${formatNumber(data.totalCost)}</td></tr>
@@ -486,7 +492,7 @@
         });
     }
 
-    // 10.1. Generate PDF
+    // 10.1. Generate PDF (UPDATED LABELS & INPUTS)
     function generatePDFContent(resultData, btn) {
         if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
             alert('PDF library not ready. Please try again.');
@@ -508,7 +514,7 @@
         doc.text(`Date: ${new Date().toLocaleString('en-LK')}`, 10, y);
         y += 8;
 
-        // Inputs
+        // Inputs (Added Bank LC Fee to PDF inputs as well for completeness)
         doc.autoTable({
             startY: y,
             head: [['Input Description', 'Value']],
@@ -520,7 +526,8 @@
                 ['Capacity', `${formatNumber(resultData.capacity)}`],
                 ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
                 ['Dealer Fee (LKR)', formatNumber(resultData.dealerFee)],
-                ['Clearing Agent Fee (LKR)', formatNumber(resultData.clearingFee)]
+                ['Clearing Agent Fee (LKR)', formatNumber(resultData.clearingFee)],
+                ['Bank LC Fee (LKR)', formatNumber(resultData.bankFee)] // NEW ROW
             ],
             theme: 'grid',
             styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
@@ -531,7 +538,7 @@
 
         y = doc.lastAutoTable.finalY + 8;
 
-        // TAX TABLE (Added COM Fee row here too)
+        // TAX TABLE
         doc.text('Tax Breakdown', 10, y - 2);
         doc.autoTable({
             startY: y,
@@ -543,7 +550,7 @@
                 ['Luxury Tax', formatNumber(resultData.luxuryTax)],
                 ['VAT', formatNumber(resultData.vat)],
                 ['VEL', formatNumber(resultData.vel)],
-                ['COM / Exam / Seal Fee', formatNumber(resultData.comFee)] // NEW ROW
+                ['COM / Exam / Seal Fee', formatNumber(resultData.comFee)]
             ],
             theme: 'grid',
             styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
@@ -553,14 +560,14 @@
 
         y = doc.lastAutoTable.finalY + 8;
 
-        // Cost Summary
+        // Cost Summary (UPDATED LABEL)
         doc.autoTable({
             startY: y,
             head: [['Cost Component', 'Amount (LKR)']],
             body: [
                 ['Vehicle CIF Value', formatNumber(resultData.cif)],
                 ['Total Taxes & Duties', formatNumber(resultData.totalTax)],
-                ['Other Charges', formatNumber(resultData.otherCharges)],
+                ['Other Charges (Bank, Dealer & Clearing Fee)', formatNumber(resultData.otherCharges)], // NEW LABEL
                 ['TOTAL IMPORT COST', formatNumber(resultData.totalCost)]
             ],
             theme: 'grid',
