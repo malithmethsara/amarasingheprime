@@ -1,17 +1,12 @@
 /* * VEHICLE INVENTORY DATA
  * Update this file to change the cars in the slider.
- * * Guide:
- * - image: The exact filename inside your 'vehicle-photos' folder.
- * - calcType: Must match values from your calculator (e.g., 'petrol', 'electric', 'petrol_hybrid').
- * - calcCapacity: Engine CC or Motor kW (just the number).
- * - calcCif: The JPY amount to auto-fill.
  */
 
 const vehicleInventory = [
     {
         id: "car1",
         model: "Suzuki WagonR Fx (MH 85s)",
-        badge: "Best Seller", // Optional badge (or leave empty "")
+        badge: "Best Seller",
         specs: {
             year: "2024",
             mileage: "3,000 km",
@@ -59,7 +54,7 @@ const vehicleInventory = [
         calcType: "petrol",
         calcCapacity: 996,
         calcCif: 2400000
-    }
+    }, // <--- FIXED: Added missing comma here!
     {
         id: "car4",
         model: "Honda Vezel (RV5)",
@@ -73,7 +68,7 @@ const vehicleInventory = [
         price: "LKR 15,700,000",
         image: "vezel.jpg",
         
-        calcType: "petrol hybrid",
+        calcType: "petrol_hybrid", // <--- FIXED: Changed space to underscore (_)
         calcCapacity: 1496,
         calcCif: 2900000
     },
