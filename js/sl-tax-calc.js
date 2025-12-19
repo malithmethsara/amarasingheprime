@@ -321,7 +321,8 @@
         const sscl = 0; 
 
         // 9. Totals
-        const totalTax = cid + surcharge + excise + luxuryTax + vel + vat + comFee + pal + sscl;
+        // REMOVED 'pal' from this sum to match Reference Web & CUSDEC Total Line
+        const totalTax = cid + surcharge + excise + luxuryTax + vel + vat + comFee + sscl;
         const otherCharges = dealerFee + clearingFee;
         const totalCost = cif + totalTax + otherCharges;
 
