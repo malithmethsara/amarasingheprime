@@ -45,7 +45,7 @@ const vehicleInventory = [
     },
     {
         id: "car3",
-        model: "Toyota Roomy (M",
+        model: "Toyota Roomy (M900A)",
         badge: "Multi-purpose",
         specs: {
             year: "2025",
