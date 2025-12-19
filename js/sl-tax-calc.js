@@ -1,7 +1,7 @@
 /*
 * Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2025 Gazette & Real World CUSDEC
-* Updated: Added Bank LC Fee to Other Charges
+* Updated: Added Bank LC Fee & Dynamic Vehicle Showcase Slider
 */
 (function() {
     'use strict';
@@ -624,12 +624,114 @@
         if (indicator) indicator.style.transform = item.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 
+    // --- NEW: DYNAMIC VEHICLE RENDERER ---
+    function renderVehicleShowcase() {
+        const slider = document.getElementById('vehicleSlider');
+        // Check if slider exists AND if vehicleInventory data is loaded
+        if (!slider || typeof vehicleInventory === 'undefined') return;
+
+        let html = '';
+        
+        vehicleInventory.forEach(car => {
+            // Check if badge exists, otherwise hide it
+            const badgeHtml = car.badge ? `<span class="veh-badge">${car.badge}</span>` : '';
+            
+            html += `
+            <div class="vehicle-card">
+                <div class="veh-img-container">
+                    <img src="vehicle-photos/${car.image}" alt="${car.model}" loading="lazy">
+                    ${badgeHtml}
+                </div>
+                <div class="veh-info">
+                    <h3>${car.model}</h3>
+                    
+                    <div class="veh-specs-grid">
+                        <div class="spec-item" title="Year"><span class="spec-icon">📅</span> ${car.specs.year}</div>
+                        <div class="spec-item" title="Mileage"><span class="spec-icon">🛣️</span> ${car.specs.mileage}</div>
+                        <div class="spec-item" title="Grade"><span class="spec-icon">✨</span> ${car.specs.grade}</div>
+                        <div class="spec-item" title="Auction Grade"><span class="spec-icon">📊</span> Grade ${car.specs.auction}</div>
+                    </div>
+
+                    <div class="veh-price-box">
+                        <span class="price-sub">Est. Total Cost</span>
+                        <span class="price-tag">${car.price}</span>
+                    </div>
+
+                    <button class="veh-btn" onclick="fillCalculator(${car.calcCapacity}, ${car.calcCif}, '${car.calcType}')">
+                        Calculate Tax →
+                    </button>
+                </div>
+            </div>
+            `;
+        });
+
+        slider.innerHTML = html;
+        
+        // After rendering, start the auto-slider logic
+        initVehicleSlider(); 
+    }
+
+    // --- NEW: AUTO SLIDER LOGIC ---
+    function initVehicleSlider() {
+        const slider = document.getElementById('vehicleSlider');
+        if (!slider) return;
+
+        let autoSlide;
+        const cardWidth = 320; // Card width + gap
+
+        const slideRight = () => {
+            if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 10)) {
+                slider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                slider.scrollBy({ left: cardWidth, behavior: 'smooth' });
+            }
+        };
+
+        const startSliding = () => { autoSlide = setInterval(slideRight, 3500); };
+        const stopSliding = () => { clearInterval(autoSlide); };
+
+        startSliding();
+
+        // Pause on interaction
+        slider.addEventListener('mouseenter', stopSliding);
+        slider.addEventListener('mouseleave', startSliding);
+        slider.addEventListener('touchstart', stopSliding);
+        slider.addEventListener('touchend', startSliding);
+
+        // Buttons
+        const leftBtn = document.getElementById('vehLeftBtn');
+        const rightBtn = document.getElementById('vehRightBtn');
+        
+        if(leftBtn) leftBtn.addEventListener('click', () => { stopSliding(); slider.scrollBy({ left: -cardWidth, behavior: 'smooth' }); });
+        if(rightBtn) rightBtn.addEventListener('click', () => { stopSliding(); slideRight(); });
+    }
+
+    // --- NEW: HELPER TO FILL CALCULATOR (Must be global) ---
+    window.fillCalculator = function(capacity, cif, type) {
+        const capInput = document.getElementById('capacity');
+        const cifInput = document.getElementById('cifJPY');
+        const typeInput = document.getElementById('vehicleType');
+        
+        if(capInput) capInput.value = capacity;
+        if(cifInput) cifInput.value = cif;
+        if(typeInput) typeInput.value = type;
+
+        // Force update UI
+        if(typeInput) typeInput.dispatchEvent(new Event('change'));
+
+        const form = document.getElementById('taxCalculatorForm');
+        if(form) form.scrollIntoView({ behavior: 'smooth' });
+    };
+
     // 14. Initialization
     function init() {
         console.log('SL Tax Calculator Loaded');
 
         startLiveClock();
         updateReviewTimes(); 
+        
+        // NEW: Render Vehicles
+        renderVehicleShowcase();
 
         // Fetch Rate from rates.txt
         const rateEl = getElementSafe('cbslRate');
