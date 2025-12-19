@@ -60,4 +60,38 @@ const vehicleInventory = [
         calcCapacity: 996,
         calcCif: 2400000
     }
+    {
+        id: "car4",
+        model: "Honda Vezel (RV5)",
+        badge: "Refined", 
+        specs: {
+            year: "2024",
+            mileage: "18,000 km",
+            grade: "HYBRID Z E:HEV",
+            auction: "4.5" 
+        },
+        price: "LKR 15,700,000",
+        image: "vezel.jpg",
+        
+        calcType: "petrol hybrid",
+        calcCapacity: 1496,
+        calcCif: 2900000
+    },
+    {
+        id: "car5",
+        model: "Toyota Raize (A210A)",
+        badge: "Balanced",
+        specs: {
+            year: "2024",
+            mileage: "1000 km",
+            grade: "Z grade",
+            auction: "5"
+        },
+        price: "LKR 12,000,000",
+        image: "raize.jpg",
+        
+        calcType: "petrol",
+        calcCapacity: 996,
+        calcCif: 2700000
+    }
 ];
