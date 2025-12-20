@@ -1049,3 +1049,19 @@ tfoot td {
     background: var(--primary);
     color: white;
 }
+
+/* --- CONTENT PROTECTION --- */
+.blog-content, .blog-body {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Standard */
+}
+
+/* Allow selection on code blocks or specific areas if needed */
+.allow-select {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
