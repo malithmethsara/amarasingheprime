@@ -204,10 +204,52 @@
         }
         .back-nav:hover { color: #003087; }
 
+        /* --- CONTACT CHIPS STYLES (MATCHING HOME PAGE WHITE PILLS) --- */
+        .contact {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px 10px;
+            flex-wrap: wrap;
+            background: transparent;
+        }
+        .chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 25px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #444;
+            font-weight: 600;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            min-width: 120px;
+            justify-content: center;
+        }
+        .chip:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #003087;
+        }
+        .chip svg {
+            width: 18px;
+            height: 18px;
+        }
+        /* Specific Colors for Icons */
+        .phone-chip svg { color: #003087; fill: currentColor; }
+        .whatsapp-chip svg { color: #25D366; fill: currentColor; }
+        .facebook-chip svg { color: #1877F2; fill: currentColor; }
+        .email-chip svg { color: #EA4335; fill: currentColor; }
+
         @media (max-width: 600px) {
             .blog-wrapper { padding: 1.5rem; }
             .blog-title { font-size: 1.6rem; }
             .code-grid { grid-template-columns: 1fr; }
+            .chip { width: 100%; }
         }
     </style>
 </head>
@@ -221,9 +263,26 @@
         <div class="tagline">Your trusted Japanese automobile partner</div>
     </header>
 
-    <div class="contact">
-        <a class="chip phone-chip" href="tel:+94769447740">Call 076 944 7740</a>
-        <a class="chip whatsapp-chip" href="https://wa.me/94769447740" target="_blank">WhatsApp</a>
+    <div class="contact" id="contact-row">
+        <a class="chip phone-chip" href="tel:+94769447740" aria-label="Call Us">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
+            Call Now 
+        </a>
+
+        <a class="chip whatsapp-chip" href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+            WhatsApp
+        </a>
+
+        <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
+            Facebook
+        </a>
+
+        <a class="chip email-chip" href="mailto:info@amarasingheprime.lk" aria-label="Email Us">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+            Email
+        </a>
     </div>
 
     <main class="blog-wrapper">
@@ -242,93 +301,93 @@
                 <strong>ජපන් වෙන්දේසියෙන් වාහනයක් ගන්නවාද?</strong> එහෙනම් වෙන්දේසි පත්‍රිකාව (Auction Sheet) කියවීම සහ අවබෝධ කරගනීම අනිවාර්යයෙන් දැනගනිමු.
             </p>
             <p>
-                ජපානයෙන් භාවිතා කළ වාහනයක් (Used Car) ආනයනය කිරීමට ඔබ සිතන්නේ නම්, "Auction Sheet" නැතහොත් "වෙන්දේසි පත්‍රිකාව" යනු කුමක්දැයි දැන සිටීම ඉතාම වැදගත් වේ. ඔබ ලංකාවේ සිට ජපානයේ ඇති වාහනයක් මිලදී ගන්නේ එය දෑසින් නොදැක, හුදෙක් ඡායාරූප සහ මෙම වෙන්දේසි පත්‍රිකාවේ තොරතුරු මත පදනම්වය. එම නිසා, වෙන්දේසි පත්‍රිකාවේ ඇති මෙම ඉලක්කම් සහ අකුරු වලින් කියවෙන අර්ථය නිවැරදිව තේරුම් ගැනීම, ඔබගේ මුදලට සරිලන හොඳම වාහනය තෝරා ගැනීමට උපකාරී වනු ඇත.
-            </p>
-            <p>
-                සම්මත වෙන්දේසි පත්‍රිකාවක (Auction Sheet) රථයේ විවිධ විස්තර සඳහන් කිරීම සඳහා වෙන්වූ විශේෂ ස්ථාන ඇත. පහත දක්වා ඇති සටහනෙහි සම්මත වෙන්දේසි පත්‍රිකාවක වාහනයේ විවිධ විස්තර සටහන් කරනු ලබන අදාළ ස්ථාන වෙන වෙනම දක්වා ඇත.
+                ජපානයෙන් භාවිතා කළ වාහනයක් (Used Car) ආනයනය කිරීමට ඔබ සිතන්නේ නම්, "Auction Sheet" නැතහොත් "වෙන්දේසි පත්‍රිකාව" යනු කුමක්දැයි දැන සිටීම ඉතාම වැදගත් වේ. ඔබ ලංකාවේ සිට ජපානයේ ඇති වාහනයක් මිලදී ගන්නේ එය දෑසින් නොදැක, හුදෙක් ඡායාරූප සහ මෙම වෙන්සදේසි පත්‍රිකාවේ තොරතුරු සහ පැහැදිලි කිරීම් කිරීම මත පදනම්වය. එම නිසා, වෙන්දේසි පත්‍රිකාවේ ඇති මෙම ඉලක්කම් සහ අකුරු වලින් කියවෙන අර්ථය නිවැරදිව තේරුම් ගැනීම, ඔබගේ මුදලට සරිලන හොඳම වාහනය තෝරා ගැනීමට උපකාරී වනු ඇත. 
+             </p>   
+             <p>
+                සම්මත වෙන්දේසි පත්‍රිකාවක (Auction Sheet) රථයේ විවිධ විස්තර සඳහන් කිරීම සඳහා වෙන්වූ විශේෂ ස්ථාන ඇත. (උදා- රථයේ වෙන්දේසි ශ්‍රේණිය, එම වෙන්දේසි පත්‍රිකාවේ දකුණු පස ඉහල කෙලවරේ දක්වයි, රථයේ ඇති දුර්වලතා වෙන්දේසි පත්‍රිකාවේ වම් පස පහල ඇති කොටුවේ දක්වයි). පහල දක්වා ඇති සටහනෙහි සම්මත වෙන්දේසි පත්‍රිකාවක වාහනයේ විවිධ විස්තර සටහන් කරණු ලබන අදාල ස්ථාන වෙන වෙනම දක්වා ඇත. (සැ.යු- මෙය සම්මත වෙන්දේසි පත්‍රිකාවක අදාල විතර සටහන් කරනු ලබන ආකාරය දක්වන සටහනක් වන අතර සමහර Auction Houses වල වෙන්දේසි පත්‍ර සටහ මීට තරමක් වෙනස් විය හැක.)
             </p>
 
             <div class="blog-image-container">
-                <img src="../blog/blogphotos/Auction-sheet-guide-sinhala.avif" alt="ජපන් වෙන්දේසි වාර්තාවක ආකෘතිය - Japanese Auction Sheet Structure" loading="lazy">
+                <img src="../blog/blogphotos/Auction-sheet-guide-sinhala.avif" alt="Japanese Auction Sheet Example">
                 <span class="image-caption">Figure 1: සම්මත වෙන්දේසි වාර්තාවක ආකෘතිය</span>
             </div>
 
             <h2>වෙන්දේසි ශ්‍රේණි (Auction Grades) හඳුනා ගනිමු</h2>
             <p>
-                වාහනයේ එන්ජිම, බොඩිය (body), ඇතුළත තත්ත්වය, ධාවනය කළ කිලෝමීටර ප්‍රමාණය සහ අනතුරු ඉතිහාසය වැනි කරුණු සලකා බලා සමස්ත වාහනයටම "ශ්‍රේණියක්" (Grade) ලබා දෙයි.
+                මොකක්ද මේ Auction Grade එකක් කියන්නේ? ජපානයේ සෑම සතියකම වාහන දහස් ගණනක් වෙන්දේසි කෙරේ. මෙම වාහන වෙන්දේසියට දැමීමට පෙර, ස්වාධීන පරීක්ෂකවරුන් විසින් සෑම වාහනයක්ම ඉතා සියුම්ව පරීක්ෂා කරනු ලැබේ. ඔවුන් වාහනයේ එන්ජිම, බොඩිය (body), ඇතුළත තත්ත්වය, ධාවනය කළ කිලෝමීටර ප්‍රමාණය සහ අනතුරු ඉතිහාසය වැනි කරුණු සලකා බලා සමස්ත වාහනයටම "ශ්‍රේණියක්" (Grade) ලබා දෙයි. මෙය සාමාන්‍යයෙන් අංකයක් හෝ අකුරක් (උදා: 5, 4.5, 4, R) ලෙස සටහන් වේ. මෙම ශ්‍රේණි මගින් වාහනයේ සමස්ත තත්ත්වය පෙන්නුම් කරයි. එය වෙන්දේසි පත්‍රිකාවේ (Auction Sheet) දකුණු පස ඉහල කෙළවරෙහි මඳක් විශාල අකුරෙන්/ ඉලක්කමෙන් දක්වා ඇත.
             </p>
             <ul>
-                <li><strong>Grade S / 6: අලුත්ම වාහන (Brand New / As New)</strong> - මෙය වෙන්දේසියකදී ලැබිය හැකි ඉහළම ශ්‍රේණියයි. සාමාන්‍යයෙන් ලියාපදිංචි කර මාස කිහිපයක් ගත වූ, ධාවනය කි.මී. 1000 ටත් අඩු වාහන වේ.</li>
+                <li><strong>Grade S / 6:</strong> අලුත්ම වාහන (Brand New / As New)- මෙය වෙන්දේසියකදී ලැබිය හැකි ඉහළම ශ්‍රේණියයි. සාමාන්‍යයෙන් ලියාපදිංචි කර මාස කිහිපයක් ගත වූ, ධාවනය කි.මී. 1000 ටත් අඩු වාහන වේ. පිටත හෝ ඇතුළත කිසිදු සීරීමක් හෝ අඩුපාඩුවක් නොමැත.</li>
                 
-                <li><strong>Grade 5: ඉතා විශිෂ්ට තත්ත්වය (Excellent Condition)</strong> - ඉතා අඩුවෙන් භාවිතා කළ, අලුත් තත්ත්වයට ඉතා ආසන්න වාහන. බොඩියේ හෝ ඇතුළත පියවි ඇසට පෙනෙන අඩුපාඩු නොමැති තරම්ය.</li>
+                <li><strong>Grade 5:</strong> ඉතා විශිෂ්ට තත්ත්වය (Excellent Condition)- ඉතා අඩුවෙන් භාවිතා කළ, අලුත් තත්ත්වයට ඉතා ආසන්න වාහන. බොඩියේ හෝ ඇතුළත පියවි ඇසට පෙනෙන අඩුපාඩු නොමැති තරම්ය. ධාවනය (Mileage) ඉතා අඩුය.</li>
                 
-                <li><strong>Grade 4.5: ඉතා හොඳ තත්ත්වය (Very Good Condition)</strong> - ලංකාවට ආනයනය කිරීමට සුදුසු තත්ත්වයේ වාහන වේ. ඉතා කුඩා සියුම් සීරීම් එකක් හෝ දෙකක් තිබිය හැක. සුළු පොලිෂ් (Polish) එකකින් අලුත් තත්ත්වයට ගත හැක.</li>
+                <li><strong>Grade 4.5:</strong> ඉතා හොඳ තත්ත්වය (Very Good Condition)- ලංකාවට ආනයනය කිරීමට සුදුසු තත්ත්වයේ වාහන වේ. ඉතා කුඩා සියුම් සීරීම් එකක් හෝ දෙකක් තිබිය හැක. සුළු පොලිෂ් (Polish) එකකින් අලුත් තත්ත්වයට ගත හැක.</li>
                 
-                <li><strong>Grade 4: හොඳ තත්ත්වය (Good Condition)</strong> - වාහනය සාමාන්‍ය පරිදි භාවිතා කර ඇතත්, හොඳින් නඩත්තු කර ඇත. පිටත බොඩියේ සීරීම්, කුඩා තැලීම් හෝ තීන්ත ආලේප කිරීම් තිබිය හැක.</li>
+                <li><strong>Grade 4:</strong> හොඳ තත්ත්වය (Good Condition)- වාහනය සාමාන්‍ය පරිදි භාවිතා කර ඇතත්, හොඳින් නඩත්තු කර ඇත. පිටත බොඩියේ සීරීම් (scratches), කුඩා තැලීම් (dents - pin dents)හෝ තීන්ත ආලේප කිරීම් (re-paint) තිබිය හැක.</li>
                 
-                <li><strong>Grade 3.5: සාමාන්‍ය තත්ත්වය (Average Condition)</strong> - පැහැදිලිව පෙනෙන සීරීම්, තැලීම් හෝ ඇතුළත අපිරිසිදුකම් තිබිය හැක. අලුත්වැඩියාවන් අවශ්‍ය විය හැක.</li>
+                <li><strong>Grade 3.5:</strong> සාමාන්‍ය තත්ත්වය (Average Condition)- පැහැදිලිව පෙනෙන සීරීම්, තැලීම් හෝ ඇතුළත අපිරිසිදුකම් තිබිය හැක. තීන්ත ආලේප කිරීම් (Touching/Painting) හෝ කුඩා අලුත්වැඩියාවන් අවශ්‍ය විය හැක.</li>
                 
-                <li><strong>Grade 3: සාමාන්‍යයට වඩා අඩු (Fair Condition)</strong> - වඩා පැරණි හෝ වැඩියෙන් ධාවනය කළ වාහන වේ. අනිවාර්යයෙන්ම අලුත්වැඩියා අවශ්‍ය වේ.</li>
+                <li><strong>Grade 3:</strong> සාමාන්‍යයට වඩා අඩු (Fair Condition)- වඩා පැරණි හෝ වැඩියෙන් ධාවනය කළ වාහන වේ. පැහැදිලිව පෙනෙන විශාල සීරීම්, තැලීම්, මලකඩ කෑ ස්ථාන හෝ ඇතුළත හානි තිබිය හැක. අනිවාර්යයෙන්ම අලුත්වැඩියා අවශ්‍ය වේ.</li>
                 
-                <li><strong>Grade 2 / 1: දුර්වල තත්ත්වය (Poor Condition)</strong> - ඉතා බරපතල ලෙස හානි වූ, එන්ජින් දෝෂ සහිත හෝ විශාල අලුත්වැඩියා අවශ්‍ය වාහන වේ.</li>
+                <li><strong>Grade 2/1:</strong> දුර්වල තත්ත්වය (Poor Condition)- ඉතා බරපතල ලෙස හානි වූ, එන්ජින් දෝෂ සහිත හෝ විශාල අලුත්වැඩියා අවශ්‍ය වාහන වේ. සාමාන්‍ය ආනයනය සඳහා සුදුසු නොවේ.</li>
                 
-                <li><strong>Grade R / RA: අනතුරු අලුත්වැඩියා කළ (Repair History)</strong> - වාහනය මීට පෙර යම් අනතුරකට ලක්වී, පසුව එය අලුත්වැඩියා කර ඇත.</li>
+                <li><strong>Grade R/RA:</strong> අනතුරු අලුත්වැඩියා කළ(Repair History)- වාහනය මීට පෙර යම් අනතුරකට ලක්වී, හානි සිදුවී, පසුව එය අලුත්වැඩියා කර ඇත. මෙහිදී හානියේ ස්වභාවය කුඩා හෝ විශාල විය හැක.</li>
             </ul>
 
             <div class="blog-image-container">
-                <img src="../blog/blogphotos/auction-grades.avif" alt="Auction Grade Chart Explanation" loading="lazy">
-                <span class="image-caption">Figure 2: වෙන්දේසි ශ්‍රේණි සාරාංශය</span>
+                <img src="../blog/blogphotos/auction-grades.avif" alt="Grade Chart">
+                <span class="image-caption">Figure 2: වෙන්දේසි ශ්‍රේණි</span>
             </div>
 
-            <h2>වාහනයේ පිටත සහ ඇතුලත තත්වය (Exterior / Interior Grade)</h2>
+            <h2>වාහනයේ පිටත සහ ඇතුලත තත්වය (Exterior/ Interior Grade)</h2>
             <p>
-                ප්‍රධාන Grade එකට අමතරව වාහනයේ පිටත සහ ඇතුළත තත්ත්වය වෙන වෙනම A, B, C, D, E ලෙස අකුරු වලින් දක්වයි.
+                ප්‍රධාන Auction Grade එකට අමතරව (උදා- Auction Grade 4.5) වාහනයේ පිටත සහ ඇතුළත  තත්ත්වය වෙන වෙනම A, B, C, D, E ලෙස අකුරු වලින් දක්වයි. මෙය වෙන්දේසි පත්‍රිකාවේ දකුණුපස ඉහල කෙළවරෙහි Auction Grade (වෙන්දේසි ශ්‍රේණිය) සඳහන් කර ඇති ස්ථානයට මඳක් පහලින් දක්වා ඇත.
             </p>
             <ul>
-                <li><strong>A - ඉතා විශිෂ්ටයි (Excellent):</strong> අලුත් තත්ත්වයට සමානය.</li>
-                <li><strong>B - හොඳයි (Good):</strong> සාමාන්‍ය භාවිතය, නමුත් පිරිසිදුයි. (බොහෝ විට Grade 4.5/4 වාහන වල ඇත්තේ Interior B වේ).</li>
-                <li><strong>C - සාමාන්‍යයි (Average):</strong> ඇතුළත පැල්ලම්, ඉරීම් හෝ දුම්පානය කළ ගන්ධය තිබිය හැක.</li>
-                <li><strong>D / E - දුර්වලයි (Poor):</strong> ඉතා අපිරිසිදු, ඉරී ගිය හෝ බරපතල හානි ඇත.</li>
+                <li><strong>A - ඉතා විශිෂ්ටයි (Excellent):</strong>අලුත් තත්ත්වයට සමානය.</li>
+                <li><strong>B - හොඳයි (Good):</strong>සාමාන්‍ය භාවිතය, නමුත් පිරිසිදුයි. සුළු පැල්ලම් තිබිය හැක. (බොහෝ විට Grade 4.5/4 වාහන වල ඇත්තේ Interior B වේ).</li>
+                <li><strong>C - සාමාන්‍යයි (Average):</strong>ඇතුළත පැල්ලම්, ඉරීම් හෝ දුම්පානය කළ ගන්ධය තිබිය හැක.</li>
+                <li><strong>D / E - දුර්වලයි (Poor):</strong>ඉතා අපිරිසිදු, ඉරී ගිය හෝ බරපතල හානි ඇත.</li>
             </ul>
-
+                
             <div class="blog-image-container">
-                <img src="../blog/blogphotos/exterior-interior-condition.avif" alt="Exterior and Interior Condition Chart" loading="lazy">
-                <span class="image-caption">Figure 3: පිටත සහ ඇතුලත තත්වය</span>
+            <img src="../blog/blogphotos/exterior-interior-condition.avif" alt="Ext/Int chart">
+            <span class="image-caption">Figure 3: වෙන්දේසි ශ්‍රේණිය/ පිටත සහ ඇතුලත තත්වය</span>
             </div>
 
-            <h2>වෙන්දේසි පත්‍රිකාවේ සිතියම කියවමු (The Map)</h2>
+            <h2>වෙන්දේසි පත්‍රිකාවේ අන්තර්ගත වෙනත් විශේෂ විස්තර</h2>
             <p>
-                Auction Grade එක/Interior, Exterior තත්වය පමණක් බලා වාහනයක් තෝරා ගැනීම ප්‍රමාණවත් නොවේ. සෑම විටම "Auction Sheet" (වෙන්දේසි පත්‍රිකාව) එක හොඳින් පරීක්ෂා කරන්න. එහි දකුණුපස පහල කෙළවරේ වාහනයේ සිතියමක් (Map) ඇති අතර, එහි වාහනයේ ඇති හානි සලකුණු කර ඇත. සීරීම් (Scratch) ඇති තැන්  A ලෙසත් (ප්‍රමාණය අනුව A1, A2, A3 ලෙස) , තැලීම් (Dents) ඇති තැන් U ලෙසත් ( ප්‍රමාණය අනුව U1, U2, U3 ලෙස) , තීන්ත ආලේප කළ තැන් (Painted) W ලෙසත් (ප්‍රමාණය අනුව W1, W2, W3 ලෙස) ලකුණු කර ඇත.
+            Auction Grade එක/Interior, Exterior තත්වය පමණක් බලා වාහනයක් තෝරා ගැනීම ප්‍රමාණවත් නොවේ. සෑම විටම "Auction Sheet" (වෙන්දේසි පත්‍රිකාව) එක හොඳින් පරීක්ෂා කරන්න. එහි දකුණුපස පහල කෙළවරේ වාහනයේ සිතියමක් (Map) ඇති අතර, එහි වාහනයේ ඇති හානි සලකුණු කර ඇත. සීරීම් (Scratch) ඇති තැන්  A ලෙසත් (ප්‍රමාණය අනුව A1, A2, A3 ලෙස) , තැලීම් (Dents) ඇති තැන් U ලෙසත් ( ප්‍රමාණය අනුව U1, U2, U3 ලෙස) , තීන්ත ආලේප කළ තැන් (Painted) W ලෙසත් (ප්‍රමාණය අනුව W1, W2, W3 ලෙස) ලකුණු කර ඇත.
             </p>
             <ul>
-                <li><strong>A1 / U1:</strong> ඉතා කුඩාය, ඇසට නොපෙනේ.</li>
-                <li><strong>A2 / U2:</strong> මධ්‍යම ප්‍රමාණයේය, දැකගත හැක.</li>
-                <li><strong>A3 / U3:</strong> විශාල හානියක්, අලුත්වැඩියා අවශ්‍යයි.</li>
-                <li><strong>W1:</strong> ඇසට නොපෙනෙන තරමේ අලුත්වැඩියා සලකුණ/පේන්ට් වැඩ.</li>
-                <li><strong>W2:</strong> අවධානයෙන් පරීක්ශා කිරීමෙන් හඳුනාගත හැකි අලුත්වැඩියා සලකුණ.</li>
-                <li><strong>W3:</strong> ඇසට හොඳින් පෙනෙන තරමේ විශාල අලුත්වැඩියා සලකුණ.</li>
+                <li><strong>A1/U1:</strong>ඉතා කුඩාය, ඇසට නොපෙනේ.</li>
+                <li><strong>A2/U2:</strong>මධ්‍යම ප්‍රමාණයේය, දැකගත හැක.</li>
+                <li><strong>A3/U3:</strong>විශාල හානියක්, අලුත්වැඩියා අවශ්‍යයි..</li>
+                <li><strong>W1:</strong>ඇසයට නොපෙනෙන තරමේ අලුත්වැඩියා සලකුණ/පේන්ට් වැඩ.</li>
+                <li><strong>W2:</strong>අවධානයෙන් පරීක්ශාකිරීමෙන් හඳුනාගත හැකි අලුත්වැඩියා සලකුණ/පේන්ට් වැඩ.</li>
+                <li><strong>W3:</strong>ඇසයට හොඳින් පෙනෙන තරමේ විශාල අලුත්වැඩියා සලකුණ/පේන්ට් වැඩ.</li>
             </ul>
+            
+            <p>මීට අමතරව තවත් ඉංග්ීසි අක්ශර වලින් විවිධ විස්තර සඳහන් කර ඇත,</p>
 
-            <p><strong>වෙනත් වැදගත් ඉංග්‍රීසි අක්ෂර:</strong></p>
-             <ul>
-                <li><strong>S:</strong> මලකඩ (Rust).</li>
-                <li><strong>C:</strong> දිරායාම (Corrosion).</li>
-                <li><strong>P:</strong> සායම් මැකීයාම (Paint Fade.</li>
-                <li><strong>X:</strong> මාරු කළ යුතු (Replace)</li>
-                <li><strong>XX:</strong> මාරු කර ඇත (Replaced)</li>
-                <li><strong>G:</strong> වීදුරු සීරීම් (Glass Stone chip).</li>
-                <li><strong>y:</strong> ඉරිතැලීම් (Cracks).</li>
-            </ul>
+            <div class="code-grid">
+                <div class="code-item"><span>S:</span> මලකඩ (Rust).</div>
+                <div class="code-item"><span>C:</span> දිරායාම (Corrosion).</div>
+                <div class="code-item"><span>P:</span> සායම් මැකීයාම හෝ වර්ණය වෙනස් වීම (Paint Faded/Crazing).</div>
+                <div class="code-item"><span>X:</span> එම කොටස මාරු කළ යුතු බව (Needs Replacement).</div>
+                <div class="code-item"><span>XX:</span> එම කොටස මාරු කර ඇති බව (Replaced Panel).</div>
+                <div class="code-item"><span>G:</span> වීදුරුවේ ඇති සීරීම් හෝ ගල් වැදුණු සලකුණු (Stone chip on glass).</div>
+                <div class="code-item"><span>Y:</span> ඉරිතැලීම් (Cracks/Holes).</div>
+            </div>
+ 
             <div class="warning-box">
                 <h3>⚠️ විශේෂ අවවාදයයි! - Auction Sheet වංචාවට හසු නොවන්න</h3>
-                <p>
-                    ශ්‍රී ලංකාවේ බහුතරයක් වාහන ආනයනකරුවන් තම සේවාදායකයින්ට ඉතා විශ්වාසනීය සේවයක් ලබා දෙයි. නමුත් අවාසනාවකට මෙන්, ඉතා සුළුතරයක් පිරිස් වැඩි ලාභයක් උපයා ගැනීමේ අරමුණින් පාරිභෝගිකයන් නොමඟ යවන අවස්ථා ඇත.
-                </p>
-                    මොවුන් ජපානයෙන් ඉතා අඩු මිලට "R හෝ RA" (අනතුරු වූ) වර්ගීකරණය ඇති වාහන ලංකාවට ගෙන්වා, පාරිභෝගිකයාට පෙන්වීමේදී එම වාහනයේ Auction Sheet එක වෙනස් කර (Edit කර), එය "Grade 5 හෝ 4.5" ලෙස ව්‍යාජව සකසා ඉදිරිපත් කරයි.
-                <p>
-                    ඔබ වාහන ශ්‍රේණි සම්බන්ධයෙන් නිවැරදි අවබෝධයක් ලබා සිටීම, මෙවැනි වංචාවලට හසු නොවී හොඳ වාහනයක් තෝරා ගැනීමට උපකාරී වේ.
-                <p>
-                    <strong>විසඳුම:</strong> මේ වංචාවෙන් බේරෙන්නේ කෙසේද? ව්‍යාජ Auction Sheet එකක් හඳුනා ගැනීමට ඇති හොඳම සහ එකම ක්‍රමය වන්නේ "Auction Sheet Verification" සේවාවයි. වාහනයේ චැසි අංකය (Chassis Number) භාවිතා කර, ජපානයේ වෙන්දේසි දත්ත ගබඩාව හරහා වාහනයේ නියම වෙන්දේසි පත්රිකාව ඔබටම බලාගත හැක. මේ සඳහා යම් සුළු මුදලක් වැය වුවද, ලක්ෂ ගණනක පාඩුවක් නොවී සිටීමට එය ඉතා වටිනා ආයෝජනයකි. (Auction Sheet Verify කරන ආකාරය පිළිබඳ අපගේ වෙනම පෝස්ටුවක විස්තර කර ඇත).
+                <p>ශ්‍රී ලංකාවේ බහුතරයක් වාහන ආනයනකරුවන් තම සේවාදායකයින්ට ඉතා විශ්වාසනීය සේවයක් ලබා දෙයි. නමුත් අවාසනාවකට මෙන්, ඉතා සුළුතරයක් පිරිස් වැඩි ලාභයක් උපයා ගැනීමේ අරමුණින් පාරිභෝගිකයන් නොමඟ යවන අවස්ථා ඇත.</p>
+                <p>මොවුන් ජපානයෙන් ඉතා අඩු මිලට "R හෝ RA" (අනතුරු වූ) වර්ගීකරණය ඇති වාහන ලංකාවට ගෙන්වා, පාරිභෝගිකයාට පෙන්වීමේදී එම වාහනයේ Auction Sheet එක වෙනස් කර (Edit කර), එය "Grade 5 හෝ 4.5" ලෙස ව්‍යාජව සකසා ඉදිරිපත් කරයි.</p>
+                <p>ඔබ වාහන ශ්‍රේණි සම්බන්ධයෙන් නිවැරදි අවබෝධයක් ලබා සිටීම, මෙවැනි වංචාවලට හසු නොවී හොඳ වාහනයක් තෝරා ගැනීමට උපකාරී වේ.</p>
+                <p><strong>මේ වංචාවෙන් බේරෙන්නේ කෙසේද? (Auction Sheet Verification)</strong><br>
+                ව්‍යාජ Auction Sheet එකක් හඳුනා ගැනීමට ඇති හොඳම සහ එකම ක්‍රමය වන්නේ "Auction Sheet Verification" සේවාවයි. වාහනයේ චැසි අංකය (Chassis Number) භාවිතා කර, ජපානයේ වෙන්දේසි දත්ත ගබඩාව හරහා වාහනයේ නියම වෙන්දේසි පත්රිකාව ඔබටම බලාගත හැක.
+                මේ සඳහා යම් සුළු මුදලක් වැය වුවද, ලක්ෂ ගණනක පාඩුවක් නොවී සිටීමට එය ඉතා වටිනා ආයෝජනයකි. (Auction Sheet Verify කරන ආකාරය පිළිබඳ අපගේ වෙනම පෝස්ටුවක විස්තර කර ඇත).</p>
             </div>
 
             <div class="contact-card">
@@ -350,7 +409,7 @@
         <div style="margin-top: 3rem; text-align: center; background: #f0f4fa; padding: 2rem; border-radius: 1rem;">
             <h3>ඔබේ වාහනයේ බදු මුදල ගණනය කරගන්න</h3>
             <p>නව 2026 බදු ප්‍රතිපත්ති අනුව වාහනයක වටිනාකම දැනගන්න.</p>
-            <a href="../index.html#calculator" style="background: #003087; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px; transition: background 0.3s;">Calculate Tax Now</a>
+            <a href="../index.html#calculator" style="background: #003087; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 10px;">Calculate Tax Now</a>
         </div>
 
     </main>
