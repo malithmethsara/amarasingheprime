@@ -91,7 +91,13 @@
         .image-caption { display: block; margin-top: 0.5rem; color: #666; font-size: 0.9rem; font-style: italic; }
 
         /* Special Features */
-        .warning-box { background-color: #fff4f4; border-left: 5px solid #dc3545; padding: 1.5rem; margin: 2rem 0; border-radius: 5px; }
+        .warning-box {
+            background-color: #fff4f4;
+            border: 1px solid #dc3545; /* Changed from border-left: 5px */
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 5px;
+        }
         .warning-box h3 { color: #dc3545; margin-top: 0; font-size: 1.3rem; }
         
         .code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; }
