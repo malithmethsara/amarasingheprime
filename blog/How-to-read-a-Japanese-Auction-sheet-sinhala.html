@@ -129,12 +129,11 @@
             background-color: #003087;
             color: white;
         }
-
-        /* --- CONTACT CHIPS STYLES --- */
+        /* --- CONTACT CHIPS STYLES (CORRECTED 2x2 LAYOUT) --- */
         .contact {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px; /* Reduced gap slightly for mobile fit */
             padding: 20px 10px;
             flex-wrap: wrap;
             background: transparent;
@@ -142,8 +141,9 @@
         .chip {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 25px;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 15px;
             background-color: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 50px;
@@ -153,8 +153,9 @@
             font-size: 0.95rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
-            min-width: 120px;
-            justify-content: center;
+            
+            /* DESKTOP DEFAULT: Auto width */
+            min-width: 120px; 
         }
         .chip:hover {
             transform: translateY(-2px);
@@ -167,11 +168,19 @@
         .facebook-chip svg { color: #1877F2; fill: currentColor; }
         .email-chip svg { color: #EA4335; fill: currentColor; }
 
+        /* MOBILE TWEAK FOR 2x2 GRID */
         @media (max-width: 600px) {
             .page-container { padding: 1.25rem; }
             .page-title { font-size: 1.6rem; }
             .code-grid { grid-template-columns: 1fr; }
-            .chip { width: 100%; }
+            
+            /* This makes them 2-by-2 */
+            .chip { 
+                width: calc(50% - 10px); /* Half width minus gap */
+                flex-grow: 1; /* Stretch to fill space */
+                font-size: 0.85rem; /* Slightly smaller text for mobile */
+                padding: 10px 5px;
+            }
         }
     </style>
 </head>
