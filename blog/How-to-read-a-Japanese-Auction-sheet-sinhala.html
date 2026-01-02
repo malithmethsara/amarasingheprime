@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="si" prefix="og: http://ogp.me/ns#">
+<html lang="si" prefix="og: https://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,12 +12,13 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="How to read a Japanese Auction sheet? (Sinhala Guide)">
     <meta property="og:description" content="Learn the secrets of Japanese Auction sheets. Don't get scammed with fake grades. Read our full guide in Sinhala.">
-    <meta property="og:image" content="../blog/blogphotos/Auction-sheet-guide-sinhala.avif">
-    <meta property="og:url" content="https://www.amarasingheprime.lk/blog/auction-sheet-guide.html">
+    <meta property="og:image" content="../vehicle-photos/auction-guide-cover.jpg"> <meta property="og:url" content="https://www.amarasingheprime.lk/blog/auction-sheet-guide.html">
+    <meta property="og:site_name" content="Amarasinghe Prime Enterprises">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@400;600;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="../style.css">
 
@@ -31,11 +32,11 @@
       },
       "headline": "ජපන් වාහන වෙන්දේසි වාර්තාව (Auction Sheet) කියවන්නේ කෙසේද?",
       "description": "A comprehensive guide in Sinhala on how to read Japanese car auction sheets, understand grades, and avoid scams.",
-      "image": "../blog/blogphotos/Auction-sheet-guide-sinhala.avif",  
+      "image": "../vehicle-photos/auction-guide-cover.jpg",
       "author": {
         "@type": "Organization",
         "name": "Amarasinghe Prime Enterprises"
-      },  
+      },
       "publisher": {
         "@type": "Organization",
         "name": "Amarasinghe Prime Enterprises",
@@ -49,207 +50,61 @@
     </script>
 
     <style>
-        /* --- BLOG SPECIFIC STYLES --- */
-        .blog-wrapper {
-            max-width: 800px; /* Optimal reading width */
-            margin: 0 auto;
+        .page-container {
             background: #fff;
-            border-radius: 1rem;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
             border: 1px solid rgba(0,48,135,0.15);
-            padding: 2.5rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            border-radius: 1rem;
+            padding: 2rem;
             margin-top: 1.5rem;
-            margin-bottom: 2rem;
+            min-height: 400px;
             font-family: 'Noto Sans Sinhala', 'Open Sans', sans-serif;
         }
-
-        .blog-title {
-            color: #003087; /* Brand Blue */
-            font-size: 2rem;
+        .page-title {
+            color: #003087;
             font-weight: 800;
+            font-size: 2rem;
             margin-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f4fa;
+            padding-bottom: 1rem;
             line-height: 1.3;
         }
-
-        .blog-meta {
-            color: #777;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1rem;
-        }
-
-        /* Content Typography */
-        .blog-content p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #333;
-            margin-bottom: 1.5rem;
-        }
-
-        .blog-content h2 {
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            color: #003087;
-            font-size: 1.6rem;
-            border-left: 5px solid #ffcc00; /* Yellow accent */
-            padding-left: 15px;
-        }
-
-        .blog-content ul {
-            margin-bottom: 1.5rem;
-            padding-left: 1.5rem;
-        }
-
-        .blog-content li {
-            margin-bottom: 0.8rem;
-            line-height: 1.6;
-            font-size: 1.05rem;
-        }
-
-        .blog-content strong {
-            color: #003087;
-        }
-
-        /* Image Slots */
-        .blog-image-container {
-            margin: 2.5rem 0;
-            text-align: center;
-        }
-        .blog-image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 0.5rem;
-            border: 1px solid #eee;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .image-caption {
-            display: block;
-            margin-top: 0.5rem;
+        .page-meta {
             color: #666;
             font-size: 0.9rem;
+            margin-bottom: 2rem;
             font-style: italic;
-        }
-
-        /* Special Warning Box */
-        .warning-box {
-            background-color: #fff4f4;
-            border-left: 5px solid #dc3545;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            border-radius: 5px;
-        }
-        .warning-box h3 {
-            color: #dc3545;
-            margin-top: 0;
-            font-size: 1.3rem;
             display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Code Grid for S, C, P, X */
-        .code-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 10px;
-            margin-bottom: 2rem;
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 8px;
-        }
-        .code-item {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #444;
-        }
-        .code-item span {
-            color: #d63384; /* Highlight color for code letter */
-            font-weight: 800;
-            margin-right: 5px;
-        }
-
-        /* Footer Contact Section Style */
-        .contact-card {
-            background: #eef5ff;
-            border: 1px solid #cce0ff;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-top: 2rem;
-        }
-        .contact-links-list {
-            list-style: none;
-            padding: 0;
-        }
-        .contact-links-list li {
-            margin-bottom: 10px;
-        }
-        .contact-links-list a {
-            text-decoration: none;
-            color: #003087;
-            font-weight: 600;
-        }
-        .contact-links-list a:hover {
-            text-decoration: underline;
-        }
-
-        /* Back Button */
-        .back-nav {
-            display: inline-block;
-            margin-bottom: 1.5rem;
-            text-decoration: none;
-            color: #666;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .back-nav:hover { color: #003087; }
-
-        /* --- CONTACT CHIPS STYLES (MATCHING HOME PAGE WHITE PILLS) --- */
-        .contact {
-            display: flex;
-            justify-content: center;
             gap: 15px;
-            padding: 20px 10px;
             flex-wrap: wrap;
-            background: transparent;
         }
-        .chip {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 25px;
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #444;
-            font-weight: 600;
-            font-size: 0.95rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-            min-width: 120px;
-            justify-content: center;
-        }
-        .chip:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: #003087;
-        }
-        .chip svg {
-            width: 18px;
-            height: 18px;
-        }
-        /* Specific Colors for Icons */
-        .phone-chip svg { color: #003087; fill: currentColor; }
-        .whatsapp-chip svg { color: #25D366; fill: currentColor; }
-        .facebook-chip svg { color: #1877F2; fill: currentColor; }
-        .email-chip svg { color: #EA4335; fill: currentColor; }
+        
+        /* Content Styling */
+        .content-body p { margin-bottom: 1.5rem; line-height: 1.8; color: #333; font-size: 1.1rem; }
+        .content-body h2 { color: #003087; margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.6rem; border-left: 5px solid #ffcc00; padding-left: 15px; }
+        .content-body ul { margin-bottom: 1.5rem; padding-left: 1.5rem; background: #f9fbfd; padding: 1.5rem 1.5rem 1.5rem 3rem; border-radius: 0.5rem; }
+        .content-body li { margin-bottom: 0.8rem; line-height: 1.6; }
+        
+        /* Image Containers */
+        .blog-image-container { margin: 2.5rem 0; text-align: center; }
+        .blog-image-container img { max-width: 100%; height: auto; border-radius: 0.5rem; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .image-caption { display: block; margin-top: 0.5rem; color: #666; font-size: 0.9rem; font-style: italic; }
 
-        @media (max-width: 600px) {
-            .blog-wrapper { padding: 1.5rem; }
-            .blog-title { font-size: 1.6rem; }
-            .code-grid { grid-template-columns: 1fr; }
-            .chip { width: 100%; }
+        /* Special Features */
+        .warning-box { background-color: #fff4f4; border-left: 5px solid #dc3545; padding: 1.5rem; margin: 2rem 0; border-radius: 5px; }
+        .warning-box h3 { color: #dc3545; margin-top: 0; font-size: 1.3rem; }
+        
+        .code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; }
+        .code-item span { color: #d63384; font-weight: 800; margin-right: 5px; }
+
+        .contact-card { background: #eef5ff; border: 1px solid #cce0ff; padding: 2rem; border-radius: 12px; margin-top: 2rem; }
+        .contact-links-list { list-style: none; padding: 0; }
+        .contact-links-list li { margin-bottom: 10px; }
+        .contact-links-list a { text-decoration: none; color: #003087; font-weight: 600; }
+
+        @media (max-width: 640px) {
+            .page-container { padding: 1.25rem; }
+            .page-title { font-size: 1.6rem; }
         }
     </style>
 </head>
@@ -260,55 +115,42 @@
             <img src="../logo.png" alt="Amarasinghe Prime Enterprises Logo" width="160" height="75">
         </a>
         <h1>Amarasinghe Prime Enterprises</h1>
-        <div class="tagline">Your trusted Japanese automobile partner</div>
+        <div class="tagline">Your trusted Japanese automobile partner in Sri Lanka</div>
+        <div id="timeDateTime" aria-live="polite"></div>
     </header>
 
     <div class="contact" id="contact-row">
-        <a class="chip phone-chip" href="tel:+94769447740" aria-label="Call Us">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>
-            Call Now 
-        </a>
-
-        <a class="chip whatsapp-chip" href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener" aria-label="WhatsApp">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
-            WhatsApp
-        </a>
-
-        <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank" rel="noopener" aria-label="Facebook">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg>
-            Facebook
-        </a>
-
-        <a class="chip email-chip" href="mailto:info@amarasingheprime.lk" aria-label="Email Us">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
-            Email
-        </a>
+        <a class="chip phone-chip" href="tel:+94769447740"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg> Call Now</a>
+        <a class="chip whatsapp-chip" href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg> WhatsApp</a>
+        <a class="chip facebook-chip" href="https://www.facebook.com/share/17Ww1VkV2S/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"/></svg> Facebook</a>
+        <a class="chip email-chip" href="mailto:info@amarasingheprime.lk"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512" fill="currentColor"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg> Email</a>
     </div>
 
-    <main class="blog-wrapper">
+    <main class="page-container">
         
         <a href="../index.html" class="back-nav">← Back to Home Page</a>
 
-        <h1 class="blog-title">ජපන් වාහන වෙන්දේසි වාර්තාව (Auction Sheet) කියවන්නේ කෙසේද?</h1>
+        <h1 class="page-title">ජපන් වාහන වෙන්දේසි වාර්තාව (Auction Sheet) කියවන්නේ කෙසේද?</h1>
         
-        <div class="blog-meta">
-            Published: March 13, 2025 • By Amarasinghe Prime Enterprises
+        <div class="page-meta">
+            <span>📅 March 13, 2025</span>
+            <span>👤 By Amarasinghe Prime Enterprises</span>
         </div>
 
-        <article class="blog-content">
+        <article class="content-body">
             
             <p>
                 <strong>ජපන් වෙන්දේසියෙන් වාහනයක් ගන්නවාද?</strong> එහෙනම් වෙන්දේසි පත්‍රිකාව (Auction Sheet) කියවීම සහ අවබෝධ කරගනීම අනිවාර්යයෙන් දැනගනිමු.
             </p>
             <p>
                 ජපානයෙන් භාවිතා කළ වාහනයක් (Used Car) ආනයනය කිරීමට ඔබ සිතන්නේ නම්, "Auction Sheet" නැතහොත් "වෙන්දේසි පත්‍රිකාව" යනු කුමක්දැයි දැන සිටීම ඉතාම වැදගත් වේ. ඔබ ලංකාවේ සිට ජපානයේ ඇති වාහනයක් මිලදී ගන්නේ එය දෑසින් නොදැක, හුදෙක් ඡායාරූප සහ මෙම වෙන්සදේසි පත්‍රිකාවේ තොරතුරු සහ පැහැදිලි කිරීම් කිරීම මත පදනම්වය. එම නිසා, වෙන්දේසි පත්‍රිකාවේ ඇති මෙම ඉලක්කම් සහ අකුරු වලින් කියවෙන අර්ථය නිවැරදිව තේරුම් ගැනීම, ඔබගේ මුදලට සරිලන හොඳම වාහනය තෝරා ගැනීමට උපකාරී වනු ඇත. 
-             </p>   
+             </p>    
              <p>
                 සම්මත වෙන්දේසි පත්‍රිකාවක (Auction Sheet) රථයේ විවිධ විස්තර සඳහන් කිරීම සඳහා වෙන්වූ විශේෂ ස්ථාන ඇත. (උදා- රථයේ වෙන්දේසි ශ්‍රේණිය, එම වෙන්දේසි පත්‍රිකාවේ දකුණු පස ඉහල කෙලවරේ දක්වයි, රථයේ ඇති දුර්වලතා වෙන්දේසි පත්‍රිකාවේ වම් පස පහල ඇති කොටුවේ දක්වයි). පහල දක්වා ඇති සටහනෙහි සම්මත වෙන්දේසි පත්‍රිකාවක වාහනයේ විවිධ විස්තර සටහන් කරණු ලබන අදාල ස්ථාන වෙන වෙනම දක්වා ඇත. (සැ.යු- මෙය සම්මත වෙන්දේසි පත්‍රිකාවක අදාල විතර සටහන් කරනු ලබන ආකාරය දක්වන සටහනක් වන අතර සමහර Auction Houses වල වෙන්දේසි පත්‍ර සටහ මීට තරමක් වෙනස් විය හැක.)
             </p>
 
             <div class="blog-image-container">
-                <img src="../blog/blogphotos/Auction-sheet-guide-sinhala.avif" alt="Japanese Auction Sheet Example">
+                <img src="../vehicle-photos/Auction-sheet-guide-sinhala.avif" alt="Japanese Auction Sheet Example">
                 <span class="image-caption">Figure 1: සම්මත වෙන්දේසි වාර්තාවක ආකෘතිය</span>
             </div>
 
@@ -318,24 +160,17 @@
             </p>
             <ul>
                 <li><strong>Grade S / 6:</strong> අලුත්ම වාහන (Brand New / As New)- මෙය වෙන්දේසියකදී ලැබිය හැකි ඉහළම ශ්‍රේණියයි. සාමාන්‍යයෙන් ලියාපදිංචි කර මාස කිහිපයක් ගත වූ, ධාවනය කි.මී. 1000 ටත් අඩු වාහන වේ. පිටත හෝ ඇතුළත කිසිදු සීරීමක් හෝ අඩුපාඩුවක් නොමැත.</li>
-                
                 <li><strong>Grade 5:</strong> ඉතා විශිෂ්ට තත්ත්වය (Excellent Condition)- ඉතා අඩුවෙන් භාවිතා කළ, අලුත් තත්ත්වයට ඉතා ආසන්න වාහන. බොඩියේ හෝ ඇතුළත පියවි ඇසට පෙනෙන අඩුපාඩු නොමැති තරම්ය. ධාවනය (Mileage) ඉතා අඩුය.</li>
-                
                 <li><strong>Grade 4.5:</strong> ඉතා හොඳ තත්ත්වය (Very Good Condition)- ලංකාවට ආනයනය කිරීමට සුදුසු තත්ත්වයේ වාහන වේ. ඉතා කුඩා සියුම් සීරීම් එකක් හෝ දෙකක් තිබිය හැක. සුළු පොලිෂ් (Polish) එකකින් අලුත් තත්ත්වයට ගත හැක.</li>
-                
                 <li><strong>Grade 4:</strong> හොඳ තත්ත්වය (Good Condition)- වාහනය සාමාන්‍ය පරිදි භාවිතා කර ඇතත්, හොඳින් නඩත්තු කර ඇත. පිටත බොඩියේ සීරීම් (scratches), කුඩා තැලීම් (dents - pin dents)හෝ තීන්ත ආලේප කිරීම් (re-paint) තිබිය හැක.</li>
-                
                 <li><strong>Grade 3.5:</strong> සාමාන්‍ය තත්ත්වය (Average Condition)- පැහැදිලිව පෙනෙන සීරීම්, තැලීම් හෝ ඇතුළත අපිරිසිදුකම් තිබිය හැක. තීන්ත ආලේප කිරීම් (Touching/Painting) හෝ කුඩා අලුත්වැඩියාවන් අවශ්‍ය විය හැක.</li>
-                
                 <li><strong>Grade 3:</strong> සාමාන්‍යයට වඩා අඩු (Fair Condition)- වඩා පැරණි හෝ වැඩියෙන් ධාවනය කළ වාහන වේ. පැහැදිලිව පෙනෙන විශාල සීරීම්, තැලීම්, මලකඩ කෑ ස්ථාන හෝ ඇතුළත හානි තිබිය හැක. අනිවාර්යයෙන්ම අලුත්වැඩියා අවශ්‍ය වේ.</li>
-                
                 <li><strong>Grade 2/1:</strong> දුර්වල තත්ත්වය (Poor Condition)- ඉතා බරපතල ලෙස හානි වූ, එන්ජින් දෝෂ සහිත හෝ විශාල අලුත්වැඩියා අවශ්‍ය වාහන වේ. සාමාන්‍ය ආනයනය සඳහා සුදුසු නොවේ.</li>
-                
                 <li><strong>Grade R/RA:</strong> අනතුරු අලුත්වැඩියා කළ(Repair History)- වාහනය මීට පෙර යම් අනතුරකට ලක්වී, හානි සිදුවී, පසුව එය අලුත්වැඩියා කර ඇත. මෙහිදී හානියේ ස්වභාවය කුඩා හෝ විශාල විය හැක.</li>
             </ul>
 
             <div class="blog-image-container">
-                <img src="../blog/blogphotos/auction-grades.avif" alt="Grade Chart">
+                <img src="../vehicle-photos/auction-grades.avif" alt="Grade Chart">
                 <span class="image-caption">Figure 2: වෙන්දේසි ශ්‍රේණි</span>
             </div>
 
@@ -346,12 +181,12 @@
             <ul>
                 <li><strong>A - ඉතා විශිෂ්ටයි (Excellent):</strong>අලුත් තත්ත්වයට සමානය.</li>
                 <li><strong>B - හොඳයි (Good):</strong>සාමාන්‍ය භාවිතය, නමුත් පිරිසිදුයි. සුළු පැල්ලම් තිබිය හැක. (බොහෝ විට Grade 4.5/4 වාහන වල ඇත්තේ Interior B වේ).</li>
-                <li><strong>C - සාමාන්‍යයි (Average):</strong>ඇතුළත පැල්ලම්, ඉරීම් හෝ දුම්පානය කළ ගන්ධය තිබිය හැක.</li>
+                <li><strong>C - සාමාන්‍යයි (Average):</strong>ඇතුළත පැල්ලම්, ඉරීම් හෝ දුම්පානය කළ ගන්ධය තිබිය හැක. පිරිසිදු කිරීම අවශ්‍ය වේ.</li>
                 <li><strong>D / E - දුර්වලයි (Poor):</strong>ඉතා අපිරිසිදු, ඉරී ගිය හෝ බරපතල හානි ඇත.</li>
             </ul>
                 
             <div class="blog-image-container">
-            <img src="../blog/blogphotos/exterior-interior-condition.avif" alt="Ext/Int chart">
+            <img src="../vehicle-photos/exterior-interior-condition.avif" alt="Ext/Int chart">
             <span class="image-caption">Figure 3: වෙන්දේසි ශ්‍රේණිය/ පිටත සහ ඇතුලත තත්වය</span>
             </div>
 
@@ -368,7 +203,7 @@
                 <li><strong>W3:</strong>ඇසයට හොඳින් පෙනෙන තරමේ විශාල අලුත්වැඩියා සලකුණ/පේන්ට් වැඩ.</li>
             </ul>
             
-            <p>මීට අමතරව තවත් ඉංග්ීසි අක්ශර වලින් විවිධ විස්තර සඳහන් කර ඇත,</p>
+            <p>මීට අමතරව තවත් ඉංග්‍රීසි අක්ශර වලින් විවිධ විස්තර සඳහන් කර ඇත,</p>
 
             <div class="code-grid">
                 <div class="code-item"><span>S:</span> මලකඩ (Rust).</div>
@@ -379,7 +214,7 @@
                 <div class="code-item"><span>G:</span> වීදුරුවේ ඇති සීරීම් හෝ ගල් වැදුණු සලකුණු (Stone chip on glass).</div>
                 <div class="code-item"><span>Y:</span> ඉරිතැලීම් (Cracks/Holes).</div>
             </div>
- 
+
             <div class="warning-box">
                 <h3>⚠️ විශේෂ අවවාදයයි! - Auction Sheet වංචාවට හසු නොවන්න</h3>
                 <p>ශ්‍රී ලංකාවේ බහුතරයක් වාහන ආනයනකරුවන් තම සේවාදායකයින්ට ඉතා විශ්වාසනීය සේවයක් ලබා දෙයි. නමුත් අවාසනාවකට මෙන්, ඉතා සුළුතරයක් පිරිස් වැඩි ලාභයක් උපයා ගැනීමේ අරමුණින් පාරිභෝගිකයන් නොමඟ යවන අවස්ථා ඇත.</p>
@@ -421,6 +256,8 @@
             <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Use</a>
         </div>
     </footer>
+
+    <script src="../js/sl-tax-calc.js" defer></script>
 
     <a href="https://wa.me/94769447740" class="float-wa" target="_blank" aria-label="Chat on WhatsApp">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 448 512" fill="#FFF"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
