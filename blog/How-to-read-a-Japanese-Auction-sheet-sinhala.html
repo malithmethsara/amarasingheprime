@@ -90,35 +90,35 @@
         .blog-image-container img { max-width: 100%; height: auto; border-radius: 0.5rem; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .image-caption { display: block; margin-top: 0.5rem; color: #666; font-size: 0.9rem; font-style: italic; }
 
-        /* --- UPDATED WARNING BOX (Smaller Fonts) --- */
+        /* --- UPDATED WARNING BOX (Compact Size) --- */
         .warning-box {
             background-color: #fff4f4;
             border: 1px solid #dc3545;
-            padding: 1.5rem;
+            padding: 1.25rem; /* Reduced padding */
             margin: 2rem 0;
             border-radius: 8px;
         }
         .warning-box h3 { 
             color: #dc3545; 
             margin-top: 0; 
-            font-size: 1.2rem; /* Reduced size */
-            margin-bottom: 1rem;
+            font-size: 1.1rem; /* Reduced font size */
+            margin-bottom: 0.75rem;
         }
         .warning-box p {
-            font-size: 0.95rem; /* Smaller text */
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            color: #842029; /* Dark red for readability */
+            font-size: 0.9rem; /* Reduced font size */
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+            color: #842029; 
         }
         
         .code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; }
         .code-item span { color: #d63384; font-weight: 800; margin-right: 5px; }
 
-        /* --- CONTACT CARD (Compact & Clean) --- */
+        /* --- CONTACT CARD (Compact Size) --- */
         .contact-card { 
             background: #f0f7ff; 
             border: 1px solid #cce0ff; 
-            padding: 1.5rem; 
+            padding: 1.25rem; /* Reduced padding */
             border-radius: 12px; 
             margin-top: 2rem;
             text-align: left;
@@ -126,15 +126,15 @@
         .contact-card h3 {
             margin-top: 0;
             color: #003087;
-            font-size: 1.2rem; /* Reduced to match Warning Box Header */
+            font-size: 1.1rem; /* Reduced font size */
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
         .contact-card p {
             text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 0.95rem; /* Reduced to match Warning Box Text */
-            line-height: 1.6;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem; /* Reduced font size */
+            line-height: 1.5;
         }
         .contact-links-list { 
             list-style: none; 
@@ -148,8 +148,8 @@
             display: flex;
             align-items: center; 
             gap: 10px; 
-            margin-bottom: 12px; /* Tighter spacing */
-            font-size: 0.95rem;  /* Smaller font for the list items */
+            margin-bottom: 10px; /* Reduced spacing */
+            font-size: 0.9rem;   /* Reduced font size */
             flex-wrap: wrap; 
         }
 
@@ -168,27 +168,27 @@
 
         /* --- MOBILE TRANSFORMATION (2-Line but Compact) --- */
         @media (max-width: 450px) {
-            .contact-card { padding: 1.25rem; }
+            .contact-card { padding: 1rem; }
             
             .contact-links-list li {
                 flex-wrap: wrap; 
                 align-items: center; 
-                margin-bottom: 15px; /* Good spacing between contact groups */
-                gap: 6px; 
+                margin-bottom: 12px; /* Tighter mobile spacing */
+                gap: 5px; 
             }
 
             .contact-links-list strong {
                 min-width: auto; 
-                font-size: 0.95rem; /* Keeps label small */
+                font-size: 0.9rem; 
             }
 
             /* The Link/Number sits below */
             .contact-links-list a {
                 width: 100%;       
                 display: block;
-                margin-left: 28px; /* Indented */
+                margin-left: 28px; 
                 margin-top: -2px;  
-                font-size: 1rem;   /* Link is just slightly larger for readability */
+                font-size: 0.95rem; 
             }
         }
 
