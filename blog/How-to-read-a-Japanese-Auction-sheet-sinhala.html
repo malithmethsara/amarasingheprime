@@ -12,7 +12,7 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="How to read a Japanese Auction sheet? (Sinhala Guide)">
     <meta property="og:description" content="Learn the secrets of Japanese Auction sheets. Don't get scammed with fake grades. Read our full guide in Sinhala.">
-    <meta property="og:image" content="../vehicle-photos/auction-guide-cover.jpg"> 
+    <meta property="og:image" content="blogphotos/auction-guide-cover.jpg"> 
     <meta property="og:url" content="https://www.amarasingheprime.lk/blog/auction-sheet-guide.html">
     <meta property="og:site_name" content="Amarasinghe Prime Enterprises">
 
@@ -33,7 +33,7 @@
       },
       "headline": "ජපන් වාහන වෙන්දේසි වාර්තාව (Auction Sheet) කියවන්නේ කෙසේද?",
       "description": "A comprehensive guide in Sinhala on how to read Japanese car auction sheets, understand grades, and avoid scams.",
-      "image": "../vehicle-photos/auction-guide-cover.jpg",
+      "image": "blogphotos/auction-guide-cover.jpg",
       "author": {
         "@type": "Organization",
         "name": "Amarasinghe Prime Enterprises"
@@ -74,7 +74,6 @@
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 2rem;
-            /* font-style: italic; REMOVED */
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
@@ -91,10 +90,9 @@
         .blog-image-container img { max-width: 100%; height: auto; border-radius: 0.5rem; border: 1px solid #eee; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .image-caption { display: block; margin-top: 0.5rem; color: #666; font-size: 0.9rem; font-style: italic; }
 
-        /* Special Features */
         .warning-box {
             background-color: #fff4f4;
-            border: 1px solid #dc3545; /* Uniform border */
+            border: 1px solid #dc3545;
             padding: 1.5rem;
             margin: 2rem 0;
             border-radius: 5px;
@@ -109,7 +107,6 @@
         .contact-links-list li { margin-bottom: 10px; }
         .contact-links-list a { text-decoration: none; color: #003087; font-weight: 600; }
 
-        /* --- NEW BACK BUTTON STYLE (Outline Button) --- */
         .back-nav {
             display: inline-flex;
             align-items: center;
@@ -125,62 +122,70 @@
             margin-bottom: 2rem;
             transition: all 0.2s;
         }
-        .back-nav:hover {
-            background-color: #003087;
-            color: white;
-        }
+        .back-nav:hover { background-color: #003087; color: white; }
 
-        /* --- CONTACT CHIPS STYLES (CORRECTED 2x2 LAYOUT) --- */
+        /* --- CONTACT CHIPS (EXACT MATCH TO HOMEPAGE) --- */
         .contact {
             display: flex;
-            justify-content: center;
-            gap: 10px; /* Reduced gap slightly for mobile fit */
-            padding: 20px 10px;
-            flex-wrap: wrap;
-            background: transparent;
-        }
-        .chip {
-            display: flex;
+            flex-wrap: wrap; /* Important for Mobile */
+            gap: 0.875rem;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 10px 15px;
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #444;
+            margin: 0.625rem 0;
             font-weight: 600;
-            font-size: 0.95rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+        }
+        .contact a {
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .contact a:hover {
+            transform: scale(1.05);
+        }
+        .contact .chip {
+            display: inline-flex;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid rgb(220,230,246);
+            transition: background 0.18s, border-color 0.18s, color 0.18s;
             
-            /* DESKTOP DEFAULT: Auto width */
-            min-width: 120px; 
+            /* FIXED WIDTHS FOR DESKTOP */
+            min-width: 140px;
+            height: 46px;
+            font-size: 0.95rem;
+            line-height: 1;
         }
-        .chip:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border-color: #003087;
-        }
-        .chip svg { width: 18px; height: 18px; }
-        .phone-chip svg { color: #003087; fill: currentColor; }
-        .whatsapp-chip svg { color: #25D366; fill: currentColor; }
-        .facebook-chip svg { color: #1877F2; fill: currentColor; }
-        .email-chip svg { color: #EA4335; fill: currentColor; }
+        .contact .chip svg { width: 20px; height: 20px; flex-shrink: 0; }
+        
+        /* Chip Colors */
+        .phone-chip { background: #f4f4f4; color: #222; border: 1px solid #b9eac7; }
+        .phone-chip svg { color: #444; }
+        .whatsapp-chip { background: #e6f7ec; color: #229e59; border: 1px solid #b9eac7; }
+        .whatsapp-chip svg { color: #229e59; }
+        .facebook-chip { background: #e3edfb; color: #1877f3; border: 1px solid #b6d2f7; }
+        .facebook-chip svg { color: #1877f3; }
+        .email-chip { background: #fce8e6; color: #c5221f; border: 1px solid #f6c5c2; }
+        .email-chip svg { color: #d93025; }
 
-        /* MOBILE TWEAK FOR 2x2 GRID */
-        @media (max-width: 600px) {
+        /* --- MOBILE OVERRIDE FOR 2x2 GRID (SAME AS HOMEPAGE) --- */
+        @media (max-width: 640px) {
             .page-container { padding: 1.25rem; }
             .page-title { font-size: 1.6rem; }
             .code-grid { grid-template-columns: 1fr; }
             
-            /* This makes them 2-by-2 */
-            .chip { 
-                width: calc(50% - 10px); /* Half width minus gap */
-                font-size: 0.85rem; /* Slightly smaller text for mobile */
-                padding: 10px 5px;
+            /* The 2x2 Grid Logic */
+            .contact {
+                display: grid;                 
+                grid-template-columns: 1fr 1fr; 
+                gap: 0.75rem;
+                width: 100%;
             }
+            .contact a { width: 100%; text-align: center; }
+            .contact .chip { width: 100%; justify-content: center; margin: 0; }
         }
     </style>
 </head>
@@ -226,7 +231,7 @@
             </p>
 
             <div class="blog-image-container">
-                <img src="../vehicle-photos/Auction-sheet-guide-sinhala.avif" alt="Japanese Auction Sheet Example">
+                <img src="blogphotos/Auction-sheet-guide-sinhala.avif" alt="Japanese Auction Sheet Example">
                 <span class="image-caption">Figure 1: සම්මත වෙන්දේසි වාර්තාවක ආකෘතිය</span>
             </div>
 
@@ -246,7 +251,7 @@
             </ul>
 
             <div class="blog-image-container">
-                <img src="../vehicle-photos/auction-grades.avif" alt="Grade Chart">
+                <img src="blogphotos/auction-grades.avif" alt="Grade Chart">
                 <span class="image-caption">Figure 2: වෙන්දේසි ශ්‍රේණි</span>
             </div>
 
@@ -262,7 +267,7 @@
             </ul>
                 
             <div class="blog-image-container">
-            <img src="../vehicle-photos/exterior-interior-condition.avif" alt="Ext/Int chart">
+            <img src="blogphotos/exterior-interior-condition.avif" alt="Ext/Int chart">
             <span class="image-caption">Figure 3: වෙන්දේසි ශ්‍රේණිය/ පිටත සහ ඇතුලත තත්වය</span>
             </div>
 
@@ -291,7 +296,7 @@
             </ul>
 
             <div class="blog-image-container">
-            <img src="../vehicle-photos/auction-sheet-map" alt="Ext/Int chart">
+            <img src="blogphotos/auction-sheet-map.avif" alt="Ext/Int chart">
             <span class="image-caption">Figure 4: වෙන්දේසි පත්‍රිකාවේ ඇති සිතියම</span>
             </div>
             
