@@ -114,59 +114,65 @@
         .code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; }
         .code-item span { color: #d63384; font-weight: 800; margin-right: 5px; }
 
-        /* --- FIXED CONTACT CARD ALIGNMENT --- */
+        /* --- FIXED CONTACT CARD ALIGNMENT (Mobile Perfect) --- */
         .contact-card { 
             background: #f0f7ff; 
             border: 1px solid #cce0ff; 
-            padding: 2rem; 
+            padding: 1.5rem; 
             border-radius: 12px; 
             margin-top: 2rem;
-            text-align: left; /* Forces all text inside to align left */
+            text-align: left;
         }
         .contact-card h3 {
             margin-top: 0;
             color: #003087;
             font-size: 1.4rem;
-            text-align: center; /* Keeps the heading centered if you prefer */
+            text-align: center;
             margin-bottom: 1rem;
         }
         .contact-card p {
-            text-align: center; /* Keeps the description centered */
+            text-align: center;
             margin-bottom: 2rem;
         }
         .contact-links-list { 
             list-style: none; 
             padding: 0; 
-            margin: 0 auto; /* Centers the list block itself */
-            max-width: 400px; /* Prevents it from getting too wide */
+            margin: 0 auto; 
+            max-width: 100%;
         }
+        
+        /* This Flexbox handles the 3 items: Emoji | Label | Link */
         .contact-links-list li { 
-            margin-bottom: 12px; 
-            display: flex; 
-            align-items: center; /* Vertically aligns Icon, Label, Link */
-            flex-wrap: nowrap; /* Forces them to stay on ONE line */
-            gap: 10px; 
+            display: flex;
+            align-items: flex-start; /* Aligns items to top so wrapping text looks good */
+            gap: 10px; /* Consistent gap between Icon, Label, and Link */
+            margin-bottom: 15px; 
             font-size: 1rem;
             line-height: 1.4;
         }
-        /* This ensures the Label (e.g. "Call:") never breaks */
+
+        /* Fixed width for the "Call:", "Email:" labels so they line up */
         .contact-links-list strong {
-            white-space: nowrap; 
+            display: inline-block;
+            min-width: 90px; /* Sets a rigid column width for labels */
             color: #333;
-            min-width: 85px; /* Creates a neat column for the labels */
+            font-weight: 700;
         }
+
+        /* The Links (Phone numbers, etc.) */
         .contact-links-list a { 
             text-decoration: none; 
             color: #003087; 
             font-weight: 600; 
-            white-space: nowrap; /* Keeps phone numbers/links on one line */
+            flex: 1; /* Allows text to wrap nicely within its own column */
+            word-break: break-word; /* Prevents long emails from breaking layout */
         }
 
-        /* Mobile Adjustment to prevent overflow on very small screens */
+        /* Mobile Tweak: Ensure nothing touches the edges */
         @media (max-width: 400px) {
-            .contact-card { padding: 1.5rem; }
-            .contact-links-list li { font-size: 0.9rem; }
-            .contact-links-list strong { min-width: 70px; }
+            .contact-card { padding: 1.25rem; }
+            .contact-links-list strong { min-width: 80px; font-size: 0.95rem; }
+            .contact-links-list li { gap: 8px; }
         }
 
         .back-nav {
