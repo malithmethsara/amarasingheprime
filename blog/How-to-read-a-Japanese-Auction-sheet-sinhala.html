@@ -114,11 +114,11 @@
         .code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; }
         .code-item span { color: #d63384; font-weight: 800; margin-right: 5px; }
 
-        /* --- FIXED CONTACT CARD ALIGNMENT (Mobile Perfect) --- */
+        /* --- CONTACT CARD (Smart 2-Line Layout) --- */
         .contact-card { 
             background: #f0f7ff; 
             border: 1px solid #cce0ff; 
-            padding: 1.5rem; 
+            padding: 2rem; 
             border-radius: 12px; 
             margin-top: 2rem;
             text-align: left;
@@ -128,7 +128,7 @@
             color: #003087;
             font-size: 1.4rem;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         .contact-card p {
             text-align: center;
@@ -141,38 +141,45 @@
             max-width: 100%;
         }
         
-        /* This Flexbox handles the 3 items: Emoji | Label | Link */
+        /* GENERAL STYLES (Desktop) */
         .contact-links-list li { 
             display: flex;
-            align-items: flex-start; /* Aligns items to top so wrapping text looks good */
-            gap: 10px; /* Consistent gap between Icon, Label, and Link */
+            align-items: center; /* Aligns items nicely */
+            gap: 10px; 
             margin-bottom: 15px; 
             font-size: 1rem;
-            line-height: 1.4;
+            flex-wrap: wrap; /* Allows wrapping on small screens */
         }
 
-        /* Fixed width for the "Call:", "Email:" labels so they line up */
         .contact-links-list strong {
-            display: inline-block;
-            min-width: 90px; /* Sets a rigid column width for labels */
+            min-width: 90px; /* Keeps labels aligned on desktop */
             color: #333;
             font-weight: 700;
         }
 
-        /* The Links (Phone numbers, etc.) */
         .contact-links-list a { 
             text-decoration: none; 
             color: #003087; 
             font-weight: 600; 
-            flex: 1; /* Allows text to wrap nicely within its own column */
-            word-break: break-word; /* Prevents long emails from breaking layout */
+            word-break: break-all; /* Ensures long emails don't break layout */
         }
 
-        /* Mobile Tweak: Ensure nothing touches the edges */
-        @media (max-width: 400px) {
+        /* --- MOBILE TRANSFORMATION (The Fix) --- */
+        @media (max-width: 450px) {
             .contact-card { padding: 1.25rem; }
-            .contact-links-list strong { min-width: 80px; font-size: 0.95rem; }
-            .contact-links-list li { gap: 8px; }
+            
+            /* This forces the link to drop to the next line */
+            .contact-links-list a {
+                width: 100%;       /* Takes full width of the container */
+                margin-left: 28px; /* Indents it slightly to align with the text above */
+                margin-top: -5px;  /* Pulls it up slightly closer to the label */
+                display: block;    /* Ensures it sits on its own line */
+                font-size: 1.05rem; /* Makes links slightly larger/easier to tap */
+            }
+            
+            .contact-links-list li {
+                margin-bottom: 18px; /* Adds more space between different contact items */
+            }
         }
 
         .back-nav {
