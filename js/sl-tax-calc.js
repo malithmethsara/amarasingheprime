@@ -146,21 +146,39 @@
         return document.getElementById(id) || null;
     }
 
-    // --- LIVE CLOCK ---
+    // --- LIVE CLOCK (Updated Date Format: Saturday 3rd Jan 2026) ---
     function startLiveClock() {
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) {
             const updateTime = () => {
-                timeEl.textContent = new Date().toLocaleString('en-LK', {
-                    weekday: 'long',
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: true
+                const now = new Date();
+                
+                // 1. Day Name (e.g. Saturday)
+                const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
+                
+                // 2. Month Name (e.g. Jan)
+                const monthName = now.toLocaleDateString('en-US', { month: 'short' });
+                
+                // 3. Day Number & Suffix (e.g. 3rd)
+                const dateNum = now.getDate();
+                let suffix = "th";
+                if (dateNum === 1 || dateNum === 21 || dateNum === 31) suffix = "st";
+                else if (dateNum === 2 || dateNum === 22) suffix = "nd";
+                else if (dateNum === 3 || dateNum === 23) suffix = "rd";
+                
+                // 4. Year
+                const year = now.getFullYear();
+
+                // 5. Time
+                const timeString = now.toLocaleTimeString('en-US', {
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit', 
+                    hour12: true 
                 });
+
+                // Combine: "Saturday 3rd Jan 2026 12:25:00 PM"
+                timeEl.textContent = `${dayName} ${dateNum}${suffix} ${monthName} ${year} ${timeString}`;
             };
             updateTime();
             setInterval(updateTime, 1000);
