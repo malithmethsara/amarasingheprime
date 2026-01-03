@@ -114,11 +114,11 @@
         .code-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 2rem; background: #f8f9fa; padding: 1rem; border-radius: 8px; }
         .code-item span { color: #d63384; font-weight: 800; margin-right: 5px; }
 
-        /* --- CONTACT CARD (Smart 2-Line Layout) --- */
+        /* --- CONTACT CARD (Compact & Clean) --- */
         .contact-card { 
             background: #f0f7ff; 
             border: 1px solid #cce0ff; 
-            padding: 2rem; 
+            padding: 1.5rem; 
             border-radius: 12px; 
             margin-top: 2rem;
             text-align: left;
@@ -126,13 +126,15 @@
         .contact-card h3 {
             margin-top: 0;
             color: #003087;
-            font-size: 1.4rem;
+            font-size: 1.2rem; /* Reduced to match Warning Box Header */
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         .contact-card p {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem; /* Reduced to match Warning Box Text */
+            line-height: 1.6;
         }
         .contact-links-list { 
             list-style: none; 
@@ -144,15 +146,15 @@
         /* GENERAL STYLES (Desktop) */
         .contact-links-list li { 
             display: flex;
-            align-items: center; /* Aligns items nicely */
+            align-items: center; 
             gap: 10px; 
-            margin-bottom: 15px; 
-            font-size: 1rem;
-            flex-wrap: wrap; /* Allows wrapping on small screens */
+            margin-bottom: 12px; /* Tighter spacing */
+            font-size: 0.95rem;  /* Smaller font for the list items */
+            flex-wrap: wrap; 
         }
 
         .contact-links-list strong {
-            min-width: 90px; /* Keeps labels aligned on desktop */
+            min-width: 90px; 
             color: #333;
             font-weight: 700;
         }
@@ -161,35 +163,32 @@
             text-decoration: none; 
             color: #003087; 
             font-weight: 600; 
-            word-break: break-all; /* Ensures long emails don't break layout */
+            word-break: break-all; 
         }
-        /* --- MOBILE CONTACT CARD (Clean 2-Line Layout) --- */
+
+        /* --- MOBILE TRANSFORMATION (2-Line but Compact) --- */
         @media (max-width: 450px) {
-            .contact-card { 
-                padding: 1.5rem; 
-            }
+            .contact-card { padding: 1.25rem; }
             
-            /* 1. Force the container to wrap items */
             .contact-links-list li {
                 flex-wrap: wrap; 
                 align-items: center; 
-                margin-bottom: 20px; /* Add extra space between contact items */
-                gap: 8px; /* Space between Icon and Label */
+                margin-bottom: 15px; /* Good spacing between contact groups */
+                gap: 6px; 
             }
 
-            /* 2. Reset the label width so it sits next to the icon */
             .contact-links-list strong {
                 min-width: auto; 
-                font-size: 1rem;
+                font-size: 0.95rem; /* Keeps label small */
             }
 
-            /* 3. Force the LINK to its own line and indent it */
+            /* The Link/Number sits below */
             .contact-links-list a {
-                width: 100%;       /* Forces it to the next line */
+                width: 100%;       
                 display: block;
-                margin-left: 30px; /* Indents it to align under the text (skipping the icon) */
-                margin-top: -2px;  /* Pulls it slightly closer to the label above */
-                font-size: 1.1rem; /* Bigger text is easier to read on mobile */
+                margin-left: 28px; /* Indented */
+                margin-top: -2px;  
+                font-size: 1rem;   /* Link is just slightly larger for readability */
             }
         }
 
