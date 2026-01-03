@@ -163,22 +163,33 @@
             font-weight: 600; 
             word-break: break-all; /* Ensures long emails don't break layout */
         }
-
-        /* --- MOBILE TRANSFORMATION (The Fix) --- */
+        /* --- MOBILE CONTACT CARD (Clean 2-Line Layout) --- */
         @media (max-width: 450px) {
-            .contact-card { padding: 1.25rem; }
-            
-            /* This forces the link to drop to the next line */
-            .contact-links-list a {
-                width: 100%;       /* Takes full width of the container */
-                margin-left: 28px; /* Indents it slightly to align with the text above */
-                margin-top: -5px;  /* Pulls it up slightly closer to the label */
-                display: block;    /* Ensures it sits on its own line */
-                font-size: 1.05rem; /* Makes links slightly larger/easier to tap */
+            .contact-card { 
+                padding: 1.5rem; 
             }
             
+            /* 1. Force the container to wrap items */
             .contact-links-list li {
-                margin-bottom: 18px; /* Adds more space between different contact items */
+                flex-wrap: wrap; 
+                align-items: center; 
+                margin-bottom: 20px; /* Add extra space between contact items */
+                gap: 8px; /* Space between Icon and Label */
+            }
+
+            /* 2. Reset the label width so it sits next to the icon */
+            .contact-links-list strong {
+                min-width: auto; 
+                font-size: 1rem;
+            }
+
+            /* 3. Force the LINK to its own line and indent it */
+            .contact-links-list a {
+                width: 100%;       /* Forces it to the next line */
+                display: block;
+                margin-left: 30px; /* Indents it to align under the text (skipping the icon) */
+                margin-top: -2px;  /* Pulls it slightly closer to the label above */
+                font-size: 1.1rem; /* Bigger text is easier to read on mobile */
             }
         }
 
