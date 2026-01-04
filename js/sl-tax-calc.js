@@ -152,32 +152,20 @@
         if (timeEl) {
             const updateTime = () => {
                 const now = new Date();
-                
-                // 1. Day Name (e.g. Saturday)
                 const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
-                
-                // 2. Month Name (e.g. Jan)
                 const monthName = now.toLocaleDateString('en-US', { month: 'short' });
-                
-                // 3. Day Number & Suffix (e.g. 3rd)
                 const dateNum = now.getDate();
                 let suffix = "th";
                 if (dateNum === 1 || dateNum === 21 || dateNum === 31) suffix = "st";
                 else if (dateNum === 2 || dateNum === 22) suffix = "nd";
                 else if (dateNum === 3 || dateNum === 23) suffix = "rd";
-                
-                // 4. Year
                 const year = now.getFullYear();
-
-                // 5. Time
                 const timeString = now.toLocaleTimeString('en-US', {
                     hour: '2-digit', 
                     minute: '2-digit', 
                     second: '2-digit', 
                     hour12: true 
                 });
-
-                // Combine: "Saturday 3rd Jan 2026 12:25:00 PM"
                 timeEl.textContent = `${dayName} ${dateNum}${suffix} ${monthName} ${year} ${timeString}`;
             };
             updateTime();
@@ -190,7 +178,6 @@
         const date = new Date(dateString);
         const now = new Date();
         const seconds = Math.floor((now - date) / 1000);
-        
         let interval = Math.floor(seconds / 31536000);
         if (interval >= 1) return interval + " year" + (interval === 1 ? "" : "s") + " ago";
         interval = Math.floor(seconds / 2592000);
@@ -213,10 +200,7 @@
     // 4.1. Lazy Load External Scripts
     function loadExternalScript(url, globalCheck) {
         return new Promise((resolve, reject) => {
-            if (window[globalCheck]) {
-                resolve();
-                return;
-            }
+            if (window[globalCheck]) { resolve(); return; }
             const script = document.createElement('script');
             script.src = url;
             script.defer = true;
@@ -358,6 +342,10 @@
         };
 
         displayResults(resultData);
+
+        // NEW: Show the charts container after calculation
+        const chartsCon = document.getElementById('chartsContainer');
+        if (chartsCon) chartsCon.style.display = 'flex';
 
         // Lazy Load Charts on Calculation
         loadScript('https://cdn.jsdelivr.net/npm/chart.js').then(() => {
@@ -610,6 +598,11 @@
         resultData = null;
         if (taxChart) { taxChart.destroy(); taxChart = null; }
         if (costChart) { costChart.destroy(); costChart = null; }
+        
+        // NEW: Hide the charts container when resetting
+        const chartsCon = document.getElementById('chartsContainer');
+        if (chartsCon) chartsCon.style.display = 'none';
+
         const resultEl = getElementSafe('result');
         if (resultEl) {
             resultEl.innerHTML = `
@@ -860,8 +853,12 @@ document.addEventListener("DOMContentLoaded", async function() {
             const cols = row.split(',');
             if(cols.length === 2) {
                 const dateObj = new Date(cols[0]);
-                // Format: "Jan 05"
-                const dateLabel = dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+                
+                // NEW LABEL FORMAT: "Jan 26" (Month + Short Year) to avoid confusion
+                const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
+                const year = dateObj.getFullYear().toString().slice(-2);
+                const dateLabel = `${month} ${year}`;
+                
                 labels.push(dateLabel); 
                 rates.push(parseFloat(cols[1]));
             }
@@ -870,20 +867,22 @@ document.addEventListener("DOMContentLoaded", async function() {
         // 3. Update "Big Number" Display (Latest Entry)
         if (rates.length > 0) {
             const latestRate = rates[rates.length - 1];
-            const latestDate = labels[labels.length - 1];
+            
+            // Recalculate full date for the big text display (to show full year e.g. 2026)
+            const lastRowCols = rows[rows.length - 1].split(',');
+            const lastDateObj = new Date(lastRowCols[0]);
+            const fullDateText = lastDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + lastDateObj.getFullYear();
             
             const rateDisplay = document.getElementById('latestRateDisplay');
             const dateDisplay = document.getElementById('latestDateDisplay');
             
             if (rateDisplay) rateDisplay.textContent = latestRate.toFixed(4);
-            if (dateDisplay) dateDisplay.textContent = latestDate + ", " + new Date().getFullYear();
+            if (dateDisplay) dateDisplay.textContent = fullDateText;
         }
 
         // 4. Generate SEO Table (Last 5 Weeks only)
-        // We reverse the loop to show newest first
         if (tableBody) {
             let tableHTML = "";
-            // Show last 5 entries or less if data is scarce
             const startIdx = Math.max(0, rows.length - 5);
             
             for (let i = rows.length - 1; i >= startIdx; i--) {
@@ -891,8 +890,6 @@ document.addEventListener("DOMContentLoaded", async function() {
                 if (cols.length < 2) continue;
                 
                 const currentRate = parseFloat(cols[1]);
-                
-                // Calculate change icon
                 let changeIcon = "-";
                 let changeColor = "#666";
                 
@@ -902,10 +899,10 @@ document.addEventListener("DOMContentLoaded", async function() {
                         const prevRate = parseFloat(prevCols[1]);
                         if (currentRate > prevRate) {
                             changeIcon = "▲ Up"; 
-                            changeColor = "#d63384"; // Red for increase (Costlier)
+                            changeColor = "#d63384";
                         } else if (currentRate < prevRate) {
                             changeIcon = "▼ Down"; 
-                            changeColor = "green"; // Green for decrease (Cheaper)
+                            changeColor = "green";
                         }
                     }
                 }
@@ -921,7 +918,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             tableBody.innerHTML = tableHTML;
         }
 
-        // 5. Draw Chart
+        // 5. Draw Chart (Mobile Optimized)
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -934,7 +931,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     borderWidth: 2,
                     pointBackgroundColor: '#fff',
                     pointBorderColor: '#003087',
-                    pointRadius: 3,
+                    pointRadius: 2, // Smaller dots for mobile
                     pointHoverRadius: 6,
                     fill: true,
                     tension: 0.3
@@ -945,8 +942,18 @@ document.addEventListener("DOMContentLoaded", async function() {
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
                 scales: {
-                    x: { grid: { display: false }, ticks: { maxTicksLimit: 6, maxRotation: 0 } },
-                    y: { grid: { color: '#f5f5f5' } }
+                    x: { 
+                        grid: { display: false }, 
+                        ticks: { 
+                            maxTicksLimit: 6, // Prevents congestion
+                            maxRotation: 0,
+                            font: { size: 10 } // Smaller font for mobile
+                        } 
+                    },
+                    y: { 
+                        grid: { color: '#f5f5f5' },
+                        ticks: { font: { size: 10 } }
+                    }
                 }
             }
         });
