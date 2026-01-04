@@ -422,11 +422,39 @@
                     <div id="pieChartSummary" class="sr-only"></div>
                 </div>
             </div>
-            <div class="rate-chart-container">
-                <h3 class="chart-title">JPY/LKR Exchange Rate Trend</h3>
-                <img src="rate-chart.avif" alt="JPY/LKR Exchange Rate Trend" loading="lazy">
-                <p style="font-size:0.85rem; color:#777; text-align:center; margin-top:5px;">Updated weekly based on Sri Lanka Customs rates.</p>
+            
+            <div class="rate-chart-container" style="background: #fff; padding: 2rem; border-radius: 12px; border: 1px solid #eef2f7; box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
+                <h3 class="chart-title" style="color: #003087; margin-top: 0;">JPY/LKR Exchange Rate Trend</h3>
+                
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <span style="font-size: 0.9rem; color: #666; display: block; margin-bottom: 5px;">Effective Customs Rate (Week of <span id="latestDateDisplay">...</span>)</span>
+                    <span id="latestRateDisplay" style="font-size: 2.5rem; font-weight: 800; color: #d63384; line-height: 1;">...</span>
+                    <span style="font-size: 1rem; color: #666; font-weight: 600;">LKR</span>
+                </div>
+
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="exchangeRateChart"></canvas>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h4 style="font-size: 1rem; color: #444; margin-bottom: 10px;">Recent Rate History</h4>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; color: #333;">
+                        <thead>
+                            <tr style="background: #f8f9fa; text-align: left;">
+                                <th style="padding: 8px; border-bottom: 2px solid #eee;">Date</th>
+                                <th style="padding: 8px; border-bottom: 2px solid #eee;">Rate (LKR)</th>
+                                <th style="padding: 8px; border-bottom: 2px solid #eee;">Change</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rateTableBody"></tbody>
+                    </table>
+                </div>
+                
+                <p style="font-size:0.8rem; color:#888; text-align:center; margin-top:20px;">
+                    Data Source: Sri Lanka Customs Weekly Exchange Rates. Updated automatically from rates.txt.
+                </p>
             </div>
+            
         </section>
     </div>
     
@@ -507,6 +535,7 @@
     </footer>
 
     <script src="js/vehicle-data.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/sl-tax-calc.js" defer></script>
 
     <a href="https://wa.me/message/XSPMWKK4BGVAM1" class="float-wa" target="_blank" aria-label="Chat on WhatsApp">
