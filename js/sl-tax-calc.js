@@ -832,3 +832,126 @@
         init();
     }
 })();
+
+/* =========================================
+   JPY/LKR REAL-TIME EXCHANGE RATE CHART
+   Fetches data from rates.txt
+   ========================================= */
+document.addEventListener("DOMContentLoaded", async function() {
+    // Only run if the chart element exists on this page
+    const chartCanvas = document.getElementById('exchangeRateChart');
+    if (!chartCanvas) return;
+
+    const ctx = chartCanvas.getContext('2d');
+    const tableBody = document.getElementById('rateTableBody');
+    
+    try {
+        // 1. Fetch Data
+        const response = await fetch('rates.txt');
+        const dataText = await response.text();
+        
+        // 2. Process Data
+        const rows = dataText.trim().split('\n');
+        const labels = [];
+        const rates = [];
+        
+        // Loop through all rows to build chart data
+        rows.forEach(row => {
+            const cols = row.split(',');
+            if(cols.length === 2) {
+                const dateObj = new Date(cols[0]);
+                // Format: "Jan 05"
+                const dateLabel = dateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+                labels.push(dateLabel); 
+                rates.push(parseFloat(cols[1]));
+            }
+        });
+
+        // 3. Update "Big Number" Display (Latest Entry)
+        if (rates.length > 0) {
+            const latestRate = rates[rates.length - 1];
+            const latestDate = labels[labels.length - 1];
+            
+            const rateDisplay = document.getElementById('latestRateDisplay');
+            const dateDisplay = document.getElementById('latestDateDisplay');
+            
+            if (rateDisplay) rateDisplay.textContent = latestRate.toFixed(4);
+            if (dateDisplay) dateDisplay.textContent = latestDate + ", " + new Date().getFullYear();
+        }
+
+        // 4. Generate SEO Table (Last 5 Weeks only)
+        // We reverse the loop to show newest first
+        if (tableBody) {
+            let tableHTML = "";
+            // Show last 5 entries or less if data is scarce
+            const startIdx = Math.max(0, rows.length - 5);
+            
+            for (let i = rows.length - 1; i >= startIdx; i--) {
+                const cols = rows[i].split(',');
+                if (cols.length < 2) continue;
+                
+                const currentRate = parseFloat(cols[1]);
+                
+                // Calculate change icon
+                let changeIcon = "-";
+                let changeColor = "#666";
+                
+                if (i > 0) {
+                    const prevCols = rows[i-1].split(',');
+                    if (prevCols.length === 2) {
+                        const prevRate = parseFloat(prevCols[1]);
+                        if (currentRate > prevRate) {
+                            changeIcon = "▲ Up"; 
+                            changeColor = "#d63384"; // Red for increase (Costlier)
+                        } else if (currentRate < prevRate) {
+                            changeIcon = "▼ Down"; 
+                            changeColor = "green"; // Green for decrease (Cheaper)
+                        }
+                    }
+                }
+
+                tableHTML += `
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 8px;">${cols[0]}</td>
+                        <td style="padding: 8px; font-weight: 600;">${currentRate.toFixed(4)}</td>
+                        <td style="padding: 8px; color: ${changeColor}; font-size: 0.85rem;">${changeIcon}</td>
+                    </tr>
+                `;
+            }
+            tableBody.innerHTML = tableHTML;
+        }
+
+        // 5. Draw Chart
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'JPY Rate',
+                    data: rates,
+                    borderColor: '#003087',
+                    backgroundColor: 'rgba(0, 48, 135, 0.05)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#003087',
+                    pointRadius: 3,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { maxTicksLimit: 6, maxRotation: 0 } },
+                    y: { grid: { color: '#f5f5f5' } }
+                }
+            }
+        });
+
+    } catch (error) {
+        console.error("Error loading exchange rates:", error);
+    }
+});
