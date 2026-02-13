@@ -2,8 +2,8 @@ name: Daily CBSL Rate Update
 
 on:
   schedule:
-    - cron: '0 4 * * *' # Runs at 9:30 AM Sri Lanka Time
-  workflow_dispatch: # Allows manual trigger
+    - cron: '0 4 * * *' # Runs daily at 9:30 AM Sri Lanka Time
+  workflow_dispatch: # Allows manual run button
 
 permissions:
   contents: write
@@ -20,72 +20,83 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install Dependencies
-        run: pip install requests beautifulsoup4
+      # 1. Install Chrome Browser for GitHub Actions
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@latest
 
-      - name: Fetch and Process Rates
+      # 2. Install Selenium (The tool that controls Chrome)
+      - name: Install Dependencies
+        run: pip install selenium webdriver-manager beautifulsoup4
+
+      - name: Run Scraper with Real Browser
         run: |
-          import requests
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.chrome.service import Service
+          from webdriver_manager.chrome import ChromeDriverManager
           from bs4 import BeautifulSoup
           from datetime import datetime
           import sys
-          import urllib3
+          import time
 
-          # Suppress SSL warnings
-          urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-          # 1. Setup Request
-          url = "https://www.cbsl.gov.lk/en/rates-and-indicators/exchange-rates/daily-buy-and-sell-exchange-rates"
-          # Use headers that look like a real Chrome browser
-          headers = {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-              'Accept-Language': 'en-US,en;q=0.5'
-          }
+          # --- SETUP REAL CHROME BROWSER ---
+          print("Setting up Chrome...")
+          options = Options()
+          options.add_argument("--headless") # Run in background (no GUI)
+          options.add_argument("--no-sandbox")
+          options.add_argument("--disable-dev-shm-usage")
+          options.add_argument("--window-size=1920,1080")
+          options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
 
           try:
-              print(f"Connecting to {url}...")
-              # verify=False prevents SSL errors common with some gov sites
-              response = requests.get(url, headers=headers, timeout=30, verify=False) 
-              print(f"Response Status: {response.status_code}")
+              driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
               
-              if response.status_code != 200:
-                  print("❌ Failed to load page.")
-                  sys.exit(1)
-
-              soup = BeautifulSoup(response.content, 'html.parser')
+              # --- LOAD THE PAGE ---
+              url = "https://www.cbsl.gov.lk/en/rates-and-indicators/exchange-rates/daily-buy-and-sell-exchange-rates"
+              print(f"visiting: {url}")
+              driver.get(url)
               
-              # 2. Search for the Rate
-              jpy_rate = None
+              # WAIT for 5 seconds to let JavaScript load the table
+              time.sleep(5) 
+              
+              # Get the HTML after it has fully loaded
+              html = driver.page_source
+              soup = BeautifulSoup(html, 'html.parser')
+              
+              # --- SEARCH FOR DATA ---
               tables = soup.find_all('table')
-              
               print(f"Found {len(tables)} tables on the page.")
+              
+              jpy_rate = None
 
               for table in tables:
                   rows = table.find_all('tr')
                   for row in rows:
                       text = row.text.strip().lower()
                       
-                      # Flexible Search: Look for 'japanese yen' OR 'jpy'
+                      # Look for 'japanese yen' OR 'jpy'
                       if "japanese yen" in text or "jpy" in text:
                           cols = row.find_all('td')
                           # Usually: [Name, Buying, Selling, ...]
-                          # We need the 3rd column (Index 2) for Selling Rate
+                          # We try to grab the 3rd column (Index 2)
                           if len(cols) >= 3:
                               raw_rate = cols[2].text.strip()
-                              if raw_rate:
+                              # Sometimes the rate might be empty or a dash
+                              if raw_rate and any(c.isdigit() for c in raw_rate):
                                   jpy_rate = raw_rate
-                                  print(f"✅ Found Rate! Row: '{text[:20]}...' -> Selling Rate: {jpy_rate}")
+                                  print(f"✅ Found Rate! {text[:15]}... -> Selling: {jpy_rate}")
                                   break
                   if jpy_rate:
                       break
+              
+              driver.quit()
 
-              # 3. Save or Fail
+              # --- SAVE TO FILE ---
               if jpy_rate:
                   # Clean the rate (remove commas/spaces)
                   clean_rate = jpy_rate.replace(',', '').strip()
                   
-                  # Validate it's a number
+                  # Validate number
                   try:
                       float(clean_rate)
                   except ValueError:
@@ -94,30 +105,27 @@ jobs:
 
                   today = datetime.now().strftime("%Y-%m-%d")
                   new_line = f"{today},{clean_rate}"
-                  
-                  filename = "CBSL rates.txt"
-                  
-                  # Check if we already have today's rate to avoid duplicates
+                  filename = "CBSL rates.txt" # Filename with space
+
+                  # Avoid duplicates
                   try:
                       with open(filename, "r") as f:
-                          last_line = f.readlines()[-1].strip()
-                          if today in last_line:
-                              print("⚠️ Rate for today already exists. Skipping update.")
+                          content = f.read()
+                          if today in content:
+                              print("⚠️ Rate for today already exists. Skipping.")
                               sys.exit(0)
                   except FileNotFoundError:
-                      pass # File doesn't exist yet, that's fine
+                      pass 
 
-                  # Append to file
+                  # Append
                   with open(filename, "a") as f:
                       f.write(f"\n{new_line}")
-                  print(f"✅ Successfully appended: {new_line}")
+                  print(f"✅ Successfully saved: {new_line}")
 
               else:
-                  print("❌ Error: Could not find 'Japanese Yen' or 'JPY' in any table.")
-                  print("Dumping first 5 rows of the first table for debugging:")
-                  if tables:
-                      for i, r in enumerate(tables[0].find_all('tr')[:5]):
-                          print(f"Row {i}: {r.text.strip()}")
+                  print("❌ Error: Could not find 'Japanese Yen' in any table.")
+                  # Debug: Print a bit of the page text to see what we got
+                  print("Page Text Snippet:", soup.get_text()[:500])
                   sys.exit(1)
 
           except Exception as e:
