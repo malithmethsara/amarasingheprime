@@ -2,9 +2,8 @@ name: Daily CBSL Rate Update
 
 on:
   schedule:
-    # Runs at 04:00 UTC (9:30 AM Sri Lanka Time) every day
-    - cron: '0 4 * * *'
-  workflow_dispatch: # Allows you to click a button to run it manually
+    - cron: '0 4 * * *' # Runs at 9:30 AM Sri Lanka Time
+  workflow_dispatch: # Allows manual trigger
 
 permissions:
   contents: write
@@ -21,76 +20,114 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install Scraper Tools
+      - name: Install Dependencies
         run: pip install requests beautifulsoup4
 
-      - name: Fetch CBSL Selling Rate
+      - name: Fetch and Process Rates
         run: |
           import requests
           from bs4 import BeautifulSoup
           from datetime import datetime
-          import os
+          import sys
 
-          # 1. Target the CBSL Exchange Rate Page
+          # 1. Setup Request
           url = "https://www.cbsl.gov.lk/en/rates-and-indicators/exchange-rates/daily-buy-and-sell-exchange-rates"
-          
-          try:
-              # Fake a browser visit so CBSL doesn't block us
-              headers = {'User-Agent': 'Mozilla/5.0'}
-              response = requests.get(url, headers=headers)
-              soup = BeautifulSoup(response.content, 'html.parser')
+          # Use headers that look like a real Chrome browser
+          headers = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+              'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+              'Accept-Language': 'en-US,en;q=0.5'
+          }
 
-              # 2. INTELLIGENT SEARCH: Find the JPY Selling Rate
-              jpy_rate = None
+          try:
+              print(f"Connecting to {url}...")
+              # verify=False prevents SSL errors common with some gov sites
+              response = requests.get(url, headers=headers, timeout=30, verify=False) 
+              print(f"Response Status: {response.status_code}")
               
-              # Find all tables on the page
+              if response.status_code != 200:
+                  print("❌ Failed to load page.")
+                  sys.exit(1)
+
+              soup = BeautifulSoup(response.content, 'html.parser')
+              
+              # 2. Search for the Rate
+              jpy_rate = None
               tables = soup.find_all('table')
               
+              print(f"Found {len(tables)} tables on the page.")
+
               for table in tables:
-                  # Look through every row in the table
-                  for row in table.find_all('tr'):
-                      text = row.text.strip()
+                  rows = table.find_all('tr')
+                  for row in rows:
+                      text = row.text.strip().lower()
                       
-                      # 3. Logic: If row contains "Japanese Yen", get the Selling Rate
-                      if "Japanese Yen" in text:
+                      # DEBUG: Uncomment the next line to see all rows in logs if it still fails
+                      # print(f"Checking row: {text[:50]}...") 
+
+                      # Flexible Search: Look for 'japanese yen' OR 'jpy'
+                      if "japanese yen" in text or "jpy" in text:
                           cols = row.find_all('td')
-                          # Col 0=Name, Col 1=Buying, Col 2=Selling
+                          # Usually: [Name, Buying, Selling, ...]
+                          # We need the 3rd column (Index 2) for Selling Rate
                           if len(cols) >= 3:
                               raw_rate = cols[2].text.strip()
-                              jpy_rate = raw_rate
-                              print(f"Found JPY Selling Rate: {jpy_rate}")
-                              break
+                              if raw_rate:
+                                  jpy_rate = raw_rate
+                                  print(f"✅ Found Rate! Row: '{text[:20]}...' -> Selling Rate: {jpy_rate}")
+                                  break
                   if jpy_rate:
                       break
 
-              # 4. Save to "CBSL rates.txt"
+              # 3. Save or Fail
               if jpy_rate:
-                  # Clean the rate (remove commas or spaces)
+                  # Clean the rate (remove commas/spaces)
                   clean_rate = jpy_rate.replace(',', '').strip()
                   
-                  # Create the line: "2026-01-05,2.0004"
+                  # Validate it's a number
+                  try:
+                      float(clean_rate)
+                  except ValueError:
+                      print(f"❌ Error: Found value '{clean_rate}' is not a valid number.")
+                      sys.exit(1)
+
                   today = datetime.now().strftime("%Y-%m-%d")
                   new_line = f"{today},{clean_rate}"
                   
-                  # Append to file (Double quotes needed for filename with spaces)
-                  with open("CBSL rates.txt", "a") as f:
+                  filename = "CBSL rates.txt"
+                  
+                  # Check if we already have today's rate to avoid duplicates
+                  try:
+                      with open(filename, "r") as f:
+                          last_line = f.readlines()[-1].strip()
+                          if today in last_line:
+                              print("⚠️ Rate for today already exists. Skipping update.")
+                              sys.exit(0)
+                  except FileNotFoundError:
+                      pass # File doesn't exist yet, that's fine
+
+                  # Append to file
+                  with open(filename, "a") as f:
                       f.write(f"\n{new_line}")
-                  print(f"Successfully added: {new_line}")
+                  print(f"✅ Successfully appended: {new_line}")
+
               else:
-                  print("Error: Could not find 'Japanese Yen' in the table.")
-                  exit(1)
+                  print("❌ Error: Could not find 'Japanese Yen' or 'JPY' in any table.")
+                  print("Dumping first 5 rows of the first table for debugging:")
+                  if tables:
+                      for i, r in enumerate(tables[0].find_all('tr')[:5]):
+                          print(f"Row {i}: {r.text.strip()}")
+                  sys.exit(1)
 
           except Exception as e:
-              print(f"Critical Error: {e}")
-              exit(1)
+              print(f"❌ Critical Error: {e}")
+              sys.exit(1)
 
         shell: python
 
-      - name: Commit and Push Changes
+      - name: Commit and Push
         run: |
           git config --global user.name "Auto-Update Bot"
           git config --global user.email "actions@github.com"
-          # Quotes are required here because of the space in the filename
           git add "CBSL rates.txt"
-          # Only commit if there are changes
           git diff --quiet && git diff --staged --quiet || (git commit -m "📈 Auto-update CBSL Selling Rate" && git push)
