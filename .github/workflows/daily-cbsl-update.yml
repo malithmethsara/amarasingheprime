@@ -29,6 +29,10 @@ jobs:
           from bs4 import BeautifulSoup
           from datetime import datetime
           import sys
+          import urllib3
+
+          # Suppress SSL warnings
+          urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
           # 1. Setup Request
           url = "https://www.cbsl.gov.lk/en/rates-and-indicators/exchange-rates/daily-buy-and-sell-exchange-rates"
@@ -62,9 +66,6 @@ jobs:
                   for row in rows:
                       text = row.text.strip().lower()
                       
-                      # DEBUG: Uncomment the next line to see all rows in logs if it still fails
-                      # print(f"Checking row: {text[:50]}...") 
-
                       # Flexible Search: Look for 'japanese yen' OR 'jpy'
                       if "japanese yen" in text or "jpy" in text:
                           cols = row.find_all('td')
