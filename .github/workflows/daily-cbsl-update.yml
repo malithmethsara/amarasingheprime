@@ -1,0 +1,96 @@
+name: Daily CBSL Rate Update
+
+on:
+  schedule:
+    # Runs at 04:00 UTC (9:30 AM Sri Lanka Time) every day
+    - cron: '0 4 * * *'
+  workflow_dispatch: # Allows you to click a button to run it manually
+
+permissions:
+  contents: write
+
+jobs:
+  update-rates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Scraper Tools
+        run: pip install requests beautifulsoup4
+
+      - name: Fetch CBSL Selling Rate
+        run: |
+          import requests
+          from bs4 import BeautifulSoup
+          from datetime import datetime
+          import os
+
+          # 1. Target the CBSL Exchange Rate Page
+          url = "https://www.cbsl.gov.lk/en/rates-and-indicators/exchange-rates/daily-buy-and-sell-exchange-rates"
+          
+          try:
+              # Fake a browser visit so CBSL doesn't block us
+              headers = {'User-Agent': 'Mozilla/5.0'}
+              response = requests.get(url, headers=headers)
+              soup = BeautifulSoup(response.content, 'html.parser')
+
+              # 2. INTELLIGENT SEARCH: Find the JPY Selling Rate
+              jpy_rate = None
+              
+              # Find all tables on the page
+              tables = soup.find_all('table')
+              
+              for table in tables:
+                  # Look through every row in the table
+                  for row in table.find_all('tr'):
+                      text = row.text.strip()
+                      
+                      # 3. Logic: If row contains "Japanese Yen", get the Selling Rate
+                      if "Japanese Yen" in text:
+                          cols = row.find_all('td')
+                          # Col 0=Name, Col 1=Buying, Col 2=Selling
+                          if len(cols) >= 3:
+                              raw_rate = cols[2].text.strip()
+                              jpy_rate = raw_rate
+                              print(f"Found JPY Selling Rate: {jpy_rate}")
+                              break
+                  if jpy_rate:
+                      break
+
+              # 4. Save to "CBSL rates.txt"
+              if jpy_rate:
+                  # Clean the rate (remove commas or spaces)
+                  clean_rate = jpy_rate.replace(',', '').strip()
+                  
+                  # Create the line: "2026-01-05,2.0004"
+                  today = datetime.now().strftime("%Y-%m-%d")
+                  new_line = f"{today},{clean_rate}"
+                  
+                  # Append to file (Double quotes needed for filename with spaces)
+                  with open("CBSL rates.txt", "a") as f:
+                      f.write(f"\n{new_line}")
+                  print(f"Successfully added: {new_line}")
+              else:
+                  print("Error: Could not find 'Japanese Yen' in the table.")
+                  exit(1)
+
+          except Exception as e:
+              print(f"Critical Error: {e}")
+              exit(1)
+
+        shell: python
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "Auto-Update Bot"
+          git config --global user.email "actions@github.com"
+          # Quotes are required here because of the space in the filename
+          git add "CBSL rates.txt"
+          # Only commit if there are changes
+          git diff --quiet && git diff --staged --quiet || (git commit -m "📈 Auto-update CBSL Selling Rate" && git push)
