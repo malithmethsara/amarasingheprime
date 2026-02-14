@@ -1,0 +1,39 @@
+name: Telegram Rate Update
+
+on:
+  workflow_dispatch:
+    inputs:
+      rate:
+        description: 'The Rate from Telegram'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  append-rate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Append Rate to File
+        run: |
+          # Get the rate from the input
+          NEW_RATE="${{ inputs.rate }}"
+          TODAY=$(date +'%Y-%m-%d')
+          
+          # Create the line: 2026-02-14,2.0500
+          NEW_LINE="$TODAY,$NEW_RATE"
+          
+          # Append to file
+          echo "$NEW_LINE" >> "CBSL rates.txt"
+          
+          # Configure Git
+          git config --global user.name "Telegram Bot"
+          git config --global user.email "actions@github.com"
+          
+          # Commit and Push
+          git add "CBSL rates.txt"
+          git commit -m "📱 Telegram Update: $NEW_RATE"
+          git push
