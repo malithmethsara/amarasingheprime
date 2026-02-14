@@ -1,6 +1,7 @@
 /*
 * Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2025 Gazette & Real World CUSDEC
+* Updated: Calculator uses CBSL Daily Rate | Graph keeps Customs Weekly Rate
 */
 (function() {
     'use strict';
@@ -728,10 +729,10 @@
         updateReviewTimes(); 
         renderVehicleShowcase();
 
-        // --- FETCH RATE FROM "CBSL rates.txt" ---
+        // --- FETCH DAILY RATE FOR CALCULATOR (CBSL rates.txt) ---
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
-            fetch('CBSL%20rates.txt') // <-- Updated to use CBSL file
+            fetch('CBSL%20rates.txt') 
                 .then(r => {
                     if (!r.ok) throw new Error("CBSL rates.txt not found");
                     return r.text();
@@ -747,7 +748,6 @@
                             if (!isNaN(rate)) {
                                 const exchangeInput = getElementSafe('exchangeRate');
                                 if (exchangeInput) exchangeInput.value = rate.toFixed(4);
-                                // <-- Updated Display Text -->
                                 rateEl.innerHTML = `
                                     <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
                                     <div style="color:var(--muted);font-size:0.85rem">Source: Central Bank of Sri Lanka Exchange Rates (Published on: ${updatedDate})</div>
@@ -812,8 +812,8 @@
 })();
 
 /* =========================================
-   JPY/LKR REAL-TIME EXCHANGE RATE CHART
-   Fetches data from CBSL rates.txt
+   JPY/LKR WEEKLY RATE CHART (BOTTOM)
+   Fetches data from rates.txt (CUSTOMS DATA)
    ========================================= */
 document.addEventListener("DOMContentLoaded", async function() {
     const chartCanvas = document.getElementById('exchangeRateChart');
@@ -823,8 +823,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     const tableBody = document.getElementById('rateTableBody');
     
     try {
-        // 1. Fetch Data from CBSL rates.txt
-        const response = await fetch('CBSL%20rates.txt');
+        // 1. Fetch Data from rates.txt (CUSTOMS)
+        const response = await fetch('rates.txt');
         const dataText = await response.text();
         
         // 2. Process Data
@@ -855,12 +855,12 @@ document.addEventListener("DOMContentLoaded", async function() {
             const rateDisplay = document.getElementById('latestRateDisplay');
             const dateDisplay = document.getElementById('latestDateDisplay');
             
-            // Update Label Above Big Number
+            // Revert Label Above Big Number to Customs
             const labelSpan = dateDisplay.parentElement.querySelector('span');
-            if(labelSpan) labelSpan.textContent = `Effective Market Rate (Week of ${fullDateText})`;
+            if(labelSpan) labelSpan.innerHTML = `Effective Customs Rate (Week of <span id="latestDateDisplay">${fullDateText}</span>)`;
 
             if (rateDisplay) rateDisplay.textContent = latestRate.toFixed(4);
-            if (dateDisplay) dateDisplay.textContent = fullDateText;
+            // dateDisplay is handled inside innerHTML update above
         }
 
         // 4. Generate SEO Table (Last 5 Weeks only)
@@ -941,10 +941,10 @@ document.addEventListener("DOMContentLoaded", async function() {
             }
         });
         
-        // Update Bottom Source Text
+        // Update Bottom Source Text Back to Customs
         const chartContainer = document.querySelector('.rate-chart-container p');
         if(chartContainer) {
-            chartContainer.innerHTML = 'Data Source: Central Bank of Sri Lanka Exchange Rates.';
+            chartContainer.innerHTML = 'Data Source: Sri Lanka Customs Weekly Exchange Rates.';
         }
 
     } catch (error) {
