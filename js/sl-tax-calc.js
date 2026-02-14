@@ -1,7 +1,6 @@
 /*
 * Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2025 Gazette & Real World CUSDEC
-* Updated: Switched to CBSL Daily Rates (CBSL rates.txt)
 */
 (function() {
     'use strict';
