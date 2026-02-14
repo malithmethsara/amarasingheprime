@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       rate:
-        description: 'The Rate from Telegram'
+        description: 'Raw input from Telegram'
         required: true
 
 permissions:
@@ -17,23 +17,38 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Append Rate to File
+      - name: Smart Update
         run: |
-          # Get the rate from the input
-          NEW_RATE="${{ inputs.rate }}"
-          TODAY=$(date +'%Y-%m-%d')
+          # 1. Get the raw input from Telegram
+          RAW_INPUT="${{ inputs.rate }}"
           
-          # Create the line: 2026-02-14,2.0500
-          NEW_LINE="$TODAY,$NEW_RATE"
+          # 2. Check if it contains a comma (Format: YYYY-MM-DD,Rate)
+          if [[ "$RAW_INPUT" == *","* ]]; then
+            # Split the text at the comma
+            THE_DATE=$(echo "$RAW_INPUT" | cut -d',' -f1)
+            THE_RATE=$(echo "$RAW_INPUT" | cut -d',' -f2)
+            echo "📅 Custom Date Detected: $THE_DATE"
+          else
+            # No comma? Use today's date automatically
+            THE_DATE=$(date +'%Y-%m-%d')
+            THE_RATE="$RAW_INPUT"
+            echo "📅 No date provided. Using Today: $THE_DATE"
+          fi
           
-          # Append to file
+          # 3. Clean up whitespace (just in case)
+          THE_DATE=$(echo "$THE_DATE" | xargs)
+          THE_RATE=$(echo "$THE_RATE" | xargs)
+
+          # 4. Create the final line
+          NEW_LINE="$THE_DATE,$THE_RATE"
+          echo "✍️ Writing: $NEW_LINE"
+          
+          # 5. Append to file
           echo "$NEW_LINE" >> "CBSL rates.txt"
           
-          # Configure Git
+          # 6. Save to GitHub
           git config --global user.name "Telegram Bot"
           git config --global user.email "actions@github.com"
-          
-          # Commit and Push
           git add "CBSL rates.txt"
-          git commit -m "📱 Telegram Update: $NEW_RATE"
+          git commit -m "📱 Update: $NEW_LINE"
           git push
