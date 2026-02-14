@@ -1,7 +1,7 @@
 /*
 * Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2025 Gazette & Real World CUSDEC
-* Updated: Added Bank LC Fee & Dynamic Vehicle Showcase Slider
+* Updated: Switched to CBSL Daily Rates (CBSL rates.txt)
 */
 (function() {
     'use strict';
@@ -146,7 +146,7 @@
         return document.getElementById(id) || null;
     }
 
-    // --- LIVE CLOCK (Updated Date Format: Saturday 3rd Jan 2026) ---
+    // --- LIVE CLOCK ---
     function startLiveClock() {
         const timeEl = getElementSafe('timeDateTime');
         if (timeEl) {
@@ -270,7 +270,7 @@
             age: getElementSafe('age'),
             dealerFee: getElementSafe('dealerFee'),
             clearingFee: getElementSafe('clearingFee'),
-            bankFee: getElementSafe('bankLcFee') // NEW: Grab Bank Fee Input
+            bankFee: getElementSafe('bankLcFee') 
         };
 
         if (!elements.cifJPY || !elements.exchangeRate || !elements.vehicleType || !elements.capacity || !elements.age) {
@@ -285,7 +285,7 @@
         const age = elements.age.value;
         const dealerFee = parseFloat(elements.dealerFee.value) || 0;
         const clearingFee = parseFloat(elements.clearingFee.value) || 0;
-        const bankFee = parseFloat(elements.bankFee ? elements.bankFee.value : 0) || 0; // NEW: Parse Bank Fee
+        const bankFee = parseFloat(elements.bankFee ? elements.bankFee.value : 0) || 0;
 
         // --- VALIDATION ---
         if (cifJPY < 800000 || cifJPY > 20000000) return showError('cifJPY', '! Please enter valid CIF (JPY) amount');
@@ -314,28 +314,25 @@
         const luxuryTax = calculateLuxuryTax(cif, type);
 
         // 6. VAT Calculation (18%)
-        // Base = CIF + PAL + CID + Surcharge + Excise (Excludes Luxury)
         const vatBase = cif + pal + cid + surcharge + excise;
         const vat = vatBase * 0.18;
 
         // 7. Fixed Levies
-        const vel = 15000;       // Vehicle Entitlement Levy
-        const comFee = 1750;     // Computer / Exam / Seal Fee 
+        const vel = 15000;       
+        const comFee = 1750;     
 
-        // 8. SSCL (Exempt for Personal Cars - Hidden in Display)
+        // 8. SSCL
         const sscl = 0; 
 
         // 9. Totals
-        // REMOVED 'pal' from this sum to match Reference Web & CUSDEC Total Line
         const totalTax = cid + surcharge + excise + luxuryTax + vel + vat + comFee + sscl;
         
-        // NEW: Sum up all 3 charges for "Other Charges" grouping
         const otherCharges = dealerFee + clearingFee + bankFee;
         const totalCost = cif + totalTax + otherCharges;
 
         resultData = {
             cifJPY, exchangeRate, cif, type, capacity, age,
-            dealerFee, clearingFee, bankFee, // NEW: Added to data object
+            dealerFee, clearingFee, bankFee,
             cid, surcharge, excise,
             luxuryTax, vel, vat, comFee, totalTax, 
             otherCharges, totalCost
@@ -343,11 +340,9 @@
 
         displayResults(resultData);
 
-        // NEW: Show the charts container after calculation
         const chartsCon = document.getElementById('chartsContainer');
         if (chartsCon) chartsCon.style.display = 'flex';
 
-        // Lazy Load Charts on Calculation
         loadScript('https://cdn.jsdelivr.net/npm/chart.js').then(() => {
             showCharts(resultData);
         });
@@ -363,7 +358,7 @@
         }
     }
 
-    // 8. Display Results (UPDATED LABEL)
+    // 8. Display Results
     function displayResults(data) {
         const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
         const ageText = resultData.age === '1' ? '≤1 year' : '>1–3 years';
@@ -470,7 +465,7 @@
         });
     }
 
-    // 10. PDF Download (Safe Lazy Load)
+    // 10. PDF Download
     function downloadPDF() {
         if (!resultData) {
             alert('Please calculate the tax first.');
@@ -498,7 +493,7 @@
         });
     }
 
-    // 10.1. Generate PDF (UPDATED LABELS & INPUTS)
+    // 10.1. Generate PDF
     function generatePDFContent(resultData, btn) {
         if (typeof window.jspdf === 'undefined' || !window.jspdf.jsPDF) {
             alert('PDF library not ready. Please try again.');
@@ -520,7 +515,7 @@
         doc.text(`Date: ${new Date().toLocaleString('en-LK')}`, 10, y);
         y += 8;
 
-        // Inputs (Added Bank LC Fee to PDF inputs as well for completeness)
+        // Inputs
         doc.autoTable({
             startY: y,
             head: [['Input Description', 'Value']],
@@ -533,7 +528,7 @@
                 ['Vehicle Age', resultData.age === '1' ? '≤1 year' : '>1–3 years'],
                 ['Dealer Fee (LKR)', formatNumber(resultData.dealerFee)],
                 ['Clearing Agent Fee (LKR)', formatNumber(resultData.clearingFee)],
-                ['Bank LC Fee (LKR)', formatNumber(resultData.bankFee)] // NEW ROW
+                ['Bank LC Fee (LKR)', formatNumber(resultData.bankFee)]
             ],
             theme: 'grid',
             styles: { fontSize: 8, cellPadding: 2, lineWidth: 0.2 },
@@ -566,14 +561,14 @@
 
         y = doc.lastAutoTable.finalY + 8;
 
-        // Cost Summary (UPDATED LABEL)
+        // Cost Summary
         doc.autoTable({
             startY: y,
             head: [['Cost Component', 'Amount (LKR)']],
             body: [
                 ['Vehicle CIF Value', formatNumber(resultData.cif)],
                 ['Total Taxes & Duties', formatNumber(resultData.totalTax)],
-                ['Other Charges (Bank, Dealer & Clearing Fee)', formatNumber(resultData.otherCharges)], // NEW LABEL
+                ['Other Charges (Bank, Dealer & Clearing Fee)', formatNumber(resultData.otherCharges)],
                 ['TOTAL IMPORT COST', formatNumber(resultData.totalCost)]
             ],
             theme: 'grid',
@@ -599,7 +594,6 @@
         if (taxChart) { taxChart.destroy(); taxChart = null; }
         if (costChart) { costChart.destroy(); costChart = null; }
         
-        // NEW: Hide the charts container when resetting
         const chartsCon = document.getElementById('chartsContainer');
         if (chartsCon) chartsCon.style.display = 'none';
 
@@ -635,16 +629,14 @@
         if (indicator) indicator.style.transform = item.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
     }
 
-    // --- NEW: DYNAMIC VEHICLE RENDERER ---
+    // --- DYNAMIC VEHICLE RENDERER ---
     function renderVehicleShowcase() {
         const slider = document.getElementById('vehicleSlider');
-        // Check if slider exists AND if vehicleInventory data is loaded
         if (!slider || typeof vehicleInventory === 'undefined') return;
 
         let html = '';
         
         vehicleInventory.forEach(car => {
-            // Check if badge exists, otherwise hide it
             const badgeHtml = car.badge ? `<span class="veh-badge">${car.badge}</span>` : '';
             
             html += `
@@ -677,18 +669,16 @@
         });
 
         slider.innerHTML = html;
-        
-        // After rendering, start the auto-slider logic
         initVehicleSlider(); 
     }
 
-    // --- NEW: AUTO SLIDER LOGIC ---
+    // --- AUTO SLIDER LOGIC ---
     function initVehicleSlider() {
         const slider = document.getElementById('vehicleSlider');
         if (!slider) return;
 
         let autoSlide;
-        const cardWidth = 320; // Card width + gap
+        const cardWidth = 320; 
 
         const slideRight = () => {
             if (slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 10)) {
@@ -703,13 +693,11 @@
 
         startSliding();
 
-        // Pause on interaction
         slider.addEventListener('mouseenter', stopSliding);
         slider.addEventListener('mouseleave', startSliding);
         slider.addEventListener('touchstart', stopSliding);
         slider.addEventListener('touchend', startSliding);
 
-        // Buttons
         const leftBtn = document.getElementById('vehLeftBtn');
         const rightBtn = document.getElementById('vehRightBtn');
         
@@ -717,7 +705,7 @@
         if(rightBtn) rightBtn.addEventListener('click', () => { stopSliding(); slideRight(); });
     }
 
-    // --- NEW: HELPER TO FILL CALCULATOR (Must be global) ---
+    // --- HELPER TO FILL CALCULATOR ---
     window.fillCalculator = function(capacity, cif, type) {
         const capInput = document.getElementById('capacity');
         const cifInput = document.getElementById('cifJPY');
@@ -727,7 +715,6 @@
         if(cifInput) cifInput.value = cif;
         if(typeInput) typeInput.value = type;
 
-        // Force update UI
         if(typeInput) typeInput.dispatchEvent(new Event('change'));
 
         const form = document.getElementById('taxCalculatorForm');
@@ -740,16 +727,14 @@
 
         startLiveClock();
         updateReviewTimes(); 
-        
-        // NEW: Render Vehicles
         renderVehicleShowcase();
 
-        // Fetch Rate from rates.txt
+        // --- FETCH RATE FROM "CBSL rates.txt" ---
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
-            fetch('rates.txt')
+            fetch('CBSL%20rates.txt') // <-- Updated to use CBSL file
                 .then(r => {
-                    if (!r.ok) throw new Error("rates.txt not found");
+                    if (!r.ok) throw new Error("CBSL rates.txt not found");
                     return r.text();
                 })
                 .then(text => {
@@ -763,9 +748,10 @@
                             if (!isNaN(rate)) {
                                 const exchangeInput = getElementSafe('exchangeRate');
                                 if (exchangeInput) exchangeInput.value = rate.toFixed(4);
+                                // <-- Updated Display Text -->
                                 rateEl.innerHTML = `
                                     <div style="font-weight:700;color:var(--primary)">Exchange Rate: JPY/LKR = ${rate.toFixed(4)}</div>
-                                    <div style="color:var(--muted);font-size:0.85rem">Source: Sri Lanka Customs Weekly Exchange Rates (Effective from: ${updatedDate})</div>
+                                    <div style="color:var(--muted);font-size:0.85rem">Source: Central Bank of Sri Lanka Exchange Rates (Published on: ${updatedDate})</div>
                                 `;
                             }
                         }
@@ -800,7 +786,7 @@
         document.querySelectorAll('.faq-item h3').forEach(h3 => {
             h3.addEventListener('click', () => toggleFAQ(h3));
         });
-        // --- REVIEW SCROLL ARROWS ---
+        
         const reviewsContainer = document.getElementById('reviewsContainer');
         const leftArrow = document.querySelector('.left-arrow');
         const rightArrow = document.querySelector('.right-arrow');
@@ -828,10 +814,9 @@
 
 /* =========================================
    JPY/LKR REAL-TIME EXCHANGE RATE CHART
-   Fetches data from rates.txt
+   Fetches data from CBSL rates.txt
    ========================================= */
 document.addEventListener("DOMContentLoaded", async function() {
-    // Only run if the chart element exists on this page
     const chartCanvas = document.getElementById('exchangeRateChart');
     if (!chartCanvas) return;
 
@@ -839,8 +824,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     const tableBody = document.getElementById('rateTableBody');
     
     try {
-        // 1. Fetch Data
-        const response = await fetch('rates.txt');
+        // 1. Fetch Data from CBSL rates.txt
+        const response = await fetch('CBSL%20rates.txt');
         const dataText = await response.text();
         
         // 2. Process Data
@@ -848,13 +833,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         const labels = [];
         const rates = [];
         
-        // Loop through all rows to build chart data
         rows.forEach(row => {
             const cols = row.split(',');
             if(cols.length === 2) {
                 const dateObj = new Date(cols[0]);
-                
-                // NEW LABEL FORMAT: "Jan 26" (Month + Short Year) to avoid confusion
                 const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
                 const year = dateObj.getFullYear().toString().slice(-2);
                 const dateLabel = `${month} ${year}`;
@@ -864,11 +846,9 @@ document.addEventListener("DOMContentLoaded", async function() {
             }
         });
 
-        // 3. Update "Big Number" Display (Latest Entry)
+        // 3. Update "Big Number" Display
         if (rates.length > 0) {
             const latestRate = rates[rates.length - 1];
-            
-            // Recalculate full date for the big text display (to show full year e.g. 2026)
             const lastRowCols = rows[rows.length - 1].split(',');
             const lastDateObj = new Date(lastRowCols[0]);
             const fullDateText = lastDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + lastDateObj.getFullYear();
@@ -876,6 +856,10 @@ document.addEventListener("DOMContentLoaded", async function() {
             const rateDisplay = document.getElementById('latestRateDisplay');
             const dateDisplay = document.getElementById('latestDateDisplay');
             
+            // Update Label Above Big Number
+            const labelSpan = dateDisplay.parentElement.querySelector('span');
+            if(labelSpan) labelSpan.textContent = `Effective Market Rate (Week of ${fullDateText})`;
+
             if (rateDisplay) rateDisplay.textContent = latestRate.toFixed(4);
             if (dateDisplay) dateDisplay.textContent = fullDateText;
         }
@@ -918,7 +902,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             tableBody.innerHTML = tableHTML;
         }
 
-        // 5. Draw Chart (Mobile Optimized)
+        // 5. Draw Chart
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -931,7 +915,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                     borderWidth: 2,
                     pointBackgroundColor: '#fff',
                     pointBorderColor: '#003087',
-                    pointRadius: 2, // Smaller dots for mobile
+                    pointRadius: 2, 
                     pointHoverRadius: 6,
                     fill: true,
                     tension: 0.3
@@ -945,9 +929,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                     x: { 
                         grid: { display: false }, 
                         ticks: { 
-                            maxTicksLimit: 6, // Prevents congestion
+                            maxTicksLimit: 6, 
                             maxRotation: 0,
-                            font: { size: 10 } // Smaller font for mobile
+                            font: { size: 10 } 
                         } 
                     },
                     y: { 
@@ -957,6 +941,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
             }
         });
+        
+        // Update Bottom Source Text
+        const chartContainer = document.querySelector('.rate-chart-container p');
+        if(chartContainer) {
+            chartContainer.innerHTML = 'Data Source: Central Bank of Sri Lanka Exchange Rates.';
+        }
 
     } catch (error) {
         console.error("Error loading exchange rates:", error);
