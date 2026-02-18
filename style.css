@@ -30,6 +30,101 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
 }
+
+/* --- NAVIGATION BAR (NEW) --- */
+.navbar {
+    background: var(--card);
+    border-bottom: 1px solid rgba(0,48,135,0.1);
+    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.desktop-menu {
+    display: flex;
+    gap: 2rem;
+}
+.nav-link {
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.2s;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+.nav-link:hover, .nav-link.active {
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
+/* Mobile Toggle */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+}
+
+/* Mobile Sidebar */
+.mobile-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background: white;
+    z-index: 1000;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+    transition: left 0.3s ease;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+.mobile-sidebar.open {
+    left: 0;
+}
+.sidebar-links a {
+    display: block;
+    padding: 1rem 0;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #eee;
+}
+.sidebar-links a:hover, .sidebar-links a.active {
+    color: var(--primary);
+}
+.close-sidebar-btn {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--muted);
+    margin-bottom: 1rem;
+}
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    display: none;
+}
+.sidebar-overlay.active {
+    display: block;
+}
+
 header {
     display: grid;
     grid-template-columns: 1fr;
@@ -479,6 +574,18 @@ tfoot td {
 }
 
 /* --- MOBILE OPTIMIZATION --- */
+@media (max-width: 768px) {
+    .nav-container {
+        justify-content: flex-start; /* Align hamburger left */
+    }
+    .desktop-menu {
+        display: none;
+    }
+    .mobile-menu-btn {
+        display: block;
+    }
+}
+
 @media (max-width: 640px) {
     body {
         padding: 1rem;
