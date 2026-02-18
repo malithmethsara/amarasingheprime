@@ -224,7 +224,7 @@
 
                 <div class="map-container">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.0308003184643!2d80.09631247573905!3d7.122606892881284!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2fd0a1789c6d3%3A0xe5a3c0e159670d9e!2sNittambuwa%2C%20Sri%20Lanka!5e0!3m2!1sen!2slk!4v1707038123456!5m2!1sen!2slk" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15835.835848526546!2d80.0833!3d7.1333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2fd7a20c56b79%3A0x6b8655866164287c!2sNittambuwa!5e0!3m2!1sen!2slk!4v1700000000000!5m2!1sen!2slk" 
                         width="100%" 
                         height="100%" 
                         style="border:0;" 
@@ -237,7 +237,11 @@
 
             <div class="contact-card">
                 <h2>Send us a Message</h2>
-                <form action="mailto:info@amarasingheprime.lk" method="post" enctype="text/plain">
+                
+                <form action="https://formspree.io/f/xzdavblr" method="POST">
+                    
+                    <input type="hidden" name="_subject" value="New Inquiry from Amarasinghe Prime Website">
+
                     <div class="form-group">
                         <label for="name">Your Name</label>
                         <input type="text" id="name" name="name" placeholder="Enter your full name" required>
@@ -246,6 +250,11 @@
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
                         <input type="tel" id="phone" name="phone" placeholder="e.g. 077 123 4567" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="e.g. yourname@gmail.com" required>
                     </div>
 
                     <div class="form-group">
@@ -261,7 +270,7 @@
                     <button type="submit" class="blue-btn" style="width: 100%;">Send Message</button>
                     
                     <p style="margin-top: 1rem; font-size: 0.85rem; color: #666; text-align: center;">
-                        By clicking send, you agree to our Terms of Use. We typically reply within 24 hours.
+                        By clicking send, you agree to our Terms of Use.
                     </p>
                 </form>
             </div>
