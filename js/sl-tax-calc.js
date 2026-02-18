@@ -951,3 +951,35 @@ document.addEventListener("DOMContentLoaded", async function() {
         console.error("Error loading exchange rates:", error);
     }
 });
+
+/* =========================================
+   MOBILE SIDEBAR TOGGLE
+   ========================================= */
+document.addEventListener("DOMContentLoaded", function() {
+    const mobileBtn = document.querySelector('.mobile-menu-btn');
+    const closeBtn = document.querySelector('.close-sidebar-btn');
+    const sidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = ''; // Enable scrolling
+    }
+
+    if(mobileBtn) {
+        mobileBtn.addEventListener('click', openSidebar);
+    }
+    if(closeBtn) {
+        closeBtn.addEventListener('click', closeSidebar);
+    }
+    if(overlay) {
+        overlay.addEventListener('click', closeSidebar);
+    }
+});
