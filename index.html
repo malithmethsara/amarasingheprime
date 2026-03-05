@@ -169,21 +169,6 @@
 </head>
 <body>
     
-    <nav class="navbar">
-        <div class="nav-container">
-            <button class="mobile-menu-btn" aria-label="Open Menu">
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </button>
-
-            <div class="desktop-menu">
-                <a href="index.html" class="nav-link active">Home</a>
-                <a href="blog/index.html" class="nav-link">Blog</a>
-                <a href="about.html" class="nav-link">About Us</a>
-                <a href="contact.html" class="nav-link">Contact</a>
-            </div>
-        </div>
-    </nav>
-
     <div class="mobile-sidebar" id="mobileSidebar">
         <button class="close-sidebar-btn" aria-label="Close Menu">&times;</button>
         <div class="sidebar-links">
@@ -195,13 +180,24 @@
     </div>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <header>
+    <header class="main-header">
+        <button class="mobile-menu-btn" aria-label="Open Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
         <a href="https://amarasingheprime.lk/" class="logo-link" aria-label="Go to Homepage">
             <img src="/logo.png" alt="Amarasinghe Prime Enterprises Logo" width="160" height="75" loading="eager" fetchpriority="high">
         </a>
         <h1>Amarasinghe Prime Enterprises</h1>
         <div class="tagline">Your trusted Japanese automobile partner in Sri Lanka</div>
         <div id="timeDateTime" aria-live="polite"></div>
+        
+        <div class="desktop-menu">
+            <a href="index.html" class="nav-link active">Home</a>
+            <a href="blog/index.html" class="nav-link">Blog</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </div>
     </header>
     <div class="contact" id="contact-row">
         <a class="chip phone-chip" href="tel:+94769447740" aria-label="Call Us">
