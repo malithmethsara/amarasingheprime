@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://amarasingheprime.lk/sitemap.xml
