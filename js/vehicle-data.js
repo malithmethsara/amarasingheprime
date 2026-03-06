@@ -13,7 +13,7 @@ const vehicleInventory = [
             grade: "Safety Package",
             auction: "5"
         },
-        price: "LKR 6,600,000",
+        price: "LKR 7,050,000",
         image: "wagonr.jpg", 
         
         // Calculator Auto-Fill Data
@@ -31,7 +31,7 @@ const vehicleInventory = [
             grade: "L SAIII",
             auction: "5" 
         },
-        price: "LKR 6,050,000",
+        price: "LKR 6,150,000",
         image: "mira.jpg",
         
         calcType: "petrol",
@@ -65,7 +65,7 @@ const vehicleInventory = [
             grade: "HYBRID Z E:HEV",
             auction: "4.5" 
         },
-        price: "LKR 15,700,000",
+        price: "LKR 15,800,000",
         image: "vezel.jpg",
         
         calcType: "petrol_hybrid", // <--- FIXED: Changed space to underscore (_)
@@ -82,7 +82,7 @@ const vehicleInventory = [
             grade: "Z grade",
             auction: "5"
         },
-        price: "LKR 12,000,000",
+        price: "LKR 12,200,000",
         image: "raize.jpg",
         
         calcType: "petrol",
