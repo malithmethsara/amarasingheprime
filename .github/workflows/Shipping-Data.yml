@@ -1,13 +1,12 @@
-name: Generate Shipping Data from Uploaded HTML
+name: 100% Automated RoRo Mapping
 
 on:
-  push:
-    paths:
-      - '**.html' # Runs instantly when you upload the HTML file
-  workflow_dispatch: # Allows you to run it manually
+  schedule:
+    - cron: '0 2 * * *' # 7:30 AM Sri Lanka Time
+  workflow_dispatch:
 
 jobs:
-  process-upload:
+  scrape-and-map:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -15,74 +14,62 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Install Scraper Tools
-        run: pip install beautifulsoup4
+      - name: Install Virtual Browser (Playwright)
+        run: |
+          pip install playwright beautifulsoup4
+          playwright install chromium
 
-      - name: Extract Data from Uploaded File
+      - name: Live Data Mapping
         run: |
           python -c "
           import os
-          import glob
+          from playwright.sync_api import sync_playwright
           from bs4 import BeautifulSoup
-          from datetime import datetime
+          from datetime import date, datetime
 
-          # 1. Path Setup
-          output_folder = 'Data/Shipping'
-          os.makedirs(output_folder, exist_ok=True)
+          # 1. Date Calculation Logic
+          def adjust_month(source_date, months):
+              month = source_date.month - 1 + months
+              year = source_date.year + month // 12
+              month = month % 12 + 1
+              day = min(source_date.day, [31, 29 if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month-1])
+              return date(year, month, day).strftime('%Y-%m-%d')
+
+          today = date.today()
+          d_from, d_to = adjust_month(today, -1), adjust_month(today, 1)
+          url = f'https://autocj.co.jp/spn/japan_shipping?arrival_port=Hambantota&leave_date_from={d_from}&leave_date_to={d_to}'
+
+          # 2. Run Virtual Browser to bypass blocks
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              page = browser.new_page(user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+              page.goto(url, wait_until='networkidle')
+              content = page.content()
+              browser.close()
+
+          # 3. Map Data Slots
+          soup = BeautifulSoup(content, 'html.parser')
+          extracted = [f'META|{datetime.now().strftime(\"%Y-%m-%d %H:%M\")} SL Time|{d_from}|{d_to}']
           
-          # 2. Find your uploaded HTML file
-          search_pattern = '**/Shipping Schedule*.html'
-          found_files = glob.glob(search_pattern, recursive=True)
+          for ship in soup.find_all('section', class_='shipping'):
+              vessel = ship.find('div', class_='shipstatus').find_all('div')[1].get_text(strip=True)
+              ports = ship.find_all('div', class_='shipping_port')
+              if ports:
+                  etd = ports[0].find('div').get_text(strip=True)
+                  eta = ports[-1].find('div').get_text(strip=True)
+                  extracted.append(f'SHIP|{vessel}|{etd}|{eta}')
 
-          if not found_files:
-              print('Error: No HTML file found!')
-              exit(1)
-
-          input_file = found_files[0]
-          print(f'Processing: {input_file}')
-
-          with open(input_file, 'r', encoding='utf-8') as f:
-              soup = BeautifulSoup(f.read(), 'html.parser')
-
-          extracted_lines = []
-          # Meta line for your website
-          extracted_lines.append(f'META|{datetime.now().strftime(\"%Y-%m-%d %H:%M\")} SL Time|Local Upload')
-
-          # 3. Targeted Extraction (Based on your provided HTML structure)
-          ships = soup.find_all('section', class_='shipping')
-          
-          for ship in ships:
-              status_div = ship.find('div', class_='shipstatus')
-              if status_div:
-                  vessel_info = status_div.find_all('div')
-                  vessel = vessel_info[1].get_text(strip=True) if len(vessel_info) > 1 else 'Unknown'
-                  
-                  date_divs = ship.find_all('div', class_='shipping_port')
-                  etd = date_divs[0].find('div').get_text(strip=True) if date_divs else ''
-                  eta = date_divs[-1].find('div').get_text(strip=True) if date_divs else ''
-                  
-                  # Format: SHIP|Vessel|ETD|ETA
-                  extracted_lines.append(f'SHIP|{vessel}|{etd}|{eta}')
-
-          # 4. Save to the exact path requested
-          output_path = os.path.join(output_folder, 'shipping_data.txt')
-          with open(output_path, 'w', encoding='utf-8') as f:
-              f.write('\n'.join(extracted_lines))
+          # 4. Save to target directory
+          os.makedirs('Data/Shipping', exist_ok=True)
+          with open('Data/Shipping/shipping_data.txt', 'w', encoding='utf-8') as f:
+              f.write('\n'.join(extracted))
           "
 
-      - name: Commit Updated Data
+      - name: Push Updates
         run: |
           git config --global user.name 'GitHub Action Bot'
           git config --global user.email 'action@github.com'
           git add Data/Shipping/shipping_data.txt
-          
-          if git diff --staged --quiet; then
-            echo "No changes."
-          else
-            git commit -m "Updated shipping_data.txt from manual upload"
-            git pull --rebase origin main
-            git push
-          fi
+          git commit -m "Automated Data Mapping [Live Feed]" || echo "No changes"
+          git push
