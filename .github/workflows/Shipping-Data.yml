@@ -1,12 +1,13 @@
-name: Auto-Generate Shipping Data Feed
+name: Generate Shipping Data from Uploaded HTML
 
 on:
-  schedule:
-    - cron: '0 2 * * *' # Runs daily at 7:30 AM Sri Lanka time
-  workflow_dispatch:
+  push:
+    paths:
+      - '**.html' # Runs whenever you upload a new HTML file
+  workflow_dispatch: # Allows you to run it manually
 
 jobs:
-  generate-data-feed:
+  process-local-file:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -16,81 +17,63 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Scraper Tools
-        run: pip install beautifulsoup4 requests
+        run: pip install beautifulsoup4
 
-      - name: Extract Data to Pipe-Delimited TXT
+      - name: Map Data from Local HTML
         run: |
           python -c "
-          import requests
           import os
           from bs4 import BeautifulSoup
-          from datetime import date, datetime
+          from datetime import datetime
 
-          folder_path = 'Shipping_Data'
-          os.makedirs(folder_path, exist_ok=True)
-
-          def adjust_month(source_date, months):
-              month = source_date.month - 1 + months
-              year = source_date.year + month // 12
-              month = month % 12 + 1
-              day = min(source_date.day, [31, 29 if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month-1])
-              return date(year, month, day).strftime('%Y-%m-%d')
-
-          today = date.today()
-          date_from = adjust_month(today, -1)
-          date_to = adjust_month(today, 1)
-
-          # Using the specific search URL from your screenshot
-          url = f'https://autocj.co.jp/spn/japan_shipping?arrival_port=Hambantota&leave_date_from={date_from}&leave_date_to={date_to}'
-          headers = {'User-Agent': 'Mozilla/5.0'}
+          # 1. Path Setup (Using your exact Capitalization)
+          output_folder = 'Data/Shipping'
+          os.makedirs(output_folder, exist_ok=True)
           
-          try:
-              response = requests.get(url, headers=headers)
-              soup = BeautifulSoup(response.text, 'html.parser')
-              
-              extracted_lines = []
-              # Line 1: Meta data
-              extracted_lines.append(f'META|{datetime.now().strftime(\"%Y-%m-%d %H:%M\")} SL Time|{date_from}|{date_to}')
-              
-              # Targeted Scraper for Autocom's specific layout
-              # They use blocks of data for each ship
-              ship_blocks = soup.find_all('div', class_='shipping-list-box') or soup.find_all('tr')
-              
-              for block in ship_blocks:
-                  text = block.get_text(separator='|', strip=True)
-                  # Autocom often puts 'Ship name' directly in the text
-                  if 'Ship name' in text:
-                      parts = text.split('|')
-                      vessel = ''
-                      voyage = ''
-                      etd = ''
-                      eta = ''
-                      
-                      # Find Vessel and Voyage
-                      for i, p in enumerate(parts):
-                          if 'Ship name' in p and i+1 < len(parts): vessel = parts[i+1]
-                          if 'Voyage No' in p and i+1 < len(parts): voyage = parts[i+1]
-                          if 'YOKOHAMA' in p or 'NAGOYA' in p or 'KOBE' in p:
-                              if not etd: etd = parts[i-1] if i>0 else ''
-                          if 'HAMBANTOTA' in p:
-                              eta = parts[i-1] if i>0 else ''
-                      
-                      if vessel and (etd or eta):
-                          extracted_lines.append(f'SHIP|{vessel}|{voyage}|{etd}|{eta}')
+          # Use the exact filename you uploaded
+          input_file = 'Shipping Schedule _ Autocom Japan.html'
+          
+          if not os.path.exists(input_file):
+              print(f'Error: {input_file} not found in root directory!')
+              exit(1)
 
-              # Final Save
-              file_final = os.path.join(folder_path, 'shipping_data.txt')
-              with open(file_final, 'w') as f:
-                  f.write('\n'.join(extracted_lines))
+          with open(input_file, 'r', encoding='utf-8') as f:
+              soup = BeautifulSoup(f.read(), 'html.parser')
+
+          extracted_lines = []
+          # Meta Line for your website
+          extracted_lines.append(f'META|{datetime.now().strftime(\"%Y-%m-%d %H:%M\")} SL Time|Local Upload')
+
+          # 2. Targeted Extraction for Autocom's 'section.shipping' tags
+          ships = soup.find_all('section', class_='shipping')
+          
+          for ship in ships:
+              # Get Vessel and Voyage
+              status_div = ship.find('div', class_='shipstatus')
+              if status_div:
+                  vessel_info = status_div.find_all('div')
+                  vessel = vessel_info[1].text.strip() if len(vessel_info) > 1 else 'Unknown'
                   
-          except Exception as e:
-              print(f'Error: {e}')
+                  # Get Dates
+                  date_divs = ship.find_all('div', class_='shipping_port')
+                  # Usually: first date is departure, last date is arrival
+                  etd = date_divs[0].find('div').text.strip() if len(date_divs) > 0 else ''
+                  eta = date_divs[-1].find('div').text.strip() if len(date_divs) > 0 else ''
+                  
+                  extracted_lines.append(f'SHIP|{vessel}|{etd}|{eta}')
+
+          # 3. Save to your specific path
+          output_path = os.path.join(output_folder, 'shipping_data.txt')
+          with open(output_path, 'w', encoding='utf-8') as f:
+              f.write('\n'.join(extracted_lines))
+          
+          print(f'Done! Found {len(extracted_lines)-1} ships and saved to {output_path}')
           "
 
-      - name: Commit to Repository
+      - name: Commit Updated TXT
         run: |
           git config --global user.name 'GitHub Action Bot'
           git config --global user.email 'action@github.com'
-          git add Shipping_Data/shipping_data.txt
-          git commit -m "Shipping Data Update: Fixed Mapping" || echo "No changes"
+          git add Data/Shipping/shipping_data.txt
+          git commit -m "Updated shipping_data.txt from manual HTML upload" || echo "No changes"
           git push
