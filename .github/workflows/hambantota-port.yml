@@ -2,9 +2,9 @@ name: Hambantota Port Schedule Update
 
 on:
   schedule:
-    # Runs at 6:00 AM, 12:00 PM, and 6:00 PM Sri Lanka Time (00:30, 06:30, 12:30 UTC)
+    # Runs at 6:00 AM, 12:00 PM, and 6:00 PM Sri Lanka Time
     - cron: '30 0,6,12 * * *' 
-  workflow_dispatch: # Allows you to manually trigger it for testing
+  workflow_dispatch:
 
 jobs:
   download-pdf:
@@ -16,22 +16,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Fetch Latest PDF with Stealth Settings
+      - name: Fetch Latest PDF via Proxy
         run: |
-          # Ensure the directory exists
           mkdir -p Documents/CQYB
           
-          # Attempt to download the PDF using a browser disguise and higher timeout
-          # -L: Follow redirects
-          # -A: Mimic a Windows Chrome browser
-          # --connect-timeout: How long to wait for the server to answer (60s)
-          # --max-time: Total time allowed for the whole download (180s)
-          curl -L \
-            -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" \
-            --connect-timeout 60 \
-            --max-time 180 \
-            -o "Documents/CQYB/Hambantota-Berthing.pdf" \
-            "http://ezport.hipg.lk/Localfolder/Berthing/CQYB.pdf"
+          # This routes the download through ScraperAPI using your hidden secret key
+          # It tricks the Port into thinking a normal user is downloading the file
+          curl -L -o "Documents/CQYB/Hambantota-Berthing.pdf" "http://api.scraperapi.com?api_key=${{ secrets.SCRAPER_API_KEY }}&url=http://ezport.hipg.lk/Localfolder/Berthing/CQYB.pdf"
 
       - name: Commit and Push Changes
         run: |
@@ -39,10 +30,9 @@ jobs:
           git config --global user.email 'action@github.com'
           git add Documents/CQYB/Hambantota-Berthing.pdf
           
-          # This checks if the file actually changed before committing
           if git diff --staged --quiet; then
             echo "No changes detected in the PDF content."
           else
-            git commit -m "Auto-update Hambantota Berthing Schedule"
+            git commit -m "Auto-update Hambantota Berthing Schedule via Proxy"
             git push
           fi
