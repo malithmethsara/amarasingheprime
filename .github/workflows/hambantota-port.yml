@@ -1,0 +1,34 @@
+name: Hambantota Port Schedule Update
+
+on:
+  schedule:
+    # Runs at 6:00 AM, 12:00 PM, and 6:00 PM Sri Lanka Time
+    - cron: '30 0,6,12 * * *' 
+  workflow_dispatch: # Allows you to run it manually
+
+jobs:
+  download-pdf:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Fetch Latest PDF
+        run: |
+          # Create the directory if it doesn't exist
+          mkdir -p Documents/CQYB
+          
+          # Download and overwrite the existing file
+          curl -L -o "Documents/CQYB/Hambantota-Berthing.pdf" "http://ezport.hipg.lk/Localfolder/Berthing/CQYB.pdf"
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'GitHub Action Bot'
+          git config --global user.email 'action@github.com'
+          git add Documents/CQYB/Hambantota-Berthing.pdf
+          # Only commit if the PDF content has actually changed
+          git commit -m "Auto-update Hambantota Berthing Schedule" || echo "No changes detected"
+          git push
