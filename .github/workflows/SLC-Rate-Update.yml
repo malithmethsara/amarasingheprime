@@ -1,8 +1,6 @@
-name: SLC Rate Update (Telegram)
+name: SLC Rate Update
 
 on:
-  repository_dispatch:
-    types: [update_slc_rate] # This is the secret password Make.com will use
   workflow_dispatch:
     inputs:
       rate:
@@ -21,15 +19,12 @@ jobs:
 
       - name: Smart Update & Sort
         run: |
-          # Read from Make.com payload OR manual input
-          RAW_INPUT="${{ github.event.client_payload.rate || github.event.inputs.rate }}"
+          RAW_INPUT="${{ inputs.rate }}"
           
-          # Check if input has a comma (Format: YYYY-MM-DD,Rate)
           if [[ "$RAW_INPUT" == *","* ]]; then
             THE_DATE=$(echo "$RAW_INPUT" | cut -d',' -f1 | xargs)
             THE_RATE=$(echo "$RAW_INPUT" | cut -d',' -f2 | xargs)
           else
-            # Default to today if no date provided
             THE_DATE=$(date +'%Y-%m-%d')
             THE_RATE=$(echo "$RAW_INPUT" | xargs)
           fi
@@ -37,23 +32,20 @@ jobs:
           NEW_LINE="$THE_DATE,$THE_RATE"
           echo "Processing: $NEW_LINE"
 
-          # Append to the Customs file
           echo "$NEW_LINE" >> "Data/Rates/SLC-rates.txt"
 
-          # Sort and remove duplicates based on date
           awk -F, '{rates[$1]=$2} END {for (d in rates) print d","rates[d]}' "Data/Rates/SLC-rates.txt" | sort > temp_sorted.txt
           
-          # Safety check
           if [ -s temp_sorted.txt ]; then
              mv temp_sorted.txt "Data/Rates/SLC-rates.txt"
+             echo "✅ File successfully sorted and cleaned."
           else
-             echo "❌ Error: File is empty, aborting."
+             echo "❌ Error: Something went wrong, keeping old file."
              exit 1
           fi
 
-          # Save to GitHub
           git config --global user.name "Telegram Bot (SLC)"
           git config --global user.email "actions@github.com"
           git add "Data/Rates/SLC-rates.txt"
           
-          git diff --quiet && git diff --staged --quiet || (git commit -m "📘 SLC Customs Update: $NEW_LINE" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "📘 SLC Update: $NEW_LINE" && git push)
