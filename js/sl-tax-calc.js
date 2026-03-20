@@ -881,24 +881,19 @@ document.addEventListener("DOMContentLoaded", async function() {
             if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
         }
         
-        // 4. Align Data for Chart (Using all unique dates to sync both lines)
+        // 4. Align Data for Chart (The "Clean Line" Fix)
         const sortedDates = Array.from(allDates).sort();
         const labels = [];
         const slcData = [];
         const cbslData = [];
         
-        let lastSlc = null;
-        let lastCbsl = null;
-        
         sortedDates.forEach(dateStr => {
             const d = new Date(dateStr);
             labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
             
-            if (slcMap[dateStr] !== undefined) lastSlc = slcMap[dateStr];
-            slcData.push(lastSlc); // Carries forward the previous weekly rate to align with daily dates
-            
-            if (cbslMap[dateStr] !== undefined) lastCbsl = cbslMap[dateStr];
-            cbslData.push(lastCbsl);
+            // Push actual data or 'null'. 'null' allows the graph to draw a straight, smooth line across empty days.
+            slcData.push(slcMap[dateStr] !== undefined ? slcMap[dateStr] : null);
+            cbslData.push(cbslMap[dateStr] !== undefined ? cbslMap[dateStr] : null);
         });
 
         // 5. Generate SEO Table (Shows last 5 weeks of Customs Rate)
@@ -939,7 +934,7 @@ document.addEventListener("DOMContentLoaded", async function() {
             tableBody.innerHTML = tableHTML;
         }
 
-        // 6. Draw Dual Line Chart
+        // 6. Draw Dual Line Chart (Clean & Crisp)
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -948,31 +943,35 @@ document.addEventListener("DOMContentLoaded", async function() {
                     {
                         label: 'Customs Rate (Weekly)',
                         data: slcData,
-                        borderColor: '#007bff', // Blue
-                        backgroundColor: '#007bff',
-                        borderWidth: 2.5,
+                        borderColor: '#007bff', // Solid Blue
+                        borderWidth: 2,
                         pointRadius: 0, 
                         pointHoverRadius: 5,
                         fill: false,
-                        tension: 0.3
+                        spanGaps: true, // Connects weekly dots ignoring daily gaps
+                        tension: 0.1    // Minimal curve for a sharp, financial look
                     },
                     {
                         label: 'CBSL Rate (Daily)',
                         data: cbslData,
-                        borderColor: '#dc3545', // Red
-                        backgroundColor: 'transparent',
-                        borderWidth: 1.5,
-                        borderDash: [4, 4], // Dotted line looks nice for secondary data
+                        borderColor: '#dc3545', // Solid Red
+                        borderWidth: 2,
+                        borderDash: [], // Removed dots to make it a clear solid line
                         pointRadius: 0,
                         pointHoverRadius: 5,
                         fill: false,
-                        tension: 0.3
+                        spanGaps: true, // Connects over weekends/holidays
+                        tension: 0.1    // Minimal curve
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
                 plugins: { 
                     legend: { 
                         display: true, 
