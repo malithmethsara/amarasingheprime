@@ -36,16 +36,16 @@ jobs:
           echo "Processing: $NEW_LINE"
 
           # --- STEP 2: APPEND NEW DATA ---
-          # Add the new line to the bottom of the file
-          echo "$NEW_LINE" >> "CBSL rates.txt"
+          # Add the new line to the bottom of the file in the NEW location
+          echo "$NEW_LINE" >> "Data/Rates/CBSL-rates.txt"
 
           # --- STEP 3: SORT & REMOVE DUPLICATES ---
           # Logic: Read file -> Keep only the LAST rate seen for each date -> Sort by date
-          awk -F, '{rates[$1]=$2} END {for (d in rates) print d","rates[d]}' "CBSL rates.txt" | sort > temp_sorted.txt
+          awk -F, '{rates[$1]=$2} END {for (d in rates) print d","rates[d]}' "Data/Rates/CBSL-rates.txt" | sort > temp_sorted.txt
           
           # specific check to ensure we didn't wipe the file
           if [ -s temp_sorted.txt ]; then
-             mv temp_sorted.txt "CBSL rates.txt"
+             mv temp_sorted.txt "Data/Rates/CBSL-rates.txt"
              echo "✅ File successfully sorted and cleaned."
           else
              echo "❌ Error: Something went wrong, keeping old file."
@@ -55,7 +55,7 @@ jobs:
           # --- STEP 4: SAVE TO GITHUB ---
           git config --global user.name "Telegram Bot"
           git config --global user.email "actions@github.com"
-          git add "CBSL rates.txt"
+          git add "Data/Rates/CBSL-rates.txt"
           
           # Only commit if actual changes happened
           git diff --quiet && git diff --staged --quiet || (git commit -m "📈 Update: $NEW_LINE" && git push)
