@@ -946,23 +946,23 @@ document.addEventListener("DOMContentLoaded", async function() {
                 labels: labels,
                 datasets: [
                     {
-                        label: 'Sri Lanka Customs Weekly Exchange Rates',
+                        label: 'Customs Rate (Weekly)',
                         data: slcData,
                         borderColor: '#007bff', // Blue
-                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                        borderWidth: 2,
+                        backgroundColor: '#007bff',
+                        borderWidth: 2.5,
                         pointRadius: 0, 
                         pointHoverRadius: 5,
-                        fill: true,
+                        fill: false,
                         tension: 0.3
                     },
                     {
-                        label: 'Central Bank of SriLanka Daily exchange rates',
+                        label: 'CBSL Rate (Daily)',
                         data: cbslData,
                         borderColor: '#dc3545', // Red
                         backgroundColor: 'transparent',
-                        borderWidth: 2,
-                        borderDash: [5, 5], // Dotted line looks nice for secondary data
+                        borderWidth: 1.5,
+                        borderDash: [4, 4], // Dotted line looks nice for secondary data
                         pointRadius: 0,
                         pointHoverRadius: 5,
                         fill: false,
@@ -984,7 +984,8 @@ document.addEventListener("DOMContentLoaded", async function() {
                     x: { 
                         grid: { display: false }, 
                         ticks: { 
-                            maxTicksLimit: 8, 
+                            autoSkip: true,
+                            maxTicksLimit: 6, 
                             maxRotation: 0,
                             font: { size: 10 } 
                         } 
