@@ -452,10 +452,16 @@
             <div class="rate-chart-container" style="background: #fff; padding: 1.5rem 0.5rem; border-radius: 12px; border: 1px solid #eef2f7; box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
                 <h3 class="chart-title" style="color: #003087; margin-top: 0;">JPY/LKR Exchange Rate Trend</h3>
                 
-                <div style="text-align: center; margin-bottom: 1.5rem;">
-                    <span style="font-size: 0.9rem; color: #666; display: block; margin-bottom: 5px;">Effective Customs Rate (Week of <span id="latestDateDisplay">...</span>)</span>
-                    <span id="latestRateDisplay" style="font-size: 2.5rem; font-weight: 800; color: #d63384; line-height: 1;">...</span>
-                    <span style="font-size: 1rem; color: #666; font-weight: 600;">LKR</span>
+                <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; text-align: center; margin-bottom: 1.5rem;">
+                    <div class="rate-box">
+                        <p id="slc-date-label" style="font-size: 0.9rem; color: #666; margin: 0 0 5px 0;">Effective Customs Rate (Weekly)</p>
+                        <p style="margin: 0;"><span id="current-slc-rate" style="font-size: 2.5rem; font-weight: 800; color: #007bff; line-height: 1;">-- LKR</span></p>
+                    </div>
+
+                    <div class="rate-box" style="border-left: 1px solid #eee; padding-left: 2rem;">
+                        <p id="cbsl-date-label" style="font-size: 0.9rem; color: #666; margin: 0 0 5px 0;">Central Bank Daily Exchange Rate</p>
+                        <p style="margin: 0;"><span id="current-cbsl-rate" style="font-size: 2.5rem; font-weight: 800; color: #dc3545; line-height: 1;">-- LKR</span></p>
+                    </div>
                 </div>
 
                 <div style="position: relative; height: 300px; width: 100%;">
@@ -477,7 +483,7 @@
                 </div>
                 
                 <p style="font-size:0.8rem; color:#888; text-align:center; margin-top:20px;">
-                    Data Source: Sri Lanka Customs Weekly Exchange Rates.
+                    Data Source: Sri Lanka Customs Weekly Exchange Rates & Central Bank Daily Rates.
                 </p>
             </div>
             
