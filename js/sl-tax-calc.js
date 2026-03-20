@@ -1,7 +1,7 @@
 /*
-* Copyright © 2025 Amarasinghe Prime. All Rights Reserved.
-* Official Calculation Logic - Adjusted for 2025 Gazette & Real World CUSDEC
-* Updated: Calculator uses CBSL Daily Rate | Graph keeps Customs Weekly Rate
+* Copyright © 2026 Amarasinghe Prime. All Rights Reserved.
+* Official Calculation Logic - Adjusted for 2026 Gazette & Real World CUSDEC
+* Updated: Calculator uses CBSL Daily Rate | Graph displays both SLC and CBSL Rates
 */
 (function() {
     'use strict';
@@ -11,7 +11,7 @@
     let taxChart = null;
     let costChart = null;
 
-    // 2. EXCISE DUTY TABLES — VERIFIED WITH 2025 GAZETTE
+    // 2. EXCISE DUTY TABLES — VERIFIED WITH 2025/2026 GAZETTE
     const exciseRates = {
         petrol: [
             { min: 600, max: 1000, rate: (cc) => Math.max(2450 * cc, 1992000) },
@@ -505,7 +505,7 @@
         let y = 10;
 
         doc.setFontSize(14);
-        doc.text('Sri Lanka Vehicle Tax Calculation 2025', 10, y);
+        doc.text('Sri Lanka Vehicle Tax Calculation 2026', 10, y);
         y += 6;
         doc.setFontSize(10);
         doc.text('Amarasinghe Prime Enterprises (Pvt) Ltd', 10, y);
@@ -729,12 +729,12 @@
         updateReviewTimes(); 
         renderVehicleShowcase();
 
-        // --- FETCH DAILY RATE FOR CALCULATOR (CBSL rates.txt) ---
+        // --- FETCH DAILY RATE FOR CALCULATOR (CBSL-rates.txt) ---
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
-            fetch('CBSL%20rates.txt') 
+            fetch('Data/Rates/CBSL-rates.txt') 
                 .then(r => {
-                    if (!r.ok) throw new Error("CBSL rates.txt not found");
+                    if (!r.ok) throw new Error("CBSL-rates.txt not found");
                     return r.text();
                 })
                 .then(text => {
@@ -812,8 +812,8 @@
 })();
 
 /* =========================================
-   JPY/LKR WEEKLY RATE CHART (BOTTOM)
-   Fetches data from rates.txt (CUSTOMS DATA)
+   DUAL EXCHANGE RATE CHART LOGIC
+   Fetches Data/Rates/SLC-rates.txt and Data/Rates/CBSL-rates.txt
    ========================================= */
 document.addEventListener("DOMContentLoaded", async function() {
     const chartCanvas = document.getElementById('exchangeRateChart');
@@ -823,53 +823,91 @@ document.addEventListener("DOMContentLoaded", async function() {
     const tableBody = document.getElementById('rateTableBody');
     
     try {
-        // 1. Fetch Data from rates.txt (CUSTOMS)
-        const response = await fetch('rates.txt');
-        const dataText = await response.text();
+        // 1. Fetch Both Data Files
+        const [slcRes, cbslRes] = await Promise.all([
+            fetch('Data/Rates/SLC-rates.txt'),
+            fetch('Data/Rates/CBSL-rates.txt')
+        ]);
         
-        // 2. Process Data
-        const rows = dataText.trim().split('\n');
-        const labels = [];
-        const rates = [];
+        const slcText = await slcRes.text();
+        const cbslText = await cbslRes.text();
         
-        rows.forEach(row => {
+        // 2. Parse Rows
+        const slcRows = slcText.trim().split('\n').filter(r => r.trim() !== "");
+        const cbslRows = cbslText.trim().split('\n').filter(r => r.trim() !== "");
+        
+        let allDates = new Set();
+        let slcMap = {};
+        let cbslMap = {};
+        
+        slcRows.forEach(row => {
             const cols = row.split(',');
-            if(cols.length === 2) {
-                const dateObj = new Date(cols[0]);
-                const month = dateObj.toLocaleDateString('en-US', { month: 'short' });
-                const year = dateObj.getFullYear().toString().slice(-2);
-                const dateLabel = `${month} ${year}`;
-                
-                labels.push(dateLabel); 
-                rates.push(parseFloat(cols[1]));
+            if(cols.length >= 2) {
+                allDates.add(cols[0]);
+                slcMap[cols[0]] = parseFloat(cols[1]);
+            }
+        });
+        
+        cbslRows.forEach(row => {
+            const cols = row.split(',');
+            if(cols.length >= 2) {
+                allDates.add(cols[0]);
+                cbslMap[cols[0]] = parseFloat(cols[1]);
             }
         });
 
-        // 3. Update "Big Number" Display
-        if (rates.length > 0) {
-            const latestRate = rates[rates.length - 1];
-            const lastRowCols = rows[rows.length - 1].split(',');
-            const lastDateObj = new Date(lastRowCols[0]);
-            const fullDateText = lastDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + lastDateObj.getFullYear();
+        // 3. Update "Big Number" Displays
+        if (slcRows.length > 0) {
+            const lastSlcRow = slcRows[slcRows.length - 1].split(',');
+            const slcDateObj = new Date(lastSlcRow[0]);
+            const slcDateText = slcDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + slcDateObj.getFullYear();
             
-            const rateDisplay = document.getElementById('latestRateDisplay');
-            const dateDisplay = document.getElementById('latestDateDisplay');
+            const slcRateEl = document.getElementById('current-slc-rate');
+            const slcDateLabel = document.getElementById('slc-date-label');
             
-            // Revert Label Above Big Number to Customs
-            const labelSpan = dateDisplay.parentElement.querySelector('span');
-            if(labelSpan) labelSpan.innerHTML = `Effective Customs Rate (Week of <span id="latestDateDisplay">${fullDateText}</span>)`;
-
-            if (rateDisplay) rateDisplay.textContent = latestRate.toFixed(4);
-            // dateDisplay is handled inside innerHTML update above
+            if (slcRateEl) slcRateEl.textContent = parseFloat(lastSlcRow[1]).toFixed(4) + " LKR";
+            if (slcDateLabel) slcDateLabel.textContent = `Effective Customs Rate (Week of ${slcDateText})`;
         }
 
-        // 4. Generate SEO Table (Last 5 Weeks only)
+        if (cbslRows.length > 0) {
+            const lastCbslRow = cbslRows[cbslRows.length - 1].split(',');
+            const cbslDateObj = new Date(lastCbslRow[0]);
+            const cbslDateText = cbslDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + cbslDateObj.getFullYear();
+            
+            const cbslRateEl = document.getElementById('current-cbsl-rate');
+            const cbslDateLabel = document.getElementById('cbsl-date-label');
+            
+            if (cbslRateEl) cbslRateEl.textContent = parseFloat(lastCbslRow[1]).toFixed(4) + " LKR";
+            if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
+        }
+        
+        // 4. Align Data for Chart (Using all unique dates to sync both lines)
+        const sortedDates = Array.from(allDates).sort();
+        const labels = [];
+        const slcData = [];
+        const cbslData = [];
+        
+        let lastSlc = null;
+        let lastCbsl = null;
+        
+        sortedDates.forEach(dateStr => {
+            const d = new Date(dateStr);
+            labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
+            
+            if (slcMap[dateStr] !== undefined) lastSlc = slcMap[dateStr];
+            slcData.push(lastSlc); // Carries forward the previous weekly rate to align with daily dates
+            
+            if (cbslMap[dateStr] !== undefined) lastCbsl = cbslMap[dateStr];
+            cbslData.push(lastCbsl);
+        });
+
+        // 5. Generate SEO Table (Shows last 5 weeks of Customs Rate)
         if (tableBody) {
             let tableHTML = "";
-            const startIdx = Math.max(0, rows.length - 5);
+            const startIdx = Math.max(0, slcRows.length - 5);
             
-            for (let i = rows.length - 1; i >= startIdx; i--) {
-                const cols = rows[i].split(',');
+            for (let i = slcRows.length - 1; i >= startIdx; i--) {
+                const cols = slcRows[i].split(',');
                 if (cols.length < 2) continue;
                 
                 const currentRate = parseFloat(cols[1]);
@@ -877,12 +915,12 @@ document.addEventListener("DOMContentLoaded", async function() {
                 let changeColor = "#666";
                 
                 if (i > 0) {
-                    const prevCols = rows[i-1].split(',');
+                    const prevCols = slcRows[i-1].split(',');
                     if (prevCols.length === 2) {
                         const prevRate = parseFloat(prevCols[1]);
                         if (currentRate > prevRate) {
                             changeIcon = "▲ Up"; 
-                            changeColor = "#d63384";
+                            changeColor = "#d63384"; // Reddish for cost increase
                         } else if (currentRate < prevRate) {
                             changeIcon = "▼ Down"; 
                             changeColor = "green";
@@ -901,34 +939,52 @@ document.addEventListener("DOMContentLoaded", async function() {
             tableBody.innerHTML = tableHTML;
         }
 
-        // 5. Draw Chart
+        // 6. Draw Dual Line Chart
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
-                datasets: [{
-                    label: 'JPY Rate',
-                    data: rates,
-                    borderColor: '#003087',
-                    backgroundColor: 'rgba(0, 48, 135, 0.05)',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: '#003087',
-                    pointRadius: 2, 
-                    pointHoverRadius: 6,
-                    fill: true,
-                    tension: 0.3
-                }]
+                datasets: [
+                    {
+                        label: 'Sri Lanka Customs Weekly Exchange Rates',
+                        data: slcData,
+                        borderColor: '#007bff', // Blue
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        borderWidth: 2,
+                        pointRadius: 0, 
+                        pointHoverRadius: 5,
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Central Bank of SriLanka Daily exchange rates',
+                        data: cbslData,
+                        borderColor: '#dc3545', // Red
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5], // Dotted line looks nice for secondary data
+                        pointRadius: 0,
+                        pointHoverRadius: 5,
+                        fill: false,
+                        tension: 0.3
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: { 
+                    legend: { 
+                        display: true, 
+                        position: 'bottom',
+                        labels: { boxWidth: 15, font: { size: 11 } }
+                    } 
+                },
                 scales: {
                     x: { 
                         grid: { display: false }, 
                         ticks: { 
-                            maxTicksLimit: 6, 
+                            maxTicksLimit: 8, 
                             maxRotation: 0,
                             font: { size: 10 } 
                         } 
@@ -940,15 +996,9 @@ document.addEventListener("DOMContentLoaded", async function() {
                 }
             }
         });
-        
-        // Update Bottom Source Text Back to Customs
-        const chartContainer = document.querySelector('.rate-chart-container p');
-        if(chartContainer) {
-            chartContainer.innerHTML = 'Data Source: Sri Lanka Customs Weekly Exchange Rates.';
-        }
 
     } catch (error) {
-        console.error("Error loading exchange rates:", error);
+        console.error("Error loading exchange rates from Data/Rates/:", error);
     }
 });
 
