@@ -19,6 +19,9 @@
     margin: 0;
     padding: 0;
 }
+html {
+    scroll-behavior: smooth; /* Enables smooth scrolling to anchor links */
+}
 body {
     font-family: 'Open Sans', sans-serif;
     background-color: #f8faff; 
@@ -33,7 +36,7 @@ body {
 
 /* --- INTEGRATED HEADER & NAVIGATION --- */
 .main-header {
-    position: relative; /* Allows absolute positioning of the hamburger */
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -41,7 +44,7 @@ body {
     border-radius: 1rem;
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
     border: 1px solid rgba(0,48,135,0.15);
-    padding: 1.5rem 1.5rem 0.5rem 1.5rem; /* Less padding at bottom for menu */
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
     margin-bottom: 1.25rem;
 }
 
@@ -78,6 +81,7 @@ body {
     display: flex;
     gap: 1rem;
     justify-content: center;
+    align-items: center;
     width: 100%;
     border-top: 1px solid rgba(0,48,135,0.1);
     padding-top: 0.75rem;
@@ -99,9 +103,78 @@ body {
     background: var(--primary-light);
 }
 
+/* --- DESKTOP DROPDOWN STYLES --- */
+.nav-dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.dropdown-btn .chevron {
+    transition: transform 0.2s ease;
+}
+.nav-dropdown:hover .dropdown-btn .chevron {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: #001b54; /* Premium Dark Navy */
+    min-width: 240px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.nav-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.75rem 1rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 0.5rem;
+    transition: background 0.2s, color 0.2s;
+}
+.dropdown-item svg {
+    color: #ffffff;
+    background: rgba(255,255,255,0.1);
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+}
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.15);
+}
+
 /* Mobile Toggle (Hamburger) */
 .mobile-menu-btn {
-    display: none; /* Hidden on desktop */
+    display: none; 
     position: absolute;
     top: 1.5rem;
     left: 1.5rem;
@@ -109,10 +182,10 @@ body {
     border: none;
     cursor: pointer;
     color: var(--primary);
-    padding: 0.25rem; /* Larger click area */
+    padding: 0.25rem; 
 }
 
-/* Mobile Sidebar (Unchanged) */
+/* Mobile Sidebar */
 .mobile-sidebar {
     position: fixed;
     top: 0;
@@ -126,9 +199,10 @@ body {
     padding: 2rem;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 .mobile-sidebar.open { left: 0; }
-.sidebar-links a {
+.sidebar-links > a {
     display: block;
     padding: 1rem 0;
     text-decoration: none;
@@ -137,7 +211,53 @@ body {
     font-size: 1.1rem;
     border-bottom: 1px solid #eee;
 }
-.sidebar-links a:hover, .sidebar-links a.active { color: var(--primary); }
+.sidebar-links > a:hover, .sidebar-links > a.active { color: var(--primary); }
+
+/* --- MOBILE DROPDOWN STYLES --- */
+.mobile-nav-dropdown {
+    border-bottom: 1px solid #eee;
+}
+.mobile-dropdown-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1rem 0;
+    text-align: left;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: inherit;
+}
+.mobile-dropdown-btn .chevron {
+    transition: transform 0.2s ease;
+}
+.mobile-dropdown-content {
+    display: none;
+    flex-direction: column;
+    background: #f8faff;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+.mobile-dropdown-content.show {
+    display: flex;
+}
+.mobile-dropdown-item {
+    padding: 0.8rem 1rem 0.8rem 2rem; 
+    text-decoration: none;
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+.mobile-dropdown-item:hover, .mobile-dropdown-item.active {
+    color: var(--primary);
+    background: var(--primary-light);
+}
+
 .close-sidebar-btn {
     align-self: flex-end;
     background: none;
@@ -574,7 +694,7 @@ tfoot td {
 /* --- MOBILE OPTIMIZATION --- */
 @media (max-width: 768px) {
     .nav-container {
-        justify-content: flex-start; /* Align hamburger left */
+        justify-content: flex-start;
     }
     .desktop-menu {
         display: none;
@@ -613,10 +733,9 @@ tfoot td {
         align-items: center;
     }
     
-    /* --- 2x2 GRID FOR CONTACT BUTTONS ON MOBILE --- */
     .contact {
         display: grid;                 
-        grid-template-columns: 1fr 1fr; /* Two equal columns */
+        grid-template-columns: 1fr 1fr;
         gap: 0.75rem;
         margin: 0.5rem 0;
         width: 100%;
@@ -630,7 +749,7 @@ tfoot td {
         justify-content: center;
         font-size: 0.95rem;
         padding: 0.625rem;
-        margin: 0; /* Important for grid */
+        margin: 0;
     }
     
     .btn-row {
@@ -673,7 +792,6 @@ tfoot td {
     }
 }
 
-/* --- HIDE CHART TITLES UNTIL CALCULATED --- */
 .charts-container {
     display: none; 
 }
@@ -741,7 +859,7 @@ tfoot td {
     background: var(--bg1);
 }
 
-/* --- NEW PROFESSIONAL FOOTER STYLE (ROUNDED CARD) --- */
+/* --- NEW PROFESSIONAL FOOTER STYLE --- */
 .final-footer {
     display: flex;
     flex-direction: column;
@@ -755,8 +873,6 @@ tfoot td {
     color: var(--muted);
     font-size: 0.9rem;
     background: #fdfdfd;
-    
-    /* MATCHING THE "VIBE" OF OTHER CARDS */
     border-radius: 1rem;
     border: 1px solid rgba(0,48,135,0.15);
     box-shadow: 0 4px 16px rgba(0,0,0,0.06);
@@ -766,7 +882,6 @@ tfoot td {
     max-width: 80px;
     height: auto;
     margin-bottom: 0.8rem;
-    /* Opacity deleted for brightness */
 }
 
 .legal-links {
@@ -795,7 +910,6 @@ tfoot td {
     max-width: 100%;
 }
 
-/* Header Row */
 .g-badge-header {
     display: flex;
     justify-content: space-between;
@@ -820,24 +934,16 @@ tfoot td {
 }
 .g-write-btn:hover { text-decoration: underline; }
 
-/* Review Card Itself */
 .review-single-card {
     background: #f9f9f9;
     border-radius: 0.8rem;
     padding: 1.25rem;
     position: relative;
-    /* RESET vertical margin from previous code */
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-    
-    /* Horizontal Layout Logic */
-    flex: 1; /* All cards grow equally */
-    min-width: 280px; /* Minimum width so they don't get squashed */
-    
-    /* Snap alignment */
+    flex: 1;
+    min-width: 280px; 
     scroll-snap-align: start;
-    
-    /* Ensure uniform height */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -853,7 +959,7 @@ tfoot td {
 .reviewer-avatar {
     width: 40px;
     height: 40px;
-    background: #8e24aa; /* Google Purple for default */
+    background: #8e24aa; 
     color: #fff;
     border-radius: 50%;
     display: flex;
@@ -862,29 +968,25 @@ tfoot td {
     font-weight: 600;
     font-size: 1.1rem;
 }
-/* Style for real user profile photo */
 .reviewer-avatar-img {
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* Circle */
-    object-fit: cover;  /* Prevents stretching */
+    border-radius: 50%; 
+    object-fit: cover;  
     border: 1px solid #e0e0e0;
 }
 .r-name {
     font-weight: 700;
     font-size: 0.95rem;
     color: #202124;
-    
-    /* ALIGNMENT FIX START */
-    line-height: 1.35;        /* Sets specific height for each line */
-    min-height: 2.7em;        /* Forces height to equal exactly 2 lines (1.35 * 2) */
-    display: -webkit-box;     /* Safety: Truncates text if it exceeds 2 lines */
+    line-height: 1.35;        
+    min-height: 2.7em;        
+    display: -webkit-box;     
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    display: flex;            /* Uses Flexbox to align text properly */
-    align-items: center;      /* Vertically centers 1-line names (Optional: remove if you prefer top alignment) */
-    /* ALIGNMENT FIX END */
+    display: flex;            
+    align-items: center;      
 }
 .r-meta {
     font-size: 0.75rem;
@@ -918,22 +1020,19 @@ tfoot td {
     font-weight: 600;
 }
 
-/* --- LOGO LINKS & HOVER --- */
 .logo-link {
     display: inline-block;
     text-decoration: none;
     transition: transform 0.3s ease;
 }
 .logo-link:hover {
-    transform: scale(1.05); /* The Zoom Effect */
+    transform: scale(1.05); 
     cursor: pointer;
 }
-/* Ensure images inside don't interfere with the link's layout */
 .logo-link img {
     display: block; 
 }
 
-/* --- RATE CHART CLEANUP (Ensures no dark lines) --- */
 .rate-chart-container {
     margin-top: 2rem;
     text-align: center;
@@ -950,17 +1049,15 @@ tfoot td {
     margin: 0 auto;
 }
 
-/* --- HORIZONTAL REVIEWS (Side-by-Side) --- */
 .reviews-row {
     display: flex;
     gap: 1rem;
-    overflow-x: auto; /* Enables horizontal scrolling on mobile */
-    padding-bottom: 0.5rem; /* Space for scrollbar */
-    scroll-snap-type: x mandatory; /* Smooth snapping on mobile */
+    overflow-x: auto; 
+    padding-bottom: 0.5rem; 
+    scroll-snap-type: x mandatory; 
     -webkit-overflow-scrolling: touch;
 }
 
-/* Optional: Cleaner Scrollbar */
 .reviews-row::-webkit-scrollbar {
     height: 6px;
 }
@@ -969,14 +1066,13 @@ tfoot td {
     border-radius: 3px;
 }
 
-/* --- NAVIGATION ARROWS FOR REVIEWS --- */
 .google-review-section {
-    position: relative; /* Essential for positioning arrows */
+    position: relative; 
 }
 
 .nav-arrow {
     position: absolute;
-    top: 55%; /* Centers vertically relative to reviews */
+    top: 55%; 
     transform: translateY(-50%);
     width: 36px;
     height: 36px;
@@ -1003,30 +1099,26 @@ tfoot td {
 .left-arrow { left: 10px; }
 .right-arrow { right: 10px; }
 
-/* Optional: Hide arrows on desktop if you prefer scrollbar, 
-   but keeping them visible is good UX for everyone */
 @media (min-width: 1024px) {
     .nav-arrow { width: 40px; height: 40px; }
 }
 
-/* --- CLICKABLE LOGO STYLING --- */
 .logo-link {
-    display: inline-block; /* Keeps image behaving correctly */
-    text-decoration: none; /* Removes any default underline */
-    border: none;          /* Removes blue border on some browsers */
-    transition: transform 0.2s ease; /* Adds a nice subtle zoom effect */
+    display: inline-block; 
+    text-decoration: none; 
+    border: none;          
+    transition: transform 0.2s ease; 
 }
 
 .logo-link:hover {
-    transform: scale(1.03); /* Slight zoom when hovered */
+    transform: scale(1.03); 
     cursor: pointer;
 }
 
 .logo-link img {
-    display: block; /* Removes tiny gap at bottom of image */
+    display: block; 
 }
 
-/* --- VEHICLE SHOWCASE SLIDER --- */
 .vehicle-showcase-section {
     position: relative;
     margin: 2rem 0;
@@ -1047,13 +1139,13 @@ tfoot td {
     padding: 1rem 0.5rem 2rem 0.5rem;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar IE */
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
 }
-.vehicle-slider::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome */
+.vehicle-slider::-webkit-scrollbar { display: none; } 
 
 .vehicle-card {
-    flex: 0 0 300px; /* Slightly wider for the data grid */
+    flex: 0 0 300px; 
     background: #fff;
     border: 1px solid rgba(0,48,135,0.1);
     border-radius: 1rem;
@@ -1104,7 +1196,6 @@ tfoot td {
     text-align: center;
 }
 
-/* THE 2x2 DATA GRID */
 .veh-specs-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1121,7 +1212,6 @@ tfoot td {
     align-items: center;
     gap: 5px;
 }
-/* Icons for specs (optional, using emojis for simplicity) */
 .spec-icon { opacity: 0.7; }
 
 .veh-price-box {
@@ -1155,15 +1245,13 @@ tfoot td {
     color: white;
 }
 
-/* --- CONTENT PROTECTION --- */
 .blog-content, .blog-body {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none;    /* Firefox */
-    -ms-user-select: none;     /* IE10+/Edge */
-    user-select: none;         /* Standard */
+    -webkit-user-select: none; 
+    -moz-user-select: none;    
+    -ms-user-select: none;     
+    user-select: none;         
 }
 
-/* Allow selection on code blocks or specific areas if needed */
 .allow-select {
     -webkit-user-select: text;
     -moz-user-select: text;
@@ -1171,30 +1259,25 @@ tfoot td {
     user-select: text;
 }
 
-/* --- NEW: DUAL RATE COLORS --- */
 .rate-display-container {
     text-align: center;
     margin-bottom: 20px;
 }
-
 .rate-box {
     margin-bottom: 15px;
 }
-
 .rate-value-slc {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #007bff !important; /* Blue for Customs */
+    color: #007bff !important; 
     margin: 0;
 }
-
 .rate-value-cbsl {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #dc3545 !important; /* Red for CBSL */
+    color: #dc3545 !important; 
     margin: 0;
 }
-
 .rate-label {
     font-size: 0.9rem;
     color: #666;
