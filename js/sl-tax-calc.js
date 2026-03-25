@@ -813,7 +813,6 @@
 
 /* =========================================
    DUAL EXCHANGE RATE CHART LOGIC
-   Fetches Data/Rates/SLC-rates.txt and Data/Rates/CBSL-rates.txt
    ========================================= */
 document.addEventListener("DOMContentLoaded", async function() {
     const chartCanvas = document.getElementById('exchangeRateChart');
@@ -823,7 +822,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     const tableBody = document.getElementById('rateTableBody');
     
     try {
-        // 1. Fetch Both Data Files
         const [slcRes, cbslRes] = await Promise.all([
             fetch('Data/Rates/SLC-rates.txt'),
             fetch('Data/Rates/CBSL-rates.txt')
@@ -832,7 +830,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         const slcText = await slcRes.text();
         const cbslText = await cbslRes.text();
         
-        // 2. Parse Rows
         const slcRows = slcText.trim().split('\n').filter(r => r.trim() !== "");
         const cbslRows = cbslText.trim().split('\n').filter(r => r.trim() !== "");
         
@@ -856,7 +853,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             }
         });
 
-        // 3. Update "Big Number" Displays
         if (slcRows.length > 0) {
             const lastSlcRow = slcRows[slcRows.length - 1].split(',');
             const slcDateObj = new Date(lastSlcRow[0]);
@@ -881,7 +877,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
         }
         
-        // 4. Align Data for Chart (The "Clean Line" Fix)
         const sortedDates = Array.from(allDates).sort();
         const labels = [];
         const slcData = [];
@@ -890,13 +885,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         sortedDates.forEach(dateStr => {
             const d = new Date(dateStr);
             labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
-            
-            // Push actual data or 'null'. 'null' allows the graph to draw a straight, smooth line across empty days.
             slcData.push(slcMap[dateStr] !== undefined ? slcMap[dateStr] : null);
             cbslData.push(cbslMap[dateStr] !== undefined ? cbslMap[dateStr] : null);
         });
 
-        // 5. Generate SEO Table (Shows last 5 weeks of Customs Rate)
         if (tableBody) {
             let tableHTML = "";
             const startIdx = Math.max(0, slcRows.length - 5);
@@ -915,7 +907,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                         const prevRate = parseFloat(prevCols[1]);
                         if (currentRate > prevRate) {
                             changeIcon = "▲ Up"; 
-                            changeColor = "#d63384"; // Reddish for cost increase
+                            changeColor = "#d63384"; 
                         } else if (currentRate < prevRate) {
                             changeIcon = "▼ Down"; 
                             changeColor = "green";
@@ -934,7 +926,6 @@ document.addEventListener("DOMContentLoaded", async function() {
             tableBody.innerHTML = tableHTML;
         }
 
-        // 6. Draw Dual Line Chart (Clean & Crisp)
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -943,25 +934,25 @@ document.addEventListener("DOMContentLoaded", async function() {
                     {
                         label: 'Customs Rate (Weekly)',
                         data: slcData,
-                        borderColor: '#007bff', // Solid Blue
+                        borderColor: '#007bff', 
                         borderWidth: 2,
                         pointRadius: 0, 
                         pointHoverRadius: 5,
                         fill: false,
-                        spanGaps: true, // Connects weekly dots ignoring daily gaps
-                        tension: 0.1    // Minimal curve for a sharp, financial look
+                        spanGaps: true, 
+                        tension: 0.1    
                     },
                     {
                         label: 'CBSL Rate (Daily)',
                         data: cbslData,
-                        borderColor: '#dc3545', // Solid Red
+                        borderColor: '#dc3545', 
                         borderWidth: 2,
-                        borderDash: [], // Removed dots to make it a clear solid line
+                        borderDash: [], 
                         pointRadius: 0,
                         pointHoverRadius: 5,
                         fill: false,
-                        spanGaps: true, // Connects over weekends/holidays
-                        tension: 0.1    // Minimal curve
+                        spanGaps: true, 
+                        tension: 0.1    
                     }
                 ]
             },
@@ -1003,7 +994,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 });
 
 /* =========================================
-   MOBILE SIDEBAR TOGGLE
+   MOBILE MENU & DROPDOWN TOGGLE
    ========================================= */
 document.addEventListener("DOMContentLoaded", function() {
     const mobileBtn = document.querySelector('.mobile-menu-btn');
@@ -1014,13 +1005,13 @@ document.addEventListener("DOMContentLoaded", function() {
     function openSidebar() {
         sidebar.classList.add('open');
         overlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
+        document.body.style.overflow = 'hidden'; 
     }
 
     function closeSidebar() {
         sidebar.classList.remove('open');
         overlay.classList.remove('active');
-        document.body.style.overflow = ''; // Enable scrolling
+        document.body.style.overflow = ''; 
     }
 
     if(mobileBtn) {
@@ -1032,4 +1023,29 @@ document.addEventListener("DOMContentLoaded", function() {
     if(overlay) {
         overlay.addEventListener('click', closeSidebar);
     }
+
+    // --- NEW: Mobile Dropdown Toggle ---
+    const mobileDropdownBtn = document.querySelector('.mobile-dropdown-btn');
+    const mobileDropdownContent = document.getElementById('mobileCalcDropdown');
+    
+    if (mobileDropdownBtn && mobileDropdownContent) {
+        mobileDropdownBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            mobileDropdownContent.classList.toggle('show');
+            
+            const chevron = mobileDropdownBtn.querySelector('.chevron');
+            if (mobileDropdownContent.classList.contains('show')) {
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        });
+    }
+
+    // --- NEW: Close Mobile Sidebar when tapping an anchor link (like Tax Calculator) ---
+    document.querySelectorAll('.mobile-dropdown-item[href^="index.html#"]').forEach(anchor => {
+        anchor.addEventListener('click', function () {
+            closeSidebar();
+        });
+    });
 });
