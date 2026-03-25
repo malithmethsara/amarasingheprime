@@ -73,10 +73,19 @@
     <div class="mobile-sidebar" id="mobileSidebar">
         <button class="close-sidebar-btn" aria-label="Close Menu">&times;</button>
         <div class="sidebar-links">
-            <a href="index.html">Home</a>
-            <a href="blog/index.html">Blog</a>
-            <a href="about.html" class="active">About Us</a>
-            <a href="contact.html">Contact</a>
+            <a href="../index.html">Home</a>
+            <a href="../blog/index.html">Blog</a>
+    
+            <div class="mobile-nav-dropdown">
+                <button class="mobile-dropdown-btn">Calculators <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                <div class="mobile-dropdown-content" id="mobileCalcDropdown">
+                    <a href="../index.html#tax-calculator" class="mobile-dropdown-item">Tax Calculator</a>
+                    <a href="../demurrage-calculator.html" class="mobile-dropdown-item">Demurrage Calculator</a>
+                </div>
+            </div>
+
+            <a href="../about.html">About Us</a>
+            <a href="../contact.html">Contact</a>
         </div>
     </div>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
