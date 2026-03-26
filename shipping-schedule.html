@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <title>Japan to Sri Lanka Shipping Schedule | Amarasinghe Prime</title>
+    <meta name="description" content="View the latest RO-RO vehicle shipping schedules from Japan to Hambantota, Sri Lanka. Accurate departure and arrival dates for vehicle importers.">
+    <meta name="keywords" content="Japan to Sri Lanka shipping schedule, vehicle shipping Hambantota, RO-RO vessel schedule Japan, Amarasinghe Prime">
+    
+    <link rel="icon" href="favicon.ico" sizes="48x48">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .schedule-section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        .schedule-section h2 {
+            color: #003087; /* Matches your brand blue */
+            margin-top: 0;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+        .clean-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            min-width: 600px;
+        }
+        .clean-table th {
+            background-color: #f8f9fa;
+            color: #333;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: 700;
+            border-bottom: 2px solid #dee2e6;
+        }
+        .clean-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+            color: #444;
+        }
+        .clean-table tr:hover {
+            background-color: #f4f7f6;
+        }
+        /* Styles the stacked departure dates cleanly */
+        .departure-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .departure-item {
+            display: flex;
+            justify-content: space-between;
+            max-width: 200px;
+        }
+        .departure-date { font-weight: 600; color: #555; }
+        .departure-port { color: #888; font-size: 0.85rem; }
+        .arrival-highlight { font-weight: 700; color: #003087; }
+    </style>
+</head>
+<body>
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <button class="close-sidebar-btn" aria-label="Close Menu">&times;</button>
+        <div class="sidebar-links">
+            <a href="index.html">Home</a>
+            <a href="blog/index.html">Blog</a>
+            
+            <div class="mobile-nav-dropdown">
+                <button class="mobile-dropdown-btn">Calculators <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                <div class="mobile-dropdown-content" id="mobileCalcDropdown">
+                    <a href="index.html#tax-calculator" class="mobile-dropdown-item">Tax Calculator</a>
+                    <a href="/demurrage-calculator.html" class="mobile-dropdown-item">Demurrage Calculator</a>
+                </div>
+            </div>
+
+            <a href="shipping-schedule.html" class="active">Shipping Schedule</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <header class="main-header">
+        <button class="mobile-menu-btn" aria-label="Open Menu">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+
+        <a href="index.html" class="logo-link">
+            <img src="/logo.png" alt="Amarasinghe Prime Enterprises Logo" width="160" height="75">
+        </a>
+        <h1>Amarasinghe Prime Enterprises</h1>
+        <div class="tagline">Your trusted Japanese automobile partner in Sri Lanka</div>
+        
+        <div class="desktop-menu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="blog/index.html" class="nav-link">Blog</a>
+            
+            <div class="nav-dropdown">
+                <button class="nav-link dropdown-btn">
+                    Calculators 
+                    <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+                <div class="dropdown-content">
+                    <a href="index.html#tax-calculator" class="dropdown-item">Tax Calculator</a>
+                    <a href="/demurrage-calculator.html" class="dropdown-item">Demurrage Calculator</a>
+                </div>
+            </div>
+
+            <a href="shipping-schedule.html" class="nav-link active">Shipping Schedule</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="contact.html" class="nav-link">Contact Us</a>
+        </div>
+    </header>
+    
+    <div class="container-main" style="margin-top: 30px;">
+        <section class="schedule-section">
+            <h2>Japan to Hambantota Shipping Schedule</h2>
+            <p>View the latest RO-RO vessel schedules for vehicle imports. This data is automatically synced to provide you with the most accurate ETAs available.</p>
+            
+            <div class="table-responsive">
+                <table class="clean-table" id="shippingTable">
+                    <thead>
+                        <tr>
+                            <th>Vessel & Voyage</th>
+                            <th>Shipping Line</th>
+                            <th>Departure (Japan)</th>
+                            <th>Arrival (Hambantota)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scheduleBody">
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 2rem;">Loading latest schedule data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <footer class="final-footer">
+        <img src="/logo.png" alt="Amarasinghe Prime Enterprises Logo" class="footer-logo-img">
+        <p>© 2026 Amarasinghe Prime Enterprises (PVT) LTD. All Rights Reserved (PV 00342707)</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // URL to the raw JSON file in your GitHub repository
+            // Note: Replace "main" with your actual branch name if it is different
+            const jsonUrl = "https://raw.githubusercontent.com/malithmethsara/amarasingheprime/main/shipping_schedule.json";
+            const tableBody = document.getElementById("scheduleBody");
+
+            fetch(jsonUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    tableBody.innerHTML = ""; // Clear loading message
+
+                    if (data.length === 0) {
+                        tableBody.innerHTML = "<tr><td colspan='4'>No upcoming vessels found.</td></tr>";
+                        return;
+                    }
+
+                    data.forEach(ship => {
+                        const tr = document.createElement("tr");
+
+                        // 1. Vessel Info
+                        const tdVessel = document.createElement("td");
+                        tdVessel.innerHTML = `<strong>${ship.vessel_voyage}</strong><br><span style="font-size:0.8rem; color:#888;">${ship.type}</span>`;
+                        tr.appendChild(tdVessel);
+
+                        // 2. Shipping Line
+                        const tdLine = document.createElement("td");
+                        tdLine.textContent = ship.shipping_line;
+                        tr.appendChild(tdLine);
+
+                        // 3. Departures (Stacked)
+                        const tdDep = document.createElement("td");
+                        let depHTML = '<div class="departure-stack">';
+                        ship.departures.forEach(dep => {
+                            depHTML += `
+                                <div class="departure-item">
+                                    <span class="departure-date">${dep.date}</span>
+                                    <span class="departure-port">${dep.port}</span>
+                                </div>`;
+                        });
+                        depHTML += '</div>';
+                        tdDep.innerHTML = depHTML;
+                        tr.appendChild(tdDep);
+
+                        // 4. Arrival
+                        const tdArr = document.createElement("td");
+                        tdArr.innerHTML = `
+                            <span class="arrival-highlight">${ship.arrival.date}</span><br>
+                            <span style="font-size:0.85rem; color:#666;">${ship.arrival.port}</span>`;
+                        tr.appendChild(tdArr);
+
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error loading schedule:", error);
+                    tableBody.innerHTML = "<tr><td colspan='4' style='color:red;'>Could not load schedule data. Please try again later.</td></tr>";
+                });
+        });
+
+        // Standard Mobile menu toggle (copied from your existing site logic)
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebarBtn = document.querySelector('.close-sidebar-btn');
+
+        if(mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileSidebar.classList.add('open');
+                sidebarOverlay.classList.add('active');
+            });
+        }
+        if(closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', () => {
+                mobileSidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>
