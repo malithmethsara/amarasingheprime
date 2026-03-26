@@ -1305,7 +1305,19 @@ tfoot td {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
-    min-width: 600px;
+    min-width: 750px; /* Allows smooth swiping on mobile */
+    table-layout: fixed; /* Forces the browser to respect our column widths */
+}
+
+/* Distribute the 5 columns evenly */
+.clean-table th:nth-child(1) { width: 23%; } /* Vessel */
+.clean-table th:nth-child(2) { width: 17%; } /* Line */
+.clean-table th:nth-child(3) { width: 20%; } /* Port */
+.clean-table th:nth-child(4) { width: 20%; } /* Date */
+.clean-table th:nth-child(5) { width: 20%; } /* Arrival */
+
+.clean-table th, .clean-table td {
+    word-wrap: break-word; /* Prevents long ship names from breaking the layout */
 }
 .clean-table th {
     background-color: var(--bg1);
@@ -1328,19 +1340,6 @@ tfoot td {
     display: flex;
     flex-direction: column;
     gap: 4px;
-}
-.departure-item {
-    display: flex;
-    justify-content: space-between;
-    max-width: 200px;
-}
-.departure-date { 
-    font-weight: 600; 
-    color: var(--muted); 
-}
-.departure-port { 
-    color: #888; 
-    font-size: 0.85rem; 
 }
 .arrival-highlight { 
     font-weight: 700; 
