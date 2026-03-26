@@ -1053,7 +1053,6 @@ document.addEventListener("DOMContentLoaded", function() {
 document.addEventListener("DOMContentLoaded", () => {
     const tableBody = document.getElementById("scheduleBody");
     
-    // Only execute this script if the shipping table exists on the current page
     if (tableBody) {
         const jsonUrl = "/shipping_schedule.json";
         const fetchUrl = jsonUrl + '?t=' + new Date().getTime();
@@ -1067,14 +1066,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 tableBody.innerHTML = ""; 
 
                 if (data.length === 0) {
-                    tableBody.innerHTML = "<tr><td colspan='4'>No upcoming vessels found.</td></tr>";
+                    tableBody.innerHTML = "<tr><td colspan='5'>No upcoming vessels found.</td></tr>";
                     return;
                 }
 
                 data.forEach(ship => {
                     const tr = document.createElement("tr");
 
-                    // 1. Vessel Info
+                    // 1. Vessel & Voyage
                     const tdVessel = document.createElement("td");
                     tdVessel.innerHTML = `<strong>${ship.vessel_voyage}</strong><br><span style="font-size:0.8rem; color:#888;">${ship.type}</span>`;
                     tr.appendChild(tdVessel);
@@ -1084,21 +1083,27 @@ document.addEventListener("DOMContentLoaded", () => {
                     tdLine.textContent = ship.shipping_line;
                     tr.appendChild(tdLine);
 
-                    // 3. Departures (Stacked)
-                    const tdDep = document.createElement("td");
-                    let depHTML = '<div class="departure-stack">';
+                    // 3. Departure Port (Japan)
+                    const tdPort = document.createElement("td");
+                    let portHTML = '<div class="departure-stack">';
                     ship.departures.forEach(dep => {
-                        depHTML += `
-                            <div class="departure-item">
-                                <span class="departure-date">${dep.date}</span>
-                                <span class="departure-port">${dep.port}</span>
-                            </div>`;
+                        portHTML += `<div style="margin-bottom: 4px;">${dep.port}</div>`;
                     });
-                    depHTML += '</div>';
-                    tdDep.innerHTML = depHTML;
-                    tr.appendChild(tdDep);
+                    portHTML += '</div>';
+                    tdPort.innerHTML = portHTML;
+                    tr.appendChild(tdPort);
 
-                    // 4. Arrival
+                    // 4. Departure Date (Japan)
+                    const tdDate = document.createElement("td");
+                    let dateHTML = '<div class="departure-stack">';
+                    ship.departures.forEach(dep => {
+                        dateHTML += `<div style="margin-bottom: 4px; font-weight: 600; color: var(--muted);">${dep.date}</div>`;
+                    });
+                    dateHTML += '</div>';
+                    tdDate.innerHTML = dateHTML;
+                    tr.appendChild(tdDate);
+
+                    // 5. Arrival (Hambantota)
                     const tdArr = document.createElement("td");
                     tdArr.innerHTML = `
                         <span class="arrival-highlight">${ship.arrival.date}</span><br>
@@ -1110,7 +1115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => {
                 console.error("Error loading schedule:", error);
-                tableBody.innerHTML = "<tr><td colspan='4' style='color:red;'>Could not load schedule data. Please check your connection.</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='5' style='color:red;'>Could not load schedule data. Please check your connection.</td></tr>";
             });
     }
 });
