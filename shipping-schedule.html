@@ -11,63 +11,8 @@
     <meta name="description" content="View the latest RO-RO vehicle shipping schedules from Japan to Hambantota, Sri Lanka. Accurate departure and arrival dates for vehicle importers.">
     
     <link rel="icon" href="https://amarasingheprime.lk/favicon.ico" sizes="48x48">
-    <link rel="stylesheet" href="style.css">
     
-    <style>
-        .schedule-section {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
-        .schedule-section h2 {
-            color: #003087; 
-            margin-top: 0;
-            border-bottom: 2px solid #eef2f7;
-            padding-bottom: 10px;
-        }
-        .table-responsive {
-            overflow-x: auto;
-            margin-top: 1.5rem;
-        }
-        .clean-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-            min-width: 600px;
-        }
-        .clean-table th {
-            background-color: #f8f9fa;
-            color: #333;
-            text-align: left;
-            padding: 12px 15px;
-            font-weight: 700;
-            border-bottom: 2px solid #dee2e6;
-        }
-        .clean-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            vertical-align: top;
-            color: #444;
-        }
-        .clean-table tr:hover {
-            background-color: #f4f7f6;
-        }
-        .departure-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .departure-item {
-            display: flex;
-            justify-content: space-between;
-            max-width: 200px;
-        }
-        .departure-date { font-weight: 600; color: #555; }
-        .departure-port { color: #888; font-size: 0.85rem; }
-        .arrival-highlight { font-weight: 700; color: #003087; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
@@ -191,89 +136,6 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 448 512" fill="#FFF"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
     </a>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Updated to relative path for Cloudflare Pages
-            const jsonUrl = "/shipping_schedule.json";
-            const tableBody = document.getElementById("scheduleBody");
-
-            // Cache-busting parameter to ensure Cloudflare loads the newest JSON
-            const fetchUrl = jsonUrl + '?t=' + new Date().getTime();
-
-            fetch(fetchUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Network response was not ok");
-                    return response.json();
-                })
-                .then(data => {
-                    tableBody.innerHTML = ""; 
-
-                    if (data.length === 0) {
-                        tableBody.innerHTML = "<tr><td colspan='4'>No upcoming vessels found.</td></tr>";
-                        return;
-                    }
-
-                    data.forEach(ship => {
-                        const tr = document.createElement("tr");
-
-                        // 1. Vessel Info
-                        const tdVessel = document.createElement("td");
-                        tdVessel.innerHTML = `<strong>${ship.vessel_voyage}</strong><br><span style="font-size:0.8rem; color:#888;">${ship.type}</span>`;
-                        tr.appendChild(tdVessel);
-
-                        // 2. Shipping Line
-                        const tdLine = document.createElement("td");
-                        tdLine.textContent = ship.shipping_line;
-                        tr.appendChild(tdLine);
-
-                        // 3. Departures (Stacked)
-                        const tdDep = document.createElement("td");
-                        let depHTML = '<div class="departure-stack">';
-                        ship.departures.forEach(dep => {
-                            depHTML += `
-                                <div class="departure-item">
-                                    <span class="departure-date">${dep.date}</span>
-                                    <span class="departure-port">${dep.port}</span>
-                                </div>`;
-                        });
-                        depHTML += '</div>';
-                        tdDep.innerHTML = depHTML;
-                        tr.appendChild(tdDep);
-
-                        // 4. Arrival
-                        const tdArr = document.createElement("td");
-                        tdArr.innerHTML = `
-                            <span class="arrival-highlight">${ship.arrival.date}</span><br>
-                            <span style="font-size:0.85rem; color:#666;">${ship.arrival.port}</span>`;
-                        tr.appendChild(tdArr);
-
-                        tableBody.appendChild(tr);
-                    });
-                })
-                .catch(error => {
-                    console.error("Error loading schedule:", error);
-                    tableBody.innerHTML = "<tr><td colspan='4' style='color:red;'>Could not load schedule data. Please check your connection.</td></tr>";
-                });
-        });
-
-        // Mobile Menu Logic
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const mobileSidebar = document.getElementById('mobileSidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-        const closeSidebarBtn = document.querySelector('.close-sidebar-btn');
-
-        if(mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileSidebar.classList.add('open');
-                sidebarOverlay.classList.add('active');
-            });
-        }
-        if(closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', () => {
-                mobileSidebar.classList.remove('open');
-                sidebarOverlay.classList.remove('active');
-            });
-        }
-    </script>
+    <script src="js/sl-tax-calc.js" defer></script>
 </body>
 </html>
