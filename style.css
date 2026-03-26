@@ -1283,3 +1283,66 @@ tfoot td {
     color: #666;
     margin-bottom: 5px;
 }
+/* --- SHIPPING SCHEDULE PAGE STYLES --- */
+.schedule-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+.schedule-section h2 {
+    color: var(--primary); 
+    margin-top: 0;
+    border-bottom: 2px solid var(--bg2);
+    padding-bottom: 10px;
+}
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+}
+.clean-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    min-width: 600px;
+}
+.clean-table th {
+    background-color: var(--bg1);
+    color: var(--text);
+    text-align: left;
+    padding: 12px 15px;
+    font-weight: 700;
+    border-bottom: 2px solid #dee2e6;
+}
+.clean-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+    color: #444;
+}
+.clean-table tr:hover {
+    background-color: #f4f7f6;
+}
+.departure-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.departure-item {
+    display: flex;
+    justify-content: space-between;
+    max-width: 200px;
+}
+.departure-date { 
+    font-weight: 600; 
+    color: var(--muted); 
+}
+.departure-port { 
+    color: #888; 
+    font-size: 0.85rem; 
+}
+.arrival-highlight { 
+    font-weight: 700; 
+    color: var(--primary); 
+}
