@@ -812,7 +812,7 @@
 })();
 
 /* =========================================
-   DUAL EXCHANGE RATE CHART LOGIC
+   DUAL EXCHANGE RATE CHART LOGIC (Fixed)
    ========================================= */
 document.addEventListener("DOMContentLoaded", async function() {
     const chartCanvas = document.getElementById('exchangeRateChart');
@@ -830,8 +830,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         const slcText = await slcRes.text();
         const cbslText = await cbslRes.text();
         
-        const slcRows = slcText.trim().split('\n').filter(r => r.trim() !== "");
-        const cbslRows = cbslText.trim().split('\n').filter(r => r.trim() !== "");
+        // Improved Parsing: Filter out empty lines and lines without a proper comma
+        const slcRows = slcText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
+        const cbslRows = cbslText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
         
         let allDates = new Set();
         let slcMap = {};
@@ -839,28 +840,25 @@ document.addEventListener("DOMContentLoaded", async function() {
         
         slcRows.forEach(row => {
             const cols = row.split(',');
-            if(cols.length >= 2) {
-                allDates.add(cols[0]);
-                slcMap[cols[0]] = parseFloat(cols[1]);
-            }
+            const dateStr = cols[0].trim();
+            allDates.add(dateStr);
+            slcMap[dateStr] = parseFloat(cols[1]);
         });
         
         cbslRows.forEach(row => {
             const cols = row.split(',');
-            if(cols.length >= 2) {
-                allDates.add(cols[0]);
-                cbslMap[cols[0]] = parseFloat(cols[1]);
-            }
+            const dateStr = cols[0].trim();
+            allDates.add(dateStr);
+            cbslMap[dateStr] = parseFloat(cols[1]);
         });
 
+        // Update "Big Number" Displays
         if (slcRows.length > 0) {
             const lastSlcRow = slcRows[slcRows.length - 1].split(',');
             const slcDateObj = new Date(lastSlcRow[0]);
             const slcDateText = slcDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + slcDateObj.getFullYear();
-            
             const slcRateEl = document.getElementById('current-slc-rate');
             const slcDateLabel = document.getElementById('slc-date-label');
-            
             if (slcRateEl) slcRateEl.textContent = parseFloat(lastSlcRow[1]).toFixed(4) + " LKR";
             if (slcDateLabel) slcDateLabel.textContent = `Effective Customs Rate (Week of ${slcDateText})`;
         }
@@ -869,10 +867,8 @@ document.addEventListener("DOMContentLoaded", async function() {
             const lastCbslRow = cbslRows[cbslRows.length - 1].split(',');
             const cbslDateObj = new Date(lastCbslRow[0]);
             const cbslDateText = cbslDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + cbslDateObj.getFullYear();
-            
             const cbslRateEl = document.getElementById('current-cbsl-rate');
             const cbslDateLabel = document.getElementById('cbsl-date-label');
-            
             if (cbslRateEl) cbslRateEl.textContent = parseFloat(lastCbslRow[1]).toFixed(4) + " LKR";
             if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
         }
@@ -884,44 +880,29 @@ document.addEventListener("DOMContentLoaded", async function() {
         
         sortedDates.forEach(dateStr => {
             const d = new Date(dateStr);
+            // Skip invalid dates to prevent "Invalid Date" labels
+            if (isNaN(d.getTime())) return;
+
             labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
             slcData.push(slcMap[dateStr] !== undefined ? slcMap[dateStr] : null);
             cbslData.push(cbslMap[dateStr] !== undefined ? cbslMap[dateStr] : null);
         });
 
+        // Generate Table
         if (tableBody) {
             let tableHTML = "";
             const startIdx = Math.max(0, slcRows.length - 5);
-            
             for (let i = slcRows.length - 1; i >= startIdx; i--) {
                 const cols = slcRows[i].split(',');
-                if (cols.length < 2) continue;
-                
                 const currentRate = parseFloat(cols[1]);
                 let changeIcon = "-";
                 let changeColor = "#666";
-                
                 if (i > 0) {
-                    const prevCols = slcRows[i-1].split(',');
-                    if (prevCols.length === 2) {
-                        const prevRate = parseFloat(prevCols[1]);
-                        if (currentRate > prevRate) {
-                            changeIcon = "▲ Up"; 
-                            changeColor = "#d63384"; 
-                        } else if (currentRate < prevRate) {
-                            changeIcon = "▼ Down"; 
-                            changeColor = "green";
-                        }
-                    }
+                    const prevRate = parseFloat(slcRows[i-1].split(',')[1]);
+                    if (currentRate > prevRate) { changeIcon = "▲ Up"; changeColor = "#d63384"; }
+                    else if (currentRate < prevRate) { changeIcon = "▼ Down"; changeColor = "green"; }
                 }
-
-                tableHTML += `
-                    <tr style="border-bottom: 1px solid #eee;">
-                        <td style="padding: 8px;">${cols[0]}</td>
-                        <td style="padding: 8px; font-weight: 600;">${currentRate.toFixed(4)}</td>
-                        <td style="padding: 8px; color: ${changeColor}; font-size: 0.85rem;">${changeIcon}</td>
-                    </tr>
-                `;
+                tableHTML += `<tr style="border-bottom: 1px solid #eee;"><td style="padding: 8px;">${cols[0]}</td><td style="padding: 8px; font-weight: 600;">${currentRate.toFixed(4)}</td><td style="padding: 8px; color: ${changeColor}; font-size: 0.85rem;">${changeIcon}</td></tr>`;
             }
             tableBody.innerHTML = tableHTML;
         }
@@ -931,65 +912,23 @@ document.addEventListener("DOMContentLoaded", async function() {
             data: {
                 labels: labels,
                 datasets: [
-                    {
-                        label: 'Customs Rate (Weekly)',
-                        data: slcData,
-                        borderColor: '#007bff', 
-                        borderWidth: 2,
-                        pointRadius: 0, 
-                        pointHoverRadius: 5,
-                        fill: false,
-                        spanGaps: true, 
-                        tension: 0.1    
-                    },
-                    {
-                        label: 'CBSL Rate (Daily)',
-                        data: cbslData,
-                        borderColor: '#dc3545', 
-                        borderWidth: 2,
-                        borderDash: [], 
-                        pointRadius: 0,
-                        pointHoverRadius: 5,
-                        fill: false,
-                        spanGaps: true, 
-                        tension: 0.1    
-                    }
+                    { label: 'Customs Rate (Weekly)', data: slcData, borderColor: '#007bff', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 },
+                    { label: 'CBSL Rate (Daily)', data: cbslData, borderColor: '#dc3545', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                interaction: {
-                    mode: 'index',
-                    intersect: false,
-                },
-                plugins: { 
-                    legend: { 
-                        display: true, 
-                        position: 'bottom',
-                        labels: { boxWidth: 15, font: { size: 11 } }
-                    } 
-                },
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 15, font: { size: 11 } } } },
                 scales: {
-                    x: { 
-                        grid: { display: false }, 
-                        ticks: { 
-                            autoSkip: true,
-                            maxTicksLimit: 6, 
-                            maxRotation: 0,
-                            font: { size: 10 } 
-                        } 
-                    },
-                    y: { 
-                        grid: { color: '#f5f5f5' },
-                        ticks: { font: { size: 10 } }
-                    }
+                    x: { grid: { display: false }, ticks: { autoSkip: true, maxTicksLimit: 6, maxRotation: 0, font: { size: 10 } } },
+                    y: { grid: { color: '#f5f5f5' }, ticks: { font: { size: 10 } } }
                 }
             }
         });
-
     } catch (error) {
-        console.error("Error loading exchange rates from Data/Rates/:", error);
+        console.error("Error loading exchange rates:", error);
     }
 });
 
