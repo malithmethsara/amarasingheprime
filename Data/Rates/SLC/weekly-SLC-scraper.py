@@ -4,7 +4,6 @@ import csv
 from datetime import datetime
 import os
 import re
-import io
 from pdf2image import convert_from_bytes
 import pytesseract
 
@@ -36,21 +35,31 @@ def extract_jpy_rate(pdf_url):
         response = requests.get(pdf_url, headers=headers, timeout=20)
         response.raise_for_status()
         
-        print("Converting PDF to images for OCR scan...")
-        # Converts the PDF document into readable images
-        images = convert_from_bytes(response.content)
+        print("Converting PDF to images for OCR scan (High Resolution)...")
+        # FIX 1: Boosted DPI to 300 so the scanner can clearly see decimal points
+        images = convert_from_bytes(response.content, dpi=300)
         
         text = ""
         for i, image in enumerate(images):
             print(f"Scanning page {i+1}...")
-            # Reads the text off the image
             text += pytesseract.image_to_string(image) + "\n"
         
-        # Looks for "JPY", ignores any text/spaces/symbols, and grabs the first decimal number
-        match = re.search(r'JPY[^\d]*([0-9]+\.[0-9]+)', text)
+        # --- DEBUG MODE ---
+        # This will print what the scanner actually "saw" to your GitHub logs
+        print("--- SCANNER DEBUG INFO ---")
+        for line in text.split('\n'):
+            if 'JPY' in line.upper() or 'JAPAN' in line.upper() or 'YEN' in line.upper():
+                print(f"Scanner read: {line.strip()}")
+        print("--------------------------")
+
+        # FIX 2: Upgraded Regex to be incredibly forgiving. 
+        # It looks for JPY or Yen, ignores spaces, and accepts periods OR commas.
+        match = re.search(r'(?i)(?:JPY|Yen)[^\d]*([0-9]+[\.\,][0-9]+)', text)
         
         if match:
-            return match.group(1).strip()
+            # Replaces a comma with a period just in case the scanner misread it
+            rate = match.group(1).replace(',', '.')
+            return rate.strip()
         else:
             print("Could not find the JPY rate in the scanned text.")
             return None
