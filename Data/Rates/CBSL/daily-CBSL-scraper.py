@@ -28,7 +28,6 @@ def scrape_rate():
 
 def update_csv(new_rate):
     now = datetime.now()
-    # ONLY grabbing the date now
     current_date_str = now.strftime("%Y-%m-%d")
     
     os.makedirs(os.path.dirname(CSV_FILE), exist_ok=True)
@@ -39,10 +38,10 @@ def update_csv(new_rate):
     if file_exists:
         with open(CSV_FILE, 'r', newline='') as f:
             reader = csv.reader(f)
-            rows = list(reader)
+            # THIS IS THE FIX: It forces the script to only read rows that actually have data
+            rows = [row for row in reader if len(row) >= 2]
             
     if not rows:
-        # Updated header to just "Date"
         rows = [["Date", "JPY_LKR_Selling_Rate"]]
         
     if len(rows) > 1:
