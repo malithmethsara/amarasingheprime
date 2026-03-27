@@ -6,7 +6,7 @@ import os
 import re
 
 URL = "https://www.cbsl.gov.lk/cbsl_custom/charts/jpy/indexsmall.php"
-CSV_FILE = "Data/Rates/CBSL/jpy_lkr_rates.csv"
+CSV_FILE = "Data/Rates/CBSL/CBSL-rates.csv"
 
 def scrape_rate():
     headers = {
