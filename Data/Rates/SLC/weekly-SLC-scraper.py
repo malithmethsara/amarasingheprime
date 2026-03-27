@@ -4,8 +4,9 @@ import csv
 from datetime import datetime
 import os
 import re
-import io
-import pdfplumber
+from pdf2image import convert_from_bytes
+import pytesseract
+from PIL import ImageEnhance
 
 URL = "https://www.customs.gov.lk/exchange-rates/"
 CSV_FILE = "Data/Rates/SLC/SLC-rates.csv"
@@ -35,28 +36,43 @@ def extract_jpy_rate(pdf_url):
         response = requests.get(pdf_url, headers=headers, timeout=20)
         response.raise_for_status()
         
-        print("Extracting digital text layer using pdfplumber...")
+        print("Converting PDF to high-res images...")
+        # CRITICAL FIX 1: Boosted resolution to 400 DPI
+        images = convert_from_bytes(response.content, dpi=400)
         
-        # Reads the exact digital text layer of the PDF
-        with pdfplumber.open(io.BytesIO(response.content)) as pdf:
-            text = ""
-            for page in pdf.pages:
-                text += page.extract_text() + "\n"
+        text = ""
+        for i, image in enumerate(images):
+            print(f"Enhancing and scanning page {i+1}...")
+            
+            # CRITICAL FIX 2: Convert to grayscale and double the contrast
+            image = image.convert('L')
+            enhancer = ImageEnhance.Contrast(image)
+            image = enhancer.enhance(2.0)
+            
+            # CRITICAL FIX 3: --psm 6 forces the scanner to read it as a uniform block of text (Table mode)
+            custom_config = r'--psm 6'
+            text += pytesseract.image_to_string(image, config=custom_config) + "\n"
         
-        # --- DEBUG MODE ---
-        print("--- PDFTEXT DEBUG INFO ---")
+        print("--- OCR DEBUG INFO ---")
         for line in text.split('\n'):
             if 'JPY' in line.upper() or 'JAPAN' in line.upper() or 'YEN' in line.upper():
-                print(f"Text extracted: {line.strip()}")
-        print("--------------------------")
+                print(f"Scanner read: {line.strip()}")
+        print("----------------------")
 
-        # Looks specifically for "JPY", ignores spaces, captures the decimal number
-        match = re.search(r'JPY[^\d]*([0-9]+\.[0-9]+)', text)
+        # Looks for JPY, ignores garbage text, and grabs the first number cluster it finds
+        match = re.search(r'JPY[^\d]*([0-9]+[\.\,]?[0-9]+)', text, re.IGNORECASE)
         
         if match:
-            return match.group(1).strip()
+            raw_rate = match.group(1).replace(',', '.')
+            
+            # AUTO-DECIMAL CORRECTOR: 
+            # If the scanner misses the dot and reads "19927", this safely converts it to "1.9927"
+            if '.' not in raw_rate and len(raw_rate) >= 4:
+                raw_rate = raw_rate[:-4] + '.' + raw_rate[-4:]
+                
+            return raw_rate.strip()
         else:
-            print("Could not find the JPY rate in the extracted text.")
+            print("Could not find the JPY rate in the scanned text.")
             return None
             
     except Exception as e:
