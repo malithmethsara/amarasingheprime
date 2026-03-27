@@ -1,7 +1,7 @@
 /*
 * Copyright © 2026 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2026 Gazette & Real World CUSDEC
-* Updated: Calculator uses CBSL Daily Rate | Graph displays both SLC and CBSL Rates
+* Updated: Calculator uses automated CBSL CSV | Graph displays both SLC (txt) and CBSL (csv) Rates
 */
 (function() {
     'use strict';
@@ -729,20 +729,20 @@
         updateReviewTimes(); 
         renderVehicleShowcase();
 
-        // --- FETCH DAILY RATE FOR CALCULATOR (CBSL-rates.txt) ---
+        // --- FETCH DAILY RATE FOR CALCULATOR (Now uses automated CSV file) ---
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
-            fetch('Data/Rates/CBSL-rates.txt') 
+            fetch('Data/Rates/CBSL/CBSL-rates.csv') 
                 .then(r => {
-                    if (!r.ok) throw new Error("CBSL-rates.txt not found");
+                    if (!r.ok) throw new Error("CBSL-rates.csv not found");
                     return r.text();
                 })
                 .then(text => {
                     const lines = text.trim().split('\n').filter(line => line.trim() !== "");
-                    if (lines.length > 0) {
+                    if (lines.length > 1) { // Ensure there is data beyond the CSV header
                         const lastLine = lines[lines.length - 1];
                         const parts = lastLine.split(','); 
-                        if (parts.length >= 2) {
+                        if (parts.length >= 2 && parts[0].trim().toLowerCase() !== 'date') {
                             const updatedDate = parts[0].trim();
                             const rate = parseFloat(parts[1].trim());
                             if (!isNaN(rate)) {
@@ -824,7 +824,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     try {
         const [slcRes, cbslRes] = await Promise.all([
             fetch('Data/Rates/SLC-rates.txt'),
-            fetch('Data/Rates/CBSL-rates.txt')
+            fetch('Data/Rates/CBSL/CBSL-rates.csv')
         ]);
         
         const slcText = await slcRes.text();
@@ -848,6 +848,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         cbslRows.forEach(row => {
             const cols = row.split(',');
             const dateStr = cols[0].trim();
+            if (dateStr.toLowerCase() === 'date') return; // Skip CSV Header row
             allDates.add(dateStr);
             cbslMap[dateStr] = parseFloat(cols[1]);
         });
@@ -913,7 +914,7 @@ document.addEventListener("DOMContentLoaded", async function() {
                 labels: labels,
                 datasets: [
                     { label: 'Customs Rate (Weekly)', data: slcData, borderColor: '#007bff', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 },
-                    { label: 'CBSL Rate (Daily)', data: cbslData, borderColor: '#dc3545', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 }
+                    { label: 'CBSL Rate (Daily)', data: cbslData, borderColor: '#dc3545', borderWidth: 2, borderDash: [], pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 }
                 ]
             },
             options: {
@@ -988,6 +989,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+
 // --- SHIPPING SCHEDULE FETCH LOGIC ---
 document.addEventListener("DOMContentLoaded", () => {
     const tableBody = document.getElementById("scheduleBody");
