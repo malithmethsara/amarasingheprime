@@ -1,4 +1,4 @@
-name: Telegram Rate Update
+name: CBSL Rate Update TG
 
 on:
   workflow_dispatch:
