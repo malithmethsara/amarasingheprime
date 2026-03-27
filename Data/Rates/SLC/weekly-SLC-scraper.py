@@ -5,22 +5,20 @@ from datetime import datetime
 import os
 import re
 import io
-import PyPDF2
+from pdf2image import convert_from_bytes
+import pytesseract
 
 URL = "https://www.customs.gov.lk/exchange-rates/"
 CSV_FILE = "Data/Rates/SLC/SLC-rates.csv"
 
 def get_latest_pdf_url():
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-    }
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
     try:
         print("Fetching Sri Lanka Customs page...")
         response = requests.get(URL, headers=headers, timeout=20)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Searches the webpage for the very first link that ends in .pdf
         for a in soup.find_all('a', href=True):
             href = a['href']
             if href.lower().endswith('.pdf'):
@@ -38,22 +36,23 @@ def extract_jpy_rate(pdf_url):
         response = requests.get(pdf_url, headers=headers, timeout=20)
         response.raise_for_status()
         
-        # Reads the PDF directly from memory (no need to save a physical PDF file)
-        pdf_file = io.BytesIO(response.content)
-        reader = PyPDF2.PdfReader(pdf_file)
+        print("Converting PDF to images for OCR scan...")
+        # Converts the PDF document into readable images
+        images = convert_from_bytes(response.content)
         
         text = ""
-        for page in reader.pages:
-            text += page.extract_text() + "\n"
-            
-        # REGEX: Hunts for the word "JPY", ignores any quotes, commas, spaces, or newlines, 
-        # and captures the very first decimal number it finds after it.
-        match = re.search(r'JPY[\s\r\n\'\",]*([0-9]+\.[0-9]+)', text)
+        for i, image in enumerate(images):
+            print(f"Scanning page {i+1}...")
+            # Reads the text off the image
+            text += pytesseract.image_to_string(image) + "\n"
+        
+        # Looks for "JPY", ignores any text/spaces/symbols, and grabs the first decimal number
+        match = re.search(r'JPY[^\d]*([0-9]+\.[0-9]+)', text)
         
         if match:
             return match.group(1).strip()
         else:
-            print("Could not find the JPY rate in the PDF text.")
+            print("Could not find the JPY rate in the scanned text.")
             return None
             
     except Exception as e:
@@ -72,7 +71,6 @@ def update_csv(new_rate):
     if file_exists:
         with open(CSV_FILE, 'r', newline='') as f:
             reader = csv.reader(f)
-            # Ignores accidental blank lines
             rows = [row for row in reader if len(row) >= 2]
             
     if not rows:
@@ -83,7 +81,6 @@ def update_csv(new_rate):
         last_date_str = last_row[0]
         last_rate = last_row[1]
         
-        # If Customs hasn't uploaded a new PDF yet, skip to avoid duplicates
         if new_rate == last_rate:
             print(f"Rate {new_rate} is unchanged from the last recorded rate. Skipping.")
             return
