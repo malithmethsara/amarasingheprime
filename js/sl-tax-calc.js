@@ -1054,7 +1054,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const tableBody = document.getElementById("scheduleBody");
     
     if (tableBody) {
-        const jsonUrl = "/shipping_schedule.json";
+        const jsonUrl = "/Data/Shipping/shipping_schedule.json";
         const fetchUrl = jsonUrl + '?t=' + new Date().getTime();
 
         fetch(fetchUrl)
