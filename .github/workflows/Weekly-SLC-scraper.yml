@@ -12,14 +12,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install System Dependencies for OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils tesseract-ocr
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
       - name: Install Python libraries
-        # NEW: Swapped out the OCR tools for pdfplumber
-        run: pip install requests beautifulsoup4 pdfplumber
+        # NEW: Added Pillow for image enhancement
+        run: pip install requests beautifulsoup4 pdf2image pytesseract Pillow
 
       - name: Run scraper script
         run: python Data/Rates/SLC/weekly-SLC-scraper.py
