@@ -1283,13 +1283,18 @@ tfoot td {
     color: #666;
     margin-bottom: 5px;
 }
+
 /* --- SHIPPING SCHEDULE PAGE STYLES --- */
 .schedule-section {
     background: #fff;
-    padding: 2rem;
+    padding: 1.5rem; /* Slightly reduced padding for mobile */
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.05);
     margin-bottom: 2rem;
+    width: 100%;
+    max-width: 100%; /* Prevents the white box from stretching */
+    overflow: hidden; /* Keeps everything inside the box */
+    box-sizing: border-box; /* Crucial for preventing width issues */
 }
 .schedule-section h2 {
     color: var(--primary); 
@@ -1297,23 +1302,21 @@ tfoot td {
     border-bottom: 2px solid var(--bg2);
     padding-bottom: 10px;
 }
+
 .table-responsive {
     width: 100%;
-    max-width: 100%; /* Forces it to stay inside the mobile screen */
-    max-height: 500px; /* Adds vertical scrolling if there are many ships */
-    overflow-x: auto; /* Enables horizontal scrolling */
-    overflow-y: auto; /* Enables vertical scrolling */
+    overflow-x: auto; /* This creates the horizontal scrollbar! */
     -webkit-overflow-scrolling: touch; /* Enables buttery-smooth swiping on iPhones/Androids */
     margin-top: 1.5rem;
     border-radius: 8px;
-    border: 1px solid #eef2f7; /* Adds a clean border around the scroll box */
-    display: block; 
+    padding-bottom: 10px; /* Gives the scrollbar room to breathe */
 }
+
 .clean-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
-    min-width: 800px; /* Forces the table to stay wide enough to read, triggering the scrollbar */
+    font-size: 0.9rem; /* Slightly smaller text for better fit */
+    min-width: 700px; /* CRITICAL: Forces the table to stay wide, triggering the scroll box */
     table-layout: fixed; 
 }
 
@@ -1330,16 +1333,12 @@ tfoot td {
 
 /* --- STICKY HEADER --- */
 .clean-table th {
-    position: sticky; /* Keeps the header at the top when scrolling vertically */
-    top: 0;
-    z-index: 2; /* Ensures the header stays above the scrolling data */
     background-color: var(--bg1);
     color: var(--text);
     text-align: left;
     padding: 12px 15px;
     font-weight: 700;
     border-bottom: 2px solid #dee2e6;
-    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1); /* Tiny shadow under the sticky header */
 }
 
 .clean-table td {
