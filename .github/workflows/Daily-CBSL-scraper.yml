@@ -31,7 +31,7 @@ jobs:
           git config --global user.email "actions@github.com"
           
           # NEW: Point to the new CSV location
-          git add Data/Rates/CBSL/jpy_lkr_rates.csv
+          git add Data/Rates/CBSL/CBSL-rates.csv
           
           git commit -m "Automated update: JPY/LKR selling rate" || exit 0
           git push
