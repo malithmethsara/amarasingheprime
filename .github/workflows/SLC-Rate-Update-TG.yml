@@ -1,4 +1,4 @@
-name: SLC Rate Update
+name: SLC Rate Update Telegram
 
 on:
   workflow_dispatch:
