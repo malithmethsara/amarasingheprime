@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Smart Update & Sort
         run: |
@@ -34,25 +34,24 @@ jobs:
           
           NEW_LINE="$THE_DATE,$THE_RATE"
           echo "Processing: $NEW_LINE"
-          
-          FILE_PATH="Data/Rates/CBSL/CBSL-rates.csv"
 
           # --- STEP 2: PROTECT HEADER & PREPARE DATA ---
-          # Save the header row safely to our temp file
-          head -n 1 "$FILE_PATH" > temp_sorted.csv
-          # Extract everything EXCEPT the header to a data-only file
-          tail -n +2 "$FILE_PATH" > temp_data.csv
+          # Save the header row safely
+          head -n 1 "Data/Rates/CBSL/CBSL-rates.csv" > temp_sorted.csv
+          # Extract the data (ignoring the header)
+          tail -n +2 "Data/Rates/CBSL/CBSL-rates.csv" > temp_data.csv
 
           # --- STEP 3: APPEND NEW DATA ---
+          # Add the new line to the bottom of the data
           echo "$NEW_LINE" >> temp_data.csv
 
           # --- STEP 4: SORT & REMOVE DUPLICATES ---
-          # Logic: Read data -> Keep LAST rate seen for each date -> Sort -> Append below header
+          # Logic: Read data -> Keep only the LAST rate seen for each date -> Sort -> Append below header
           awk -F, '{rates[$1]=$2} END {for (d in rates) print d","rates[d]}' temp_data.csv | sort >> temp_sorted.csv
           
-          # Check to ensure we didn't wipe the file
+          # specific check to ensure we didn't wipe the file
           if [ -s temp_sorted.csv ]; then
-             mv temp_sorted.csv "$FILE_PATH"
+             mv temp_sorted.csv "Data/Rates/CBSL/CBSL-rates.csv"
              echo "✅ File successfully sorted and cleaned."
           else
              echo "❌ Error: Something went wrong, keeping old file."
@@ -62,7 +61,7 @@ jobs:
           # --- STEP 5: SAVE TO GITHUB ---
           git config --global user.name "Telegram Bot"
           git config --global user.email "actions@github.com"
-          git add "$FILE_PATH"
+          git add "Data/Rates/CBSL/CBSL-rates.csv"
           
           # Only commit if actual changes happened
-          git diff --quiet && git diff --staged --quiet || (git commit -m "📈 Telegram Update: $NEW_LINE" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "📈 Update: $NEW_LINE" && git push)
