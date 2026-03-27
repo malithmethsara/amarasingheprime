@@ -1298,41 +1298,57 @@ tfoot td {
     padding-bottom: 10px;
 }
 .table-responsive {
-    overflow-x: auto;
+    width: 100%;
+    max-width: 100%; /* Forces it to stay inside the mobile screen */
+    max-height: 500px; /* Adds vertical scrolling if there are many ships */
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Enables buttery-smooth swiping on iPhones/Androids */
     margin-top: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #eef2f7; /* Adds a clean border around the scroll box */
+    display: block; 
 }
 .clean-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
-    min-width: 750px; /* Allows smooth swiping on mobile */
-    table-layout: fixed; /* Forces the browser to respect our column widths */
+    min-width: 800px; /* Forces the table to stay wide enough to read, triggering the scrollbar */
+    table-layout: fixed; 
 }
 
 /* Distribute the 5 columns evenly */
-.clean-table th:nth-child(1) { width: 23%; } /* Vessel */
-.clean-table th:nth-child(2) { width: 17%; } /* Line */
-.clean-table th:nth-child(3) { width: 20%; } /* Port */
-.clean-table th:nth-child(4) { width: 20%; } /* Date */
+.clean-table th:nth-child(1) { width: 22%; } /* Vessel */
+.clean-table th:nth-child(2) { width: 14%; } /* Line */
+.clean-table th:nth-child(3) { width: 22%; } /* Port */
+.clean-table th:nth-child(4) { width: 22%; } /* Date */
 .clean-table th:nth-child(5) { width: 20%; } /* Arrival */
 
 .clean-table th, .clean-table td {
-    word-wrap: break-word; /* Prevents long ship names from breaking the layout */
+    word-wrap: break-word; 
 }
+
+/* --- STICKY HEADER --- */
 .clean-table th {
+    position: sticky; /* Keeps the header at the top when scrolling vertically */
+    top: 0;
+    z-index: 2; /* Ensures the header stays above the scrolling data */
     background-color: var(--bg1);
     color: var(--text);
     text-align: left;
     padding: 12px 15px;
     font-weight: 700;
     border-bottom: 2px solid #dee2e6;
+    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1); /* Tiny shadow under the sticky header */
 }
+
 .clean-table td {
     padding: 12px 15px;
     border-bottom: 1px solid #eee;
     vertical-align: top;
     color: #444;
 }
+
 .clean-table tr:hover {
     background-color: #f4f7f6;
 }
