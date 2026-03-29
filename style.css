@@ -1332,9 +1332,10 @@ tfoot td {
 }
 
 /* --- STICKY HEADER --- */
+/* --- STICKY HEADER --- */
 .clean-table th {
-    background-color: var(--bg1);
-    color: var(--text);
+    background-color: var(--primary); /* Changed to your signature blue */
+    color: #ffffff; /* Changed text to white */
     text-align: left;
     padding: 12px 15px;
     font-weight: 700;
