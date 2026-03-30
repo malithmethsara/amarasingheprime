@@ -1,33 +1,6 @@
 [
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "GOLIATH LEADER 126",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/02/12",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/02/14",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/02/18",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/02/19",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/03/03",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
         "vessel_voyage": "GLOBAL FUJI 001",
         "type": "RO-RO",
         "departures": [
