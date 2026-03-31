@@ -282,15 +282,15 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/07",
+                "date": "2026/04/08",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/08",
+                "date": "2026/04/09",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/09",
+                "date": "2026/04/10",
                 "port": "YOKOHAMA"
             }
         ],
