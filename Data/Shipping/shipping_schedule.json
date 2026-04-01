@@ -240,7 +240,7 @@
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/03/30",
+                "date": "2026/03/31",
                 "port": "YOKOHAMA"
             }
         ],
@@ -351,7 +351,7 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "APOLLON LEADER 119",
+        "vessel_voyage": "METIS LEADER 131",
         "type": "RO-RO",
         "departures": [
             {
@@ -382,7 +382,7 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "AQUARIUS LEADER 071",
+        "vessel_voyage": "CASSIOPEIA LEADER 060",
         "type": "RO-RO",
         "departures": [
             {
