@@ -301,16 +301,20 @@
     },
     {
         "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "MODERN LINK 703",
+        "vessel_voyage": "DON JUAN 705",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/19",
+                "date": "2026/04/18",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/20",
+                "date": "2026/04/19",
                 "port": "NAGOYA"
+            },
+            {
+                "date": "2026/04/20",
+                "port": "HITACHINAKA"
             },
             {
                 "date": "2026/04/21",
@@ -318,29 +322,25 @@
             }
         ],
         "arrival": {
-            "date": "2026/05/04",
+            "date": "2026/05/08",
             "port": "Hambantota"
         }
     },
     {
         "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "DON JUAN 705",
+        "vessel_voyage": "MODERN LINK 703",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/16",
+                "date": "2026/04/24",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/17",
-                "port": "HITACHINAKA"
-            },
-            {
-                "date": "2026/04/17",
+                "date": "2026/04/25",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/19",
+                "date": "2026/04/26",
                 "port": "YOKOHAMA"
             }
         ],
