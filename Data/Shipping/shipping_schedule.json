@@ -381,6 +381,29 @@
         }
     },
     {
+        "shipping_line": "HYUNDAI GLOVIS",
+        "vessel_voyage": "GLOVIS CHAMPION",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/04/24",
+                "port": "KISARAZU"
+            },
+            {
+                "date": "2026/04/26",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/04/28",
+                "port": "HAKATA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/05/19",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "NYK",
         "vessel_voyage": "CASSIOPEIA LEADER 060",
         "type": "RO-RO",
