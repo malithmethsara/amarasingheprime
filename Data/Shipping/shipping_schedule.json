@@ -300,6 +300,33 @@
         }
     },
     {
+        "shipping_line": "NYK",
+        "vessel_voyage": "CASSIOPEIA LEADER 060",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/04/18",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/04/21",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/04/22",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/04/23",
+                "port": "KOBE"
+            }
+        ],
+        "arrival": {
+            "date": "2026/05/05",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "DON JUAN 705",
         "type": "RO-RO",
@@ -332,20 +359,20 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/24",
+                "date": "2026/04/25",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/25",
+                "date": "2026/04/26",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/26",
+                "date": "2026/04/27",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/05/09",
+            "date": "2026/05/11",
             "port": "Hambantota"
         }
     },
@@ -382,51 +409,24 @@
     },
     {
         "shipping_line": "HYUNDAI GLOVIS",
-        "vessel_voyage": "GLOVIS CHAMPION",
+        "vessel_voyage": "GLOVIS COURAGE 99",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/24",
-                "port": "KISARAZU"
+                "date": "2026/05/13",
+                "port": "HAKATA"
             },
             {
-                "date": "2026/04/26",
+                "date": "2026/05/14",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/28",
-                "port": "HAKATA"
+                "date": "2026/05/17",
+                "port": "KISARAZU"
             }
         ],
         "arrival": {
             "date": "2026/05/19",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
-        "vessel_voyage": "CASSIOPEIA LEADER 060",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/04/17",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/04/18",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/04/21",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/04/22",
-                "port": "KOBE"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/22",
             "port": "Hambantota"
         }
     },
