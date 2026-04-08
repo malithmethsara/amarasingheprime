@@ -1,36 +1,5 @@
 [
     {
-        "shipping_line": "NYK",
-        "vessel_voyage": "GLOBAL FUJI 001",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/02/21",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/02/23",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/02/25",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/02/26",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/02/28",
-                "port": "MOJI"
-            }
-        ],
-        "arrival": {
-            "date": "2026/03/13",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "VIKING DRIVE 37",
         "type": "RO-RO",
@@ -354,29 +323,6 @@
         }
     },
     {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "MODERN LINK 703",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/04/25",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/04/26",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/04/27",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/11",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "METIS LEADER 131",
         "type": "RO-RO",
@@ -404,6 +350,29 @@
         ],
         "arrival": {
             "date": "2026/05/11",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "vessel_voyage": "MODERN LINK 703",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/04/25",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/04/26",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/04/27",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/05/18",
             "port": "Hambantota"
         }
     },
