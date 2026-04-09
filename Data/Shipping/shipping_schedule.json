@@ -255,16 +255,16 @@
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/09",
+                "date": "2026/04/10",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/10",
+                "date": "2026/04/11",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/04/23",
+            "date": "2026/04/25",
             "port": "Hambantota"
         }
     },
@@ -301,24 +301,24 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/18",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/04/19",
-                "port": "NAGOYA"
-            },
-            {
                 "date": "2026/04/20",
                 "port": "HITACHINAKA"
             },
             {
+                "date": "2026/04/20",
+                "port": "OSAKA"
+            },
+            {
                 "date": "2026/04/21",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/04/23",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/05/08",
+            "date": "2026/05/10",
             "port": "Hambantota"
         }
     },
@@ -328,23 +328,23 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/22",
+                "date": "2026/04/23",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/04/24",
+                "date": "2026/04/25",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/25",
+                "date": "2026/04/27",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/26",
+                "date": "2026/04/28",
                 "port": "KOBE"
             },
             {
-                "date": "2026/04/28",
+                "date": "2026/04/30",
                 "port": "MOJI"
             }
         ],
