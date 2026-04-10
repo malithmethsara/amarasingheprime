@@ -301,19 +301,19 @@
         "type": "RO-RO",
         "departures": [
             {
+                "date": "2026/04/19",
+                "port": "OSAKA"
+            },
+            {
                 "date": "2026/04/20",
                 "port": "HITACHINAKA"
             },
             {
                 "date": "2026/04/20",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/04/21",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/23",
+                "date": "2026/04/22",
                 "port": "YOKOHAMA"
             }
         ],
