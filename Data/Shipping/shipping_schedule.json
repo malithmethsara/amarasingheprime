@@ -259,7 +259,7 @@
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/11",
+                "date": "2026/04/12",
                 "port": "YOKOHAMA"
             }
         ],
@@ -318,7 +318,7 @@
             }
         ],
         "arrival": {
-            "date": "2026/05/10",
+            "date": "2026/05/11",
             "port": "Hambantota"
         }
     },
@@ -354,25 +354,48 @@
         }
     },
     {
+        "shipping_line": "NYK",
+        "vessel_voyage": "VENUS LEADER 080",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/05/01",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/05/02",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/04",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/05/16",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "MODERN LINK 703",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/25",
+                "date": "2026/05/01",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/26",
+                "date": "2026/05/02",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/27",
+                "date": "2026/05/03",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/05/18",
+            "date": "2026/05/17",
             "port": "Hambantota"
         }
     },
