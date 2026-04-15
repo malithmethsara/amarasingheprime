@@ -23,29 +23,6 @@
         }
     },
     {
-        "shipping_line": "K-LINE",
-        "vessel_voyage": "LYDDEN 41",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/02/28",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/03/04",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/03/04",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/03/20",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "GUADIAN LEADER 128",
         "type": "RO-RO",
@@ -377,29 +354,6 @@
         }
     },
     {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "MODERN LINK 703",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/01",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/05/02",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/05/03",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/17",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "HYUNDAI GLOVIS",
         "vessel_voyage": "GLOVIS COURAGE 99",
         "type": "RO-RO",
@@ -419,6 +373,29 @@
         ],
         "arrival": {
             "date": "2026/05/19",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "vessel_voyage": "MODERN LINK 705",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/05/05",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/05/06",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/07",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/05/25",
             "port": "Hambantota"
         }
     },
