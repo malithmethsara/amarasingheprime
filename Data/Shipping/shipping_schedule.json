@@ -50,21 +50,6 @@
         }
     },
     {
-        "shipping_line": "MOL",
-        "vessel_voyage": "LAKE ANNECY 0017A",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/03/01",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/04/10",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "THE KEIHIN CO., LTD.",
         "vessel_voyage": "MORNING NINNI IE602",
         "type": "RO-RO",
@@ -251,20 +236,20 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/18",
+                "date": "2026/04/17",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/04/21",
+                "date": "2026/04/20",
                 "port": "NAGOYA"
             },
             {
                 "date": "2026/04/22",
-                "port": "OSAKA"
+                "port": "KOBE"
             },
             {
                 "date": "2026/04/23",
-                "port": "KOBE"
+                "port": "OSAKA"
             }
         ],
         "arrival": {
@@ -305,23 +290,23 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/04/23",
+                "date": "2026/04/22",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/04/25",
+                "date": "2026/04/24",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/27",
+                "date": "2026/04/25",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/04/28",
+                "date": "2026/04/27",
                 "port": "KOBE"
             },
             {
-                "date": "2026/04/30",
+                "date": "2026/04/28",
                 "port": "MOJI"
             }
         ],
@@ -350,29 +335,6 @@
         ],
         "arrival": {
             "date": "2026/05/16",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "HYUNDAI GLOVIS",
-        "vessel_voyage": "GLOVIS COURAGE 99",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/13",
-                "port": "HAKATA"
-            },
-            {
-                "date": "2026/05/14",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/05/17",
-                "port": "KISARAZU"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/19",
             "port": "Hambantota"
         }
     },
@@ -419,6 +381,64 @@
         ],
         "arrival": {
             "date": "2026/06/01",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "GLORIOUS LEADER",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/05/15",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/05/16",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/21",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/05/22",
+                "port": "KOBE"
+            }
+        ],
+        "arrival": {
+            "date": "2026/06/04",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "SPICA LEADER 082",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/05/22",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/05/23",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/25",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/05/26",
+                "port": "KOBE"
+            },
+            {
+                "date": "2026/05/28",
+                "port": "MOJI"
+            }
+        ],
+        "arrival": {
+            "date": "2026/06/10",
             "port": "Hambantota"
         }
     }
