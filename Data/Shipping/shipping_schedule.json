@@ -235,6 +235,37 @@
         }
     },
     {
+        "shipping_line": "NYK",
+        "vessel_voyage": "METIS LEADER 131",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/04/22",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/04/23",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/04/25",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/04/26",
+                "port": "KOBE"
+            },
+            {
+                "date": "2026/04/28",
+                "port": "MOJI"
+            }
+        ],
+        "arrival": {
+            "date": "2026/05/11",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "DON JUAN 705",
         "type": "RO-RO",
@@ -252,43 +283,12 @@
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/04/22",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/11",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
-        "vessel_voyage": "METIS LEADER 131",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/04/22",
-                "port": "YOKOHAMA"
-            },
-            {
                 "date": "2026/04/24",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/04/25",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/04/27",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/04/28",
-                "port": "MOJI"
+                "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/05/11",
+            "date": "2026/05/12",
             "port": "Hambantota"
         }
     },
@@ -321,15 +321,15 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/05/05",
+                "date": "2026/05/06",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/05/06",
+                "date": "2026/05/07",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/05/07",
+                "date": "2026/05/08",
                 "port": "YOKOHAMA"
             }
         ],
