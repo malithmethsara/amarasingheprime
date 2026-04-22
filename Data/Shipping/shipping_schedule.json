@@ -316,6 +316,33 @@
         }
     },
     {
+        "shipping_line": "K-LINE",
+        "vessel_voyage": "GENIUS HIGHWAY 86",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/04/27",
+                "port": "KOBE"
+            },
+            {
+                "date": "2026/05/01",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/05/02",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/03",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/05/22",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "MODERN LINK 705",
         "type": "RO-RO",
