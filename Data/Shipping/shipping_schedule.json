@@ -27,33 +27,6 @@
         }
     },
     {
-        "shipping_line": "THE KEIHIN CO., LTD.",
-        "vessel_voyage": "MORNING NINNI IE602",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/03/08",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/03/09",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/03/10",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/03/12",
-                "port": "HIBIKINADA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/04/11",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "GLOBAL LEADER 081",
         "type": "RO-RO",
