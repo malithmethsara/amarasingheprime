@@ -363,7 +363,7 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "GLORIOUS LEADER",
+        "vessel_voyage": "GUARDIAN LEADER 130",
         "type": "RO-RO",
         "departures": [
             {
@@ -416,6 +416,29 @@
         ],
         "arrival": {
             "date": "2026/06/10",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "ALTAIR LEADER 104",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/05/20",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/05/22",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/23",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "O",
             "port": "Hambantota"
         }
     }
