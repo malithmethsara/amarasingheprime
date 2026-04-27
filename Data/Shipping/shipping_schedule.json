@@ -390,37 +390,6 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "SPICA LEADER 082",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/22",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/05/23",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/05/25",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/05/26",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/05/28",
-                "port": "MOJI"
-            }
-        ],
-        "arrival": {
-            "date": "2026/06/10",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
         "vessel_voyage": "ALTAIR LEADER 104",
         "type": "RO-RO",
         "departures": [
@@ -438,7 +407,38 @@
             }
         ],
         "arrival": {
-            "date": "O",
+            "date": "2026/06/05",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "OPAL LEADER 052",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/05/26",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/05/28",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/29",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/05/30",
+                "port": "KOBE"
+            },
+            {
+                "date": "2026/05/31",
+                "port": "MOJI"
+            }
+        ],
+        "arrival": {
+            "date": "2026/06/13",
             "port": "Hambantota"
         }
     }
