@@ -1,7 +1,7 @@
 /*
 * Copyright © 2026 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2026 Gazette & Real World CUSDEC
-* Updated: Calculator uses automated CBSL CSV | Graph displays both SLC (txt) and CBSL (csv) Rates
+* Updated: Merged CID(30%), Removed PAL, Added SSL(2.5%), Fixed VAT Base
 */
 (function() {
     'use strict';
@@ -243,6 +243,7 @@
             const tierMax = tier.max || maxCapacity;
             if (capacity >= tierMin && capacity <= tierMax) {
                 const rateFn = tier.rate;
+                // Mild Hybrid Logic: If WagonR style (<1000cc), use standard petrol logic per Customs behavior
                 if (['petrol_hybrid', 'petrol_plugin'].includes(type) && capacity <= 1000 && tier.min === 600) return 1810900;
                 if (type === 'petrol' && capacity <= 1000 && tier.min === 600) return typeof rateFn === 'function' ? rateFn(capacity) : rateFn * capacity;
                 if (type.includes('electric') || type.includes('esmart')) return (typeof rateFn === 'function' ? rateFn(age) : rateFn) * capacity;
@@ -294,46 +295,43 @@
         if (capacity <= 0) return showError('capacity', '! Please enter valid capacity');
         if (!age) return showError('age', '! Please select vehicle age');
 
+        // Core Values
         const cif = cifJPY * exchangeRate;
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
-        // 1. Customs Import Duty (CID)
-        const cid = cif * 0.20;
+        // 1. Customs Import Duty (CID) - Flat 30%
+        const cid = cif * 0.30;
 
-        // 2. Surcharge
-        const surcharge = cid * 0.50;
-
-        // 3. PAL (10%)
-        const pal = cif * 0.10;
-
-        // 4. Excise Duty
+        // 2. Excise Duty
         const excise = exciseResult;
 
-        // 5. Luxury Tax (Added to total, excluded from VAT base per 2025 CUSDEC)
+        // 3. Luxury Tax
         const luxuryTax = calculateLuxuryTax(cif, type);
 
-        // 6. VAT Calculation (18%)
-        const vatBase = cif + pal + cid + surcharge + excise;
-        const vat = vatBase * 0.18;
+        // 4. Tax Base Calculation (CIF + 10% PAL Uplift + CID + XID)
+        const palUplift = cif * 0.10;
+        const taxBase = cif + palUplift + cid + excise;
+
+        // 5. SSL (Social Security Levy - 2.5%)
+        const sscl = taxBase * 0.025;
+
+        // 6. VAT (18%) - Calculated on the exact same base as SSL
+        const vat = taxBase * 0.18;
 
         // 7. Fixed Levies
         const vel = 15000;       
         const comFee = 1750;     
 
-        // 8. SSCL
-        const sscl = 0; 
-
-        // 9. Totals
-        const totalTax = cid + surcharge + excise + luxuryTax + vel + vat + comFee + sscl;
-        
+        // 8. Totals
+        const totalTax = cid + excise + sscl + vat + vel + luxuryTax + comFee;
         const otherCharges = dealerFee + clearingFee + bankFee;
         const totalCost = cif + totalTax + otherCharges;
 
         resultData = {
             cifJPY, exchangeRate, cif, type, capacity, age,
             dealerFee, clearingFee, bankFee,
-            cid, surcharge, excise,
+            cid, excise, sscl,
             luxuryTax, vel, vat, comFee, totalTax, 
             otherCharges, totalCost
         };
@@ -383,7 +381,7 @@
             </table>
 
             <div style="font-weight:700;margin:1.25rem 0 0.75rem 0;color:var(--primary);font-size:1.1rem">
-                Tax Breakdown
+                Tax Breakdown (CUSDEC Format)
             </div>
             <table style="width:100%;border-collapse:collapse;margin-bottom:1.5rem">
                 <thead style="background:var(--primary);color:#fff">
@@ -393,11 +391,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Import Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td></tr>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Duty (CID - 30%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty (XID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Social Security Levy (SSL - 2.5%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.sscl)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Luxury Tax</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.luxuryTax)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Vehicle Entitlement Levy</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vel)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">COM / Exam / Seal Fee</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.comFee)}</td></tr>
                 </tbody>
@@ -443,10 +441,10 @@
         taxChart = new Chart(ctx1, {
             type: 'pie',
             data: {
-                labels: ['CID', 'Surcharge', 'Excise', 'Luxury Tax', 'VEL', 'VAT'],
+                labels: ['CID (30%)', 'Excise', 'SSCL (2.5%)', 'Luxury Tax', 'VEL', 'VAT'],
                 datasets: [{
-                    data: [data.cid, data.surcharge, data.excise, data.luxuryTax, data.vel, data.vat],
-                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                    data: [data.cid, data.excise, data.sscl, data.luxuryTax, data.vel, data.vat],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#4BC0C0', '#FFCE56', '#9966FF', '#FF9F40']
                 }]
             },
             options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
@@ -540,16 +538,16 @@
         y = doc.lastAutoTable.finalY + 8;
 
         // TAX TABLE
-        doc.text('Tax Breakdown', 10, y - 2);
+        doc.text('Tax Breakdown (CUSDEC Format)', 10, y - 2);
         doc.autoTable({
             startY: y,
             head: [['Tax Type', 'Amount (LKR)']],
             body: [
-                ['Customs Import Duty', formatNumber(resultData.cid)],
-                ['Surcharge', formatNumber(resultData.surcharge)],
-                ['Excise Duty', formatNumber(resultData.excise)],
+                ['Customs Duty (CID - 30%)', formatNumber(resultData.cid)],
+                ['Excise Duty (XID)', formatNumber(resultData.excise)],
+                ['Social Security Levy (SSL - 2.5%)', formatNumber(resultData.sscl)],
+                ['VAT (18%)', formatNumber(resultData.vat)],
                 ['Luxury Tax', formatNumber(resultData.luxuryTax)],
-                ['VAT', formatNumber(resultData.vat)],
                 ['VEL', formatNumber(resultData.vel)],
                 ['COM / Exam / Seal Fee', formatNumber(resultData.comFee)]
             ],
