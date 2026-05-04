@@ -1,33 +1,6 @@
 [
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "GUADIAN LEADER 128",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/03/19",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/03/21",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/03/24",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/03/25",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/04/07",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
         "vessel_voyage": "GLOBAL LEADER 081",
         "type": "RO-RO",
         "departures": [
