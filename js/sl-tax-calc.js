@@ -705,22 +705,6 @@
         if(rightBtn) rightBtn.addEventListener('click', () => { stopSliding(); slideRight(); });
     }
 
-    // --- HELPER TO FILL CALCULATOR ---
-    window.fillCalculator = function(capacity, cif, type) {
-        const capInput = document.getElementById('capacity');
-        const cifInput = document.getElementById('cifJPY');
-        const typeInput = document.getElementById('vehicleType');
-        
-        if(capInput) capInput.value = capacity;
-        if(cifInput) cifInput.value = cif;
-        if(typeInput) typeInput.value = type;
-
-        if(typeInput) typeInput.dispatchEvent(new Event('change'));
-
-        const form = document.getElementById('taxCalculatorForm');
-        if(form) form.scrollIntoView({ behavior: 'smooth' });
-    };
-
     // 14. Initialization
     function init() {
         console.log('SL Tax Calculator Loaded');
