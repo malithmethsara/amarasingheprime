@@ -15,11 +15,6 @@ const vehicleInventory = [
         },
         price: "LKR 7,050,000",
         image: "wagonr.jpg", 
-        
-        // Calculator Auto-Fill Data
-        calcType: "petrol",
-        calcCapacity: 660,
-        calcCif: 1300000
     },
     {
         id: "car2",
@@ -33,10 +28,6 @@ const vehicleInventory = [
         },
         price: "LKR 6,150,000",
         image: "mira.jpg",
-        
-        calcType: "petrol",
-        calcCapacity: 660,
-        calcCif: 1100000
     },
     {
         id: "car3",
@@ -50,11 +41,7 @@ const vehicleInventory = [
         },
         price: "LKR 10,500,000",
         image: "roomy.jpg",
-        
-        calcType: "petrol",
-        calcCapacity: 996,
-        calcCif: 2400000
-    }, // <--- FIXED: Added missing comma here!
+    }, 
     {
         id: "car4",
         model: "Honda Vezel (RV5)",
@@ -66,11 +53,7 @@ const vehicleInventory = [
             auction: "4.5" 
         },
         price: "LKR 15,800,000",
-        image: "vezel.jpg",
-        
-        calcType: "petrol_hybrid", // <--- FIXED: Changed space to underscore (_)
-        calcCapacity: 1496,
-        calcCif: 2900000
+        image: "vezel.jpg",   
     },
     {
         id: "car5",
@@ -83,10 +66,6 @@ const vehicleInventory = [
             auction: "5"
         },
         price: "LKR 12,200,000",
-        image: "raize.jpg",
-        
-        calcType: "petrol",
-        calcCapacity: 996,
-        calcCif: 2700000
+        image: "raize.jpg",      
     }
 ];
