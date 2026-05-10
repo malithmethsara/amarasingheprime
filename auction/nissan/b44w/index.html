@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="robots" content="noindex, nofollow">
+    
+    <title>Live Auction Feed | Amarasinghe Prime Enterprises</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/style.css">
+    
+    <style>
+        .portal-header { text-align: center; margin: 2rem 0 1rem; }
+        .portal-header h2 { color: var(--primary); font-weight: 800; font-size: 1.8rem; }
+        .portal-header p { color: var(--muted); font-size: 0.95rem; }
+        
+        /* Filter Buttons */
+        .filter-row { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.5rem 1.25rem; border: 2px solid var(--primary); border-radius: 2rem; background: #fff; color: var(--primary); font-weight: 700; cursor: pointer; transition: all 0.2s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: #fff; }
+
+        /* Auction Grid */
+        .auction-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; padding: 0 1rem; margin-bottom: 3rem; }
+        
+        /* Mini Image Slider inside Card */
+        .card-gallery-wrapper { position: relative; width: 100%; height: 200px; overflow: hidden; background: #eee; }
+        .card-gallery { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; height: 100%; scrollbar-width: none; }
+        .card-gallery::-webkit-scrollbar { display: none; }
+        .card-gallery img { flex: 0 0 100%; height: 100%; object-fit: cover; scroll-snap-align: center; }
+        
+        .gallery-dots { position: absolute; bottom: 8px; left: 0; width: 100%; display: flex; justify-content: center; gap: 4px; pointer-events: none; }
+        .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        .dot.active { background: #fff; transform: scale(1.2); }
+
+        .loading-state { text-align: center; padding: 3rem; color: var(--primary); font-weight: 700; grid-column: 1 / -1; }
+        .empty-state { text-align: center; padding: 3rem; color: var(--muted); background: var(--card); border-radius: 1rem; border: 1px dashed #ccc; grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <a href="/" class="logo-link" aria-label="Go to Homepage">
+            <img src="/logo.png" alt="Amarasinghe Prime Enterprises Logo" width="160" height="75">
+        </a>
+        <h1>Amarasinghe Prime Enterprises</h1>
+        <div class="tagline">Exclusive Auction Portal</div>
+    </header>
+
+    <div class="portal-header">
+        <h2>Nissan B44W - Upcoming Auction Units</h2>
+        <p>Exclusive access for Amarasinghe Prime clients. Units shown are available for bidding.</p>
+    </div>
+
+    <div class="filter-row">
+        <button class="filter-btn active" data-filter="all">All Available</button>
+        <button class="filter-btn" data-filter="tomorrow">Tomorrow</button>
+        <button class="filter-btn" data-filter="dayafter">Day After Tomorrow</button>
+    </div>
+
+    <div class="auction-grid" id="auctionGrid">
+        <div class="loading-state">Syncing live auction data...</div>
+    </div>
+
+    <footer class="final-footer">
+        <img src="/logo.png" alt="Amarasinghe Prime Enterprises Logo" class="footer-logo-img">
+        <p>© 2026 Amarasinghe Prime Enterprises (PVT) LTD. All Rights Reserved (PV 00342707)</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="auction-feed.js"></script>
+
+</body>
+</html>
