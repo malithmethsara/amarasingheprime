@@ -312,6 +312,33 @@
         }
     },
     {
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "vessel_voyage": "TURANDOT 704",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/05/20",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/05/22",
+                "port": "HITACHINAKA"
+            },
+            {
+                "date": "2026/05/23",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/05/24",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/06/05",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "NYK",
         "vessel_voyage": "ALTAIR LEADER 104",
         "type": "RO-RO",
@@ -385,33 +412,6 @@
         ],
         "arrival": {
             "date": "2026/06/23",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "TURANDOT 704",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/20",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/05/22",
-                "port": "HITACHINAKA"
-            },
-            {
-                "date": "2026/05/23",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/05/24",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/07/05",
             "port": "Hambantota"
         }
     },
