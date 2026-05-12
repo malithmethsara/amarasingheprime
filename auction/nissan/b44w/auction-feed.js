@@ -1,174 +1,199 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const csvUrl = 'csv/data.csv'; // Must be uploaded to /auction/nissan/b44w/csv/data.csv
-    const grid = document.getElementById('auctionGrid');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    let allVehicles = [];
+    const listUrl = 'CSV/list.txt'; 
+    const container = document.getElementById('auctionList');
+    
+    // Global variable to store images for the lightbox
+    window.currentGallery = [];
+    window.currentImageIndex = 0;
 
-    // Initialize PapaParse to read the CSV
-    Papa.parse(csvUrl, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-            processAuctionData(results.data);
-        },
-        error: function(error) {
-            grid.innerHTML = `<div class="empty-state">Error loading auction data. Please try again later.</div>`;
-            console.error("CSV Parse Error:", error);
-        }
-    });
-
-    function processAuctionData(data) {
-        const now = new Date(); // Current Time
-        const todayAtMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-        allVehicles = [];
-
-        data.forEach(row => {
-            // Extract the Date string (e.g., "12.05.2026 11:59")
-            const rawInfo = row["Lot Number/ Auction House/ Auction Date"];
-            if (!rawInfo) return;
-
-            // Regex to grab the date "DD.MM.YYYY"
-            const dateMatch = rawInfo.match(/(\d{2})\.(\d{2})\.(\d{4})/);
-            if (!dateMatch) return;
-
-            const day = parseInt(dateMatch[1]);
-            const month = parseInt(dateMatch[2]) - 1; // JS months are 0-indexed
-            const year = parseInt(dateMatch[3]);
-            
-            const auctionDate = new Date(year, month, day);
-
-            // AUTO-DELETE: If the auction date is BEFORE today, skip this vehicle
-            if (auctionDate < todayAtMidnight) return;
-
-            // Calculate "Days from today" for filtering
-            const timeDiff = auctionDate.getTime() - todayAtMidnight.getTime();
-            const daysDifference = Math.floor(timeDiff / (1000 * 3600 * 24));
-
-            // Extract Lot Number
-            const lotMatch = rawInfo.match(/Lot (\d+)/);
-            const lotNumber = lotMatch ? lotMatch[1] : "N/A";
-
-            // Extract Images (up to 5)
-            const images = [
-                row["Image"],
-                row["lazy-image__img src 2"],
-                row["lazy-image__img src 3"],
-                row["lazy-image__img src 4"],
-                row["lazy-image__img src 5"]
-            ].filter(img => img && img.trim() !== "");
-
-            allVehicles.push({
-                model: row["Model"],
-                lot: lotNumber,
-                rawInfo: rawInfo,
-                grade: row["Auction Grade"],
-                yearMonth: row["Year/ Month"],
-                mileage: row["Mileage"],
-                color: row["Colour"],
-                images: images,
-                daysFromToday: daysDifference,
-                formattedDate: `${day.toString().padStart(2, '0')}.${(month+1).toString().padStart(2, '0')}.${year}`
-            });
+    // Fetch list.txt with a cache-busting timestamp
+    fetch(listUrl + '?t=' + new Date().getTime())
+        .then(response => {
+            if (!response.ok) throw new Error("Could not find list.txt");
+            return response.text();
+        })
+        .then(text => {
+            const files = text.split('\n').map(f => f.trim()).filter(f => f.endsWith('.csv'));
+            if (files.length === 0) {
+                container.innerHTML = `<div class="loading-state" style="color:var(--muted)">No upcoming units scheduled today.</div>`;
+                return;
+            }
+            container.innerHTML = ''; // Clear loading text
+            fetchAllCSVs(files);
+        })
+        .catch(error => {
+            container.innerHTML = `<div class="loading-state" style="color:red">Error syncing auction feed.</div>`;
+            console.error("Manifest Error:", error);
         });
 
-        renderGrid(allVehicles);
+    function fetchAllCSVs(files) {
+        files.forEach((filename, index) => {
+            Papa.parse(`CSV/${filename}?t=` + new Date().getTime(), {
+                download: true,
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.data && results.data.length > 0) {
+                        // Assuming the first row holds the vehicle data
+                        renderVehicleCard(results.data[0], filename, index);
+                    }
+                }
+            });
+        });
     }
 
-    function renderGrid(vehicles) {
-        if (vehicles.length === 0) {
-            grid.innerHTML = `<div class="empty-state">No upcoming units available for this selection. Check back tomorrow!</div>`;
-            return;
+    // Helper: Convert JST to SLST (-3.5 hours)
+    function calculateSLST(jstString) {
+        if (!jstString) return "N/A";
+        // Extract time using regex (e.g., looks for "12:00" or "14:30")
+        const timeMatch = jstString.match(/(\d{1,2}):(\d{2})/);
+        if (!timeMatch) return "N/A";
+
+        let hours = parseInt(timeMatch[1]);
+        let minutes = parseInt(timeMatch[2]);
+
+        // Subtract 3 hours and 30 minutes
+        minutes -= 30;
+        if (minutes < 0) {
+            minutes += 60;
+            hours -= 1;
         }
+        hours -= 3;
+        if (hours < 0) hours += 24;
 
-        let html = '';
-        vehicles.forEach(car => {
+        // Format back to HH:MM
+        const slstHours = hours.toString().padStart(2, '0');
+        const slstMins = minutes.toString().padStart(2, '0');
+        return `${slstHours}:${slstMins}`;
+    }
+
+    function renderVehicleCard(data, filename, idIndex) {
+        // Dynamically find all image columns (Image1, image2, Image3, etc.)
+        let images = [];
+        const keys = Object.keys(data);
+        const imageKeys = keys.filter(k => k.toLowerCase().startsWith('image')).sort();
+        
+        imageKeys.forEach(key => {
+            if (data[key] && data[key].trim() !== "") {
+                images.push(data[key].trim());
+            }
+        });
+
+        const thumbnail = images.length > 0 ? images[0] : '/placeholder.jpg';
+        const galleryJson = encodeURIComponent(JSON.stringify(images));
+        
+        // Calculate Times
+        const jstTime = data["Bidding Time JST"] || "N/A";
+        const slstTime = calculateSLST(jstTime);
+
+        // Pre-fill WhatsApp message
+        const waText = encodeURIComponent(`Hi Amarasinghe Prime!\nI want to bid on this unit:\n\nName: ${data["Name"] || filename}\nAuction: ${data["Auction Details"]}\nChassis: ${data["Chassis No"]}\n\nPlease quote CIF and Taxes.`);
+        const waLink = `https://wa.me/94769447740?text=${waText}`;
+
+        const cardHtml = `
+        <div class="vehicle-list-card">
+            <div class="veh-thumbnail-wrapper" onclick="openLightbox('${galleryJson}', 0)">
+                <img src="${thumbnail}" alt="Thumbnail">
+                <div class="photo-badge"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> View ${images.length} Photos</div>
+            </div>
             
-            // Build Mini-Slider HTML
-            let imagesHtml = '';
-            let dotsHtml = '';
-            car.images.forEach((img, index) => {
-                imagesHtml += `<img src="${img}" alt="Auction Image ${index + 1}" loading="lazy">`;
-                dotsHtml += `<div class="dot ${index === 0 ? 'active' : ''}"></div>`;
-            });
-
-            // Build WhatsApp Message Link
-            const waText = encodeURIComponent(`Hi Amarasinghe Prime! I am interested in bidding on the following unit from the portal:\n\nModel: ${car.model}\nLot Number: ${car.lot}\nAuction Date: ${car.formattedDate}\n\nPlease provide an estimated CIF/Tax calculation.`);
-            const waLink = `https://wa.me/94769447740?text=${waText}`;
-
-            html += `
-            <div class="vehicle-card" style="margin: 0;">
-                <div class="card-gallery-wrapper">
-                    <div class="card-gallery" onscroll="updateDots(this)">
-                        ${imagesHtml}
-                    </div>
-                    <div class="gallery-dots">
-                        ${dotsHtml}
-                    </div>
-                </div>
-                <div class="veh-info">
-                    <h3 style="font-size: 1rem; margin-bottom: 0.5rem; text-align:left; line-height: 1.3;">${car.model}</h3>
+            <div class="veh-data">
+                <div>
+                    <h3>${data["Name"] || "Premium Auction Unit"}</h3>
+                    <div class="auction-detail-text">${data["Auction Details"] || filename.replace('.csv', '')}</div>
                     
-                    <div style="font-size: 0.85rem; color: #d32f2f; font-weight: 700; margin-bottom: 0.8rem;">
-                        Auction: ${car.formattedDate} | Lot: ${car.lot}
+                    <div class="time-box">
+                        <div class="jst">Japan Time (JST): ${jstTime}</div>
+                        <div class="slst">Sri Lanka Time (SLST): ${slstTime !== "N/A" ? slstTime : "Calculate manually"}</div>
                     </div>
 
-                    <div class="veh-specs-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 1rem;">
-                        <div class="spec-item" title="Year/Month"><span class="spec-icon">📅</span> ${car.yearMonth}</div>
-                        <div class="spec-item" title="Mileage"><span class="spec-icon">🛣️</span> ${car.mileage}</div>
-                        <div class="spec-item" title="Colour"><span class="spec-icon">🎨</span> ${car.color}</div>
-                        <div class="spec-item" title="Auction Grade"><span class="spec-icon">📊</span> Grade ${car.grade}</div>
-                    </div>
+                    <table class="specs-table">
+                        <tr>
+                            <td>Year / Month</td><td>${data["Year/Month"] || "-"}</td>
+                            <td>Auction Grade</td><td>${data["Auction Grade"] || "-"}</td>
+                        </tr>
+                        <tr>
+                            <td>Mileage</td><td>${data["Mileage"] || "-"}</td>
+                            <td>Colour</td><td>${data["Colour"] || "-"}</td>
+                        </tr>
+                        <tr>
+                            <td>Engine / Fuel</td><td>${data["Engine/ Fuel Type"] || "-"}</td>
+                            <td>Drive</td><td>${data["Drive"] || "-"}</td>
+                        </tr>
+                        <tr>
+                            <td>Chassis No.</td><td colspan="3">${data["Chassis No"] || "-"}</td>
+                        </tr>
+                    </table>
+                </div>
 
-                    <a href="${waLink}" target="_blank" rel="noopener" style="text-decoration: none;">
-                        <button class="veh-btn" style="background: #25d366; border-color: #25d366; color: white;">
-                            Message to Bid 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 448 512" fill="currentColor" style="vertical-align: middle; margin-left: 5px;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6z"/></svg>
-                        </button>
+                <div class="action-row">
+                    <a href="${waLink}" target="_blank" rel="noopener" style="text-decoration: none; flex: 1;">
+                        <button class="blue-btn" style="width: 100%; background: #25d366; box-shadow: none;">Message to Bid</button>
                     </a>
+                    <button class="outline-btn" style="flex: 1;" onclick="openLightbox('${galleryJson}', ${images.length > 0 ? images.length - 1 : 0})">
+                        View Auction Sheet
+                    </button>
                 </div>
             </div>
-            `;
-        });
+        </div>
+        `;
 
-        grid.innerHTML = html;
+        container.insertAdjacentHTML('beforeend', cardHtml);
     }
-
-    // Filter Logic
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-
-            const filterType = this.getAttribute('data-filter');
-            
-            let filteredList = [];
-            if (filterType === 'all') {
-                filteredList = allVehicles;
-            } else if (filterType === 'tomorrow') {
-                filteredList = allVehicles.filter(car => car.daysFromToday === 1);
-            } else if (filterType === 'dayafter') {
-                filteredList = allVehicles.filter(car => car.daysFromToday === 2);
-            }
-
-            renderGrid(filteredList);
-        });
-    });
 });
 
-// Sync image swipe position with the dots
-function updateDots(galleryElement) {
-    const scrollPosition = galleryElement.scrollLeft;
-    const width = galleryElement.offsetWidth;
-    const activeIndex = Math.round(scrollPosition / width);
-    
-    const dots = galleryElement.nextElementSibling.querySelectorAll('.dot');
-    dots.forEach((dot, index) => {
-        if (index === activeIndex) {
-            dot.classList.add('active');
-        } else {
-            dot.classList.remove('active');
-        }
-    });
+// --- LIGHTBOX LOGIC ---
+function openLightbox(galleryJsonStr, startIndex) {
+    try {
+        window.currentGallery = JSON.parse(decodeURIComponent(galleryJsonStr));
+        if (window.currentGallery.length === 0) return;
+        
+        window.currentImageIndex = startIndex;
+        document.getElementById("imageLightbox").style.display = "block";
+        document.body.style.overflow = "hidden"; // Prevent scrolling
+        updateLightboxImage();
+    } catch (e) {
+        console.error("Gallery parsing error", e);
+    }
 }
+
+function closeLightbox() {
+    document.getElementById("imageLightbox").style.display = "none";
+    document.body.style.overflow = "auto";
+}
+
+function changeImage(direction) {
+    window.currentImageIndex += direction;
+    // Loop around
+    if (window.currentImageIndex >= window.currentGallery.length) {
+        window.currentImageIndex = 0;
+    } else if (window.currentImageIndex < 0) {
+        window.currentImageIndex = window.currentGallery.length - 1;
+    }
+    updateLightboxImage();
+}
+
+function updateLightboxImage() {
+    const imgEl = document.getElementById("lightboxImg");
+    const counterEl = document.getElementById("imageCounter");
+    
+    imgEl.src = window.currentGallery[window.currentImageIndex];
+    
+    // If it is the last image, label it as the Auction Sheet
+    if (window.currentImageIndex === window.currentGallery.length - 1) {
+        counterEl.textContent = "Auction Sheet";
+    } else {
+        counterEl.textContent = `Photo ${window.currentImageIndex + 1} of ${window.currentGallery.length - 1}`;
+    }
+}
+
+// Close lightbox on Escape key or clicking outside the image
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowRight") changeImage(1);
+    if (event.key === "ArrowLeft") changeImage(-1);
+});
+
+document.getElementById("imageLightbox").addEventListener('click', function(event) {
+    if (event.target === this) closeLightbox();
+});
