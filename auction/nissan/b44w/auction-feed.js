@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const listUrl = 'CSV/list.txt'; 
+    const listUrl = '/auction/nissan/b44w/CSV/list.txt';
     const container = document.getElementById('auctionList');
     
     // Global variable to store images for the lightbox
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function fetchAllCSVs(files) {
         files.forEach((filename, index) => {
-            Papa.parse(`CSV/${filename}?t=` + new Date().getTime(), {
+            Papa.parse(`/auction/nissan/b44w/CSV/${filename}?t=` + new Date().getTime(), {
                 download: true,
                 header: true,
                 skipEmptyLines: true,
