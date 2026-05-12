@@ -1,32 +1,5 @@
 [
     {
-        "shipping_line": "NYK",
-        "vessel_voyage": "SPICA LEADER 080",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/03/27",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/03/28",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/03/30",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/03/31",
-                "port": "KOBE"
-            }
-        ],
-        "arrival": {
-            "date": "2026/04/13",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "MOL",
         "vessel_voyage": "PROMINENT ACE 0184A",
         "type": "RO-RO",
@@ -363,7 +336,7 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "OPAL LEADER 052",
+        "vessel_voyage": "DIGNITY LEADER 052",
         "type": "RO-RO",
         "departures": [
             {
@@ -377,10 +350,6 @@
             {
                 "date": "2026/05/29",
                 "port": "OSAKA"
-            },
-            {
-                "date": "2026/05/30",
-                "port": "KOBE"
             },
             {
                 "date": "2026/05/31",
