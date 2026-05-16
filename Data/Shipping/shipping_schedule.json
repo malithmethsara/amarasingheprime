@@ -23,33 +23,6 @@
         }
     },
     {
-        "shipping_line": "K-LINE",
-        "vessel_voyage": "ORION HIGHWAY 98",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/03/26",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/03/27",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/03/29",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/03/31",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/04/16",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "HERMES LEADER 081",
         "type": "RO-RO",
@@ -336,7 +309,7 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "DIGNITY LEADER 052",
+        "vessel_voyage": "DIGNITY LEADER 017",
         "type": "RO-RO",
         "departures": [
             {
