@@ -1,28 +1,5 @@
 [
     {
-        "shipping_line": "MOL",
-        "vessel_voyage": "PROMINENT ACE 0184A",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/03/29",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/03/30",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/04/01",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/04/15",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "HERMES LEADER 081",
         "type": "RO-RO",
