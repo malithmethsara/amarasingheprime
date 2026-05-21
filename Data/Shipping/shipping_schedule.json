@@ -258,25 +258,6 @@
         }
     },
     {
-        "shipping_line": "NYK",
-        "vessel_voyage": "AQUARIUS LEADER 072",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/23",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/05/24",
-                "port": "NAGOYA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/06/13",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "VIKING DRIVE 39",
         "type": "RO-RO",
