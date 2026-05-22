@@ -176,7 +176,7 @@
             }
         ],
         "arrival": {
-            "date": "2026/05/25",
+            "date": "2026/05/30",
             "port": "Hambantota"
         }
     },
@@ -236,24 +236,24 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/05/25",
+                "date": "2026/05/26",
                 "port": "HITACHINAKA"
             },
             {
-                "date": "2026/05/25",
+                "date": "2026/05/27",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/05/27",
+                "date": "2026/05/28",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/05/28",
+                "date": "2026/05/29",
                 "port": "OSAKA"
             }
         ],
         "arrival": {
-            "date": "2026/06/09",
+            "date": "2026/06/11",
             "port": "Hambantota"
         }
     },
@@ -264,7 +264,7 @@
         "departures": [
             {
                 "date": "2026/06/04",
-                "port": "OSAKA"
+                "port": "YOKOHAMA"
             },
             {
                 "date": "2026/06/05",
@@ -272,11 +272,11 @@
             },
             {
                 "date": "2026/06/06",
-                "port": "YOKOHAMA"
+                "port": "OSAKA"
             }
         ],
         "arrival": {
-            "date": "2026/06/18",
+            "date": "2026/06/17",
             "port": "Hambantota"
         }
     },
@@ -380,6 +380,33 @@
             },
             {
                 "date": "2026/06/22",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/07/11",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "vessel_voyage": "DON JUAN 706",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/06/15",
+                "port": "HITACHINAKA"
+            },
+            {
+                "date": "2026/06/16",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/06/18",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/06/19",
                 "port": "OSAKA"
             }
         ],
