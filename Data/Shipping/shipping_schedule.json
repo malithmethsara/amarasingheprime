@@ -1,28 +1,5 @@
 [
     {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "VIKING DRIVE 38",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/04/08",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/04/10",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/04/12",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/04/25",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "CASSIOPEIA LEADER 060",
         "type": "RO-RO",
@@ -412,6 +389,21 @@
         ],
         "arrival": {
             "date": "2026/07/11",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "G ALLIANCE SHIPPING",
+        "vessel_voyage": "GLOVIS SPLENDOR 049",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/06/13",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "O",
             "port": "Hambantota"
         }
     }
