@@ -259,51 +259,16 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "VICTORY RAY 013",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/06/10",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/06/11",
-                "port": "KAWASAKI"
-            },
-            {
-                "date": "2026/06/12",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/06/13",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/06/14",
-                "port": "KOBE"
-            }
-        ],
-        "arrival": {
-            "date": "2026/06/27",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
         "vessel_voyage": "GENTLE LEADER 121",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/06/15",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/06/16",
+                "date": "2026/06/18",
                 "port": "NAGOYA"
             },
             {
                 "date": "2026/06/18",
-                "port": "OSAKA"
+                "port": "YOKOHAMA"
             },
             {
                 "date": "2026/06/19",
@@ -317,28 +282,51 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "PLUTO LEADER 069",
+        "vessel_voyage": "OPAL LEADER 053",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/06/25",
+                "date": "2026/06/15",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/06/26",
+                "date": "2026/06/16",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/06/27",
+                "date": "2026/06/17",
                 "port": "OSAKA"
-            },
-            {
-                "date": "2026/06/29",
-                "port": "MOJI"
             }
         ],
         "arrival": {
-            "date": "2026/07/10",
+            "date": "2026/07/02",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "VENUS LADER 082",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/06/22",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/06/23",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/06/24",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/06/25",
+                "port": "KOBE"
+            }
+        ],
+        "arrival": {
+            "date": "2026/07/06",
             "port": "Hambantota"
         }
     },
@@ -393,6 +381,37 @@
         }
     },
     {
+        "shipping_line": "NYK",
+        "vessel_voyage": "STRAITS CHALLENGER 351",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/06/25",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/06/26",
+                "port": "KAWASAKI"
+            },
+            {
+                "date": "2026/06/27",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/06/28",
+                "port": "KOBE"
+            },
+            {
+                "date": "2026/06/29",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/07/12",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "G ALLIANCE SHIPPING",
         "vessel_voyage": "GLOVIS SPLENDOR 049",
         "type": "RO-RO",
@@ -400,6 +419,29 @@
             {
                 "date": "2026/06/13",
                 "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "O",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "G ALLIANCE SHIPPING",
+        "vessel_voyage": "GLOVIS SIRIUS 070",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "O",
+                "port": "OSAKA"
+            },
+            {
+                "date": "O",
+                "port": "HAKATA"
+            },
+            {
+                "date": "O",
+                "port": "KISARAZU"
             }
         ],
         "arrival": {
