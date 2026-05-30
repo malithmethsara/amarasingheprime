@@ -432,16 +432,16 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "O",
+                "date": "2026/07/03",
+                "port": "KISARAZU"
+            },
+            {
+                "date": "2026/07/05",
                 "port": "OSAKA"
             },
             {
-                "date": "O",
+                "date": "2026/07/08",
                 "port": "HAKATA"
-            },
-            {
-                "date": "O",
-                "port": "KISARAZU"
             }
         ],
         "arrival": {
