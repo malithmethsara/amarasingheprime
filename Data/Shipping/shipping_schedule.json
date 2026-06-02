@@ -1,33 +1,6 @@
 [
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "CASSIOPEIA LEADER 060",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/04/17",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/04/20",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/04/22",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/04/23",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/05",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
         "vessel_voyage": "METIS LEADER 131",
         "type": "RO-RO",
         "departures": [
@@ -240,15 +213,15 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/06/07",
+                "date": "2026/06/08",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/06/08",
+                "date": "2026/06/09",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/06/09",
+                "date": "2026/06/10",
                 "port": "OSAKA"
             }
         ],
@@ -354,33 +327,6 @@
         }
     },
     {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "DON JUAN 706",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/06/15",
-                "port": "HITACHINAKA"
-            },
-            {
-                "date": "2026/06/16",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/06/18",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/06/19",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/07/11",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "STRAITS CHALLENGER 351",
         "type": "RO-RO",
@@ -412,17 +358,44 @@
         }
     },
     {
-        "shipping_line": "G ALLIANCE SHIPPING",
-        "vessel_voyage": "GLOVIS SPLENDOR 049",
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "vessel_voyage": "DON JUAN 706",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/06/13",
+                "date": "2026/06/16",
+                "port": "HITACHINAKA"
+            },
+            {
+                "date": "2026/06/17",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/06/19",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/06/20",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/07/16",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "G ALLIANCE SHIPPING",
+        "vessel_voyage": "G POSEIDON 078",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/06/22",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "O",
+            "date": "2026/07/22",
             "port": "Hambantota"
         }
     },
@@ -445,7 +418,7 @@
             }
         ],
         "arrival": {
-            "date": "O",
+            "date": "2026/07/22",
             "port": "Hambantota"
         }
     }
