@@ -209,12 +209,12 @@
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/06/18",
-                "port": "YOKOHAMA"
-            },
-            {
                 "date": "2026/06/19",
                 "port": "KOBE"
+            },
+            {
+                "date": "2026/06/21",
+                "port": "YOKOHAMA"
             }
         ],
         "arrival": {
