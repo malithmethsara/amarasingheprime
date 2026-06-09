@@ -300,8 +300,8 @@
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
-        // 1. Customs Import Duty (CID) - 20%
-        const cid = cif * 0.20;
+        // 1. Customs Import Duty (CID) - 30%
+        const cid = cif * 0.30;
 
         // 2. Surcharge - 50% of CID
         const surcharge = cid * 0.50;
@@ -394,7 +394,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Duty (CID - 20%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Duty (CID - 30%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty (XID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Social Security Levy (SSL - 2.5%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.sscl)}</td></tr>
@@ -445,7 +445,7 @@
         taxChart = new Chart(ctx1, {
             type: 'pie',
             data: {
-                labels: ['CID (20%)', 'Surcharge', 'Excise', 'SSCL (2.5%)', 'Luxury Tax', 'VEL', 'VAT'],
+                labels: ['CID (30%)', 'Surcharge', 'Excise', 'SSCL (2.5%)', 'Luxury Tax', 'VEL', 'VAT'],
                 datasets: [{
                     data: [data.cid, data.surcharge, data.excise, data.sscl, data.luxuryTax, data.vel, data.vat],
                     backgroundColor: ['#FF6384', '#36A2EB', '#4BC0C0', '#9966FF', '#FFCE56', '#8d6e63', '#FF9F40']
@@ -547,7 +547,7 @@
             startY: y,
             head: [['Tax Type', 'Amount (LKR)']],
             body: [
-                ['Customs Duty (CID - 20%)', formatNumber(resultData.cid)],
+                ['Customs Duty (CID - 30%)', formatNumber(resultData.cid)],
                 ['Surcharge (50% of CID)', formatNumber(resultData.surcharge)],
                 ['Excise Duty (XID)', formatNumber(resultData.excise)],
                 ['Social Security Levy (SSL - 2.5%)', formatNumber(resultData.sscl)],
