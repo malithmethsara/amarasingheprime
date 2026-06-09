@@ -1,7 +1,7 @@
 /*
 * Copyright © 2026 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Adjusted for 2026 Gazette & Real World CUSDEC
-* Updated: Merged CID(30%), Removed PAL, Added SSL(2.5%), Fixed VAT Base
+* Updated: Reintroduced 50% Surcharge on CID, SSL(2.5%), VAT Base inclusion
 */
 (function() {
     'use strict';
@@ -300,38 +300,41 @@
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
-        // 1. Customs Import Duty (CID) - Flat 30%
-        const cid = cif * 0.30;
+        // 1. Customs Import Duty (CID) - 20%
+        const cid = cif * 0.20;
 
-        // 2. Excise Duty
+        // 2. Surcharge - 50% of CID
+        const surcharge = cid * 0.50;
+
+        // 3. Excise Duty
         const excise = exciseResult;
 
-        // 3. Luxury Tax
+        // 4. Luxury Tax
         const luxuryTax = calculateLuxuryTax(cif, type);
 
-        // 4. Tax Base Calculation (CIF + 10% PAL Uplift + CID + XID)
+        // 5. Tax Base Calculation (CIF + 10% PAL Uplift + CID + Surcharge + XID)
         const palUplift = cif * 0.10;
-        const taxBase = cif + palUplift + cid + excise;
+        const taxBase = cif + palUplift + cid + surcharge + excise;
 
-        // 5. SSL (Social Security Levy - 2.5%)
+        // 6. SSL (Social Security Levy - 2.5%)
         const sscl = taxBase * 0.025;
 
-        // 6. VAT (18%) - Calculated on the exact same base as SSL
+        // 7. VAT (18%) - Calculated on the exact same base as SSL
         const vat = taxBase * 0.18;
 
-        // 7. Fixed Levies
+        // 8. Fixed Levies
         const vel = 15000;       
         const comFee = 1750;     
 
-        // 8. Totals
-        const totalTax = cid + excise + sscl + vat + vel + luxuryTax + comFee;
+        // 9. Totals
+        const totalTax = cid + surcharge + excise + sscl + vat + vel + luxuryTax + comFee;
         const otherCharges = dealerFee + clearingFee + bankFee;
         const totalCost = cif + totalTax + otherCharges;
 
         resultData = {
             cifJPY, exchangeRate, cif, type, capacity, age,
             dealerFee, clearingFee, bankFee,
-            cid, excise, sscl,
+            cid, surcharge, excise, sscl,
             luxuryTax, vel, vat, comFee, totalTax, 
             otherCharges, totalCost
         };
@@ -391,7 +394,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Duty (CID - 30%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Customs Duty (CID - 20%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.cid)}</td></tr>
+                    <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Surcharge (50% of CID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.surcharge)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Excise Duty (XID)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.excise)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">Social Security Levy (SSL - 2.5%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.sscl)}</td></tr>
                     <tr style="border-bottom:1px solid rgba(0,48,135,0.15)"><td style="padding:0.5625rem 0.625rem">VAT (18%)</td><td style="text-align:right;padding:0.5625rem 0.625rem">${formatNumber(data.vat)}</td></tr>
@@ -441,10 +445,10 @@
         taxChart = new Chart(ctx1, {
             type: 'pie',
             data: {
-                labels: ['CID (30%)', 'Excise', 'SSCL (2.5%)', 'Luxury Tax', 'VEL', 'VAT'],
+                labels: ['CID (20%)', 'Surcharge', 'Excise', 'SSCL (2.5%)', 'Luxury Tax', 'VEL', 'VAT'],
                 datasets: [{
-                    data: [data.cid, data.excise, data.sscl, data.luxuryTax, data.vel, data.vat],
-                    backgroundColor: ['#FF6384', '#36A2EB', '#4BC0C0', '#FFCE56', '#9966FF', '#FF9F40']
+                    data: [data.cid, data.surcharge, data.excise, data.sscl, data.luxuryTax, data.vel, data.vat],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#4BC0C0', '#9966FF', '#FFCE56', '#8d6e63', '#FF9F40']
                 }]
             },
             options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
@@ -543,7 +547,8 @@
             startY: y,
             head: [['Tax Type', 'Amount (LKR)']],
             body: [
-                ['Customs Duty (CID - 30%)', formatNumber(resultData.cid)],
+                ['Customs Duty (CID - 20%)', formatNumber(resultData.cid)],
+                ['Surcharge (50% of CID)', formatNumber(resultData.surcharge)],
                 ['Excise Duty (XID)', formatNumber(resultData.excise)],
                 ['Social Security Levy (SSL - 2.5%)', formatNumber(resultData.sscl)],
                 ['VAT (18%)', formatNumber(resultData.vat)],
