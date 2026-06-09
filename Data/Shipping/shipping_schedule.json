@@ -1,32 +1,5 @@
 [
     {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "DON JUAN 705",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/04/19",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/04/20",
-                "port": "HITACHINAKA"
-            },
-            {
-                "date": "2026/04/20",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/04/24",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/12",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "VENUS LEADER 080",
         "type": "RO-RO",
@@ -247,7 +220,7 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "VENUS LADER 082",
+        "vessel_voyage": "VENUS LEADER 082",
         "type": "RO-RO",
         "departures": [
             {
