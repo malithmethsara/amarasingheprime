@@ -282,19 +282,19 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/06/16",
+                "date": "2026/06/17",
                 "port": "HITACHINAKA"
             },
             {
-                "date": "2026/06/17",
+                "date": "2026/06/18",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/06/19",
+                "date": "2026/06/20",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/06/20",
+                "date": "2026/06/21",
                 "port": "OSAKA"
             }
         ],
@@ -309,20 +309,20 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/06/30",
+                "date": "2026/07/01",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/07/01",
+                "date": "2026/07/02",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/07/02",
+                "date": "2026/07/03",
                 "port": "OSAKA"
             }
         ],
         "arrival": {
-            "date": "2026/07/20",
+            "date": "2026/07/21",
             "port": "Hambantota"
         }
     },
