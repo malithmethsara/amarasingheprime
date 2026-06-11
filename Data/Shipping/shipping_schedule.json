@@ -232,16 +232,16 @@
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/06/24",
+                "date": "2026/06/25",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/06/25",
+                "date": "2026/06/26",
                 "port": "KOBE"
             }
         ],
         "arrival": {
-            "date": "2026/07/06",
+            "date": "2026/07/07",
             "port": "Hambantota"
         }
     },
