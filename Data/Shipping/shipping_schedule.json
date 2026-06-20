@@ -1,28 +1,5 @@
 [
     {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "MODERN LINK 705",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/02",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/05/04",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/05/05",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/05/30",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "GUARDIAN LEADER 130",
         "type": "RO-RO",
