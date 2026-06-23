@@ -231,6 +231,29 @@
         }
     },
     {
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "vessel_voyage": "MODERN LINK 706",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/07/05",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/07/06",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/07/07",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/07/19",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "G ALLIANCE SHIPPING",
         "vessel_voyage": "G POSEIDON 078",
         "type": "RO-RO",
@@ -274,20 +297,20 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/07/13",
-                "port": "YOKOHAMA"
-            },
-            {
                 "date": "2026/07/15",
-                "port": "NAGOYA"
+                "port": "OSAKA"
             },
             {
                 "date": "2026/07/16",
-                "port": "OSAKA"
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/07/17",
+                "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/07/27",
+            "date": "2026/08/03",
             "port": "Hambantota"
         }
     }
