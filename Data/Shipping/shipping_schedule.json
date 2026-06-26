@@ -186,16 +186,16 @@
                 "port": "KAWASAKI"
             },
             {
-                "date": "2026/06/27",
-                "port": "NAGOYA"
+                "date": "2026/06/29",
+                "port": "OSAKA"
             },
             {
-                "date": "2026/06/28",
+                "date": "2026/07/01",
                 "port": "KOBE"
             },
             {
-                "date": "2026/06/29",
-                "port": "OSAKA"
+                "date": "2026/07/02",
+                "port": "NAGOYA"
             }
         ],
         "arrival": {
@@ -227,29 +227,6 @@
         ],
         "arrival": {
             "date": "2026/07/16",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "MODERN LINK 706",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/07/05",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/07/06",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/07/07",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/07/19",
             "port": "Hambantota"
         }
     },
