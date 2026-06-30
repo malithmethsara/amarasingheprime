@@ -1,33 +1,6 @@
 [
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "GUARDIAN LEADER 130",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/15",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/05/16",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/05/21",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/05/22",
-                "port": "KOBE"
-            }
-        ],
-        "arrival": {
-            "date": "2026/06/04",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "NYK",
         "vessel_voyage": "ALTAIR LEADER 104",
         "type": "RO-RO",
         "departures": [
@@ -265,6 +238,33 @@
         ],
         "arrival": {
             "date": "2026/07/22",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "HARMONY LEADER 104",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/07/13",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/07/14",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/07/16",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/07/17",
+                "port": "KOBE"
+            }
+        ],
+        "arrival": {
+            "date": "2026/07/30",
             "port": "Hambantota"
         }
     },
