@@ -274,20 +274,20 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/07/19",
+                "date": "2026/07/20",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/07/20",
+                "date": "2026/07/21",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/07/21",
+                "date": "2026/07/22",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/08/05",
+            "date": "2026/08/07",
             "port": "Hambantota"
         }
     }
