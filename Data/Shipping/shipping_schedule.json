@@ -224,20 +224,20 @@
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/07/08",
+                "date": "2026/07/10",
                 "port": "HAKATA"
             },
             {
-                "date": "2026/07/10",
+                "date": "2026/07/12",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/07/12",
+                "date": "2026/07/13",
                 "port": "KISARAZU"
             }
         ],
         "arrival": {
-            "date": "2026/07/22",
+            "date": "2026/07/28",
             "port": "Hambantota"
         }
     },
