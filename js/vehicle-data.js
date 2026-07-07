@@ -13,7 +13,7 @@ const vehicleInventory = [
             grade: "Safety Package",
             auction: "5"
         },
-        price: "LKR 7,050,000",
+        price: "LKR 7,450,000",
         image: "wagonr.jpg", 
     },
     {
@@ -26,7 +26,7 @@ const vehicleInventory = [
             grade: "L SAIII",
             auction: "5" 
         },
-        price: "LKR 6,150,000",
+        price: "LKR 6,550,000",
         image: "mira.jpg",
     },
     {
@@ -36,10 +36,10 @@ const vehicleInventory = [
         specs: {
             year: "2025",
             mileage: "0 km",
-            grade: "Custom GT",
-            auction: "S"
+            grade: "Custom G",
+            auction: "5"
         },
-        price: "LKR 10,500,000",
+        price: "LKR 11,000,000",
         image: "roomy.jpg",
     }, 
     {
@@ -52,7 +52,7 @@ const vehicleInventory = [
             grade: "HYBRID Z E:HEV",
             auction: "4.5" 
         },
-        price: "LKR 15,800,000",
+        price: "LKR 17,450,000",
         image: "vezel.jpg",   
     },
     {
@@ -65,7 +65,7 @@ const vehicleInventory = [
             grade: "Z grade",
             auction: "5"
         },
-        price: "LKR 12,200,000",
+        price: "LKR 12,350,000",
         image: "raize.jpg",      
     }
 ];
