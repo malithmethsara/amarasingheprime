@@ -1,5 +1,0 @@
-Lot 3307, CAA Chubu.csv
-Lot 5011, U Niigata.csv
-Lot 2023, U Kobe.csv
-Lot 20053, U Tohoku.csv
-Lot 20147, BAY AUC.csv
