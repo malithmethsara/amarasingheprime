@@ -1,33 +1,6 @@
 [
     {
         "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "TURANDOT 704",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/05/27",
-                "port": "HITACHINAKA"
-            },
-            {
-                "date": "2026/05/28",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/05/29",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/05/30",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/06/11",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "VIKING DRIVE 40",
         "type": "RO-RO",
         "departures": [
