@@ -240,5 +240,70 @@
             "date": "2026/08/08",
             "port": "Hambantota"
         }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "PROMETHEUS LEADER 080",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/07/30",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/07/31",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/08/01",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/08/02",
+                "port": "KOBE"
+            },
+            {
+                "date": "2026/08/03",
+                "port": "MOJI"
+            }
+        ],
+        "arrival": {
+            "date": "2026/08/16",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "G ALLIANCE SHIPPING",
+        "vessel_voyage": "GLOVIS STELLA 000",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/07/28",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/09/10",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "G ALLIANCE SHIPPING",
+        "vessel_voyage": "RCC CLASSIC 058",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/08/09",
+                "port": "KISARAZU"
+            },
+            {
+                "date": "2026/08/11",
+                "port": "HAKATA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/09/10",
+            "port": "Hambantota"
+        }
     }
 ]
