@@ -273,6 +273,29 @@
         }
     },
     {
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "vessel_voyage": "VIKING DRIVE 42",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/08/22",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/08/24",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/08/25",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/09/07",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "G ALLIANCE SHIPPING",
         "vessel_voyage": "GLOVIS STELLA 000",
         "type": "RO-RO",
