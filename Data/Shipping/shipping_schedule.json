@@ -297,11 +297,11 @@
     },
     {
         "shipping_line": "G ALLIANCE SHIPPING",
-        "vessel_voyage": "GLOVIS STELLA 000",
+        "vessel_voyage": "GLOVIS STELLA 071",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/07/28",
+                "date": "2026/07/31",
                 "port": "YOKOHAMA"
             }
         ],
