@@ -243,6 +243,25 @@
     },
     {
         "shipping_line": "NYK",
+        "vessel_voyage": "TAURUS LEADER 090",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/07/28",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/07/29",
+                "port": "NAGOYA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/08/15",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
         "vessel_voyage": "PROMETHEUS LEADER 080",
         "type": "RO-RO",
         "departures": [
@@ -326,6 +345,29 @@
         ],
         "arrival": {
             "date": "2026/09/10",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "MOL",
+        "vessel_voyage": "SWIFT ACE",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/08/29",
+                "port": "KISARAZU"
+            },
+            {
+                "date": "2026/08/31",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/09/01",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/09/15",
             "port": "Hambantota"
         }
     }
