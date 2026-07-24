@@ -1,28 +1,5 @@
 [
     {
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "vessel_voyage": "VIKING DRIVE 40",
-        "type": "RO-RO",
-        "departures": [
-            {
-                "date": "2026/06/08",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/06/10",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/06/11",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/06/22",
-            "port": "Hambantota"
-        }
-    },
-    {
         "shipping_line": "NYK",
         "vessel_voyage": "GENTLE LEADER 121",
         "type": "RO-RO",
