@@ -269,6 +269,37 @@
         }
     },
     {
+        "shipping_line": "NYK",
+        "vessel_voyage": "ANTARES LEADER 114",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/08/05",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/08/06",
+                "port": "KAWASAKI"
+            },
+            {
+                "date": "2026/08/07",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/08/08",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/08/09",
+                "port": "KOBE"
+            }
+        ],
+        "arrival": {
+            "date": "2026/08/22",
+            "port": "Hambantota"
+        }
+    },
+    {
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "vessel_voyage": "VIKING DRIVE 42",
         "type": "RO-RO",
