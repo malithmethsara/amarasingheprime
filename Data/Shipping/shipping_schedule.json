@@ -270,32 +270,47 @@
     },
     {
         "shipping_line": "NYK",
-        "vessel_voyage": "ANTARES LEADER 114",
+        "vessel_voyage": "GEMINI LEADER 138",
         "type": "RO-RO",
         "departures": [
             {
-                "date": "2026/08/05",
+                "date": "2026/08/15",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/08/06",
-                "port": "KAWASAKI"
+                "date": "2026/08/16",
+                "port": "NAGOYA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/08/24",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "shipping_line": "NYK",
+        "vessel_voyage": "JUPITER LEADER 082",
+        "type": "RO-RO",
+        "departures": [
+            {
+                "date": "2026/08/12",
+                "port": "YOKOHAMA"
             },
             {
-                "date": "2026/08/07",
+                "date": "2026/08/13",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/08/08",
+                "date": "2026/08/15",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/08/09",
+                "date": "2026/08/16",
                 "port": "KOBE"
             }
         ],
         "arrival": {
-            "date": "2026/08/22",
+            "date": "2026/08/29",
             "port": "Hambantota"
         }
     },
