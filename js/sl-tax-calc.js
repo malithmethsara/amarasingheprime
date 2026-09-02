@@ -1,7 +1,7 @@
 /*
 * Copyright © 2026 Amarasinghe Prime. All Rights Reserved.
 * Official Calculation Logic - Classic Math with Modern UI
-* Updated: Reintroduced 50% Surcharge on CID, SSL(2.5%), VAT Base inclusion
+* Updated: 30% CID, 50% Surcharge, 2.5% SSCL, 18% VAT
 */
 (function() {
     'use strict';
@@ -337,9 +337,9 @@
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
         // 1. Customs Import Duty (CID) - 30%
-        const cid = cif * 0.20;
+        const cid = cif * 0.30;
 
-        // 2. Surcharge
+        // 2. Surcharge - 50% of CID
         const surcharge = cid * 0.50;
 
         // 3. PAL (10%)
@@ -348,7 +348,7 @@
         // 4. Excise Duty
         const excise = exciseResult;
 
-        // 5. Luxury Tax
+        // 5. Luxury Tax 
         const luxuryTax = calculateLuxuryTax(cif, type);
 
         // 6. VAT & SSCL Calculation
@@ -693,7 +693,7 @@
 
                     <a href="https://wa.me/94769447740?text=Hi! I would like to get a quotation for the ${encodeURIComponent(car.model)}." target="_blank" rel="noopener" style="text-decoration: none;">
                         <button class="veh-btn">
-                            Get Quotation <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 448 512" fill="currentColor"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+                            Get Quotation <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 448 512" fill="currentColor" style="vertical-align: middle; margin-left: 5px;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-26.5l-6.7-4.2-69.8 18.3 18.6-68.1-4.4-6.9c-18.3-29.1-28-63.1-28-97.6 0-101.9 82.9-184.8 184.8-184.8 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
                         </button>
                     </a>
                 </div>
@@ -746,7 +746,7 @@
         initScrollReveal();
         initStickyHeader();
 
-        // --- FETCH DAILY RATE FOR CALCULATOR (Uses automated CSV file) ---
+        // --- FETCH DAILY RATE FOR CALCULATOR ---
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
             fetch('Data/Rates/CBSL/CBSL-rates.csv')
@@ -756,7 +756,7 @@
                 })
                 .then(text => {
                     const lines = text.trim().split('\n').filter(line => line.trim() !== "");
-                    if (lines.length > 1) { // Ensure there is data beyond the CSV header
+                    if (lines.length > 1) {
                         const lastLine = lines[lines.length - 1];
                         const parts = lastLine.split(',');
                         if (parts.length >= 2 && parts[0].trim().toLowerCase() !== 'date') {
@@ -824,247 +824,247 @@
     } else {
         init();
     }
-})();
 
-/* =========================================
-   DUAL EXCHANGE RATE CHART LOGIC
-   ========================================= */
-document.addEventListener("DOMContentLoaded", async function() {
-    const chartCanvas = document.getElementById('exchangeRateChart');
-    if (!chartCanvas) return;
+    /* =========================================
+       DUAL EXCHANGE RATE CHART LOGIC
+       ========================================= */
+    document.addEventListener("DOMContentLoaded", async function() {
+        const chartCanvas = document.getElementById('exchangeRateChart');
+        if (!chartCanvas) return;
 
-    const ctx = chartCanvas.getContext('2d');
-    const tableBody = document.getElementById('rateTableBody');
+        const ctx = chartCanvas.getContext('2d');
+        const tableBody = document.getElementById('rateTableBody');
 
-    try {
-        const [slcRes, cbslRes] = await Promise.all([
-            fetch('Data/Rates/SLC-rates.txt'),
-            fetch('Data/Rates/CBSL/CBSL-rates.csv')
-        ]);
+        try {
+            const [slcRes, cbslRes] = await Promise.all([
+                fetch('Data/Rates/SLC-rates.txt'),
+                fetch('Data/Rates/CBSL/CBSL-rates.csv')
+            ]);
 
-        const slcText = await slcRes.text();
-        const cbslText = await cbslRes.text();
+            const slcText = await slcRes.text();
+            const cbslText = await cbslRes.text();
 
-        const slcRows = slcText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
-        const cbslRows = cbslText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
+            const slcRows = slcText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
+            const cbslRows = cbslText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
 
-        let allDates = new Set();
-        let slcMap = {};
-        let cbslMap = {};
+            let allDates = new Set();
+            let slcMap = {};
+            let cbslMap = {};
 
-        slcRows.forEach(row => {
-            const cols = row.split(',');
-            const dateStr = cols[0].trim();
-            allDates.add(dateStr);
-            slcMap[dateStr] = parseFloat(cols[1]);
-        });
+            slcRows.forEach(row => {
+                const cols = row.split(',');
+                const dateStr = cols[0].trim();
+                allDates.add(dateStr);
+                slcMap[dateStr] = parseFloat(cols[1]);
+            });
 
-        cbslRows.forEach(row => {
-            const cols = row.split(',');
-            const dateStr = cols[0].trim();
-            if (dateStr.toLowerCase() === 'date') return;
-            allDates.add(dateStr);
-            cbslMap[dateStr] = parseFloat(cols[1]);
-        });
+            cbslRows.forEach(row => {
+                const cols = row.split(',');
+                const dateStr = cols[0].trim();
+                if (dateStr.toLowerCase() === 'date') return;
+                allDates.add(dateStr);
+                cbslMap[dateStr] = parseFloat(cols[1]);
+            });
 
-        // Update "Big Number" Displays
-        if (slcRows.length > 0) {
-            const lastSlcRow = slcRows[slcRows.length - 1].split(',');
-            const slcDateObj = new Date(lastSlcRow[0]);
-            const slcDateText = slcDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + slcDateObj.getFullYear();
-            const slcRateEl = document.getElementById('current-slc-rate');
-            const slcDateLabel = document.getElementById('slc-date-label');
-            if (slcRateEl) slcRateEl.textContent = parseFloat(lastSlcRow[1]).toFixed(4) + " LKR";
-            if (slcDateLabel) slcDateLabel.textContent = `Effective Customs Rate (Week of ${slcDateText})`;
-        }
+            // Update "Big Number" Displays
+            if (slcRows.length > 0) {
+                const lastSlcRow = slcRows[slcRows.length - 1].split(',');
+                const slcDateObj = new Date(lastSlcRow[0]);
+                const slcDateText = slcDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + slcDateObj.getFullYear();
+                const slcRateEl = document.getElementById('current-slc-rate');
+                const slcDateLabel = document.getElementById('slc-date-label');
+                if (slcRateEl) slcRateEl.textContent = parseFloat(lastSlcRow[1]).toFixed(4) + " LKR";
+                if (slcDateLabel) slcDateLabel.textContent = `Effective Customs Rate (Week of ${slcDateText})`;
+            }
 
-        if (cbslRows.length > 0) {
-            const lastCbslRow = cbslRows[cbslRows.length - 1].split(',');
-            const cbslDateObj = new Date(lastCbslRow[0]);
-            const cbslDateText = cbslDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + cbslDateObj.getFullYear();
-            const cbslRateEl = document.getElementById('current-cbsl-rate');
-            const cbslDateLabel = document.getElementById('cbsl-date-label');
-            if (cbslRateEl) cbslRateEl.textContent = parseFloat(lastCbslRow[1]).toFixed(4) + " LKR";
-            if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
-        }
+            if (cbslRows.length > 0) {
+                const lastCbslRow = cbslRows[cbslRows.length - 1].split(',');
+                const cbslDateObj = new Date(lastCbslRow[0]);
+                const cbslDateText = cbslDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + cbslDateObj.getFullYear();
+                const cbslRateEl = document.getElementById('current-cbsl-rate');
+                const cbslDateLabel = document.getElementById('cbsl-date-label');
+                if (cbslRateEl) cbslRateEl.textContent = parseFloat(lastCbslRow[1]).toFixed(4) + " LKR";
+                if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
+            }
 
-        const sortedDates = Array.from(allDates).sort();
-        const labels = [];
-        const slcData = [];
-        const cbslData = [];
+            const sortedDates = Array.from(allDates).sort();
+            const labels = [];
+            const slcData = [];
+            const cbslData = [];
 
-        sortedDates.forEach(dateStr => {
-            const d = new Date(dateStr);
-            if (isNaN(d.getTime())) return;
+            sortedDates.forEach(dateStr => {
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return;
 
-            labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
-            slcData.push(slcMap[dateStr] !== undefined ? slcMap[dateStr] : null);
-            cbslData.push(cbslMap[dateStr] !== undefined ? cbslMap[dateStr] : null);
-        });
+                labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
+                slcData.push(slcMap[dateStr] !== undefined ? slcMap[dateStr] : null);
+                cbslData.push(cbslMap[dateStr] !== undefined ? cbslMap[dateStr] : null);
+            });
 
-        // Generate Table
-        if (tableBody) {
-            let tableHTML = "";
-            const startIdx = Math.max(0, slcRows.length - 5);
-            for (let i = slcRows.length - 1; i >= startIdx; i--) {
-                const cols = slcRows[i].split(',');
-                const currentRate = parseFloat(cols[1]);
-                let changeIcon = "-";
-                let changeClass = "rate-change-none";
-                if (i > 0) {
-                    const prevRate = parseFloat(slcRows[i-1].split(',')[1]);
-                    if (currentRate > prevRate) { changeIcon = "\u25B2 Up"; changeClass = "rate-change-up"; }
-                    else if (currentRate < prevRate) { changeIcon = "\u25BC Down"; changeClass = "rate-change-down"; }
+            // Generate Table
+            if (tableBody) {
+                let tableHTML = "";
+                const startIdx = Math.max(0, slcRows.length - 5);
+                for (let i = slcRows.length - 1; i >= startIdx; i--) {
+                    const cols = slcRows[i].split(',');
+                    const currentRate = parseFloat(cols[1]);
+                    let changeIcon = "-";
+                    let changeClass = "rate-change-none";
+                    if (i > 0) {
+                        const prevRate = parseFloat(slcRows[i-1].split(',')[1]);
+                        if (currentRate > prevRate) { changeIcon = "\u25B2 Up"; changeClass = "rate-change-up"; }
+                        else if (currentRate < prevRate) { changeIcon = "\u25BC Down"; changeClass = "rate-change-down"; }
+                    }
+                    tableHTML += `<tr><td>${cols[0]}</td><td style="font-weight: 600;">${currentRate.toFixed(4)}</td><td class="${changeClass}">${changeIcon}</td></tr>`;
                 }
-                tableHTML += `<tr><td>${cols[0]}</td><td style="font-weight: 600;">${currentRate.toFixed(4)}</td><td class="${changeClass}">${changeIcon}</td></tr>`;
+                tableBody.innerHTML = tableHTML;
             }
-            tableBody.innerHTML = tableHTML;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Customs Rate (Weekly)', data: slcData, borderColor: '#007bff', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 },
+                        { label: 'CBSL Rate (Daily)', data: cbslData, borderColor: '#dc3545', borderWidth: 2, borderDash: [], pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 15, font: { size: 11 } } } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { autoSkip: true, maxTicksLimit: 6, maxRotation: 0, font: { size: 10 } } },
+                        y: { grid: { color: '#f5f5f5' }, ticks: { font: { size: 10 } } }
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error loading exchange rates:", error);
+        }
+    });
+
+    /* =========================================
+       MOBILE MENU & DROPDOWN TOGGLE
+       ========================================= */
+    document.addEventListener("DOMContentLoaded", function() {
+        const mobileBtn = document.querySelector('.mobile-menu-btn');
+        const closeBtn = document.querySelector('.close-sidebar-btn');
+        const sidebar = document.getElementById('mobileSidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    { label: 'Customs Rate (Weekly)', data: slcData, borderColor: '#007bff', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 },
-                    { label: 'CBSL Rate (Daily)', data: cbslData, borderColor: '#dc3545', borderWidth: 2, borderDash: [], pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 15, font: { size: 11 } } } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { autoSkip: true, maxTicksLimit: 6, maxRotation: 0, font: { size: 10 } } },
-                    y: { grid: { color: '#f5f5f5' }, ticks: { font: { size: 10 } } }
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if(mobileBtn) {
+            mobileBtn.addEventListener('click', openSidebar);
+        }
+        if(closeBtn) {
+            closeBtn.addEventListener('click', closeSidebar);
+        }
+        if(overlay) {
+            overlay.addEventListener('click', closeSidebar);
+        }
+
+        // --- Mobile Dropdown Toggle ---
+        const mobileDropdownBtn = document.querySelector('.mobile-dropdown-btn');
+        const mobileDropdownContent = document.getElementById('mobileCalcDropdown');
+
+        if (mobileDropdownBtn && mobileDropdownContent) {
+            mobileDropdownBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                mobileDropdownContent.classList.toggle('show');
+
+                const chevron = mobileDropdownBtn.querySelector('.chevron');
+                if (mobileDropdownContent.classList.contains('show')) {
+                    chevron.style.transform = 'rotate(180deg)';
+                } else {
+                    chevron.style.transform = 'rotate(0deg)';
                 }
-            }
-        });
-    } catch (error) {
-        console.error("Error loading exchange rates:", error);
-    }
-});
+            });
+        }
 
-/* =========================================
-   MOBILE MENU & DROPDOWN TOGGLE
-   ========================================= */
-document.addEventListener("DOMContentLoaded", function() {
-    const mobileBtn = document.querySelector('.mobile-menu-btn');
-    const closeBtn = document.querySelector('.close-sidebar-btn');
-    const sidebar = document.getElementById('mobileSidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-
-    function openSidebar() {
-        sidebar.classList.add('open');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    if(mobileBtn) {
-        mobileBtn.addEventListener('click', openSidebar);
-    }
-    if(closeBtn) {
-        closeBtn.addEventListener('click', closeSidebar);
-    }
-    if(overlay) {
-        overlay.addEventListener('click', closeSidebar);
-    }
-
-    // --- Mobile Dropdown Toggle ---
-    const mobileDropdownBtn = document.querySelector('.mobile-dropdown-btn');
-    const mobileDropdownContent = document.getElementById('mobileCalcDropdown');
-
-    if (mobileDropdownBtn && mobileDropdownContent) {
-        mobileDropdownBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            mobileDropdownContent.classList.toggle('show');
-
-            const chevron = mobileDropdownBtn.querySelector('.chevron');
-            if (mobileDropdownContent.classList.contains('show')) {
-                chevron.style.transform = 'rotate(180deg)';
-            } else {
-                chevron.style.transform = 'rotate(0deg)';
-            }
-        });
-    }
-
-    // --- Close Mobile Sidebar when tapping an anchor link ---
-    document.querySelectorAll('.mobile-dropdown-item[href^="index.html#"]').forEach(anchor => {
-        anchor.addEventListener('click', function () {
-            closeSidebar();
+        // --- Close Mobile Sidebar when tapping an anchor link ---
+        document.querySelectorAll('.mobile-dropdown-item[href^="index.html#"]').forEach(anchor => {
+            anchor.addEventListener('click', function () {
+                closeSidebar();
+            });
         });
     });
-});
 
-// --- SHIPPING SCHEDULE FETCH LOGIC ---
-document.addEventListener("DOMContentLoaded", () => {
-    const tableBody = document.getElementById("scheduleBody");
+    // --- SHIPPING SCHEDULE FETCH LOGIC ---
+    document.addEventListener("DOMContentLoaded", () => {
+        const tableBody = document.getElementById("scheduleBody");
 
-    if (tableBody) {
-        const jsonUrl = "/Data/Shipping/shipping_schedule.json";
-        const fetchUrl = jsonUrl + '?t=' + new Date().getTime();
+        if (tableBody) {
+            const jsonUrl = "/Data/Shipping/shipping_schedule.json";
+            const fetchUrl = jsonUrl + '?t=' + new Date().getTime();
 
-        fetch(fetchUrl)
-            .then(response => {
-                if (!response.ok) throw new Error("Network response was not ok");
-                return response.json();
-            })
-            .then(data => {
-                tableBody.innerHTML = "";
+            fetch(fetchUrl)
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    tableBody.innerHTML = "";
 
-                if (data.length === 0) {
-                    tableBody.innerHTML = "<tr><td colspan='5'>No upcoming vessels found.</td></tr>";
-                    return;
-                }
+                    if (data.length === 0) {
+                        tableBody.innerHTML = "<tr><td colspan='5'>No upcoming vessels found.</td></tr>";
+                        return;
+                    }
 
-                data.forEach(ship => {
-                    const tr = document.createElement("tr");
+                    data.forEach(ship => {
+                        const tr = document.createElement("tr");
 
-                    const tdVessel = document.createElement("td");
-                    tdVessel.innerHTML = `<strong>${ship.vessel_voyage}</strong><br><span style="font-size:0.8rem; color:#888;">${ship.type}</span>`;
-                    tr.appendChild(tdVessel);
+                        const tdVessel = document.createElement("td");
+                        tdVessel.innerHTML = `<strong>${ship.vessel_voyage}</strong><br><span style="font-size:0.8rem; color:#888;">${ship.type}</span>`;
+                        tr.appendChild(tdVessel);
 
-                    const tdLine = document.createElement("td");
-                    tdLine.textContent = ship.shipping_line;
-                    tr.appendChild(tdLine);
+                        const tdLine = document.createElement("td");
+                        tdLine.textContent = ship.shipping_line;
+                        tr.appendChild(tdLine);
 
-                    const tdPort = document.createElement("td");
-                    let portHTML = '<div class="departure-stack">';
-                    ship.departures.forEach(dep => {
-                        portHTML += `<div style="margin-bottom: 4px;">${dep.port}</div>`;
+                        const tdPort = document.createElement("td");
+                        let portHTML = '<div class="departure-stack">';
+                        ship.departures.forEach(dep => {
+                            portHTML += `<div style="margin-bottom: 4px;">${dep.port}</div>`;
+                        });
+                        portHTML += '</div>';
+                        tdPort.innerHTML = portHTML;
+                        tr.appendChild(tdPort);
+
+                        const tdDate = document.createElement("td");
+                        let dateHTML = '<div class="departure-stack">';
+                        ship.departures.forEach(dep => {
+                            dateHTML += `<div style="margin-bottom: 4px; font-weight: 600; color: var(--muted);">${dep.date}</div>`;
+                        });
+                        dateHTML += '</div>';
+                        tdDate.innerHTML = dateHTML;
+                        tr.appendChild(tdDate);
+
+                        const tdArr = document.createElement("td");
+                        tdArr.innerHTML = `
+                            <span class="arrival-highlight">${ship.arrival.date}</span><br>
+                            <span style="font-size:0.85rem; color:#666;">${ship.arrival.port}</span>`;
+                        tr.appendChild(tdArr);
+
+                        tableBody.appendChild(tr);
                     });
-                    portHTML += '</div>';
-                    tdPort.innerHTML = portHTML;
-                    tr.appendChild(tdPort);
-
-                    const tdDate = document.createElement("td");
-                    let dateHTML = '<div class="departure-stack">';
-                    ship.departures.forEach(dep => {
-                        dateHTML += `<div style="margin-bottom: 4px; font-weight: 600; color: var(--muted);">${dep.date}</div>`;
-                    });
-                    dateHTML += '</div>';
-                    tdDate.innerHTML = dateHTML;
-                    tr.appendChild(tdDate);
-
-                    const tdArr = document.createElement("td");
-                    tdArr.innerHTML = `
-                        <span class="arrival-highlight">${ship.arrival.date}</span><br>
-                        <span style="font-size:0.85rem; color:#666;">${ship.arrival.port}</span>`;
-                    tr.appendChild(tdArr);
-
-                    tableBody.appendChild(tr);
+                })
+                .catch(error => {
+                    console.error("Error loading schedule:", error);
+                    tableBody.innerHTML = "<tr><td colspan='5' style='color:red;'>Could not load schedule data. Please check your connection.</td></tr>";
                 });
-            })
-            .catch(error => {
-                console.error("Error loading schedule:", error);
-                tableBody.innerHTML = "<tr><td colspan='5' style='color:red;'>Could not load schedule data. Please check your connection.</td></tr>";
-            });
-    }
-});
+        }
+    });
+})();
