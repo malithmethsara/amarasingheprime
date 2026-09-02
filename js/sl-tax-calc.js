@@ -1,11 +1,9 @@
-import { vehicleInventory } from './vehicle-data.js';
-
 /*
 * Copyright © 2026 Amarasinghe Prime. All Rights Reserved.
-* Official Calculation Logic - Adjusted for 2026 Gazette & Real World CUSDEC
+* Official Calculation Logic - Classic Math with Modern UI
 * Updated: Reintroduced 50% Surcharge on CID, SSL(2.5%), VAT Base inclusion
 */
-
+(function() {
     'use strict';
 
     // 1. Global Variables
@@ -163,10 +161,10 @@ import { vehicleInventory } from './vehicle-data.js';
                 else if (dateNum === 3 || dateNum === 23) suffix = "rd";
                 const year = now.getFullYear();
                 const timeString = now.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    hour12: true
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit', 
+                    hour12: true 
                 });
                 timeEl.textContent = `${dayName} ${dateNum}${suffix} ${monthName} ${year} ${timeString}`;
             };
@@ -269,13 +267,13 @@ import { vehicleInventory } from './vehicle-data.js';
         if (!table) return { error: 'Invalid vehicle type' };
 
         let minCapacity, maxCapacity;
-        if (type.includes('electric') || type.includes('esmart')) { minCapacity = 1; maxCapacity = 600; }
-        else if (type.includes('petrol')) { minCapacity = 600; maxCapacity = 6500; }
-        else if (type.includes('diesel')) { minCapacity = 900; maxCapacity = 6500; }
+        if (type.includes('electric') || type.includes('esmart')) { minCapacity = 1; maxCapacity = 600; } 
+        else if (type.includes('petrol')) { minCapacity = 600; maxCapacity = 6500; } 
+        else if (type.includes('diesel')) { minCapacity = 900; maxCapacity = 6500; } 
         else { return { error: 'Invalid vehicle type' }; }
 
         if (capacity < minCapacity || capacity > maxCapacity) {
-            return { error: `! Please enter valid capacity (${minCapacity}\u2013${maxCapacity})` };
+            return { error: `! Please enter valid capacity (${minCapacity}–${maxCapacity})` };
         }
 
         for (let tier of table) {
@@ -310,7 +308,7 @@ import { vehicleInventory } from './vehicle-data.js';
             age: getElementSafe('age'),
             dealerFee: getElementSafe('dealerFee'),
             clearingFee: getElementSafe('clearingFee'),
-            bankFee: getElementSafe('bankLcFee')
+            bankFee: getElementSafe('bankLcFee') 
         };
 
         if (!elements.cifJPY || !elements.exchangeRate || !elements.vehicleType || !elements.capacity || !elements.age) {
@@ -334,38 +332,35 @@ import { vehicleInventory } from './vehicle-data.js';
         if (capacity <= 0) return showError('capacity', '! Please enter valid capacity');
         if (!age) return showError('age', '! Please select vehicle age');
 
-        // Core Values
         const cif = cifJPY * exchangeRate;
         const exciseResult = calculateExcise(type, capacity, age);
         if (exciseResult.error) return showError('capacity', exciseResult.error);
 
         // 1. Customs Import Duty (CID) - 30%
-        const cid = cif * 0.30;
+        const cid = cif * 0.20;
 
-        // 2. Surcharge - 50% of CID
+        // 2. Surcharge
         const surcharge = cid * 0.50;
 
-        // 3. Excise Duty
+        // 3. PAL (10%)
+        const palUplift = cif * 0.10;
+
+        // 4. Excise Duty
         const excise = exciseResult;
 
-        // 4. Luxury Tax
+        // 5. Luxury Tax
         const luxuryTax = calculateLuxuryTax(cif, type);
 
-        // 5. Tax Base Calculation (CIF + 10% PAL Uplift + CID + Surcharge + XID)
-        const palUplift = cif * 0.10;
+        // 6. VAT & SSCL Calculation
         const taxBase = cif + palUplift + cid + surcharge + excise;
-
-        // 6. SSL (Social Security Levy - 2.5%)
         const sscl = taxBase * 0.025;
-
-        // 7. VAT (18%) - Calculated on the exact same base as SSL
         const vat = taxBase * 0.18;
 
-        // 8. Fixed Levies
-        const vel = 15000;
-        const comFee = 1750;
+        // 7. Fixed Levies
+        const vel = 15000;       
+        const comFee = 1750;     
 
-        // 9. Totals
+        // 8. Totals
         const totalTax = cid + surcharge + excise + sscl + vat + vel + luxuryTax + comFee;
         const otherCharges = dealerFee + clearingFee + bankFee;
         const totalCost = cif + totalTax + otherCharges;
@@ -374,7 +369,7 @@ import { vehicleInventory } from './vehicle-data.js';
             cifJPY, exchangeRate, cif, type, capacity, age,
             dealerFee, clearingFee, bankFee,
             cid, surcharge, excise, sscl,
-            luxuryTax, vel, vat, comFee, totalTax,
+            luxuryTax, vel, vat, comFee, totalTax, 
             otherCharges, totalCost
         };
 
@@ -398,7 +393,7 @@ import { vehicleInventory } from './vehicle-data.js';
         }
     }
 
-    // 8. Display Results (inline styles replaced with CSS classes)
+    // 8. Display Results (Updated with New UI Table Classes)
     function displayResults(data) {
         const unit = ['electric', 'esmart_petrol', 'esmart_diesel'].includes(resultData.type) ? 'kW' : 'cc';
         const ageText = resultData.age === '1' ? '\u22641 year' : '>1\u20133 years';
@@ -615,7 +610,7 @@ import { vehicleInventory } from './vehicle-data.js';
         });
 
         doc.save(`vehicle_tax_${resultData.type}_${Date.now()}.pdf`);
-
+        
         if (btn) {
             btn.disabled = false;
             btn.textContent = 'Save as PDF';
@@ -629,7 +624,7 @@ import { vehicleInventory } from './vehicle-data.js';
         resultData = null;
         if (taxChart) { taxChart.destroy(); taxChart = null; }
         if (costChart) { costChart.destroy(); costChart = null; }
-
+        
         const chartsCon = document.getElementById('chartsContainer');
         if (chartsCon) chartsCon.style.display = 'none';
 
@@ -637,7 +632,7 @@ import { vehicleInventory } from './vehicle-data.js';
         if (resultEl) {
             resultEl.innerHTML = `
                 <p class="result-placeholder">Add input data and click the Calculate Tax button to get results</p>
-                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/94769447740" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
+                <p class="result-help">Need help importing your vehicle to Sri Lanka? <a href="https://wa.me/message/XSPMWKK4BGVAM1" target="_blank" rel="noopener">Contact us on WhatsApp</a> for expert assistance!</p>
             `;
         }
         const downloadBtn = getElementSafe('downloadBtn');
@@ -671,10 +666,10 @@ import { vehicleInventory } from './vehicle-data.js';
         if (!slider || typeof vehicleInventory === 'undefined') return;
 
         let html = '';
-
+        
         vehicleInventory.forEach(car => {
             const badgeHtml = car.badge ? `<span class="veh-badge">${car.badge}</span>` : '';
-
+            
             html += `
             <div class="vehicle-card">
                 <div class="veh-img-container">
@@ -683,7 +678,7 @@ import { vehicleInventory } from './vehicle-data.js';
                 </div>
                 <div class="veh-info">
                     <h3>${car.model}</h3>
-
+                    
                     <div class="veh-specs-grid">
                         <div class="spec-item" title="Year"><span class="spec-icon">\u{1F4C5}</span> ${car.specs.year}</div>
                         <div class="spec-item" title="Mileage"><span class="spec-icon">\u{1F6E3}\uFE0F</span> ${car.specs.mileage}</div>
@@ -751,7 +746,7 @@ import { vehicleInventory } from './vehicle-data.js';
         initScrollReveal();
         initStickyHeader();
 
-        // --- FETCH DAILY RATE FOR CALCULATOR ---
+        // --- FETCH DAILY RATE FOR CALCULATOR (Uses automated CSV file) ---
         const rateEl = getElementSafe('cbslRate');
         if (rateEl) {
             fetch('Data/Rates/CBSL/CBSL-rates.csv')
@@ -761,7 +756,7 @@ import { vehicleInventory } from './vehicle-data.js';
                 })
                 .then(text => {
                     const lines = text.trim().split('\n').filter(line => line.trim() !== "");
-                    if (lines.length > 1) {
+                    if (lines.length > 1) { // Ensure there is data beyond the CSV header
                         const lastLine = lines[lines.length - 1];
                         const parts = lastLine.split(',');
                         if (parts.length >= 2 && parts[0].trim().toLowerCase() !== 'date') {
@@ -829,246 +824,247 @@ import { vehicleInventory } from './vehicle-data.js';
     } else {
         init();
     }
+})();
 
-    /* =========================================
-       DUAL EXCHANGE RATE CHART LOGIC
-       ========================================= */
-    document.addEventListener("DOMContentLoaded", async function() {
-        const chartCanvas = document.getElementById('exchangeRateChart');
-        if (!chartCanvas) return;
+/* =========================================
+   DUAL EXCHANGE RATE CHART LOGIC
+   ========================================= */
+document.addEventListener("DOMContentLoaded", async function() {
+    const chartCanvas = document.getElementById('exchangeRateChart');
+    if (!chartCanvas) return;
 
-        const ctx = chartCanvas.getContext('2d');
-        const tableBody = document.getElementById('rateTableBody');
+    const ctx = chartCanvas.getContext('2d');
+    const tableBody = document.getElementById('rateTableBody');
 
-        try {
-            const [slcRes, cbslRes] = await Promise.all([
-                fetch('Data/Rates/SLC-rates.txt'),
-                fetch('Data/Rates/CBSL/CBSL-rates.csv')
-            ]);
+    try {
+        const [slcRes, cbslRes] = await Promise.all([
+            fetch('Data/Rates/SLC-rates.txt'),
+            fetch('Data/Rates/CBSL/CBSL-rates.csv')
+        ]);
 
-            const slcText = await slcRes.text();
-            const cbslText = await cbslRes.text();
+        const slcText = await slcRes.text();
+        const cbslText = await cbslRes.text();
 
-            const slcRows = slcText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
-            const cbslRows = cbslText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
+        const slcRows = slcText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
+        const cbslRows = cbslText.trim().split('\n').filter(r => r.includes(',') && r.split(',')[0].trim().length > 0);
 
-            let allDates = new Set();
-            let slcMap = {};
-            let cbslMap = {};
+        let allDates = new Set();
+        let slcMap = {};
+        let cbslMap = {};
 
-            slcRows.forEach(row => {
-                const cols = row.split(',');
-                const dateStr = cols[0].trim();
-                allDates.add(dateStr);
-                slcMap[dateStr] = parseFloat(cols[1]);
-            });
+        slcRows.forEach(row => {
+            const cols = row.split(',');
+            const dateStr = cols[0].trim();
+            allDates.add(dateStr);
+            slcMap[dateStr] = parseFloat(cols[1]);
+        });
 
-            cbslRows.forEach(row => {
-                const cols = row.split(',');
-                const dateStr = cols[0].trim();
-                if (dateStr.toLowerCase() === 'date') return;
-                allDates.add(dateStr);
-                cbslMap[dateStr] = parseFloat(cols[1]);
-            });
+        cbslRows.forEach(row => {
+            const cols = row.split(',');
+            const dateStr = cols[0].trim();
+            if (dateStr.toLowerCase() === 'date') return;
+            allDates.add(dateStr);
+            cbslMap[dateStr] = parseFloat(cols[1]);
+        });
 
-            // Update "Big Number" Displays
-            if (slcRows.length > 0) {
-                const lastSlcRow = slcRows[slcRows.length - 1].split(',');
-                const slcDateObj = new Date(lastSlcRow[0]);
-                const slcDateText = slcDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + slcDateObj.getFullYear();
-                const slcRateEl = document.getElementById('current-slc-rate');
-                const slcDateLabel = document.getElementById('slc-date-label');
-                if (slcRateEl) slcRateEl.textContent = parseFloat(lastSlcRow[1]).toFixed(4) + " LKR";
-                if (slcDateLabel) slcDateLabel.textContent = `Effective Customs Rate (Week of ${slcDateText})`;
-            }
+        // Update "Big Number" Displays
+        if (slcRows.length > 0) {
+            const lastSlcRow = slcRows[slcRows.length - 1].split(',');
+            const slcDateObj = new Date(lastSlcRow[0]);
+            const slcDateText = slcDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + slcDateObj.getFullYear();
+            const slcRateEl = document.getElementById('current-slc-rate');
+            const slcDateLabel = document.getElementById('slc-date-label');
+            if (slcRateEl) slcRateEl.textContent = parseFloat(lastSlcRow[1]).toFixed(4) + " LKR";
+            if (slcDateLabel) slcDateLabel.textContent = `Effective Customs Rate (Week of ${slcDateText})`;
+        }
 
-            if (cbslRows.length > 0) {
-                const lastCbslRow = cbslRows[cbslRows.length - 1].split(',');
-                const cbslDateObj = new Date(lastCbslRow[0]);
-                const cbslDateText = cbslDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + cbslDateObj.getFullYear();
-                const cbslRateEl = document.getElementById('current-cbsl-rate');
-                const cbslDateLabel = document.getElementById('cbsl-date-label');
-                if (cbslRateEl) cbslRateEl.textContent = parseFloat(lastCbslRow[1]).toFixed(4) + " LKR";
-                if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
-            }
+        if (cbslRows.length > 0) {
+            const lastCbslRow = cbslRows[cbslRows.length - 1].split(',');
+            const cbslDateObj = new Date(lastCbslRow[0]);
+            const cbslDateText = cbslDateObj.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }) + ", " + cbslDateObj.getFullYear();
+            const cbslRateEl = document.getElementById('current-cbsl-rate');
+            const cbslDateLabel = document.getElementById('cbsl-date-label');
+            if (cbslRateEl) cbslRateEl.textContent = parseFloat(lastCbslRow[1]).toFixed(4) + " LKR";
+            if (cbslDateLabel) cbslDateLabel.textContent = `Central Bank Daily Exchange Rate (As of ${cbslDateText})`;
+        }
 
-            const sortedDates = Array.from(allDates).sort();
-            const labels = [];
-            const slcData = [];
-            const cbslData = [];
+        const sortedDates = Array.from(allDates).sort();
+        const labels = [];
+        const slcData = [];
+        const cbslData = [];
 
-            sortedDates.forEach(dateStr => {
-                const d = new Date(dateStr);
-                if (isNaN(d.getTime())) return;
+        sortedDates.forEach(dateStr => {
+            const d = new Date(dateStr);
+            if (isNaN(d.getTime())) return;
 
-                labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
-                slcData.push(slcMap[dateStr] !== undefined ? slcMap[dateStr] : null);
-                cbslData.push(cbslMap[dateStr] !== undefined ? cbslMap[dateStr] : null);
-            });
+            labels.push(`${d.toLocaleDateString('en-US', {month:'short'})} ${d.getFullYear().toString().slice(-2)}`);
+            slcData.push(slcMap[dateStr] !== undefined ? slcMap[dateStr] : null);
+            cbslData.push(cbslMap[dateStr] !== undefined ? cbslMap[dateStr] : null);
+        });
 
-            // Generate Table
-            if (tableBody) {
-                let tableHTML = "";
-                const startIdx = Math.max(0, slcRows.length - 5);
-                for (let i = slcRows.length - 1; i >= startIdx; i--) {
-                    const cols = slcRows[i].split(',');
-                    const currentRate = parseFloat(cols[1]);
-                    let changeIcon = "-";
-                    let changeClass = "rate-change-none";
-                    if (i > 0) {
-                        const prevRate = parseFloat(slcRows[i-1].split(',')[1]);
-                        if (currentRate > prevRate) { changeIcon = "\u25B2 Up"; changeClass = "rate-change-up"; }
-                        else if (currentRate < prevRate) { changeIcon = "\u25BC Down"; changeClass = "rate-change-down"; }
-                    }
-                    tableHTML += `<tr><td>${cols[0]}</td><td style="font-weight: 600;">${currentRate.toFixed(4)}</td><td class="${changeClass}">${changeIcon}</td></tr>`;
+        // Generate Table
+        if (tableBody) {
+            let tableHTML = "";
+            const startIdx = Math.max(0, slcRows.length - 5);
+            for (let i = slcRows.length - 1; i >= startIdx; i--) {
+                const cols = slcRows[i].split(',');
+                const currentRate = parseFloat(cols[1]);
+                let changeIcon = "-";
+                let changeClass = "rate-change-none";
+                if (i > 0) {
+                    const prevRate = parseFloat(slcRows[i-1].split(',')[1]);
+                    if (currentRate > prevRate) { changeIcon = "\u25B2 Up"; changeClass = "rate-change-up"; }
+                    else if (currentRate < prevRate) { changeIcon = "\u25BC Down"; changeClass = "rate-change-down"; }
                 }
-                tableBody.innerHTML = tableHTML;
+                tableHTML += `<tr><td>${cols[0]}</td><td style="font-weight: 600;">${currentRate.toFixed(4)}</td><td class="${changeClass}">${changeIcon}</td></tr>`;
             }
+            tableBody.innerHTML = tableHTML;
+        }
 
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        { label: 'Customs Rate (Weekly)', data: slcData, borderColor: '#007bff', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 },
-                        { label: 'CBSL Rate (Daily)', data: cbslData, borderColor: '#dc3545', borderWidth: 2, borderDash: [], pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    interaction: { mode: 'index', intersect: false },
-                    plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 15, font: { size: 11 } } } },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { autoSkip: true, maxTicksLimit: 6, maxRotation: 0, font: { size: 10 } } },
-                        y: { grid: { color: '#f5f5f5' }, ticks: { font: { size: 10 } } }
-                    }
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    { label: 'Customs Rate (Weekly)', data: slcData, borderColor: '#007bff', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 },
+                    { label: 'CBSL Rate (Daily)', data: cbslData, borderColor: '#dc3545', borderWidth: 2, borderDash: [], pointRadius: 0, pointHoverRadius: 5, fill: false, spanGaps: true, tension: 0.1 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { display: true, position: 'bottom', labels: { boxWidth: 15, font: { size: 11 } } } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { autoSkip: true, maxTicksLimit: 6, maxRotation: 0, font: { size: 10 } } },
+                    y: { grid: { color: '#f5f5f5' }, ticks: { font: { size: 10 } } }
                 }
-            });
-        } catch (error) {
-            console.error("Error loading exchange rates:", error);
-        }
-    });
+            }
+        });
+    } catch (error) {
+        console.error("Error loading exchange rates:", error);
+    }
+});
 
-    /* =========================================
-       MOBILE MENU & DROPDOWN TOGGLE
-       ========================================= */
-    document.addEventListener("DOMContentLoaded", function() {
-        const mobileBtn = document.querySelector('.mobile-menu-btn');
-        const closeBtn = document.querySelector('.close-sidebar-btn');
-        const sidebar = document.getElementById('mobileSidebar');
-        const overlay = document.getElementById('sidebarOverlay');
+/* =========================================
+   MOBILE MENU & DROPDOWN TOGGLE
+   ========================================= */
+document.addEventListener("DOMContentLoaded", function() {
+    const mobileBtn = document.querySelector('.mobile-menu-btn');
+    const closeBtn = document.querySelector('.close-sidebar-btn');
+    const sidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
 
-        function openSidebar() {
-            sidebar.classList.add('open');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 
-        function closeSidebar() {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
 
-        if(mobileBtn) {
-            mobileBtn.addEventListener('click', openSidebar);
-        }
-        if(closeBtn) {
-            closeBtn.addEventListener('click', closeSidebar);
-        }
-        if(overlay) {
-            overlay.addEventListener('click', closeSidebar);
-        }
+    if(mobileBtn) {
+        mobileBtn.addEventListener('click', openSidebar);
+    }
+    if(closeBtn) {
+        closeBtn.addEventListener('click', closeSidebar);
+    }
+    if(overlay) {
+        overlay.addEventListener('click', closeSidebar);
+    }
 
-        // --- Mobile Dropdown Toggle ---
-        const mobileDropdownBtn = document.querySelector('.mobile-dropdown-btn');
-        const mobileDropdownContent = document.getElementById('mobileCalcDropdown');
+    // --- Mobile Dropdown Toggle ---
+    const mobileDropdownBtn = document.querySelector('.mobile-dropdown-btn');
+    const mobileDropdownContent = document.getElementById('mobileCalcDropdown');
 
-        if (mobileDropdownBtn && mobileDropdownContent) {
-            mobileDropdownBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                mobileDropdownContent.classList.toggle('show');
+    if (mobileDropdownBtn && mobileDropdownContent) {
+        mobileDropdownBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            mobileDropdownContent.classList.toggle('show');
 
-                const chevron = mobileDropdownBtn.querySelector('.chevron');
-                if (mobileDropdownContent.classList.contains('show')) {
-                    chevron.style.transform = 'rotate(180deg)';
-                } else {
-                    chevron.style.transform = 'rotate(0deg)';
-                }
-            });
-        }
+            const chevron = mobileDropdownBtn.querySelector('.chevron');
+            if (mobileDropdownContent.classList.contains('show')) {
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        });
+    }
 
-        // --- Close Mobile Sidebar when tapping an anchor link ---
-        document.querySelectorAll('.mobile-dropdown-item[href^="index.html#"]').forEach(anchor => {
-            anchor.addEventListener('click', function () {
-                closeSidebar();
-            });
+    // --- Close Mobile Sidebar when tapping an anchor link ---
+    document.querySelectorAll('.mobile-dropdown-item[href^="index.html#"]').forEach(anchor => {
+        anchor.addEventListener('click', function () {
+            closeSidebar();
         });
     });
+});
 
-    // --- SHIPPING SCHEDULE FETCH LOGIC ---
-    document.addEventListener("DOMContentLoaded", () => {
-        const tableBody = document.getElementById("scheduleBody");
+// --- SHIPPING SCHEDULE FETCH LOGIC ---
+document.addEventListener("DOMContentLoaded", () => {
+    const tableBody = document.getElementById("scheduleBody");
 
-        if (tableBody) {
-            const jsonUrl = "/Data/Shipping/shipping_schedule.json";
-            const fetchUrl = jsonUrl + '?t=' + new Date().getTime();
+    if (tableBody) {
+        const jsonUrl = "/Data/Shipping/shipping_schedule.json";
+        const fetchUrl = jsonUrl + '?t=' + new Date().getTime();
 
-            fetch(fetchUrl)
-                .then(response => {
-                    if (!response.ok) throw new Error("Network response was not ok");
-                    return response.json();
-                })
-                .then(data => {
-                    tableBody.innerHTML = "";
+        fetch(fetchUrl)
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok");
+                return response.json();
+            })
+            .then(data => {
+                tableBody.innerHTML = "";
 
-                    if (data.length === 0) {
-                        tableBody.innerHTML = "<tr><td colspan='5'>No upcoming vessels found.</td></tr>";
-                        return;
-                    }
+                if (data.length === 0) {
+                    tableBody.innerHTML = "<tr><td colspan='5'>No upcoming vessels found.</td></tr>";
+                    return;
+                }
 
-                    data.forEach(ship => {
-                        const tr = document.createElement("tr");
+                data.forEach(ship => {
+                    const tr = document.createElement("tr");
 
-                        const tdVessel = document.createElement("td");
-                        tdVessel.innerHTML = `<strong>${ship.vessel_voyage}</strong><br><span style="font-size:0.8rem; color:#888;">${ship.type}</span>`;
-                        tr.appendChild(tdVessel);
+                    const tdVessel = document.createElement("td");
+                    tdVessel.innerHTML = `<strong>${ship.vessel_voyage}</strong><br><span style="font-size:0.8rem; color:#888;">${ship.type}</span>`;
+                    tr.appendChild(tdVessel);
 
-                        const tdLine = document.createElement("td");
-                        tdLine.textContent = ship.shipping_line;
-                        tr.appendChild(tdLine);
+                    const tdLine = document.createElement("td");
+                    tdLine.textContent = ship.shipping_line;
+                    tr.appendChild(tdLine);
 
-                        const tdPort = document.createElement("td");
-                        let portHTML = '<div class="departure-stack">';
-                        ship.departures.forEach(dep => {
-                            portHTML += `<div style="margin-bottom: 4px;">${dep.port}</div>`;
-                        });
-                        portHTML += '</div>';
-                        tdPort.innerHTML = portHTML;
-                        tr.appendChild(tdPort);
-
-                        const tdDate = document.createElement("td");
-                        let dateHTML = '<div class="departure-stack">';
-                        ship.departures.forEach(dep => {
-                            dateHTML += `<div style="margin-bottom: 4px; font-weight: 600; color: var(--muted);">${dep.date}</div>`;
-                        });
-                        dateHTML += '</div>';
-                        tdDate.innerHTML = dateHTML;
-                        tr.appendChild(tdDate);
-
-                        const tdArr = document.createElement("td");
-                        tdArr.innerHTML = `
-                            <span class="arrival-highlight">${ship.arrival.date}</span><br>
-                            <span style="font-size:0.85rem; color:#666;">${ship.arrival.port}</span>`;
-                        tr.appendChild(tdArr);
-
-                        tableBody.appendChild(tr);
+                    const tdPort = document.createElement("td");
+                    let portHTML = '<div class="departure-stack">';
+                    ship.departures.forEach(dep => {
+                        portHTML += `<div style="margin-bottom: 4px;">${dep.port}</div>`;
                     });
-                })
-                .catch(error => {
-                    console.error("Error loading schedule:", error);
-                    tableBody.innerHTML = "<tr><td colspan='5' style='color:red;'>Could not load schedule data. Please check your connection.</td></tr>";
+                    portHTML += '</div>';
+                    tdPort.innerHTML = portHTML;
+                    tr.appendChild(tdPort);
+
+                    const tdDate = document.createElement("td");
+                    let dateHTML = '<div class="departure-stack">';
+                    ship.departures.forEach(dep => {
+                        dateHTML += `<div style="margin-bottom: 4px; font-weight: 600; color: var(--muted);">${dep.date}</div>`;
+                    });
+                    dateHTML += '</div>';
+                    tdDate.innerHTML = dateHTML;
+                    tr.appendChild(tdDate);
+
+                    const tdArr = document.createElement("td");
+                    tdArr.innerHTML = `
+                        <span class="arrival-highlight">${ship.arrival.date}</span><br>
+                        <span style="font-size:0.85rem; color:#666;">${ship.arrival.port}</span>`;
+                    tr.appendChild(tdArr);
+
+                    tableBody.appendChild(tr);
                 });
-        }
-    });
+            })
+            .catch(error => {
+                console.error("Error loading schedule:", error);
+                tableBody.innerHTML = "<tr><td colspan='5' style='color:red;'>Could not load schedule data. Please check your connection.</td></tr>";
+            });
+    }
+});
