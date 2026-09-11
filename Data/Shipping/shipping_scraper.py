@@ -3,108 +3,123 @@ from bs4 import BeautifulSoup
 import json
 import os
 import re
+from datetime import datetime
 
-# The new, simplified URL with the Hambantota destination parameter
+# URL filtered for Hambantota destination
 URL = "https://autocj.co.jp/japan_shipping_search?hasSearch=1&leavePort=&arrivalPort=Hambantota&shipName=&voyage="
 
-# Path where the JSON will be saved
+# Relative path matching your repository structure
 JSON_FILE = "Data/Shipping/shipping_schedule.json"
 
 def scrape_shipping_schedule():
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
     }
     
     try:
-        print("Fetching shipping schedule from new Autocom site...")
-        response = requests.get(URL, headers=headers, timeout=20)
+        print("Connecting to Autocom shipping portal...")
+        response = requests.get(URL, headers=headers, timeout=25)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Find all labels that say "Company:" to locate each individual ship card
-        company_labels = soup.find_all('span', string=re.compile("Company:"))
+        # Locate all ship cards via the 'Company:' label
+        company_labels = soup.find_all('span', string=re.compile(r"Company:", re.IGNORECASE))
         
+        if not company_labels:
+            print("Warning: No vessel entries found on page.")
+            return []
+
         schedule_data = []
         
         for label in company_labels:
-            # 1. Navigate up the HTML tree to grab the entire "Card" container for this specific ship
+            # Climb up to the card wrapper
             card = label.find_parent('div', class_=lambda c: c and 'bg-white' in c and 'p-4' in c)
             if not card:
                 continue
 
-            # 2. Extract Vessel Identity using next siblings
-            shipping_line = label.find_next_sibling('span').text.strip()
-            
-            ship_span = card.find('span', string=re.compile("Ship Name:"))
+            # 1. Company / Shipping Line
+            company_span = label.find_next_sibling('span')
+            shipping_line = company_span.text.strip() if company_span else "Unknown"
+
+            # 2. Vessel Name & Voyage
+            ship_span = card.find('span', string=re.compile(r"Ship Name:", re.IGNORECASE))
             ship_name = ship_span.find_next_sibling('span').text.strip() if ship_span else ""
             
-            voyage_span = card.find('span', string=re.compile("Voyage:"))
+            voyage_span = card.find('span', string=re.compile(r"Voyage:", re.IGNORECASE))
             voyage = voyage_span.find_next_sibling('span').text.strip() if voyage_span else ""
             
             vessel_voyage = f"{ship_name} V.{voyage}" if voyage else ship_name
-            
-            # Default to RO-RO, but attempt to extract the badge if available
+
+            # 3. Vessel Type
             ship_type = "RO-RO"
-            type_badge = card.find('span', string=re.compile("RO-RO"))
+            type_badge = card.find('span', string=re.compile(r"RO-RO", re.IGNORECASE))
             if type_badge:
                 ship_type = type_badge.text.strip()
 
-            # 3. Extract Departures
+            # 4. Departure Ports & Dates
             departures = []
-            leave_header = card.find('div', string=re.compile("LEAVE"))
+            leave_header = card.find('div', string=re.compile(r"LEAVE", re.IGNORECASE))
             if leave_header:
                 leave_container = leave_header.parent
-                # Loop through all rows inside the LEAVE container
-                for row in leave_container.find_all('div', class_=re.compile("border")):
+                for row in leave_container.find_all('div', class_=re.compile(r"border")):
                     text = row.text.strip()
-                    parts = text.split(' ', 1) # Splits "2026/07/30 YOKOHAMA" into ["2026/07/30", "YOKOHAMA"]
+                    parts = re.split(r'\s+', text, maxsplit=1)
                     if len(parts) == 2:
                         departures.append({
-                            "date": parts[0],
-                            "port": parts[1]
+                            "date": parts[0].strip(),
+                            "port": parts[1].strip()
                         })
 
-            # 4. Extract Arrival (Hambantota)
+            # 5. Arrival Port & Date
             arrival = {}
-            arrival_header = card.find('div', string=re.compile("ARRIVALS"))
+            arrival_header = card.find('div', string=re.compile(r"ARRIVALS", re.IGNORECASE))
             if arrival_header:
                 arrival_container = arrival_header.parent
-                for row in arrival_container.find_all('div', class_=re.compile("border")):
+                for row in arrival_container.find_all('div', class_=re.compile(r"border")):
                     text = row.text.strip()
-                    parts = text.split(' ', 1)
+                    parts = re.split(r'\s+', text, maxsplit=1)
                     if len(parts) == 2:
                         arrival = {
-                            "date": parts[0],
-                            "port": parts[1]
+                            "date": parts[0].strip(),
+                            "port": parts[1].strip()
                         }
-                        break # We only need the first arrival port (Hambantota)
+                        break
 
-            # 5. Assemble the dictionary
-            schedule_data.append({
-                "vessel_voyage": vessel_voyage,
-                "type": ship_type,
-                "shipping_line": shipping_line,
-                "departures": departures,
-                "arrival": arrival
-            })
-            
+            # Build record if arrival data exists
+            if arrival:
+                schedule_data.append({
+                    "vessel_voyage": vessel_voyage,
+                    "type": ship_type,
+                    "shipping_line": shipping_line,
+                    "departures": departures,
+                    "arrival": arrival
+                })
+
+        # Sort vessels chronologically by arrival date
+        def parse_arrival_date(item):
+            try:
+                return datetime.strptime(item["arrival"]["date"], "%Y/%m/%d")
+            except (KeyError, ValueError):
+                return datetime.max
+
+        schedule_data.sort(key=parse_arrival_date)
         return schedule_data
 
-    except Exception as e:
-        print(f"Error scraping shipping data: {e}")
+    except requests.RequestException as req_err:
+        print(f"Network error while fetching schedule: {req_err}")
+        return None
+    except Exception as err:
+        print(f"Unexpected parsing error: {err}")
         return None
 
 if __name__ == "__main__":
-    data = scrape_shipping_schedule()
+    vessels = scrape_shipping_schedule()
     
-    if data:
-        # Ensures the Data/Shipping folder exists before saving
+    if vessels:
         os.makedirs(os.path.dirname(JSON_FILE), exist_ok=True)
-        
-        # Save the data to a JSON file
         with open(JSON_FILE, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
-        print(f"Successfully saved {len(data)} vessel schedules to {JSON_FILE}")
+            json.dump(vessels, f, indent=4, ensure_ascii=False)
+        print(f" Successfully written {len(vessels)} vessels to {JSON_FILE}")
     else:
-        print("No data found or scraping failed.")
+        print("Scraping completed with 0 vessels or encountered an error. JSON was not modified.")
