@@ -1,128 +1,5 @@
 [
     {
-        "vessel_voyage": "PROMETHEUS LEADER V.080",
-        "type": "RO-RO",
-        "shipping_line": "NYK",
-        "departures": [
-            {
-                "date": "2026/07/30",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/07/31",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/08/01",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/08/02",
-                "port": "KOBE"
-            },
-            {
-                "date": "2026/08/03",
-                "port": "MOJI"
-            }
-        ],
-        "arrival": {
-            "date": "2026/08/16",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "vessel_voyage": "JUPITER LEADER V.082",
-        "type": "RO-RO",
-        "shipping_line": "NYK",
-        "departures": [
-            {
-                "date": "2026/08/12",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/08/13",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/08/15",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/08/16",
-                "port": "KOBE"
-            }
-        ],
-        "arrival": {
-            "date": "2026/08/29",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "vessel_voyage": "TAURUS LEADER V.090",
-        "type": "RO-RO",
-        "shipping_line": "NYK",
-        "departures": [
-            {
-                "date": "2026/07/28",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/07/29",
-                "port": "NAGOYA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/09/02",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "vessel_voyage": "PAVO LEADER V.012",
-        "type": "RO-RO",
-        "shipping_line": "NYK",
-        "departures": [
-            {
-                "date": "2026/08/21",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/08/22",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/08/25",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/08/26",
-                "port": "KOBE"
-            }
-        ],
-        "arrival": {
-            "date": "2026/09/08",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "vessel_voyage": "RCC CLASSIC V.058",
-        "type": "RO-RO",
-        "shipping_line": "G ALLIANCE SHIPPING",
-        "departures": [
-            {
-                "date": "2026/08/10",
-                "port": "KISARAZU"
-            },
-            {
-                "date": "2026/08/12",
-                "port": "HAKATA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/09/10",
-            "port": "Hambantota"
-        }
-    },
-    {
         "vessel_voyage": "VIKING DRIVE V.42",
         "type": "RO-RO",
         "shipping_line": "SEVEN SEALS CO.,LTD",
@@ -215,25 +92,147 @@
         }
     },
     {
+        "vessel_voyage": "GLOVIS SUCCESS V.013",
+        "type": "RO-RO",
+        "shipping_line": "HYUNDAI GLOVIS",
+        "departures": [
+            {
+                "date": "2026/10/06",
+                "port": "KISARAZU"
+            },
+            {
+                "date": "2026/10/08",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/10/10",
+                "port": "HAKATA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/10/26",
+            "port": "Hambantota"
+        }
+    },
+    {
         "vessel_voyage": "VIKING DRIVE V.43",
         "type": "RO-RO",
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "departures": [
             {
-                "date": "2026/10/13",
+                "date": "2026/10/16",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/10/14",
+                "date": "2026/10/17",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/10/15",
+                "date": "2026/10/18",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/10/28",
+            "date": "2026/10/30",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "vessel_voyage": "KING QUEST V.033",
+        "type": "RO-RO",
+        "shipping_line": "NYK",
+        "departures": [
+            {
+                "date": "2026/10/16",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/10/18",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/11/09",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "vessel_voyage": "PLUTO LEADER V.072",
+        "type": "RO-RO",
+        "shipping_line": "NYK",
+        "departures": [
+            {
+                "date": "2026/10/08",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/10/09",
+                "port": "KOBE"
+            }
+        ],
+        "arrival": {
+            "date": "2026/11/18",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "vessel_voyage": "CYGNUS LEADER V.146",
+        "type": "RO-RO",
+        "shipping_line": "NYK",
+        "departures": [
+            {
+                "date": "2026/10/13",
+                "port": "NAGOYA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/11/18",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "vessel_voyage": "VIKING DRIVE V.44",
+        "type": "RO-RO",
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "departures": [
+            {
+                "date": "2026/11/21",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/11/22",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/11/23",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/12/11",
+            "port": "Hambantota"
+        }
+    },
+    {
+        "vessel_voyage": "VIKING DRIVE V.45",
+        "type": "RO-RO",
+        "shipping_line": "SEVEN SEALS CO.,LTD",
+        "departures": [
+            {
+                "date": "2026/12/23",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/12/24",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/12/25",
+                "port": "YOKOHAMA"
+            }
+        ],
+        "arrival": {
+            "date": "2027/01/12",
             "port": "Hambantota"
         }
     }
