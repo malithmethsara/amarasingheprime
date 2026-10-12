@@ -2,16 +2,21 @@ name: Daily Shipping Schedule Scraper
 
 on:
   schedule:
-    # 00:43 UTC = 06:13 AM Sri Lanka Time (Off-peak, avoids queue delays)
-    - cron: '43 0 * * *'  
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab anytime
+    # 00:43 UTC = 06:13 AM Sri Lanka Time
+    - cron: '43 0 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: shipping-scraper
+  cancel-in-progress: false
+
 jobs:
   scrape-shipping:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -22,25 +27,44 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
+          pip install -r requirements.txt
 
       - name: Run shipping scraper
         run: python Data/Shipping/shipping_scraper.py
+        env:
+          PYTHONUNBUFFERED: '1'
 
-      - name: Commit and Push JSON
+      - name: Validate JSON output
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          python - <<'EOF'
+          import json, sys
+          p = "Data/Shipping/shipping_schedule.json"
+          try:
+              with open(p, encoding="utf-8") as f:
+                  data = json.load(f)
+          except Exception as e:
+              sys.exit(f"Invalid or missing JSON: {e}")
+          if not data:
+              sys.exit("JSON is empty - refusing to commit")
+          print("JSON OK")
+          EOF
+
+      - name: Commit and push JSON
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add Data/Shipping/shipping_schedule.json
-          
-          # Check if there are actual updates to commit
+
           if git diff --staged --quiet; then
             echo "No schedule changes detected today."
-          else
-            git commit -m "Automated update: Japan to Hambantota shipping schedule [skip ci]"
-            git push
+            exit 0
           fi
+
+          git commit -m "Automated update: Japan to Hambantota shipping schedule [skip ci]"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push origin HEAD:"${GITHUB_REF_NAME}"
