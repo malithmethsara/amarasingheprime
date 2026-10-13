@@ -157,6 +157,29 @@
         }
     },
     {
+        "vessel_voyage": "JUPITER LEADER V.085",
+        "type": "RO-RO",
+        "shipping_line": "NYK",
+        "departures": [
+            {
+                "date": "2026/10/26",
+                "port": "YOKOHAMA"
+            },
+            {
+                "date": "2026/10/28",
+                "port": "NAGOYA"
+            },
+            {
+                "date": "2026/10/29",
+                "port": "OSAKA"
+            }
+        ],
+        "arrival": {
+            "date": "2026/11/13",
+            "port": "Hambantota"
+        }
+    },
+    {
         "vessel_voyage": "PLUTO LEADER V.072",
         "type": "RO-RO",
         "shipping_line": "NYK",
