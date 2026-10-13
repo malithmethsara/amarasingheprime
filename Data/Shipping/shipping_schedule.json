@@ -120,20 +120,20 @@
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "departures": [
             {
-                "date": "2026/10/16",
+                "date": "2026/10/18",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/10/17",
+                "date": "2026/10/19",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/10/18",
+                "date": "2026/10/20",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/10/30",
+            "date": "2026/11/07",
             "port": "Hambantota"
         }
     },
@@ -219,43 +219,20 @@
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "departures": [
             {
-                "date": "2026/11/21",
+                "date": "2026/11/26",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/11/22",
+                "date": "2026/11/27",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/11/23",
+                "date": "2026/11/28",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/12/11",
-            "port": "Hambantota"
-        }
-    },
-    {
-        "vessel_voyage": "VIKING DRIVE V.45",
-        "type": "RO-RO",
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "departures": [
-            {
-                "date": "2026/12/23",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/12/24",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/12/25",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2027/01/12",
+            "date": "2026/12/16",
             "port": "Hambantota"
         }
     }
