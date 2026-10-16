@@ -97,20 +97,20 @@
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "departures": [
             {
-                "date": "2026/10/18",
+                "date": "2026/10/17",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/10/19",
+                "date": "2026/10/20",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/10/20",
+                "date": "2026/10/21",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/11/07",
+            "date": "2026/11/02",
             "port": "Hambantota"
         }
     },
@@ -139,20 +139,20 @@
         "shipping_line": "NYK",
         "departures": [
             {
-                "date": "2026/10/22",
+                "date": "2026/10/25",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/10/27",
+                "date": "2026/10/26",
                 "port": "YOKOHAMA"
             },
             {
-                "date": "2026/10/30",
+                "date": "2026/10/28",
                 "port": "OSAKA"
             }
         ],
         "arrival": {
-            "date": "2026/11/13",
+            "date": "2026/11/12",
             "port": "Hambantota"
         }
     },
