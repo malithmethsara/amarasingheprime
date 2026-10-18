@@ -1,28 +1,5 @@
 [
     {
-        "vessel_voyage": "VIKING DRIVE V.42",
-        "type": "RO-RO",
-        "shipping_line": "SEVEN SEALS CO.,LTD",
-        "departures": [
-            {
-                "date": "2026/08/31",
-                "port": "OSAKA"
-            },
-            {
-                "date": "2026/09/01",
-                "port": "NAGOYA"
-            },
-            {
-                "date": "2026/09/02",
-                "port": "YOKOHAMA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/09/15",
-            "port": "Hambantota"
-        }
-    },
-    {
         "vessel_voyage": "POSITIVE PIONEER V.205",
         "type": "RO-RO",
         "shipping_line": "ECL",
