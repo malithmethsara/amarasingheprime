@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest  # Changed from ubuntu-latest to bypass CBSL IP Firewall blocks
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
