@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,9 +21,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      # NEW: Install cloudscraper to bypass CBSL's 403 Firewall
       - name: Install dependencies
-        run: pip install cloudscraper beautifulsoup4
+        run: pip install requests beautifulsoup4 urllib3 cloudscraper
 
       - name: Run scraper script
         run: python Data/Rates/CBSL/daily-CBSL-scraper.py
