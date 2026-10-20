@@ -1,82 +1,49 @@
-import requests
+import cloudscraper
 from bs4 import BeautifulSoup
 import csv
 from datetime import datetime, timezone, timedelta
 import os
 import re
 import sys
-import urllib.parse
-import urllib3
 
-# Suppress SSL warnings
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
+URL = "https://www.cbsl.gov.lk/cbsl_custom/charts/jpy/indexsmall.php"
 CSV_FILE = "Data/Rates/CBSL/CBSL-rates.csv"
-TARGET_URL = "https://www.cbsl.gov.lk/cbsl_custom/charts/jpy/indexsmall.php"
-
-def extract_rate(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
-    # Convert HTML non-breaking spaces to standard spaces
-    text_content = soup.get_text(separator=" ").replace('\xa0', ' ')
-    match = re.search(r'Sell\s+([\d\.]+)', text_content, re.IGNORECASE)
-    if match:
-        return match.group(1).strip()
-    return None
 
 def scrape_rate():
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    }
+    # Initialize Cloudscraper to bypass WAF / 403 Forbidden blocks
+    scraper = cloudscraper.create_scraper(
+        browser={
+            'browser': 'chrome',
+            'platform': 'windows',
+            'mobile': False
+        }
+    )
     
-    # Append a timestamp to the URL to force proxies to bypass their cache
-    timestamp = int(datetime.now().timestamp())
-    busted_url = f"{TARGET_URL}?t={timestamp}"
-    encoded_url = urllib.parse.quote(busted_url)
-    
-    # Strategy 1: Direct approach
     try:
-        print("Strategy 1: Direct Connection...")
-        res = requests.get(busted_url, headers=headers, timeout=15, verify=False)
-        if res.status_code == 200:
-            rate = extract_rate(res.text)
-            if rate:
-                print(f"Success via Direct! Rate: {rate}")
-                return rate
+        print(f"Fetching {URL} using Cloudscraper...")
+        
+        # Cloudscraper handles the headers, cookies, and TLS fingerprinting automatically
+        response = scraper.get(URL, timeout=30)
+        print(f"HTTP Status Code: {response.status_code}")
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        # Clean non-breaking spaces
+        text_content = soup.get_text(separator=" ").replace('\xa0', ' ')
+        
+        match = re.search(r'Sell\s+([\d\.]+)', text_content, re.IGNORECASE)
+        if match:
+            rate = match.group(1).strip()
+            print(f"Successfully scraped JPY/LKR Selling Rate: {rate}")
+            return rate
         else:
-            print(f"Direct failed with status code: {res.status_code}")
+            print("ERROR: 'Sell' rate not found in HTML. Snippet:")
+            print(text_content[:500])
+            return None
+            
     except Exception as e:
-        print(f"Direct failed: {e}")
-
-    # Strategy 2: AllOrigins Public Proxy
-    try:
-        print("\nStrategy 2: AllOrigins Proxy...")
-        proxy1 = f"https://api.allorigins.win/get?url={encoded_url}"
-        res = requests.get(proxy1, timeout=20)
-        if res.status_code == 200:
-            data = res.json()
-            if 'contents' in data:
-                rate = extract_rate(data['contents'])
-                if rate:
-                    print(f"Success via AllOrigins! Rate: {rate}")
-                    return rate
-    except Exception as e:
-        print(f"AllOrigins failed: {e}")
-
-    # Strategy 3: CodeTabs Public Proxy
-    try:
-        print("\nStrategy 3: CodeTabs Proxy...")
-        proxy2 = f"https://api.codetabs.com/v1/proxy?quest={encoded_url}"
-        res = requests.get(proxy2, timeout=20)
-        if res.status_code == 200:
-            rate = extract_rate(res.text)
-            if rate:
-                print(f"Success via CodeTabs! Rate: {rate}")
-                return rate
-    except Exception as e:
-        print(f"CodeTabs failed: {e}")
-
-    print("\nERROR: All scraping strategies failed.")
-    return None
+        print(f"Error scraping CBSL: {e}")
+        return None
 
 def update_csv(new_rate):
     # Use Sri Lanka Standard Time (UTC+5:30)
@@ -123,4 +90,5 @@ if __name__ == "__main__":
     if rate:
         update_csv(rate)
     else:
+        # Fails the GitHub Action if it doesn't scrape successfully
         sys.exit(1)
