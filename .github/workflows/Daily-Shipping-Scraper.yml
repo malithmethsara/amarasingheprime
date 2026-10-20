@@ -1,18 +1,17 @@
-name: Daily Shipping Schedule Scraper
+name: Daily CBSL Scraper
 
 on:
   schedule:
-    # 00:43 UTC = 06:13 AM Sri Lanka Time (Off-peak, avoids queue delays)
-    - cron: '43 0 * * *'  
-  workflow_dispatch: # Allows manual trigger from GitHub Actions tab anytime
+    - cron: '30 5 * * *'  # 11:00 AM SL Time
+    - cron: '0 9 * * *'   # 02:30 PM SL Time
+  workflow_dispatch:      # Allows manual testing
 
 permissions:
   contents: write
 
 jobs:
-  scrape-shipping:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,23 +22,15 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
+        run: pip install requests beautifulsoup4 urllib3
 
-      - name: Run shipping scraper
-        run: python Data/Shipping/shipping_scraper.py
+      - name: Run scraper script
+        run: python Data/Rates/CBSL/daily-CBSL-scraper.py
 
-      - name: Commit and Push JSON
+      - name: Commit and Push changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Data/Shipping/shipping_schedule.json
+          git config --global user.name "GitHub-Actions-Bot"
+          git config --global user.email "actions@github.com"
           
-          # Check if there are actual updates to commit
-          if git diff --staged --quiet; then
-            echo "No schedule changes detected today."
-          else
-            git commit -m "Automated update: Japan to Hambantota shipping schedule [skip ci]"
-            git push
-          fi
+          git add Data/Rates/CBSL/CBSL-rates.csv
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Automated update: JPY/LKR selling rate" && git pull --rebase origin main && git push)
