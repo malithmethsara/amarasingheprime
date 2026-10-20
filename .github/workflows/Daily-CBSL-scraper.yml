@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-latest  # Changed from ubuntu-latest to bypass CBSL IP Firewall blocks
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,9 +22,11 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 urllib3
+        run: python -m pip install --upgrade pip && python -m pip install requests beautifulsoup4 urllib3
 
       - name: Run scraper script
+        env:
+          SCRAPER_API_KEY: ${{ secrets.SCRAPER_API_KEY }}
         run: python Data/Rates/CBSL/daily-CBSL-scraper.py
 
       - name: Commit and Push changes
