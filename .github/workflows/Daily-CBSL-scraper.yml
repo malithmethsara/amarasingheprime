@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install curl_cffi beautifulsoup4
+        run: pip install requests beautifulsoup4 urllib3
 
       - name: Run scraper script
         run: python Data/Rates/CBSL/daily-CBSL-scraper.py
