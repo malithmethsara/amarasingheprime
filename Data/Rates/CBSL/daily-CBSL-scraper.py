@@ -5,52 +5,47 @@ from datetime import datetime, timezone, timedelta
 import os
 import re
 import sys
-import urllib.parse
 import urllib3
 
-# Suppress SSL warnings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 CSV_FILE = "Data/Rates/CBSL/CBSL-rates.csv"
 TARGET_URL = "https://www.cbsl.gov.lk/cbsl_custom/charts/jpy/indexsmall.php"
 
-def scrape_rate():
-    timestamp = int(datetime.now().timestamp())
-    busted_url = f"{TARGET_URL}?t={timestamp}"
-    encoded_url = urllib.parse.quote(busted_url)
-    
-    # Waterfall Strategy: Try multiple independent free proxies
-    proxies = [
-        f"https://corsproxy.io/?{encoded_url}",
-        f"https://api.codetabs.com/v1/proxy?quest={encoded_url}"
-    ]
-    
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/129.0.0.0 Safari/537.36"
-    }
+# Fetch the secure ScraperAPI Key from GitHub Actions Environment
+API_KEY = os.environ.get("SCRAPER_API_KEY")
 
-    for proxy_url in proxies:
-        proxy_name = proxy_url.split('/')[2]
-        try:
-            print(f"Attempting to fetch CBSL data via {proxy_name}...")
-            res = requests.get(proxy_url, headers=headers, timeout=20, verify=False)
+if not API_KEY:
+    print("ERROR: SCRAPER_API_KEY not found in environment variables.")
+    sys.exit(1)
+
+def scrape_rate():
+    payload = {
+        'api_key': API_KEY,
+        'url': TARGET_URL,
+        'render': 'false' 
+    }
+    
+    try:
+        print("Fetching CBSL data via ScraperAPI anti-bot network...")
+        # Timeout set to 60s because residential proxies take a few seconds to rotate
+        res = requests.get('https://api.scraperapi.com/', params=payload, timeout=60)
+        res.raise_for_status()
+        
+        soup = BeautifulSoup(res.text, 'html.parser')
+        text_content = soup.get_text(separator=" ").replace('\xa0', ' ')
+        
+        match = re.search(r'Sell\s+([\d\.]+)', text_content, re.IGNORECASE)
+        if match:
+            rate = match.group(1).strip()
+            return rate
+        else:
+            print("ERROR: 'Sell' rate not found in the HTML.")
+            print("Response snippet:", res.text[:200])
             
-            if res.status_code == 200 and 'Sell' in res.text:
-                soup = BeautifulSoup(res.text, 'html.parser')
-                text_content = soup.get_text(separator=" ").replace('\xa0', ' ')
-                
-                match = re.search(r'Sell\s+([\d\.]+)', text_content, re.IGNORECASE)
-                if match:
-                    rate = match.group(1).strip()
-                    print(f"SUCCESS: Scraped JPY/LKR Selling Rate via {proxy_name} -> {rate}")
-                    return rate
-            else:
-                print(f"Failed via {proxy_name}. HTTP Status: {res.status_code}")
-                
-        except Exception as e:
-            print(f"Proxy {proxy_name} connection error: {e}")
-            
-    print("CRITICAL ERROR: All fallback proxies failed or were blocked.")
+    except Exception as e:
+        print(f"Scraping failed: {e}")
+        
     return None
 
 def update_csv(new_rate):
@@ -95,6 +90,7 @@ def update_csv(new_rate):
 if __name__ == "__main__":
     rate = scrape_rate()
     if rate:
+        print(f"Successfully scraped JPY/LKR Selling Rate: {rate}")
         update_csv(rate)
     else:
         sys.exit(1)
