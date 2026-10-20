@@ -21,8 +21,9 @@ jobs:
         with:
           python-version: '3.11'
 
+      # NEW: Install cloudscraper to bypass CBSL's 403 Firewall
       - name: Install dependencies
-        run: pip install requests beautifulsoup4 urllib3
+        run: pip install cloudscraper beautifulsoup4
 
       - name: Run scraper script
         run: python Data/Rates/CBSL/daily-CBSL-scraper.py
