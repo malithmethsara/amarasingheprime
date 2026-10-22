@@ -168,6 +168,29 @@
         }
     },
     {
+        "vessel_voyage": "NESTOR RAY V.013",
+        "type": "RO-RO",
+        "shipping_line": "HYUNDAI GLOVIS",
+        "departures": [
+            {
+                "date": "2026/11/05",
+                "port": "HAKATA"
+            },
+            {
+                "date": "2026/11/07",
+                "port": "OSAKA"
+            },
+            {
+                "date": "2026/11/08",
+                "port": "KISARAZU"
+            }
+        ],
+        "arrival": {
+            "date": "2026/12/01",
+            "port": "Hambantota"
+        }
+    },
+    {
         "vessel_voyage": "VIKING DRIVE V.44",
         "type": "RO-RO",
         "shipping_line": "SEVEN SEALS CO.,LTD",
