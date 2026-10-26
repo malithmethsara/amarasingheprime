@@ -837,9 +837,9 @@
 
         try {
             const [slcRes, cbslRes] = await Promise.all([
-                fetch('Data/Rates/SLC-rates.txt'),
-                fetch('Data/Rates/CBSL/CBSL-rates.csv')
-            ]);
+            fetch('Data/Rates/SLC/SLC-rates.csv'),
+            fetch('Data/Rates/CBSL/CBSL-rates.csv')
+        ]);
 
             const slcText = await slcRes.text();
             const cbslText = await cbslRes.text();
