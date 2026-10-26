@@ -1,0 +1,65 @@
+name: Update SLC weekly JPY rate
+
+on:
+  schedule:
+    # Mondays 01:30-05:30 UTC = 07:30-11:30 Sri Lanka time (UTC+5:30), hourly.
+    # Once the week's rate is stored, later runs exit immediately.
+    - cron: "30 1-5 * * 1"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Monday date YYYY-MM-DD (leave empty for auto)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: slc-rate
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Skip if this Monday's rate is already stored
+        id: chk
+        if: github.event_name == 'schedule'
+        run: |
+          TODAY=$(TZ=Asia/Colombo date +%F)
+          if grep -q "^${TODAY}," Data/Rates/SLC-rates.txt; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "Rate for ${TODAY} already present - nothing to do."
+          fi
+
+      - name: Install OCR dependencies
+        if: steps.chk.outputs.skip != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq tesseract-ocr poppler-utils
+          pip install requests pillow pytesseract
+
+      - name: Fetch PDF, extract JPY, update txt
+        if: steps.chk.outputs.skip != 'true'
+        env:
+          INPUT_DATE: ${{ github.event.inputs.date }}
+        run: |
+          if [ -n "$INPUT_DATE" ]; then
+            python scripts/update_slc_rate.py --date "$INPUT_DATE"
+          else
+            TZ=Asia/Colombo python scripts/update_slc_rate.py
+          fi
+
+      - name: Commit if changed
+        if: steps.chk.outputs.skip != 'true'
+        run: |
+          if [ -n "$(git status --porcelain Data/Rates/SLC-rates.txt)" ]; then
+            git config user.name  "rates-bot"
+            git config user.email "rates-bot@users.noreply.github.com"
+            git add Data/Rates/SLC-rates.txt
+            git commit -m "Update SLC weekly JPY rate"
+            git pull --rebase origin main
+            git push
+          fi
