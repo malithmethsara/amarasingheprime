@@ -6,7 +6,8 @@ from the scanned page, validate it and append "YYYY-MM-DD,rate" to SLC-rates.csv
 Exit codes: 0 = updated / already up to date / PDF not published yet
             1 = PDF found but rate could not be read with confidence (nothing written)
 """
-import argparse, datetime as dt, os, re, subprocess, sys, tempfile, xml.etree.ElementTree as ET
+import argparse, datetime as dt, os, re, smtplib, subprocess, sys, tempfile, xml.etree.ElementTree as ET
+from email.message import EmailMessage
 import requests
 from PIL import Image, ImageOps
 import pytesseract
@@ -124,6 +125,32 @@ def extract_jpy(pdf: str):
     return votes
 
 
+def send_email(d, rate, prev):
+    """Email the new weekly rate. Needs MAIL_USER + MAIL_PASS (+ optional MAIL_TO, MAIL_HOST, MAIL_PORT).
+    Silently skipped if not configured; a mail failure never blocks the data update."""
+    user, pw = os.environ.get("MAIL_USER"), os.environ.get("MAIL_PASS")
+    if not (user and pw):
+        return
+    try:
+        msg = EmailMessage()
+        msg["Subject"] = f"SLC weekly JPY rate {d:%d %b %Y}: {rate:.4f}"
+        msg["From"] = user
+        msg["To"] = os.environ.get("MAIL_TO") or user
+        msg.set_content(
+            f"Sri Lanka Customs weekly rate (effective {d:%A, %d %B %Y})\n\n"
+            f"JPY -> LKR: {rate:.4f}\n"
+            f"Previous week: {prev:.4f} ({100 * (rate - prev) / prev:+.2f}%)\n\n"
+            f"Source: {URL.format(y=d.year, m=d.month, d=d)}\n"
+            "The website file has been updated automatically.")
+        with smtplib.SMTP_SSL(os.environ.get("MAIL_HOST", "smtp.gmail.com"),
+                              int(os.environ.get("MAIL_PORT", "465")), timeout=30) as smtp:
+            smtp.login(user, pw)
+            smtp.send_message(msg)
+        print("Email sent.")
+    except Exception as e:                      # do not fail the job because of email
+        print(f"::warning::Rate saved, but email failed: {e}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", help="Monday date YYYY-MM-DD (default: auto)")
@@ -162,6 +189,7 @@ def main():
         body = open(RATES_FILE, encoding="utf-8").read().rstrip("\n")
         with open(RATES_FILE, "w", encoding="utf-8") as f:
             f.write(f"{body}\n{d.isoformat()},{rate:.4f}\n")
+        send_email(d, rate, prev)
     return 0
 
 
