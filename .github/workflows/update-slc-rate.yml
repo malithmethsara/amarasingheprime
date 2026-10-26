@@ -29,7 +29,7 @@ jobs:
         if: github.event_name == 'schedule'
         run: |
           TODAY=$(TZ=Asia/Colombo date +%F)
-          if grep -q "^${TODAY}," Data/Rates/SLC-rates.txt; then
+          if grep -q "^${TODAY}," Data/Rates/SLC/SLC-rates.csv; then
             echo "skip=true" >> "$GITHUB_OUTPUT"
             echo "Rate for ${TODAY} already present - nothing to do."
           fi
@@ -41,7 +41,7 @@ jobs:
           sudo apt-get install -y -qq tesseract-ocr poppler-utils
           pip install requests pillow pytesseract
 
-      - name: Fetch PDF, extract JPY, update txt
+      - name: Fetch PDF, extract JPY, update csv
         if: steps.chk.outputs.skip != 'true'
         env:
           INPUT_DATE: ${{ github.event.inputs.date }}
@@ -55,10 +55,10 @@ jobs:
       - name: Commit if changed
         if: steps.chk.outputs.skip != 'true'
         run: |
-          if [ -n "$(git status --porcelain Data/Rates/SLC-rates.txt)" ]; then
+          if [ -n "$(git status --porcelain Data/Rates/SLC/SLC-rates.csv)" ]; then
             git config user.name  "rates-bot"
             git config user.email "rates-bot@users.noreply.github.com"
-            git add Data/Rates/SLC-rates.txt
+            git add Data/Rates/SLC/SLC-rates.csv
             git commit -m "Update SLC weekly JPY rate"
             git pull --rebase origin main
             git push
