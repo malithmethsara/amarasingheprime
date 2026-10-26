@@ -45,6 +45,9 @@ jobs:
         if: steps.chk.outputs.skip != 'true'
         env:
           INPUT_DATE: ${{ github.event.inputs.date }}
+          MAIL_USER: ${{ secrets.MAIL_USER }}
+          MAIL_PASS: ${{ secrets.MAIL_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
         run: |
           if [ -n "$INPUT_DATE" ]; then
             python Data/Rates/SLC/update_slc_rate.py --date "$INPUT_DATE"
