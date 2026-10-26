@@ -854,6 +854,7 @@
             slcRows.forEach(row => {
                 const cols = row.split(',');
                 const dateStr = cols[0].trim();
+                if (dateStr.toLowerCase() === 'date') return; // Skips the CSV Header row
                 allDates.add(dateStr);
                 slcMap[dateStr] = parseFloat(cols[1]);
             });
