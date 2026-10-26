@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Fetch the weekly Sri Lanka Customs exchange-rate PDF, extract the JPY rate
-from the scanned page, validate it and append "YYYY-MM-DD,rate" to SLC-rates.txt.
+from the scanned page, validate it and append "YYYY-MM-DD,rate" to SLC-rates.csv.
 
 Exit codes: 0 = updated / already up to date / PDF not published yet
             1 = PDF found but rate could not be read with confidence (nothing written)
@@ -11,7 +11,7 @@ import requests
 from PIL import Image, ImageOps
 import pytesseract
 
-RATES_FILE = "Data/Rates/SLC-rates.txt"
+RATES_FILE = "Data/Rates/SLC/SLC-rates.csv"
 URL = "https://www.customs.gov.lk/wp-content/uploads/{y}/{m:02d}/er{d:%d%m%Y}.pdf"
 RATE_RE = re.compile(r"(\d)[.,_ ]?(\d{4})\b")
 MIN_RATE, MAX_RATE = 1.5, 3.0      # sanity window for JPY->LKR
@@ -132,8 +132,13 @@ def main():
     a = ap.parse_args()
 
     d = dt.date.fromisoformat(a.date) if a.date else target_monday(dt.date.today())
-    lines = [l.strip() for l in open(RATES_FILE, encoding="utf-8") if l.strip()]
-    hist = {l.split(",")[0]: float(l.split(",")[1]) for l in lines}
+    hist = {}
+    for l in open(RATES_FILE, encoding="utf-8"):
+        parts = [x.strip() for x in l.split(",")]
+        try:                                   # skips a header row such as "date,rate" if present
+            hist[dt.date.fromisoformat(parts[0]).isoformat()] = float(parts[1])
+        except (ValueError, IndexError):
+            continue
     if d.isoformat() in hist:
         print(f"{d} already present ({hist[d.isoformat()]}); nothing to do."); return 0
 
