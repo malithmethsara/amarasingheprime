@@ -47,9 +47,9 @@ jobs:
           INPUT_DATE: ${{ github.event.inputs.date }}
         run: |
           if [ -n "$INPUT_DATE" ]; then
-            python Data/Rates/SLC/update_slc_rate.py --date "$INPUT_DATE"
+            python scripts/update_slc_rate.py --date "$INPUT_DATE"
           else
-            TZ=Asia/Colombo python Data/Rates/SLC/update_slc_rate.py
+            TZ=Asia/Colombo python scripts/update_slc_rate.py
           fi
 
       - name: Commit if changed
