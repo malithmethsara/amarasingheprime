@@ -1,24 +1,5 @@
 [
     {
-        "vessel_voyage": "POSITIVE PIONEER V.205",
-        "type": "RO-RO",
-        "shipping_line": "ECL",
-        "departures": [
-            {
-                "date": "2026/09/12",
-                "port": "YOKOHAMA"
-            },
-            {
-                "date": "2026/09/14",
-                "port": "OSAKA"
-            }
-        ],
-        "arrival": {
-            "date": "2026/09/26",
-            "port": "Hambantota"
-        }
-    },
-    {
         "vessel_voyage": "OPAL LEADER V.056",
         "type": "RO-RO",
         "shipping_line": "NYK",
@@ -173,20 +154,20 @@
         "shipping_line": "HYUNDAI GLOVIS",
         "departures": [
             {
-                "date": "2026/11/05",
-                "port": "HAKATA"
+                "date": "2026/11/09",
+                "port": "KISARAZU"
             },
             {
-                "date": "2026/11/07",
+                "date": "2026/11/11",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/11/08",
-                "port": "KISARAZU"
+                "date": "2026/11/13",
+                "port": "HAKATA"
             }
         ],
         "arrival": {
-            "date": "2026/12/01",
+            "date": "2026/11/29",
             "port": "Hambantota"
         }
     },
