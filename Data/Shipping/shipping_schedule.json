@@ -150,20 +150,20 @@
         "shipping_line": "SEVEN SEALS CO.,LTD",
         "departures": [
             {
-                "date": "2026/11/28",
+                "date": "2026/12/01",
                 "port": "OSAKA"
             },
             {
-                "date": "2026/11/29",
+                "date": "2026/12/02",
                 "port": "NAGOYA"
             },
             {
-                "date": "2026/11/30",
+                "date": "2026/12/03",
                 "port": "YOKOHAMA"
             }
         ],
         "arrival": {
-            "date": "2026/12/12",
+            "date": "2026/12/15",
             "port": "Hambantota"
         }
     },
